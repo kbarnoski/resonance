@@ -39,6 +39,8 @@
  * it on for the tab (remembered in sessionStorage), `?phrase=0` turns it off.
  */
 
+import { FIGURE_LAWS } from "./figure-motion";
+
 export const PHRASE_CONDUCTOR_DEFAULT = true; // Karel's keep 2026-10-13
 export const PHRASE_SESSION_KEY = "resonance-phrase";
 /** Locked, mastered journeys — never conducted by phrase. */
@@ -383,6 +385,78 @@ export function formHoldDue(cursor: PhraseCursor | null, t: number, sinceFormMs:
   }
   return { due: sinceFormMs > formDur * 2.2, event: null, index: -1 };
 }
+/**
+ * MAX ON-SCREEN TIME for a FIGURE (figure-motion.ts, Karel 2026-10-13: "the
+ * starburst … sat there … and was on screen a long time"). The form gate for
+ * the soul on screen: `soulHeldSec` = how long THIS SOUL has been shown (a
+ * refigure of the same soul does not reset it — the same look); null = no cap
+ * (a free soul, or a mastered journey's scripted forms).
+ *
+ *  - a free soul / null: exactly formHoldDue (action = the event's, or null =
+ *    the layer's own cycle choice);
+ *  - a figure that has held MAX_HOLD_SEC: due now (≥ OVERDUE_MIN_GAP_SEC after
+ *    any change), a NEW form (`capped`; the layer then relaxes its settle wait
+ *    and keeps only OVERDUE_LEAD_SEC clear of a timed image);
+ *  - a figure whose due change is a refigure (or the clock's): it stays a
+ *    refigure only while a later conducted change can still land inside the
+ *    cap (≥ MIN_FORM_HOLD_SEC from now) — else it becomes a new form here, ON
+ *    the phrase (the conductor's own boundary ≤ the cap is preferred to a cut
+ *    at the cap itself).
+ */
+export interface FigureHold { due: boolean; event: PhraseEvent | null; index: number; action: "form" | "refigure" | null; capped: boolean }
+/** A stretch in which the layer makes no form change: [start, end). */
+export type FigureZone = readonly [number, number];
+/**
+ * The no-change stretches a figure must not be left overdue in (the layer's
+ * own guards, known ahead): the ONE-BIG-CHANGE zone around every travel morph
+ * (from 3 s before the layer's ±4 s busy zone — the conductor's own rule — to
+ * its end), and the lead-in an overdue figure keeps clear of each timed image
+ * (mid emblem D/2 on tracks > 200 s, closing emblem D − 17, Ghost-style
+ * moments passed in `images`). A figure whose cap would fall inside one
+ * changes before it starts.
+ */
+export function figureZones(D: number, phaseBounds: readonly number[] = [], images: readonly number[] = []): FigureZone[] {
+  const L = PHRASE_LAWS, lead = FIGURE_LAWS.OVERDUE_LEAD_SEC;
+  const z: [number, number][] = [];
+  for (const pb of phaseBounds) if (pb > 0 && (!(D > 0) || pb < D)) z.push([pb - L.PHASE_BUSY_SEC - L.BIG_CHANGE_GAP_SEC, pb + L.PHASE_BUSY_SEC]);
+  const imgs = [...images];
+  if (D > 200) imgs.push(D * 0.5);
+  if (D > 40) imgs.push(D - 17);
+  // (+ a half-second margin: the layer ticks at 10 Hz and must land before the lead-in)
+  for (const m of imgs) if (Number.isFinite(m)) z.push([m - lead - 0.5, m]);
+  return z.sort((a, b) => a[0] - b[0]);
+}
+/** When a figure that started at `start` must be gone: start + cap, or the
+ *  start of the no-change zone the cap would fall in. */
+export function figureDeadline(start: number, zones: readonly FigureZone[] = []): number {
+  let d = start + FIGURE_LAWS.MAX_HOLD_SEC;
+  // chained zones: step back until the deadline is clear of all of them
+  for (let guard = 0; guard < 8; guard++) {
+    const z = zones.find(([a, b]) => d >= a && d < b && a > start);
+    if (!z) break;
+    d = z[0];
+  }
+  return d;
+}
+export function figureHoldDue(cursor: PhraseCursor | null, t: number, sinceFormMs: number, formDur: number, soulHeldSec: number | null, zones: readonly FigureZone[] = []): FigureHold {
+  const base = formHoldDue(cursor, t, sinceFormMs, formDur);
+  const act = base.event ? (base.event.action as "form" | "refigure") : null;
+  if (soulHeldSec === null || !Number.isFinite(soulHeldSec)) return { ...base, action: act, capped: false };
+  const deadline = figureDeadline(t - soulHeldSec, zones);
+  if (t >= deadline && sinceFormMs >= FIGURE_LAWS.OVERDUE_MIN_GAP_SEC * 1000) return { due: true, event: base.event, index: base.index, action: "form", capped: true };
+  if (!base.due || act === "form") return { ...base, action: act, capped: false };
+  const left = deadline - t;
+  let later = false;
+  if (cursor) {
+    const ev = cursor.tl.events;
+    for (let i = 0; i < ev.length && !later; i++) {
+      const e = ev[i];
+      if ((e.action === "form" || e.action === "refigure") && i !== base.index && !cursor.taken.has(i) && e.t >= t + PHRASE_LAWS.MIN_FORM_HOLD_SEC && e.t <= t + left) later = true;
+    }
+  } else later = formDur / 1000 <= left;
+  return { ...base, action: later ? act : "form", capped: false };
+}
+
 /** Mark an event as used (the layer calls this when the change happens). */
 export function takePhraseEvent(cursor: PhraseCursor | null, index: number): void {
   if (cursor && index >= 0) cursor.taken.add(index);

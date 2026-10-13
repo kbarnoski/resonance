@@ -78,6 +78,7 @@ import { critStep, springTau, stillPreloadAllowed, type Crit } from "./image-fol
 import { livingScoreEnabled, scoreSessionStore, SCORE_STRIDE, SCORE_TUNING } from "./living-score";
 import { currentFreedom, type CurrentState } from "./harmonic-currents";
 import { breathFreedom, BREATH_LAWS, type BreathState } from "./breath";
+import { figureRigidTarget, glideRigid, rigidMatrix, REST_RIGID, type FigureRigid } from "./figure-motion";
 import { GRAVITY_LAWS } from "./light-gravity";
 import { handsEnabled, handsSessionStore, type HandsVoices } from "./two-hands";
 
@@ -976,6 +977,10 @@ export function createParticleEngine(
   // light gravity: targets / per-frame smoothed attractors, gain target / glided
   const gravT = new Float32Array(16), gravS = new Float32Array(16);
   let gravGainT = 0, gravGainS = 0;
+  // figure frame (figure-motion.ts): the rigid body response, glided, + its integrated turn
+  let figRigid: FigureRigid = { ...REST_RIGID };
+  let figTurn = 0;
+  const figRot = new Float32Array(9);
   const gravA = new Float32Array(16), gravB = new Float32Array(16);
   let imgAspect: [number, number] = [16 / 9, 16 / 9];
   let haveB = false;
@@ -1403,6 +1408,34 @@ export function createParticleEngine(
       const el = Math.hypot(eye[0], eye[1], eye[2]) || 1;
       if (sim.u.uHandsEye) g.uniform3f(sim.u.uHandsEye, eye[0] / el, eye[1] / el, eye[2] / el);
       if (sim.u.uHandsRight) g.uniform3f(sim.u.uHandsRight, right[0], right[1], right[2]);
+    }
+    // FIGURE FRAME (figure-motion.ts): the figures feel the free field's
+    // features a LITTLE, as one body — a slow bounded wander on the currents'
+    // clock (tension adds a slow turn), a few percent of breath scale, a tilt
+    // from the two hands, a lean toward the light; glided on top of the
+    // features' own eased timelines. All features off (Snowflake, Ghost) =
+    // rest. The motion floor's own turn + rock run in the shader (uTime).
+    {
+      let gw = 0, gx = 0, gy = 0;
+      for (let i = 0; i < 4; i++) { const w = gravS[i * 4 + 3]; gw += w; gx += gravS[i * 4] * w; gy += gravS[i * 4 + 1] * w; }
+      const tgt = figureRigidTarget({
+        curAmount: curS.amount, curTension: curS.tension, curClock: curClock,
+        brAmount: brS.amount, breath: brS.breath,
+        handsLow: handsOn ? handsS.low : 0, handsHigh: handsOn ? handsS.high : 0,
+        gravGain: gravGainS, gravX: gw > 1e-4 ? gx / gw : 0, gravY: gw > 1e-4 ? gy / gw : 0,
+      });
+      figRigid = glideRigid(figRigid, tgt, dt);
+      figTurn += figRigid.turnRate * dt;
+      if (sim.u.uFigRot) g.uniformMatrix3fv(sim.u.uFigRot, false, rigidMatrix(right, figRigid.tilt, figTurn, figRot));
+      if (sim.u.uFigOff) {
+        const el = Math.hypot(eye[0], eye[1], eye[2]) || 1;
+        const ox = figRigid.right * halfH, oy = figRigid.up * halfH, oz = figRigid.depth * halfH;
+        g.uniform4f(sim.u.uFigOff,
+          right[0] * ox + up[0] * oy + (eye[0] / el) * oz,
+          right[1] * ox + up[1] * oy + (eye[1] / el) * oz,
+          right[2] * ox + up[2] * oy + (eye[2] / el) * oz,
+          figRigid.scale);
+      }
     }
     if (sim.u.uPull) { const pk = Math.min(1, pullT / 2); g.uniform1f(sim.u.uPull, 0.5 + 0.5 * pk * pk * (3 - 2 * pk)); }
     if (sim.u.uAccCap) {

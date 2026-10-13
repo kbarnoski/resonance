@@ -74,7 +74,8 @@ import type { JourneyFrame } from "@/lib/journeys/types";
 import { journeyResponse } from "@/lib/journeys/kinetic";
 import { PARTICLE_PROFILES } from "@/lib/journeys/particle-profiles.generated";
 import { OnsetDetector, LivingScore, livingScoreEnabled, scoreGain, scoreSessionStore, SCORE_LOCKED_JOURNEYS } from "@/lib/particles/living-score";
-import { conductPhrases, createPhraseCursor, formHoldDue, takePhraseEvent, swellAt, phraseConductorEnabled, PHRASE_LOCKED_JOURNEYS, type PhraseTimeline } from "@/lib/particles/phrase-conductor";
+import { FIGURE_LAWS, isFigureSoul } from "@/lib/particles/figure-motion";
+import { conductPhrases, createPhraseCursor, figureHoldDue, figureZones, type FigureZone, takePhraseEvent, swellAt, phraseConductorEnabled, PHRASE_LOCKED_JOURNEYS, type PhraseTimeline } from "@/lib/particles/phrase-conductor";
 import { bridgeEnabled, createBridgeState, nextBridgeBoundary, onBridgeHint, stepBridge, BRIDGE_LOCKED_JOURNEYS, type BridgeHint } from "@/lib/particles/bridge";
 import { sampleBridgeStill, type BridgeStill } from "@/lib/particles/bridge-sampler";
 import { mastersFeaturesEnabled } from "@/lib/particles/mastered-features";
@@ -893,7 +894,7 @@ export function ParticleLeadLayer({
       motifAt = t;
       motifDur = Math.max(10, formDur / 1000 + 2);
       motifN++;
-      formAt = performance.now();
+      formAt = soulAt = performance.now();
       glitchRecord("particle-motif", `${fam} ${motifSrc.split("/").pop()}`);
       return true;
     };
@@ -943,6 +944,10 @@ export function ParticleLeadLayer({
     let lastAsked = "";
     let currentSoul = "";
     let formAt = performance.now();
+    // when the soul on screen first showed (a refigure keeps it): the figure cap
+    let soulAt = performance.now();
+    // …and the no-change stretches it must not be left overdue in (per track length)
+    let figZones: FigureZone[] = [], figZonesD = -1;
     // NO DOUBLE CHANGES (Karel 2026-10-08: "a form transitions to a new shape
     // only to then immediately change to yet another form"): the timed image
     // forms (closing / mid emblem, Ghost's moments) land on a fixed clock, so
@@ -1242,6 +1247,9 @@ export function ParticleLeadLayer({
       spectrumNow = rainbow;
       recent.unshift(soul);
       if (recent.length > 4) recent.length = 4;
+      // a figure's on-screen clock (figure-motion.ts): a new soul — or the same
+      // one arriving from invisible — starts it; the same look re-asked does not
+      if (soul !== currentSoul || quiet) soulAt = performance.now();
       currentSoul = soul;
       formAt = performance.now();
       appearance();
@@ -1484,7 +1492,7 @@ export function ParticleLeadLayer({
         const a = t - motifAt;
         mfForm = ssf(0, 4, a) * (1 - ssf(motifDur - 5, motifDur - 1, a)) * (0.92 + 0.08 * Math.sin(a * 0.5));
         mfShow = ssf(0.5, 4.5, a) * (1 - ssf(motifDur - 4, motifDur, a));
-        if (a > motifDur || a < 0) { motifAt = -1; formAt = performance.now(); }
+        if (a > motifDur || a < 0) { motifAt = -1; formAt = soulAt = performance.now(); }
       }
       // the echo: trace the arriving still's light, then flow back into the form
       const ec = echoRef.current;
@@ -1500,14 +1508,14 @@ export function ParticleLeadLayer({
         // arriving still full-frame, exactly over it — literal, and on screen it
         // read as the image itself doubling. Echoes are retired.
         const ECHO_P = 0;
-        if (rand01(81 + echoN) < ECHO_P) { echoAt = t; echoN++; formAt = performance.now(); glitchRecord("particle-echo", "still"); }
+        if (rand01(81 + echoN) < ECHO_P) { echoAt = t; echoN++; formAt = soulAt = performance.now(); glitchRecord("particle-echo", "still"); }
       }
       let ecForm = 0, ecShow = 0;
       if (echoAt >= 0) {
         const a = t - echoAt;
         ecForm = ssf(0, 2.5, a) * (1 - ssf(4.5, 6.5, a)) * 0.65;
         ecShow = ssf(0.3, 2.5, a) * (1 - ssf(5, 7, a)) * 0.55;
-        if (a > 7) { echoAt = -1; formAt = performance.now(); } // an echo IS a form: the next change waits a full formDur
+        if (a > 7) { echoAt = -1; formAt = soulAt = performance.now(); } // an echo IS a form: the next change waits a full formDur
       }
       const flashing = flashNow > 0.02 || flashTail > 0.02;
       const momentOn = !flashing && (moForm > 0.02 || moShow > 0.02);
@@ -1535,12 +1543,12 @@ export function ParticleLeadLayer({
           // petals, not an abstract interim form (Karel 2026-10-11)
           if (cast.signatureImage === "angel" && imgKey?.startsWith("moment") && currentSoul !== "petals") { engine.setSoul("petals", 3.5); currentSoul = "petals"; glitchRecord("particle-form", "petals (blossoms scatter)"); }
         }
-        else if (act === "unload") { imgReleasing = false; imgLoaded = null; imgKey = null; formAt = performance.now(); }
+        else if (act === "unload") { imgReleasing = false; imgLoaded = null; imgKey = null; formAt = soulAt = performance.now(); }
         loadNow = act === "load";
         if (act === "release") hoverAt = performance.now();
       } else {
         if (want && wantKey !== imgKey && imgLoaded && !imgReleasing) { imgReleasing = true; imgReleaseAt = performance.now(); glitchRecord("particle-image-release", `${imgKey} -> ${wantKey}`); }
-        if (imgReleasing && performance.now() - imgReleaseAt > 1400) { imgReleasing = false; imgLoaded = null; imgKey = null; formAt = performance.now(); }
+        if (imgReleasing && performance.now() - imgReleaseAt > 1400) { imgReleasing = false; imgLoaded = null; imgKey = null; formAt = soulAt = performance.now(); }
         loadNow = !!want && wantKey !== imgKey && !imgLoaded;
       }
       // …and never into a running still dissolve: loadFormImage overwrites the
@@ -1646,7 +1654,7 @@ export function ParticleLeadLayer({
         }
         formPeak = Math.max(formPeak, formNow);
       }
-      if (imgLoaded && flashTail < 0.01 && fa < 0.3 && angelForm < 0.01 && angelShow < 0.01 && emForm < 0.01 && emShow < 0.01 && moForm < 0.01 && moShow < 0.01 && mfForm < 0.01 && mfShow < 0.01 && ecForm < 0.01 && ecShow < 0.01) { imgLoaded = null; imgKey = null; imgReleasing = false; engine.setImageForm(0, 0); engine.setImageVariant(false, 0); formAt = performance.now(); }
+      if (imgLoaded && flashTail < 0.01 && fa < 0.3 && angelForm < 0.01 && angelShow < 0.01 && emForm < 0.01 && emShow < 0.01 && moForm < 0.01 && moShow < 0.01 && mfForm < 0.01 && mfShow < 0.01 && ecForm < 0.01 && ecShow < 0.01) { imgLoaded = null; imgKey = null; imgReleasing = false; engine.setImageForm(0, 0); engine.setImageVariant(false, 0); formAt = soulAt = performance.now(); }
       const flashP = imgLoaded ? Math.max(flashTail, angelShow, imgLoaded === "emblem" ? emShow : 0, imgLoaded === "moment" ? moShow : 0) : 0;
 
       // every entrance GATHERS: scatter wide ONLY while truly invisible, then
@@ -1754,27 +1762,38 @@ export function ParticleLeadLayer({
       if (score) scoreGainTarget = scoreGain({ respK, shown, held: imgLoaded || dissolving || motifAt >= 0 || flashP > 0.05 ? 1 : 0, busy: busyNow });
       // FORM TIMING: the hold clock (flag off: exactly `held > formDur`), or the
       // phrase conductor's next section / phrase event once the form has held ≥ 10 s
-      const phraseHold = phraseCursor ? formHoldDue(phraseCursor, t, performance.now() - formAt, formDur) : null;
-      const holdDone = () => (phraseHold ? phraseHold.due : performance.now() - formAt > formDur);
-      const settledEnough = () => engine.settledFor() > (phraseHold?.event ? 3 : 7) || performance.now() - formAt > formDur * 2.2;
+      // MAX ON-SCREEN TIME (figure-motion.ts, Karel 2026-10-13: the starburst "sat
+      // there … on screen a long time"): a figure soul holds ≤ 22 s — a refigure
+      // of the same soul is the same look and does not reset it; an overdue figure
+      // skips the settle wait and keeps only 8 s clear of a timed image. Free souls
+      // and the mastered journeys' scripted forms: exactly the hold clock / conductor.
+      const soulHeld = !cast.mastered && currentSoul && isFigureSoul(currentSoul) ? (performance.now() - soulAt) / 1000 : null;
+      if (soulHeld !== null) {
+        const D = useAudioStore.getState().duration || 0;
+        if (D !== figZonesD) { figZonesD = D; figZones = figureZones(D, cast.phaseBounds ?? []); }
+      }
+      const phraseHold = figureHoldDue(phraseCursor, t, performance.now() - formAt, formDur, soulHeld, figZones);
+      const holdDone = () => phraseHold.due;
+      const settledEnough = () => phraseHold.capped || engine.settledFor() > (phraseHold.event ? 3 : 7) || performance.now() - formAt > formDur * 2.2;
       if (!busyNow && shown > 0.6 && !dissolving && !imgLoaded && echoAt < 0 && flashP < 0.05 && motifAt < 0 && holdDone() && !timedSoon(t, motifDur + 2) && settledEnough() && rand01(61 + cycleIdx) < pMotif && startMotif(t)) {
         cycleIdx++;
-        if (phraseHold?.event) { takePhraseEvent(phraseCursor, phraseHold.index); glitchRecord("particle-phrase", `motif on ${phraseHold.event.label}`); }
-      } else if (!busyNow && shown > 0.6 && !dissolving && !imgLoaded && echoAt < 0 && flashP < 0.05 && motifAt < 0 && holdDone() && !timedSoon(t, 15) && settledEnough() && cast.formCycle?.length) {
+        if (phraseHold.event) { takePhraseEvent(phraseCursor, phraseHold.index); glitchRecord("particle-phrase", `motif on ${phraseHold.event.label}`); }
+      } else if (!busyNow && shown > 0.6 && !dissolving && !imgLoaded && echoAt < 0 && flashP < 0.05 && motifAt < 0 && holdDone() && !timedSoon(t, phraseHold.capped ? FIGURE_LAWS.OVERDUE_LEAD_SEC : 15) && settledEnough() && cast.formCycle?.length) {
         cycleIdx++;
-        if (phraseHold?.event) { takePhraseEvent(phraseCursor, phraseHold.index); glitchRecord("particle-phrase", `${phraseHold.event.action} on ${phraseHold.event.label}`); }
-        if ((phraseHold?.event ? phraseHold.event.action === "refigure" : cycleIdx % 3 === 0) && currentSoul) {
+        if (phraseHold.event) { takePhraseEvent(phraseCursor, phraseHold.index); glitchRecord("particle-phrase", `${phraseHold.action ?? phraseHold.event.action} on ${phraseHold.event.label}`); }
+        if ((phraseHold.action ? phraseHold.action === "refigure" : cycleIdx % 3 === 0) && currentSoul) {
           if (diverse) {
             const v = freshVariant(currentSoul as SoulId, `${journeyId}:r${cycleIdx}:${Math.round(t)}`, RECENT_DESIGNS);
             engine.setVariant(v ? { a: v.a, b: v.b, c: v.c } : null);
             if (v) { rememberDesign(v.label); glitchRecord("particle-design", `${v.label} (refigure)`); }
           }
           engine.setShape(shapeSeed(currentSoul, t + cycleIdx * 7), false);
-          formAt = performance.now();
+          formAt = performance.now(); // (soulAt kept: a refigure is the same look)
           // (no appearance(): a refigure re-dollied + re-sized a visible form at once)
           glitchRecord("particle-form", `${currentSoul} refigure`);
         } else {
           const nxt = nextForm(t);
+          if (nxt && soulHeld !== null && (phraseHold.capped || phraseHold.event?.action !== "form")) glitchRecord("particle-phrase", `figure ${currentSoul} held ${Math.round(soulHeld)}s → ${nxt}${phraseHold.capped ? " (cap)" : ""}`);
           if (nxt) switchForm(nxt, t);
         }
       }

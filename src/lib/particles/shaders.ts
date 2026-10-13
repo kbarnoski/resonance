@@ -16,6 +16,7 @@ import { BREATH_LAWS } from "./breath";
 import { HANDS_TUNING } from "./two-hands";
 import { trailsGlslConsts } from "./resonance-trails";
 import { stableGlslConsts, STABLE_LAWS } from "./stable-motes";
+import { figureMotionGlsl } from "./figure-motion";
 
 export const QUAD_VS = /* glsl */ `#version 300 es
 const vec2 P[3] = vec2[3](vec2(-1.0,-1.0), vec2(3.0,-1.0), vec2(-1.0,3.0));
@@ -190,6 +191,12 @@ uniform vec4 uGravA[4];
 uniform vec4 uGravB[4];
 uniform float uGravG;
 uniform vec3 uGravE;
+// FIGURE FRAME (figure-motion.ts): the rigid part of every figure's frame — the
+// features' slow body response (currents wander, breath scale, hands tilt, the
+// light's pull). uFigRot = tilt × turn; uFigOff = xyz offset (world), w = scale
+// (0 = never set → identity). Free souls never use it.
+uniform mat3 uFigRot;
+uniform vec4 uFigOff;
 layout(location = 0) out vec4 oPos;
 layout(location = 1) out vec4 oVel;
 ${NOISE}
@@ -257,6 +264,19 @@ vec4 instOf(vec4 s, float n, float seed){
   vec3 c = vec3(cos(ang) * rad * 1.35, sin(ang) * rad * 0.8, (hk - 0.5) * 1.8);
   float sc = mix(0.3, 0.5, hk) * (n <= 3.5 ? 1.35 : 1.0);
   return vec4(c, sc);
+}
+
+// THE MOTION FLOOR (figure-motion.ts, Karel 2026-10-13: "the starburst …
+// sat there and it doesnt move"): every FIGURE soul's force law runs inside a
+// frame that turns about the figure's own axis on the steady clock (uTime, never
+// the beat) and rocks gently — the whole figure moves as one body, so it stays
+// crisp. Free souls: identity (spin = sway = 0). Motion only — no light term.
+${figureMotionGlsl()}
+bool figureSoul(int soul){ return FIG_SPIN[soul] != 0.0 || FIG_SWAY[soul] != 0.0; }
+mat3 figureFrame(int soul){
+  float ph = float(soul) * 1.7;
+  mat3 own = rotY(FIG_SPIN[soul] * uTime + ph) * rotX(FIG_SWAY[soul] * sin(uTime * 6.2831853 / FIG_PERIOD[soul] + ph));
+  return (uFigOff.w > 0.0 ? uFigRot : mat3(1.0)) * own;
 }
 
 // Returns xyz = acceleration, w = linear drag.
@@ -1097,14 +1117,24 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
   if (soul == 44) {
     // ── STARBURST: rays of light from a bright heart; every bass hit throws
     // them outward and they ease back — a burst on the beat, never a jump ──
-    vec3 dir = normalize(hash31(s.a * 211.0) - 0.5 + 1e-4);
+    float g = floor(s.b * 48.0);
+    // NEVER STATIC (Karel 2026-10-13, Grasshopper: "the starburst … sat there
+    // and it doesnt move"): the rays live in three shells that counter-turn
+    // about their own tilted axes on the steady clock, and each ray group
+    // breathes in LENGTH on its own phase — a slow coherent ripple, never the
+    // beat (the old per-mote random-phase swell averaged out to a still
+    // silhouette, and an isotropic burst shows no camera orbit)
+    float shell = floor(mod(g + 0.5, 3.0));
+    float sDir = shell == 1.0 ? -1.0 : 1.0;
+    mat3 tiltS = rotX(0.45 * (shell - 1.0));
+    vec3 dir = tiltS * (rotY(uTime * sDir * (0.05 + 0.015 * shell)) * (transpose(tiltS) * normalize(hash31(s.a * 211.0) - 0.5 + 1e-4)));
     float len = pow(s.g, 0.8);                      // along the ray: dense at the heart
     // CALM (Karel 2026-10-13, Grasshopper: "the particle cloud seems indecisive
     // and contracts and expands and isnt sure of what to do"): the bass threw the
     // whole form out by up to 1.1x and a hard pull snapped it back on every hit —
-    // now the rays breathe (slow per-ray swell, a soft lift on the beat)
-    float reach = 0.72 + 0.12 * sin(uClock.x * 0.18 + hash11(s.a * 5.0) * 6.2831853) + 0.28 * up * bassW + 0.12 * lvl;
-    vec3 home = dir * len * reach * (0.7 + 0.6 * hash11(floor(s.b * 48.0) * 3.7));
+    // now the rays breathe (slow per-group swell, a soft lift on the beat)
+    float reach = 0.72 + 0.1 * sin(uTime * 0.21 + g * 0.83) + 0.28 * up * bassW + 0.12 * lvl;
+    vec3 home = dir * len * reach * (0.7 + 0.6 * hash11(g * 3.7));
     home.y *= 0.8;
     return vec4((home - p) * 3.6, 3.4);
   }
@@ -1153,7 +1183,19 @@ void main(){
   vec4 f = vec4(0.0);
   for (int k = 0; k < uPasses; k++) {
     float wgt = k == 0 ? (uPasses > 1 ? 1.0 - uMix : 1.0) : uMix;
-    f += wgt * soulForce(k == 0 ? uSoulA : uSoulB, pl, vl, s, fid, lvl, drv);
+    int sk = k == 0 ? uSoulA : uSoulB;
+    // a FIGURE's force law runs in its moving frame (rigid: the motion floor's
+    // turn + rock, the features' slow body response); the force comes back to
+    // the world frame — the figure moves as one body, never smeared per mote.
+    // Free souls: identity (exact). Still ONE soulForce call site (see above).
+    bool fg = figureSoul(sk);
+    bool fr = fg && uFigOff.w > 0.0;
+    mat3 FM = fg ? figureFrame(sk) : mat3(1.0);
+    mat3 FT = transpose(FM);
+    float fsc = fr ? uFigOff.w : 1.0;
+    vec3 fo = fr ? uFigOff.xyz : vec3(0.0);
+    vec4 fk = soulForce(sk, FT * (pl - fo) / fsc, FT * vl / fsc, s, fid, lvl, drv);
+    f += wgt * vec4(FM * fk.xyz * fsc, fk.w);
   }
   f.xyz *= I.w; // local → world
   // a NEW FIGURE (shape step) is approached with a pull that eases in, so every

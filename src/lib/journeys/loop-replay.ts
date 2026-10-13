@@ -9,7 +9,8 @@ import type { SoulId } from "@/lib/particles/souls";
 import { PARTICLE_LEADS } from "./particle-lead";
 import { PARTICLE_PROFILES } from "./particle-profiles.generated";
 import { TRAMOKYO_MAIN } from "./installation-sequence";
-import { conductPhrases, PHRASE_LAWS, PHRASE_LOCKED_JOURNEYS, type PhraseTimeline } from "@/lib/particles/phrase-conductor";
+import { conductPhrases, figureDeadline, figureZones, PHRASE_LAWS, PHRASE_LOCKED_JOURNEYS, type PhraseTimeline } from "@/lib/particles/phrase-conductor";
+import { isFigureSoul } from "@/lib/particles/figure-motion";
 import { createLoopMemory, planCast, chooseNext, noteForm, recordUsage, blossomAllowed, previousJourney, type LoopMemory } from "./particle-rotation";
 
 export interface PlayLog { journeyId: string; name: string; mastered: boolean; lead: SoulId | null; forms: { soul: SoulId; sec: number }[] }
@@ -45,11 +46,14 @@ export function replayLoop(order: readonly string[] = loopOrder(), loops = 2, me
     const log: PlayLog = { journeyId: id, name: PARTICLE_PROFILES[id]?.name ?? id, mastered: base.mastered, lead: null, forms: [] };
     const recent: SoulId[] = [];
     let blossomShown = false, cycleIdx = 0, oldIdx = 0;
-    let cur: SoulId | null = null, curAt = 0;
+    let cur: SoulId | null = null, curAt = 0, soulAt = 0, changeAt = 0;
+    // the figure cap (figure-motion.ts) with the conductor on: a figure soul is
+    // gone by its deadline (a re-show of the same soul keeps its clock)
+    const zones = tl ? figureZones(D, pbs) : [];
     const show = (s: SoulId, t: number) => {
       if (cur) { const sec = Math.max(0, t - curAt); log.forms.push({ soul: cur, sec }); recordUsage(mem, cur, sec); }
       if (s === cur) { curAt = t; return; }
-      cur = s; curAt = t;
+      cur = s; curAt = t; soulAt = t; changeAt = t;
       if (!log.lead) log.lead = s;
       noteForm(mem, id, s);
       if (s === "blossom") blossomShown = true;
@@ -61,7 +65,8 @@ export function replayLoop(order: readonly string[] = loopOrder(), loops = 2, me
     while (k < ev.length && ev[k].t <= 16) k++;
     while (t < end) {
       const nextFixed = k < ev.length ? ev[k].t : Infinity;
-      const nt = Math.min(tl ? nextPhraseChange(tl, t, curAt) : t + 13.5, nextFixed, end);
+      const capAt = tl && cur && isFigureSoul(cur) ? Math.max(t + 0.5, changeAt + 3, figureDeadline(soulAt, zones)) : Infinity;
+      const nt = Math.min(tl ? nextPhraseChange(tl, t, curAt) : t + 13.5, nextFixed, end, capAt);
       if (nt >= end) break;
       if (nt === nextFixed) { show(ev[k].soul, nt); k++; }
       else {
