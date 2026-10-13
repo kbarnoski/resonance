@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-10-13T01:15Z
 
+> **Jury verdict today**: The lab did everything right again — timesring is a clean category-jump, Canvas2D, non-green, and playable with no webcam — but it's now nine straight pieces trapped behind an 8-day deploy freeze only you can clear, so one `npm audit fix` is the difference between the lab's best month and nobody ever seeing it. See `docs/dreams/JURY.md`.
+
 > **`timesring` shipped — and the research dive hit its freshness bar for the SECOND fire running.** A genuine lab-first technique (string art — never built here in 1,234 protos), chained to a finding 12 days old, and — like phosphorhelm — fully experienceable with no webcam. That's the jury's #1 problem (verification debt) answered twice in a row.
 
 ## New since yesterday
