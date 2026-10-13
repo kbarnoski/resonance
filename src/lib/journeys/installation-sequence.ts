@@ -253,13 +253,13 @@ const RISE_ABOVE = [
   "87e106f9-4d74-4886-b944-fd625a827b02", //  3. First Light — I. pure piano
   "f0362f24-75f1-4717-8487-cc9cf12c7bcc", //  4. The First (Expanded) — before Bath (Karel 2026-10-13: "bath is so mellow it needs to come later … it just would look better")
   "a5b5f0cf-9a6b-451a-8293-3d98f3904342", //  5. Bath
-  "dc8d9705-785a-485e-b91f-a12c85bf7b92", //  6. Testimony 3
-  "fdc6470e-5c7e-43b4-968c-3e907f1fa88f", //  7. Grasshopper
-  "c80a89bc-2c88-4bde-bec8-4be6916acb62", //  8. Yellow Bird
-  "cosmic-drift", //  9. Cosmic Drift — featured solo piano: the bridge from his piano into the Expansion (Karel 2026-10-11: "the featured journey tracks are all solo piano so they bridge the piano tracks to the evolving more full band ones") — soulful solo-piano ambient, to wander
-  "1f5e3884-5317-4146-ba18-4742eaf74ce9", // 10. Chemiluminescence — far out, in the mix with Cosmic Drift, beside Mycelium Dream (Karel 2026-10-12: "has to be in ra in the mix with cosmic drift. its pretty out there") — was wave 2's opener
-  "mycelium-dream", // 11. Mycelium Dream — featured solo piano bridge — spacey, far out there, visionary (Karel 2026-10-09)
-  "the-ascent", // 12. The Summit — featured solo piano bridge — a classical, moving piece into the mix (Karel 2026-10-09), handing to Amboise 1's classical strings
+  "fdc6470e-5c7e-43b4-968c-3e907f1fa88f", //  6. Grasshopper
+  "c80a89bc-2c88-4bde-bec8-4be6916acb62", //  7. Yellow Bird
+  "cosmic-drift", //  8. Cosmic Drift — featured solo piano: the bridge from his piano into the Expansion (Karel 2026-10-11: "the featured journey tracks are all solo piano so they bridge the piano tracks to the evolving more full band ones") — soulful solo-piano ambient, to wander
+  "1f5e3884-5317-4146-ba18-4742eaf74ce9", //  9. Chemiluminescence — far out, in the mix with Cosmic Drift, beside Mycelium Dream (Karel 2026-10-12: "has to be in ra in the mix with cosmic drift. its pretty out there") — was wave 2's opener
+  "mycelium-dream", // 10. Mycelium Dream — featured solo piano bridge — spacey, far out there, visionary (Karel 2026-10-09)
+  "the-ascent", // 11. The Summit — featured solo piano bridge — a classical, moving piece into the mix (Karel 2026-10-09), handing to Amboise 1's classical strings
+  "dc8d9705-785a-485e-b91f-a12c85bf7b92", // 12. Testimony 3 — the LAST solo piano, where the bridge to the fuller sound happens: "a pick me upper gospel vibe with some organ under piano" (Karel 2026-10-13; was #6)
   "6ff51cde-f4ca-4285-8707-0f77eaf9394c", // 13. Amboise 1 — end of the bridge: classical strings + piano, right after the solo piano completes, into the Expansion (Karel 2026-10-12) — wave 1 wakes from here
   "1f83e254-a0c8-45ec-974f-8b363038a98d", // 14. Rise 1 — the first voice after Amboise 1's strings: voice and a little piano, peaceful and beautiful (Karel 2026-10-12: "right after amboise"; was the ballad before Singular 4)
   "e9beec7a-6aa4-41bb-83f0-c827603ed51d", // 15. Northern Plane 3 — a transporting ambient one, a must (Karel 2026-10-09); far from Northern Plane 5
