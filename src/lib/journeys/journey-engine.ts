@@ -7,7 +7,7 @@ import { TAKE_FINALE_SHADERS } from "./pinned-takes";
 import { RECAST_SAFELIST, regenerateJourneyShaders, castJourneyShaders, getJourneyCast, PICKTIME_SHADER_BLOCKLIST, PICKTIME_REALM_BLOCKLIST, GLOBAL_SHADER_BLOCKLIST } from "./journeys";
 import type { TakeScriptEntry } from "./pinned-takes";
 import { createSeededRandom, seededShuffle } from "./seeded-random";
-import { MODES_3D, MODE_META } from "@/lib/shaders";
+import { MODES_3D, MODE_META, LAB_SHADERS } from "@/lib/shaders";
 import { SHADER_HUES } from "@/lib/shaders/shader-hues.generated";
 import { VETTED_POOL } from "@/lib/shaders/shader-brightness.generated";
 import { KIN_BORROW_AVOID, isAmberShader, isShaderBannedFor } from "./shader-balance";
@@ -60,7 +60,9 @@ function getGeometryModes(): Set<string> {
   return _geometryModes;
 }
 
-const GLOBAL_BLOCKED = new Set(GLOBAL_SHADER_BLOCKLIST);
+// LAB shaders (SUN lab) are stripped like global bans — a stored/DB journey
+// that names one never plays it.
+const GLOBAL_BLOCKED = new Set([...GLOBAL_SHADER_BLOCKLIST, ...LAB_SHADERS]);
 function withoutGlobalBlocked(j: Journey): Journey {
   if (!j.phases.some((p) => p.shaderModes?.some((m) => GLOBAL_BLOCKED.has(m)))) return j;
   return {
@@ -1473,6 +1475,8 @@ class JourneyEngine {
    *  browser's context limit and triggers context-loss bursts). */
   private isShaderAllowed(mode: string): boolean {
     if (PICKTIME_SHADER_BLOCKLIST.has(mode)) return false;
+    // SUN lab (2026-10-12): registered for audition only — never picked.
+    if (LAB_SHADERS.has(mode)) return false;
     // Shader balance (Karel 2026-10-13): dharma never; per-journey bans
     // (Bath: no ember / parsec) hold for EVERY picker, finale-forced included.
     if (isShaderBannedFor(this.journey?.id, mode)) return false;

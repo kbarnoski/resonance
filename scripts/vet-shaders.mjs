@@ -31,7 +31,7 @@ const SHEET = process.argv.find((a) => a.startsWith("--sheet="))?.slice(8) ?? nu
 const tmp = mkdtempSync(path.join(os.tmpdir(), "vet-"));
 const outfile = path.join(ROOT, ".tmp-vet-registry.mjs"); // in-repo so externals resolve
 await build({
-  stdin: { contents: `export { SHADERS, MODE_META, MODES_3D, MODES_AI } from "@/lib/shaders"; export { SHADER_HUES } from "@/lib/shaders/shader-hues.generated"; export { PICKTIME_SHADER_BLOCKLIST } from "@/lib/journeys/journeys";`, resolveDir: ROOT, loader: "ts" },
+  stdin: { contents: `export { SHADERS, MODE_META, MODES_3D, MODES_AI, LAB_SHADERS } from "@/lib/shaders"; export { SHADER_HUES } from "@/lib/shaders/shader-hues.generated"; export { PICKTIME_SHADER_BLOCKLIST } from "@/lib/journeys/journeys";`, resolveDir: ROOT, loader: "ts" },
   bundle: true, format: "esm", platform: "node", packages: "external", alias: { "@": path.join(ROOT, "src") }, outfile, logLevel: "silent",
 });
 const reg = await import(pathToFileURL(outfile).href);
@@ -71,6 +71,8 @@ for (const mode of Object.keys(reg.SHADERS)) {
   const m = meta.get(mode);
   const why =
     !m ? "not in MODE_META" :
+    // LAB shaders never enter the vetted pool; --only can still audition them
+    (reg.LAB_SHADERS.has(mode) && !ONLY) ? "LAB shader (audition only)" :
     GLOBAL.has(mode) ? "GLOBAL_SHADER_BLOCKLIST" :
     reg.PICKTIME_SHADER_BLOCKLIST.has(mode) ? "PICKTIME_SHADER_BLOCKLIST" :
     m.category === "Geometry" ? "geometry family (pick-time ban)" :
