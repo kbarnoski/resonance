@@ -787,6 +787,7 @@ export function ParticleLeadLayer({
     // ≥1.5 s to fade in, ≥3.5 s to fade out, whatever the conductor asks
     let shown = carry;
     let veilShown = 0;
+    let veilZeroAt = -1;
     // density GATHERS on the way in but HOLDS on the way out — thinning while
     // fading turned the field into a few big, bright motes popping out one by
     // one ("drop frames and disappear", Karel 2026-10-06); only opacity fades
@@ -1540,7 +1541,12 @@ export function ParticleLeadLayer({
       // a soft radial contrast veil under the form — never a full-frame wash
       if (contrastRef.current) {
         contrastRef.current.style.opacity = (presence * contrastK.current).toFixed(3);
-        contrastRef.current.style.visibility = presence > 0 ? "visible" : "hidden";
+        // hidden only once its 1.2 s CSS fade has finished (pass 7, 2026-10-12: the
+        // veil was hidden the instant presence hit 0 while the transition still held
+        // it at ~10-20 % — the dark ellipse vanished in one frame, a faint STEP at
+        // every particle-out: Isolation, Realized, The Other Side 9)
+        if (presence > 0) veilZeroAt = -1; else if (veilZeroAt < 0) veilZeroAt = now;
+        contrastRef.current.style.visibility = presence > 0 || now - veilZeroAt < 1600 ? "visible" : "hidden";
       }
       // shader stack drops its supports only while particles actually lead
       if (!presentFlag && presence > 0.3) { presentFlag = true; setParticlePresent(true); }

@@ -23,7 +23,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { checkRateLimit, rateLimitedResponse, rateLimitKey } from "@/lib/rate-limit";
 import { logger } from "@/lib/logger";
-import { checkOrigin } from "../origin-check";
+import { checkOrigin, kioskNoLive } from "../origin-check";
 
 /** Global aggregate daily caps across ALL callers — the abuse ceiling
  *  when many IPs each stay under their per-identity limit (mirrors the
@@ -160,6 +160,7 @@ async function mintFalJwt(masterKey: string): Promise<string | null> {
 }
 
 export async function GET(request: Request) {
+  const kiosk = kioskNoLive(); if (kiosk) return kiosk;
   // Origin allowlist FIRST — random third-party sites can't mint JWTs
   // on the master key. Same-origin pages (/installation, /dream, /demo)
   // pass; no auth is demanded (the kiosk is anonymous by design).
@@ -225,6 +226,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  const kiosk = kioskNoLive(); if (kiosk) return kiosk;
   // Origin allowlist FIRST — parity with ../generate. No auth wall.
   const forbidden = checkOrigin(request);
   if (forbidden) return forbidden;

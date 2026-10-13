@@ -8,7 +8,7 @@ import {
   requireStringArray,
 } from "@/lib/api/validate-input";
 import { logger } from "@/lib/logger";
-import { checkOrigin } from "../origin-check";
+import { checkOrigin, kioskNoLive } from "../origin-check";
 
 /**
  * Fast yes/no visual compliance check for generated journey imagery.
@@ -49,6 +49,7 @@ const DEFAULT_CHECKS = [
 ];
 
 export async function POST(request: Request) {
+  const kiosk = kioskNoLive(); if (kiosk) return kiosk;
   // Origin allowlist FIRST — parity with ../generate. No auth wall.
   const forbidden = checkOrigin(request);
   if (forbidden) return forbidden;

@@ -48,10 +48,11 @@ describe("particle lead registry (v3 rollout)", () => {
     }
   });
 
-  it("Ghost forms its ANGEL (the real angel image) at transcendence + integration — no figurative spirit", () => {
+  it("Ghost forms its ANGEL (the real angel image) at integration only — no figurative spirit", () => {
     const g = PARTICLE_LEADS["ghost"];
     expect(g.signatureImage).toBe("angel");
-    expect(g.signatureMorphs).toEqual([2, 5]);
+    // the tunnel-entry angel (morph 2) retired — Karel 2026-10-13: keep the cloud small until the tunnel
+    expect(g.signatureMorphs).toEqual([5]);
     expect(JOURNEY_SIGNATURES["ghost"].image).toBe("angel");
     for (const c of Object.values(PARTICLE_LEADS)) expect([...c.morphSouls, ...c.formCycle]).not.toContain("spirit");
   });
@@ -75,7 +76,8 @@ describe("particle lead registry (v3 rollout)", () => {
     // through their motif-form designs instead)
     for (const c of Object.values(PARTICLE_LEADS)) {
       if (new Set((c.phaseChars ?? []).flatMap((p) => p.forms)).size <= 1) continue;
-      for (let i = 1; i < c.morphSouls.length; i++) expect(c.morphSouls[i]).not.toBe(c.morphSouls[i - 1]);
+      // Ghost's opening (phases 0-1) is ONE small wisp until the tunnel (Karel 2026-10-13)
+      for (let i = c.name === "Ghost" ? 2 : 1; i < c.morphSouls.length; i++) expect(c.morphSouls[i]).not.toBe(c.morphSouls[i - 1]);
     }
   });
 

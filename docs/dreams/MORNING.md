@@ -1,20 +1,18 @@
-# Morning digest — last updated 2026-10-12T13:19Z
+# Morning digest — last updated 2026-10-13T01:15Z
 
-> **Jury verdict today**: The lab started moving again — three ships in a day, two of them real category jumps, and the research dive finally hit its own freshness bar; the only worry now is that seven straight pieces are still 404 and un-felt, so one `npm audit fix` is the single act that lets anyone actually judge the lab's best month of ideas. See `docs/dreams/JURY.md`.
-
-> **phosphorhelm shipped — and the research dive finally hit its freshness bar.** After the jury flagged six straight dives missing the lab's own ≤30-day rule, this fire's build is chained to a genuinely 8-day-old finding. It's also a lane the lab has never touched in 1,200+ protos: the oscilloscope.
+> **`timesring` shipped — and the research dive hit its freshness bar for the SECOND fire running.** A genuine lab-first technique (string art — never built here in 1,234 protos), chained to a finding 12 days old, and — like phosphorhelm — fully experienceable with no webcam. That's the jury's #1 problem (verification debt) answered twice in a row.
 
 ## New since yesterday
-- **`20080-phosphorhelm` — tilt your head and you physically twist the stereo field of your own recording, drawn as a living Lissajous figure in violet phosphor.** Head roll applies a true rotation matrix to the stereo [L,R] vector, so the *audible* image re-pans AND the plotted (L,R) laser trace rotates by the **same angle** — sound-twist and picture-twist are one gesture. Turn to pan, look up to brighten, open your jaw to bloom and lengthen the phosphor trail.
-  - **Why open it:** it's the lab's first X–Y vectorscope / oscilloscope-music piece — the oldest audio-visual instrument, never built here until now. For an audio person it reads instantly.
-  - **Best part for the frozen week:** unlike the recent camera-only pieces, this one is **fully demoable with no webcam** — the pointer (mouse = tilt, hold = jaw) drives the exact same rotation you can see AND hear. The only thing I couldn't verify is how the *live head* feels. **status: wip — a ~30-sec webcam check when web returns closes it.**
+- **`20160-timesring` — conduct your own recording and it sculpts a living string-art figure, where the exact number of petals you SEE is the number of harmonic partials you HEAR.** One scalar `k` draws the figure (peg i → peg round(k·i) mod N, so cusps = round(k)−1) AND sets how many resonant partials of your real take ring out — see one cusp, hear two partials; see eight, hear nine. Your harmony drives the base figure (chord root walked round the circle of fifths); your hand (or the pointer) bends it live between cardioid, nephroid and rose.
+  - **Why open it:** it's the lab's first modular-multiplication string-art piece — a classic piece of math-art ("times tables on a circle", Mathologer), never touched here, and the see==hear coupling is airtight by construction.
+  - **Verifiable while frozen:** like phosphorhelm, the whole thing works with **no webcam** — drag (X = morph the figure, Y = add pegs, hold = complete it + deepen the resonance) or arrow-keys drive the exact same `k`. The only unverified bit is how the live one-hand conducting *feels*. **status: demoable.**
 
 ## Also explored (banked, not shipped)
-- `20000-gazebloom` — conduct your piano with your **eyes alone**: the music gathers, brightens and spatializes toward wherever you look; dwell blooms a halo, a long eye-close exhales into reverb. Fully built + QA-clean, a calm cosmic-ambient counterweight to the recent intense pieces. Lost only on this cycle's three tie-breakers (freshness anchor, graph-tight coupling, webcam-free demo). Seed in IDEAS §1294 — a strong ship-as-is candidate.
+- `20240-earwell` — navigate INTO your recording by **ear**: sweep a cursor around a ring of resonant chord-region stations, hear each bloom as you approach, and feel a **haptic tick** as you cross one (pure SVG, audio-first). Fully built + QA-clean. It directly targets the audio-only/haptic lane the jury keeps asking for (still at 0×) — a strong ship-as-is for a near-future fire. Seed in IDEAS §1295.
 
 ## The freeze (one-line, unchanged)
-- 🟠 Web prod still frozen ~7.5 days — same one-command fix (`npm audit fix` → commit `package-lock.json`); it's out of my fence. Everything I've shipped (phosphorhelm + cymatica + resonhand + the 4 fusion protos + your own backlog) flushes the instant it lands. Still reading it as intentional while you're on the installation — say the word and I'll go fully silent on it.
+- 🟠 Web prod still frozen ~8 days — same one-command fix (`npm audit fix` → commit `package-lock.json`); it's out of my fence. Everything I've shipped (timesring + phosphorhelm + cymatica + resonhand + the 4 fusion protos + your own backlog) flushes the instant it lands. Still reading it as intentional while you're on the installation — say the word and I'll go fully silent on it.
 
 ## Open questions (both quick)
-1. Body signal has now rotated every fire (two-hand → upper-body → head-pose). Want me to **keep rotating** for diversity, or settle into one lane for a stretch?
-2. Still want the scheduled deploy-health alert? This 7.5-day freeze is exactly what it would have caught in minutes.
+1. Two fires running I've built camera pieces that are **also fully playable with no camera** (pointer drives the real chain). Want me to keep that "verifiable-while-frozen" constraint as the default until web returns, or go back to camera-primary?
+2. `earwell` is the banked audio-only/haptic piece. Want me to just ship it next fire to finally land that lane, or deepen `timesring` (rose/epicycloid scope modes) instead?

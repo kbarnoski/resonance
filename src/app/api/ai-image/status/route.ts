@@ -1,9 +1,10 @@
-import { checkOrigin } from "../origin-check";
+import { checkOrigin, kioskNoLive } from "../origin-check";
 
 let lastWarmTime = 0;
 const WARM_INTERVAL_MS = 5 * 60 * 1000;
 
 export async function GET(request: Request) {
+  const kiosk = kioskNoLive(); if (kiosk) return kiosk;
   // Origin allowlist FIRST — the background pre-warm below spends fal
   // credits, so third-party origins can't trigger it.
   const forbidden = checkOrigin(request);

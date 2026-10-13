@@ -20,6 +20,7 @@
  */
 
 import { getGhostAngelTheme } from "./ghost-flash-images";
+import { liveImageryOpen } from "@/lib/journeys/live-imagery-valve";
 
 const WHITE_REFERENCE_PROMPT =
   "photorealistic portrait close-up of one ethereal angel woman facing camera directly, " +
@@ -57,6 +58,7 @@ let abortController: AbortController | null = null;
  * Step 2: flux-pulid with white reference → black reference (same face)
  */
 export function prepareGhostReference(journeyId: string): Promise<void> {
+  if (!liveImageryOpen()) return Promise.resolve(); // the valve (live-imagery-valve.ts)
   if (currentJourneyId !== journeyId) {
     abortController?.abort();
     currentJourneyId = journeyId;

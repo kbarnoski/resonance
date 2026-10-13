@@ -38,6 +38,8 @@ if ! command -v node >/dev/null 2>&1; then
 fi
 
 cd "$APP_DIR"
+# the kiosk never generates imagery live (Karel 2026-10-13) — /api/ai-image/* refuse
+export RESONANCE_KIOSK=1
 
 if [ ! -d .next ]; then
   echo "tramokyo-server: no production build in .next — run: nvm use 20 && npm run build" >&2

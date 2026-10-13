@@ -251,8 +251,8 @@ const RISE_ABOVE = [
   "first-snow", //  1. Snowflake
   "ghost", //  2. Ghost
   "87e106f9-4d74-4886-b944-fd625a827b02", //  3. First Light — I. pure piano
-  "a5b5f0cf-9a6b-451a-8293-3d98f3904342", //  4. Bath
-  "f0362f24-75f1-4717-8487-cc9cf12c7bcc", //  5. The First (Expanded)
+  "f0362f24-75f1-4717-8487-cc9cf12c7bcc", //  4. The First (Expanded) — before Bath (Karel 2026-10-13: "bath is so mellow it needs to come later … it just would look better")
+  "a5b5f0cf-9a6b-451a-8293-3d98f3904342", //  5. Bath
   "dc8d9705-785a-485e-b91f-a12c85bf7b92", //  6. Testimony 3
   "fdc6470e-5c7e-43b4-968c-3e907f1fa88f", //  7. Grasshopper
   "c80a89bc-2c88-4bde-bec8-4be6916acb62", //  8. Yellow Bird

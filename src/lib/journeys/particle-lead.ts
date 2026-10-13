@@ -71,7 +71,13 @@ export const JOURNEY_SIGNATURES: Readonly<Record<string, { image: "angel"; morph
   // cloud of pink tree blossoms (canopy images, trunk removed)
   ghost: {
     image: "angel",
-    morphs: [2, 5],
+    // ONLY the closing spirit (Karel 2026-10-13: "a slight brightness glitch …
+    // in the particle cloud during the change from the open section of ghost
+    // images to the tunnel … maybe that means keeping the cloud small until the
+    // tunnel section"): the angel signature at the morph INTO the tunnel (phase
+    // 2, 65.8 s) formed the whole field into a full-size angel over the falling
+    // lights — retired; the wings at the end stay
+    morphs: [5],
     // The tree-blossom MOMENT stays (Karel 2026-10-11: "you have to keep that
     // particle treatment where they turn into the pink blossoms and merge on the
     // tree like before. then they end as wings in that final image"). The hand-
@@ -118,6 +124,10 @@ export function particlePaletteDawn(voice = 1): ParticlePalette {
  *  `removals` = Karel's form review (form-removals.ts — the single filter
  *  point: removed souls are re-cast, removed moment images dropped; an empty
  *  list leaves every cast exactly as before). */
+/** Per-journey form bans (Karel's notes) — replaced like a removal, same family. */
+const JOURNEY_FORM_BANS: Readonly<Record<string, readonly string[]>> = {
+  "a5b5f0cf-9a6b-451a-8293-3d98f3904342": ["fountain"], // Bath (Karel 2026-10-13: "the fountain particle pattern isnt a fit for bath")
+};
 export function buildParticleLeads(removals: FormRemovals = FORM_REMOVALS): Readonly<Record<string, ParticleLeadCast>> {
   const ids = PARTICLE_JOURNEY_IDS;
   // the v9 expansion forms never enter a MASTERED cast (Snowflake, Ghost: locked
@@ -173,6 +183,10 @@ export function buildParticleLeads(removals: FormRemovals = FORM_REMOVALS): Read
     // Snowflake's MURMURATION (a soft cloud that wanders on its own leader and
     // trails as it moves), worn exactly as Snowflake wears it
     if (id === "ghost" && chars[0]) chars[0] = { ...chars[0], forms: ["murmuration"] };
+    // …and the WHOLE opening stays that small wisp until the tunnel (Karel
+    // 2026-10-13: "keeping the cloud small until the tunnel section"): phase 1
+    // (the misty hall, 26-66 s) was petals / blossom
+    if (id === "ghost" && chars[1]) chars[1] = { ...chars[1], forms: ["murmuration"], floral: false };
     // fire FORMS only where the imagery really burns — same rule as fire colours
     // (2026-10-08: the vision tags call cool phases "fire"; embers then rose
     // over ice and night water)
@@ -253,7 +267,7 @@ export function buildParticleLeads(removals: FormRemovals = FORM_REMOVALS): Read
       cast.souls = Object.fromEntries(Object.entries(cast.souls).map(([k, v]) => [k, ok(v)])) as typeof cast.souls;
       if (cast.phaseChars) cast.phaseChars = cast.phaseChars.map((c) => ({ ...c, forms: [...new Set(c.forms.map(ok))] }));
     }
-    out[id] = applySoulRemovals(cast, removals.souls, id);
+    out[id] = applySoulRemovals(cast, [...(JOURNEY_FORM_BANS[id] ?? []), ...removals.souls], id);
   });
   return out;
 }

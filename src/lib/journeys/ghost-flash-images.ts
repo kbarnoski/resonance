@@ -12,6 +12,7 @@
  *
  * If generation fails or is slow, `FlashAngel` falls back to its static PNG.
  */
+import { liveImageryOpen } from "@/lib/journeys/live-imagery-valve";
 
 // Shared portrait base — same body, same pale skin, same braided hair,
 // same translucent butterfly wings on her back in both variants. The
@@ -88,6 +89,7 @@ export function prepareGhostFlashImages(journeyId: string): Promise<void> {
     ghostFlashCount = 0;
   }
   if (preparePromise) return preparePromise;
+  if (!liveImageryOpen()) return Promise.resolve(); // the valve (live-imagery-valve.ts)
 
   const controller = new AbortController();
   abortController = controller;

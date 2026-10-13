@@ -1231,7 +1231,13 @@ void main(){
   }
 
   float age = P4.w + uDt;
-  if (reborn) age = -1.6; // counts up through the fade-in (draw: arrive)
+  // …and STAGGERED (Karel 2026-10-12, pass 7, Ghost: "still that same stupid
+  // bunching of particles near top around that flashes section"): an image
+  // release wraps hundreds of motes in the same frame; with one shared 1.6 s
+  // fade they rose together as a cloud in the re-entry band, which a pulled-back
+  // camera can see. Each now waits its own 0-2.4 s (invisible below -1.6) while
+  // it drifts, so they arrive one by one wherever they have moved to.
+  if (reborn) age = -1.6 - 2.4 * hash11(s.a * 31.7 + floor(uTime * 0.37)); // counts up through the fade-in (draw: arrive)
   float life = lifeOf(s);
   if (age > life) {
     age -= life;

@@ -66,7 +66,7 @@ export const SCRIPTED_TAKES: Record<string, TakeScriptEntry[]> = {
     {"p":0,"role":"primary","mode":"starfield"},
     {"p":0.152,"role":"primary","mode":"drift"},
     {"p":0.208,"role":"primary","mode":"yantra"},
-    {"p":0.272,"role":"primary","mode":"firefly-field"}, // coral out (Karel 2026-10-06: "remove those bubbles in ghost")
+    {"p":0.272,"role":"primary","mode":"starfield"}, // falling lights (firefly-field) out (Karel 2026-10-13, the open-section → tunnel glitch: "maybe its changing the falling light shader out") — Ghost's own proven dark shader, no new program at that moment; coral out before that (2026-10-06)
     {"p":0.33,"role":"primary","mode":"murmuration"},
     {"p":0.389,"role":"primary","mode":"drift"},
     {"p":0.453,"role":"primary","mode":"r-stardust"},
