@@ -256,7 +256,7 @@ describe("signature flight — the Yellow Bird's anatomy", () => {
     const tip = wingDisplacement(toQ(WING[0][1]), fr, full, false);
     const mid = wingDisplacement(toQ(WING[2][1]), fr, full, false);
     expect(Math.hypot(tip[0], tip[1])).toBeGreaterThan(Math.hypot(mid[0], mid[1]));
-    expect(tip[1]).toBeLessThan(-0.3); // the tip drops well below where it was
+    expect(tip[1]).toBeLessThan(-0.25); // the tip drops well below where it was (1.8 rad takeoff stroke — photosensitive-safe)
     // at the bottom of the stroke the tip is BELOW the shoulder line (wing under the back)
     const tq = toQ(WING[0][1]);
     const after = [tq[0] + tip[0], tq[1] + tip[1]];

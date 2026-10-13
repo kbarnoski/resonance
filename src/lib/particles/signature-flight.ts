@@ -113,8 +113,8 @@ export const FLIGHT = {
   DOWN_SHARE: 0.4,
   /** wing angle about the hinge at the bottom of the stroke, radians (0 = the
    *  picture's raised wing; π/2 = toward the viewer; > π/2 = below the back) */
-  DOWN_TAKEOFF: 2.2,
-  DOWN_CRUISE: 1.8,
+  DOWN_TAKEOFF: 1.8,
+  DOWN_CRUISE: 1.5,
   /** continuous takeoff strokes before the flap-flap-flap-glide pattern */
   TAKEOFF_STROKES: 3,
   /** the pattern: this many flaps, then a glide this many stroke-lengths long */
