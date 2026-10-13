@@ -253,7 +253,7 @@ export const STABLE_SESSION_KEY = "resonance:particles:stable";
 export const GLOW_SESSION_KEY = "resonance:particles:glow";
 type Store = Pick<Storage, "getItem" | "setItem">;
 
-function sessionFlag(param: string, key: string, search?: string, store?: Store | null): boolean {
+function sessionFlag(param: string, key: string, search?: string, store?: Store | null, def = false): boolean {
   let q: string | null = null;
   try {
     const s = search ?? (typeof location !== "undefined" ? location.search : "");
@@ -265,15 +265,20 @@ function sessionFlag(param: string, key: string, search?: string, store?: Store 
   if (q === "1") return true;
   if (q === "0") return false;
   try {
-    if (store?.getItem(key) === "1") return true;
+    const kept = store?.getItem(key);
+    if (kept === "1") return true;
+    if (kept === "0") return false;
   } catch { /* storage blocked */ }
-  return false; // default OFF (the show build) until Karel sees film
+  return def;
 }
 
 /** Shimmer-free motes + temporal resolve: `?stable=1` / `?stable=0`, kept in
- *  sessionStorage across the kiosk loop's navigations; default off. */
+ *  sessionStorage across the kiosk loop's navigations. Default ON — a safety
+ *  fix (Karel 2026-10-13: "i see the flickering throughout when white
+ *  particles … fix as needed"; flicker meter: Ghost 45 % → 0 %). */
+export const STABLE_DEFAULT = true;
 export function stableEnabled(search?: string, store?: Store | null): boolean {
-  return sessionFlag("stable", STABLE_SESSION_KEY, search, store);
+  return sessionFlag("stable", STABLE_SESSION_KEY, search, store, STABLE_DEFAULT);
 }
 /** Temporally stable bloom: `?glow=1` / `?glow=0`, sessionStorage-kept; default off. */
 export function glowEnabled(search?: string, store?: Store | null): boolean {

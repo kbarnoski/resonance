@@ -183,19 +183,19 @@ describe("GLSL: generated from the same laws, compiled in only when on", () => {
 });
 
 describe("the flags", () => {
-  it("?stable / ?glow: default off, 1/0 kept in the session", () => {
-    for (const [fn, key, p] of [[stableEnabled, STABLE_SESSION_KEY, "stable"], [glowEnabled, GLOW_SESSION_KEY, "glow"]] as const) {
+  it("?stable: default ON (safety fix); ?glow: default off; 1/0 kept in the session", () => {
+    for (const [fn, key, p, def] of [[stableEnabled, STABLE_SESSION_KEY, "stable", true], [glowEnabled, GLOW_SESSION_KEY, "glow", false]] as const) {
       const s = memStore();
-      expect(fn("", s)).toBe(false);
+      expect(fn("", s)).toBe(def);
       expect(fn(`?${p}=1`, s)).toBe(true);
       expect(s.m.get(key)).toBe("1");
       expect(fn("", s)).toBe(true); // kept across the loop's navigations
       expect(fn(`?${p}=0`, s)).toBe(false);
       expect(fn("", s)).toBe(false);
-      expect(fn("", null)).toBe(false);
+      expect(fn("", null)).toBe(def);
       const blocked = { getItem: () => { throw new Error("blocked"); }, setItem: () => { throw new Error("blocked"); } };
       expect(fn(`?${p}=1`, blocked)).toBe(true);
-      expect(fn("", blocked)).toBe(false);
+      expect(fn("", blocked)).toBe(def);
     }
   });
 });

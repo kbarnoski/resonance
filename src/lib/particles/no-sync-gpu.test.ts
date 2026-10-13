@@ -186,9 +186,9 @@ describe("particle activation never blocks the main thread", () => {
     expect(calls.filter((c) => FORBIDDEN.includes(c.name)).map((c) => c.name)).toEqual([]);
     expect(canvas.getContextCalls).toBe(1); // one context, no extra for the new passes
     engine.dispose();
-    // off (the show build): no stable / glow source, no extra passes
+    // off (?stable=0 — stable is the show default since 2026-10-13): no stable / glow source, no extra passes
     const off = fakeGL({ compilePolls: 1 });
-    const e2 = createParticleEngine(fakeCanvas(off.gl) as unknown as HTMLCanvasElement, { count: 4096, soul: "rings" });
+    const e2 = createParticleEngine(fakeCanvas(off.gl) as unknown as HTMLCanvasElement, { count: 4096, soul: "rings", stable: false, glow: false });
     const offSrc = off.calls.filter((c) => c.name === "shaderSource").map((c) => String(c.args[1]));
     expect(offSrc.some((s) => s.includes("#define STABLE") || s.includes("uBloomTex") || s.includes("ST_SLACK"))).toBe(false);
     expect(e2.stats().stability).toEqual({ stable: false, glow: false, bloom: 0 });
