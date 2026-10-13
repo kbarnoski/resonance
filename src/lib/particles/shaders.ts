@@ -1614,10 +1614,11 @@ export const POS_INIT_FS = /* glsl */ `#version 300 es
 precision highp float;
 layout(location = 0) out vec4 oPos;
 layout(location = 1) out vec4 oVel;
+uniform float uInitR; // cloud radius: 1.6 at boot; regather() packs it tight (0.35)
 float h(vec2 p, float k){ vec3 q = fract(vec3(p.xyx) * vec3(0.1031, 0.1030, 0.0973) + k); q += dot(q, q.yzx + 33.33); return fract((q.x + q.y) * q.z); }
 void main(){
   vec2 c = gl_FragCoord.xy;
-  float u = h(c, 0.53), v = h(c, 0.61), w = pow(h(c, 0.67), 1.0 / 3.0) * 1.6;
+  float u = h(c, 0.53), v = h(c, 0.61), w = pow(h(c, 0.67), 1.0 / 3.0) * (uInitR > 0.0 ? uInitR : 1.6);
   float th = u * 6.2831853, ph = acos(2.0 * v - 1.0);
   oPos = vec4(sin(ph) * cos(th) * w, cos(ph) * w * 0.4, sin(ph) * sin(th) * w, h(c, 0.79) * 15.0);
   oVel = vec4(0.0);
