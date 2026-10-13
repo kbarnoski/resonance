@@ -78,6 +78,7 @@ import { conductPhrases, createPhraseCursor, formHoldDue, takePhraseEvent, swell
 import { bridgeEnabled, createBridgeState, nextBridgeBoundary, onBridgeHint, stepBridge, BRIDGE_LOCKED_JOURNEYS, type BridgeHint } from "@/lib/particles/bridge";
 import { sampleBridgeStill, type BridgeStill } from "@/lib/particles/bridge-sampler";
 import { conductCurrents, currentAt, createTide, tideStep, withTide, currentsEnabled, clearestRelease, CURRENTS_LOCKED_JOURNEYS, type CurrentTimeline } from "@/lib/particles/harmonic-currents";
+import { conductBreath, breathAt, breathEnabled, breathSummary, BREATH_LOCKED_JOURNEYS, type BreathTimeline } from "@/lib/particles/breath";
 
 /** PHRASE CONDUCTOR (?phrase=1, off by default — phrase-conductor.ts): the deep
  *  analysis's section starts / crests / breaths time the form changes and the
@@ -104,6 +105,19 @@ function currentsTimelineFor(cast: ParticleLeadCast, journeyId: string): Current
   if (!on || cast.mastered || CURRENTS_LOCKED_JOURNEYS.has(journeyId)) return null;
   const p = PARTICLE_PROFILES[journeyId];
   return p ? conductCurrents(p, journeyId) : null;
+}
+
+/** BREATH (?breath=1, off by default — breath.ts): the free field inhales and
+ *  exhales with the music's phrasing (expands / loosens in depth on the inhale,
+ *  contracts a little and settles as each phrase lands). Never for the mastered
+ *  takes. Off = no change at all (the engine's breath rests at 0 and its
+ *  shader branch is skipped). */
+function breathTimelineFor(cast: ParticleLeadCast, journeyId: string): BreathTimeline | null {
+  let on = false;
+  try { on = breathEnabled(undefined, typeof window !== "undefined" ? window.sessionStorage : null); } catch { on = false; }
+  if (!on || cast.mastered || BREATH_LOCKED_JOURNEYS.has(journeyId)) return null;
+  const p = PARTICLE_PROFILES[journeyId];
+  return p ? conductBreath(p, journeyId) : null;
 }
 
 export const budgetFor = () => TIER_BUDGET[getDeviceTier()] ?? TIER_BUDGET.medium;
@@ -980,6 +994,10 @@ export function ParticleLeadLayer({
       const rel = clearestRelease(currentsTl);
       glitchRecord("particle-currents", `on: ${currentsTl.marks.map((m) => m.label).join(" · ") || "no marks"}${rel ? ` · clearest release ${rel.from}s→${rel.to}s` : ""}`);
     }
+    // breath (null = flag off / mastered: the engine's breath rests at 0)
+    const breathTl = breathTimelineFor(cast, journeyId);
+    engine.setBreath(null, true); // a fresh journey never inherits the last one's breath
+    if (breathTl) glitchRecord("particle-breath", breathSummary(breathTl));
     let sizeBase = 1;
     let blossomShown = false;
     // dolly + placement (Karel 2026-10-06: "they always land in a shape at
@@ -1258,6 +1276,9 @@ export function ParticleLeadLayer({
         ? withTide(currentAt(currentsTl, t), tideStep(currentsTide, (calmBandLv.bass + calmBandLv.mid + calmBandLv.treble) / 3, tickDt))
         : null;
       if (currentNow) engine.setCurrents(currentNow);
+      // breath: the phrase-long, slew-limited timeline (never per beat)
+      const breathNow = breathTl ? breathAt(breathTl, t) : null;
+      if (breathNow) engine.setBreath(breathNow);
       // MORPH LAW (Karel 2026-10-06: "particle system always overlaps the
       // morph and is present when morph videos end in all cases ever"):
       // travel morphs ride the phase boundaries, which are known — arm the
@@ -1918,6 +1939,7 @@ export function ParticleLeadLayer({
         ...(score && onsetDet ? { score: { onsets: onsetDet.count, spawned: score.spawned, dropped: score.dropped, live: score.count, gate: +score.gate.toFixed(3) } } : {}),
         ...(phraseTl ? { phrase: { swell: phraseSw, next: phraseTl.events.find((e) => e.t > t)?.label ?? null } } : {}),
         ...(bridgeOn ? { bridge: { ...engine.bridgeState(), phase: bridgeSt.phase, pb: bridgeSt.pb, note: bridgeSt.note, stills: [...bridgeLoaded] } } : {}),
+        ...(breathNow ? { breath: breathNow } : {}),
         ...(currentNow ? { currents: { ...currentNow, next: currentsTl?.marks.find((m) => m.t > t)?.label ?? null } } : {}),
       };
     };
