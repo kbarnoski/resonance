@@ -1336,8 +1336,30 @@ uniform vec3 uFireU;
 uniform float uDof;
 uniform float uFocusD;
 uniform float uDrift;
+// THE BRIDGE (bridge.ts, flag ?bridge=1): at a phase boundary a sparse share of
+// the motes wears the colours of the outgoing still where each sits on screen,
+// recolours toward the incoming still and drifts a little toward its light.
+// CHROMA ONLY (YIQ I/Q onto the mote's own luma): never brighter, never darker,
+// black pixels leave a mote as it is. uBridge = 0 → nothing here runs.
+uniform sampler2D uBridgeA;  // outgoing still, 64 px colour field (rows bottom-up)
+uniform sampler2D uBridgeB;  // incoming still
+uniform float uBridge;       // presence 0..1
+uniform float uBridgeMix;    // outgoing → incoming 0..1
+uniform float uBridgeDrift;  // drift toward the incoming light 0..1
+uniform float uBridgeFrac;   // share of motes that carry
+uniform vec2 uBridgeAsp;     // the two stills' aspects
+uniform vec3 uBridgeR;       // camera right × half-width (world units per NDC x)
+uniform vec3 uBridgeU;       // camera up × half-height
 out vec3 vCol;
 out float vCoc;
+// screen NDC → uv of a still shown cover-fit full screen (like the journey stills)
+vec2 bridgeUv(vec2 ndc, float imgAspect, float scrAspect){
+  vec2 d = ndc;
+  if (imgAspect > scrAspect) d.x *= scrAspect / imgAspect; else d.y *= imgAspect / scrAspect;
+  return clamp(d * 0.5 + 0.5, 0.0, 1.0);
+}
+vec3 toYIQ(vec3 c){ return vec3(dot(c, vec3(0.299, 0.587, 0.114)), dot(c, vec3(0.596, -0.274, -0.322)), dot(c, vec3(0.211, -0.523, 0.312))); }
+vec3 fromYIQ(vec3 y){ return vec3(y.x + 0.956 * y.y + 0.621 * y.z, y.x - 0.272 * y.y - 0.647 * y.z, y.x - 1.106 * y.y + 1.703 * y.z); }
 float lifeOf(vec4 s){ return 6.0 + 9.0 * s.g; }
 ${IMG_UV}
 // Rotate hue / scale saturation in YIQ: luma (Y) is untouched, so colour can
@@ -1383,6 +1405,43 @@ void main(){
       dy += isE * eph * 0.65;
       emberA = mix(1.0, smoothstep(0.0, 0.08, eph) * smoothstep(1.0, 0.5, eph), isE * step(0.001, heat));
       p.xyz += (uFireR * dx + uFireU * dy) * heat;
+    }
+  }
+  // THE BRIDGE: is this mote a carrier, and what still colour sits under it?
+  float bridgeW = 0.0;
+  vec3 bridgeC = vec3(0.0);
+  if (uBridge > 0.001 && uImgShow < 0.999) {
+    float bh = fract(sin(dot(s, vec4(12.9898, 78.233, 37.719, 4.581))) * 43758.5453);
+    float carrier = 1.0 - smoothstep(uBridgeFrac * 0.75, uBridgeFrac, bh);
+    // (a mote the density hides costs nothing here either — same rank as below)
+    float rankB = id == 0 ? 0.0 : fract(s.g * 7.31 + s.b * 3.17);
+    float visB = mix(1.0 - smoothstep(uDensity * 0.6, uDensity + 1e-6, rankB), 1.0, smoothstep(0.9, 1.0, uDensity));
+    if (carrier > 0.0 && visB > 0.003) {
+      // each carrier keeps its own moment: light trickles across, never a switch
+      float ph = fract(bh * 7.13 + s.a * 3.7);
+      float lp = smoothstep(0.0, 1.0, clamp((uBridge - ph * 0.35) / 0.65, 0.0, 1.0));
+      float lm = smoothstep(0.0, 1.0, clamp((uBridgeMix - ph * 0.4) / 0.6, 0.0, 1.0));
+      vec4 c0 = uVP * vec4(p.xyz, 1.0);
+      vec2 ndc = c0.xy / max(c0.w, 0.05);
+      vec2 ua = bridgeUv(ndc, uBridgeAsp.x, uScrAspect), ub = bridgeUv(ndc, uBridgeAsp.y, uScrAspect);
+      vec3 ca = pow(texture(uBridgeA, ua).rgb, vec3(2.2));
+      vec3 cb = pow(texture(uBridgeB, ub).rgb, vec3(2.2));
+      bridgeC = mix(ca, cb, lm);
+      // over black the mote keeps its own colour (the black floor stays black)
+      float conf = smoothstep(0.012, 0.05, dot(bridgeC, vec3(0.299, 0.587, 0.114)));
+      bridgeW = carrier * lp * conf * (1.0 - uImgShow);
+      // DRIFT toward where the incoming world's light is (its smoothed luma
+      // gradient) — a few % of the screen at most, eased by the same envelope
+      if (uBridgeDrift > 0.001) {
+        vec2 e = vec2(1.0 / 64.0, 0.0);
+        vec3 lw = vec3(0.299, 0.587, 0.114);
+        float gx = dot(texture(uBridgeB, ub + e.xy).rgb - texture(uBridgeB, ub - e.xy).rgb, lw);
+        float gy = dot(texture(uBridgeB, ub + e.yx).rgb - texture(uBridgeB, ub - e.yx).rgb, lw);
+        vec2 gv = vec2(gx, gy);
+        float gn = length(gv);
+        vec2 dir = gv / (gn + 0.02) * smoothstep(0.0, 0.06, gn);
+        p.xyz += (uBridgeR * dir.x + uBridgeU * dir.y) * 0.05 * uBridgeDrift * carrier * lp * (1.0 - uImgShow);
+      }
     }
   }
   vec4 clip = uVP * vec4(p.xyz, 1.0);
@@ -1442,6 +1501,14 @@ void main(){
   // dense form reads as a material, not a flat fill (luma-preserving)
   float drift = uDrift * 0.3 * sin(uTimeD * 0.06 + s.a * 6.2831853) * sin(uTimeD * 0.023 + s.b * 4.1);
   col = hueSat(col, uHue + (band - 0.5) * 0.15 * uSat + uHueSpread * grad + uHueWave * wave + drift, uSat);
+  // THE BRIDGE: the still's chroma on the mote's own luma (capped in gamut)
+  if (bridgeW > 0.001) {
+    vec3 yc = toYIQ(col), yi = toYIQ(bridgeC);
+    vec2 iq = yi.yz / max(yi.x, 0.04) * yc.x;
+    float m = length(iq), cap = 0.6 * yc.x;
+    if (m > cap) iq *= cap / max(m, 1e-6);
+    col = mix(col, max(fromYIQ(vec3(yc.x, iq)), 0.0), bridgeW);
+  }
 
   float life = lifeOf(s);
   // a recycled mote fades in by its age (sim: reborn → age −1.6 … 0)

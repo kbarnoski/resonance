@@ -244,6 +244,16 @@ export interface ParticleEngine {
   setImageVariant(mirror: boolean, tilt: number): void;
   /** 1 = image forms take the journey palette (luminance kept), 0 = true colours. */
   setImageTint(k: number): void;
+  /** THE BRIDGE (bridge.ts): a still's tiny colour field (RGBA bytes, rows
+   *  bottom-up, from the worker sampler) into slot 0 (outgoing) / 1 (incoming).
+   *  Refused (false) while that slot is on screen — a worn colour never swaps. */
+  loadBridgeStill(slot: 0 | 1, px: Uint8Array, w: number, h: number, aspect: number): boolean;
+  /** THE BRIDGE targets (glided per frame): carriers' presence, outgoing →
+   *  incoming mix, drift toward the incoming light, share of motes that carry.
+   *  Chroma only — the motes keep their own luminance. */
+  setBridge(presence: number, mix: number, drift: number, fraction: number): void;
+  /** THE BRIDGE as drawn (glided values; diagnostics + tests). */
+  bridgeState(): { presence: number; mix: number; drift: number; fraction: number };
   /** Follow a screen point (NDC −1..1) with a trailing stream; w = 0 releases. */
   setFollow(x: number, y: number, w: number): void;
   /** Load an image the field can form into (no dissolve timeline). */
@@ -776,6 +786,11 @@ export function createParticleEngine(
   let disperseNext = false;
   let hueSpread = 0.35, hueSpreadTarget = 0.35, hueWave = 0;
 
+  // ── THE BRIDGE (bridge.ts): two tiny still colour fields + glided envelope ─
+  let bridgePS = 0, bridgePT = 0, bridgeMS = 0, bridgeMT = 0, bridgeDS = 0, bridgeDT = 0;
+  let bridgeFS = 0.2, bridgeFT = 0.2;
+  const bridgeAsp: [number, number] = [16 / 9, 16 / 9];
+
   // ── image slots (A = outgoing still, B = incoming) ──────────────────────
   const mkImgTex = () => {
     const t = gl.createTexture()!;
@@ -788,6 +803,7 @@ export function createParticleEngine(
     return t;
   };
   let imgTex: [WebGLTexture, WebGLTexture] = [mkImgTex(), mkImgTex()];
+  const bridgeTex: [WebGLTexture, WebGLTexture] = [mkImgTex(), mkImgTex()];
   // per-particle sampled image coordinates (RG32F, side × side) — crisp image forms
   const imgUvTex = gl.createTexture()!;
   gl.bindTexture(gl.TEXTURE_2D, imgUvTex);
@@ -1339,6 +1355,30 @@ export function createParticleEngine(
     }
     g.uniform1f(draw.u.uImgAspect, imgAspect[1]);
     g.uniform1f(draw.u.uScrAspect, W / H);
+    // THE BRIDGE: every value glides (~1 s) on top of the scheduler's own eased
+    // envelope — a tick-rate target can never step on screen. Mix and the
+    // carrier share only move freely while nothing is worn (presence ≈ 0).
+    {
+      const k = 1 - Math.exp(-dt / 0.9);
+      bridgePS += (bridgePT - bridgePS) * k;
+      if (bridgePS < 0.005) { bridgeMS = bridgeMT; bridgeFS = bridgeFT; }
+      else bridgeMS += (bridgeMT - bridgeMS) * k;
+      bridgeDS += (bridgeDT - bridgeDS) * (1 - Math.exp(-dt / 1.2));
+      if (bridgePS < 1e-4 && bridgePT === 0) bridgePS = 0;
+    }
+    if (draw.u.uBridge) {
+      g.uniform1f(draw.u.uBridge, bridgePS);
+      if (bridgePS > 0) {
+        bindTex(6, bridgeTex[0], draw.u.uBridgeA);
+        bindTex(7, bridgeTex[1], draw.u.uBridgeB);
+        g.uniform1f(draw.u.uBridgeMix, bridgeMS);
+        g.uniform1f(draw.u.uBridgeDrift, bridgeDS);
+        g.uniform1f(draw.u.uBridgeFrac, bridgeFS);
+        g.uniform2f(draw.u.uBridgeAsp, bridgeAsp[0], bridgeAsp[1]);
+        g.uniform3f(draw.u.uBridgeR, right[0] * halfW, right[1] * halfW, right[2] * halfW);
+        g.uniform3f(draw.u.uBridgeU, up[0] * halfH, up[1] * halfH, up[2] * halfH);
+      }
+    }
     g.drawArrays(g.POINTS, 0, count);
     g.disable(g.BLEND);
     hcur = hn;
@@ -1584,7 +1624,7 @@ export function createParticleEngine(
       velRead?.dispose();
       jumpRead?.dispose();
       lumRead?.dispose();
-      for (const t of [...posTex, ...velTex, ...hdrTex, lumTex, specTex, ...imgTex, ...expTex]) gl.deleteTexture(t);
+      for (const t of [...posTex, ...velTex, ...hdrTex, lumTex, specTex, ...imgTex, ...bridgeTex, ...expTex]) gl.deleteTexture(t);
       if (pairT) for (const t of [pairT.sorted, pairT.stats.tex, pairT.hist.tex, pairT.acdf.tex, pairT.rcdf.tex]) gl.deleteTexture(t);
       if (pairUv) gl.deleteTexture(pairUv.tex);
       if (seedTex) gl.deleteTexture(seedTex);
@@ -1691,6 +1731,23 @@ export function createParticleEngine(
     },
     setImageVariant(mirror, tilt) { imgMirrorT = mirror ? -1 : 1; imgTiltT = Math.max(-3.2, Math.min(3.2, tilt)); },
     setImageTint(k) { imgTintT = Math.max(0, Math.min(1, k)); },
+    loadBridgeStill(slot, px, w, h, aspect) {
+      if (lost || w < 1 || h < 1 || px.length < w * h * 4) return false;
+      // a slot on screen never swaps (outgoing: while worn; incoming: once mixed in)
+      const worn = Math.max(bridgePS, bridgePT) > 0.005;
+      if (slot === 0 && worn) return false;
+      if (slot === 1 && worn && Math.max(bridgeMS, bridgeMT) > 0.005) return false;
+      gl.bindTexture(gl.TEXTURE_2D, bridgeTex[slot]);
+      gl.pixelStorei(gl.UNPACK_ALIGNMENT, 4);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, w, h, 0, gl.RGBA, gl.UNSIGNED_BYTE, px);
+      bridgeAsp[slot] = aspect > 0 ? aspect : 16 / 9;
+      return true;
+    },
+    setBridge(presence, mix, drift, fraction) {
+      const c = (x: number) => (Number.isFinite(x) ? Math.max(0, Math.min(1, x)) : 0);
+      bridgePT = c(presence); bridgeMT = c(mix); bridgeDT = c(drift); bridgeFT = Math.min(0.5, c(fraction));
+    },
+    bridgeState() { return { presence: bridgePS, mix: bridgeMS, drift: bridgeDS, fraction: bridgeFS }; },
     setVariant(v, now = false) { varStaged = v; if (now) applyVariant(); },
     imageShown() { return imgS.x; },
     setFire(k, line) { fireT = Math.max(0, Math.min(1.5, k)); if (line !== undefined) fireLine = line; },
