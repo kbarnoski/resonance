@@ -7,6 +7,7 @@ import { getDeviceTier } from "@/lib/audio/device-tier";
 import { glitchRecord } from "@/lib/journeys/glitch-recorder";
 import { inBoundarySettle } from "@/lib/journeys/video-activity";
 import { mastersFeaturesEnabled } from "@/lib/particles/mastered-features";
+import { layeringOn, layeringAppliesTo, parallaxCamTarget } from "@/lib/journeys/layering-floor";
 
 /**
  * Depth-parallax layer (Wave 2c; rebuilt after the 2026-09-25 audits).
@@ -283,6 +284,11 @@ function DepthParallaxLayerInner({
   useEffect(() => { intensityRef.current = intensity; }, [intensity]);
   const camAmpRef = useRef(0);
   const crossJourneyMixRef = useRef(false);
+  // the outgoing journey's base fades to black under the title (Karel
+  // 2026-10-13: "whats that transparent window image that was in realized.
+  // leftover?" — Welcome Home's last still, a window at dusk, held by the
+  // freeze protocol and mixed out only ~18 s into Realized)
+  const retireBaseRef = useRef(false);
   const heldOpacityRef = useRef<number | null>(null);
   const prevJourneyRef = useRef(journeyId);
   useEffect(() => {
@@ -291,6 +297,7 @@ function DepthParallaxLayerInner({
       // journey handoff (the layer now outlives the gap between sets and
       // mounts before the first journey; those starts seed fresh)
       crossJourneyMixRef.current = !!prevJourneyRef.current && !!journeyId;
+      retireBaseRef.current = crossJourneyMixRef.current;
       prevJourneyRef.current = journeyId;
     }
   }, [journeyId]);
@@ -441,7 +448,11 @@ function DepthParallaxLayerInner({
       const dt = Math.min((nowMs - (lastAmpMs || nowMs)) / 1000, 0.1);
       lastAmpMs = nowMs;
       const ti = intensityRef.current;
-      const targetAmp = ti < 0.6 ? 0 : ti < 0.85 ? 0.35 : 1;
+      // Layering floor (?layering=1): the depth camera always drifts a little
+      // (eased like every other amp change) — never on a mastered journey.
+      const aj = useAudioStore.getState().activeJourney;
+      const layering = layeringOn() && layeringAppliesTo(aj ? { id: aj.id, name: aj.name } : null, true);
+      const targetAmp = parallaxCamTarget(ti < 0.6 ? 0 : ti < 0.85 ? 0.35 : 1, layering);
       camAmpRef.current += (targetAmp - camAmpRef.current) * (1 - Math.exp(-dt / 2));
       const camAmp = camAmpRef.current;
       const camX = Math.sin(t * (Math.PI * 2) / 25) * 0.022 * camAmp;
@@ -449,6 +460,22 @@ function DepthParallaxLayerInner({
       // A queued still lands only once the running crossfade has finished:
       // restarting a mix mid-way snaps the half-blended picture to the other
       // image in one frame (kiosk capture 2026-10-09 — the "popping" images).
+      // A journey handoff: the outgoing journey's still never carries into
+      // the next one — it mixes to black over 8 s (the old stills' own
+      // boundary fade), under the title; the new base then mixes in from
+      // black after the settle, like the first still of a covered stretch.
+      if (retireBaseRef.current && blackTex && now - mixStart >= mixDur) {
+        retireBaseRef.current = false;
+        if (slotB.img !== blackTex) {
+          const retiring = slotA;
+          slotA = slotB;
+          slotB = { img: blackTex, depth: blackTex, aspect: slotB.aspect };
+          if (retiring !== slotA && retiring !== slotB) freeSlot(retiring);
+          mixStart = performance.now();
+          mixDur = 8000;
+          glitchRecord("parallax-mix", "boundary-fade-to-black");
+        }
+      }
       if (pendingStill && !inBoundarySettle() && now - mixStart >= mixDur) {
         mixDur = pendingDur || MIX_MS_LONG;
         pendingDur = 0;
@@ -488,7 +515,9 @@ function DepthParallaxLayerInner({
     };
 
     const onStill = (e: Event) => {
-      const { src, depthSrc } = (e as CustomEvent).detail ?? {};
+      // mixMs: the layering floor's long crossfade for the lagged still
+      const { src, depthSrc, mixMs } = (e as CustomEvent).detail ?? {};
+      const normalMix = typeof mixMs === "number" && mixMs > 0 ? mixMs : MIX_MS;
       if (!src || !depthSrc || !activeRef.current) return;
       // a still from a journey WITHOUT depth maps (the layer stays mounted ~8.6 s
       // fading out after e.g. Realized → Ghost) — never request its missing png
@@ -532,12 +561,13 @@ function DepthParallaxLayerInner({
             gl.deleteTexture(pendingStill.depth);
           }
           pendingStill = incoming;
-          if (pendingDur !== MIX_MS_LONG) pendingDur = crossJourneyMixRef.current ? MIX_MS_LONG : MIX_MS;
+          if (pendingDur !== MIX_MS_LONG) pendingDur = crossJourneyMixRef.current ? MIX_MS_LONG : normalMix;
           glitchRecord("parallax-queue");
         } else {
-          mixDur = crossJourneyMixRef.current ? MIX_MS_LONG : MIX_MS;
+          const crossJourney = crossJourneyMixRef.current;
+          mixDur = crossJourney ? MIX_MS_LONG : normalMix;
           crossJourneyMixRef.current = false;
-          glitchRecord("parallax-mix", mixDur === MIX_MS_LONG ? "long-cross-journey" : undefined);
+          glitchRecord("parallax-mix", crossJourney ? "long-cross-journey" : normalMix !== MIX_MS ? "layering-lag" : undefined);
           const retiring = slotA;
           slotA = slotB;
           slotB = incoming;

@@ -19,9 +19,15 @@
  *  2. While the clip plays, when `duration - currentTime <= leadSec` the
  *     engine LANDS the plan as the primary. The visualizer finds it already
  *     resident and starts the normal crossfade immediately — no compile under
- *     the playing morph. leadSec is sized from the exact fade the visualizer
- *     will run, so the shader is fully in ~0.5-1 s before the end frame and
- *     carries through the end-frame dwell.
+ *     the playing morph. EARLY ARRIVAL (Karel 2026-10-13: "your shaders come
+ *     in a bit late such that when the final frames of the morph are reached
+ *     they are still coming in but should already be there"): the crossfade
+ *     aims to start ~7 s before the end and is sized so it COMPLETES at least
+ *     FULLY_IN_BEFORE_END_SEC before the end frame, after LAND_SLACK_SEC of
+ *     timeupdate/React-hop latency. Travel morphs are ~5 s, so most arrivals
+ *     land right as the clip starts (MIN_PLAYED_SEC) and, when the natural
+ *     fade would not fit, run a shortened fade (never under MIN_FADE_MS —
+ *     never abrupt) that the visualizer adopts via takeMorphArrivalFade().
  *  3. The clip-end nudge (and the finale's forceShaderSwitch) do NOT fire a
  *     second switch when the arrival landed — one big change, not two.
  *
@@ -70,16 +76,27 @@ export const MORPH_SHADER_LAWS = {
    *  the luma rise from the current primary). */
   PREFERRED_FADE_MS: 2600,
   MAX_FADE_MS: 3400,
-  /** Lead = fade + this margin: the crossfade completes ~0.5-1 s before the
-   *  end frame (the frame→visualizer hop + timeupdate granularity eat the
-   *  rest of the margin). */
-  END_MARGIN_SEC: 0.6,
-  /** Spec: start ~3 s before the end … */
-  MIN_LEAD_SEC: 3.0,
-  /** … never so early it stacks on the clip's own fade-in. */
-  MAX_LEAD_SEC: 4.0,
-  /** Never schedule before this much of the clip has played. */
-  MIN_PLAYED_SEC: 1.0,
+  /** The crossfade is COMPLETE at least this long before the end frame. */
+  FULLY_IN_BEFORE_END_SEC: 1.5,
+  /** Latency between "due" and the crossfade's first frame: timeupdate
+   *  granularity (~250 ms) + the engine frame → React → visualizer hop. */
+  LAND_SLACK_SEC: 0.5,
+  /** Spec: begin ~7 s before the end … */
+  PREFERRED_LEAD_SEC: 7.0,
+  /** … earlier only for a long (brightness-stretched) fade. */
+  MAX_LEAD_SEC: 9.5,
+  /** Never land before this much of the clip has played (the clip is
+   *  playing and the shader is precompiled; landing near its start is the
+   *  earliest coherent moment). */
+  MIN_PLAYED_SEC: 0.5,
+  /** PREWARM budget: the staged shader needs this long on the parked layer
+   *  (compile + the 400 ms sync frame + one warm draw) before it may land —
+   *  landing earlier would crossfade in a layer that has not drawn yet. The
+   *  plan is staged when the clip is pushed (before it loads), so this only
+   *  bites when the clip reaches canplay very quickly. */
+  PREWARM_MIN_SEC: 1.2,
+  /** A shortened arrival fade never goes under this (never-abrupt law). */
+  MIN_FADE_MS: 1800,
   /** An arrival this recent makes the finale's forced switch redundant. */
   FINALE_SKIP_WINDOW_MS: 12_000,
 } as const;
@@ -151,14 +168,59 @@ export function pickMorphShader(input: MorphShaderPickInput): MorphShaderPick | 
   return null;
 }
 
-/** Seconds before the clip's end at which the arrival lands: long enough for
- *  the crossfade to complete before the end frame, clamped to the 3-4 s
- *  window, and never before MIN_PLAYED_SEC of the clip has played. */
-export function morphShaderLeadSec(fadeMs: number, clipDurationSec: number): number {
+export interface MorphShaderTiming {
+  /** Land when `duration - currentTime <= leadSec`. */
+  leadSec: number;
+  /** The crossfade the arrival runs (≤ the natural fade; shortened only
+   *  when a short clip cannot fit the natural one). */
+  fadeMs: number;
+  /** Worst-case seconds between the crossfade completing and the end frame
+   *  (after LAND_SLACK_SEC). ≥ FULLY_IN_BEFORE_END_SEC whenever the clip
+   *  allows a MIN_FADE_MS fade. */
+  fullyInSec: number;
+}
+
+/** When the arrival lands and how long its crossfade runs, from the natural
+ *  (brightness-aware) fade and the clip's duration. */
+export function morphShaderTiming(naturalFadeMs: number, clipDurationSec: number, sinceStagedSec = Infinity): MorphShaderTiming {
   const L = MORPH_SHADER_LAWS;
-  const want = Math.min(L.MAX_LEAD_SEC, Math.max(L.MIN_LEAD_SEC, fadeMs / 1000 + L.END_MARGIN_SEC));
+  const nat = Number.isFinite(naturalFadeMs) && naturalFadeMs > 0 ? naturalFadeMs : 2500;
   const dur = Number.isFinite(clipDurationSec) && clipDurationSec > 0 ? clipDurationSec : 5;
-  return Math.max(0, Math.min(want, dur - L.MIN_PLAYED_SEC));
+  const want = Math.min(L.MAX_LEAD_SEC, Math.max(L.PREFERRED_LEAD_SEC, nat / 1000 + L.FULLY_IN_BEFORE_END_SEC + L.LAND_SLACK_SEC));
+  // the clip must have played MIN_PLAYED_SEC and the stage must be warm
+  const staged = Number.isFinite(sinceStagedSec) ? Math.max(0, sinceStagedSec) : Infinity;
+  const minPlayed = Math.max(L.MIN_PLAYED_SEC, L.PREWARM_MIN_SEC - staged);
+  const leadSec = Math.max(0, Math.min(want, dur - minPlayed));
+  const budgetMs = (leadSec - L.LAND_SLACK_SEC - L.FULLY_IN_BEFORE_END_SEC) * 1000;
+  const fadeMs = Math.min(nat, Math.max(L.MIN_FADE_MS, budgetMs));
+  return { leadSec, fadeMs, fullyInSec: leadSec - L.LAND_SLACK_SEC - fadeMs / 1000 };
+}
+
+/** Seconds before the clip's end at which the arrival lands (see
+ *  morphShaderTiming). */
+export function morphShaderLeadSec(fadeMs: number, clipDurationSec: number): number {
+  return morphShaderTiming(fadeMs, clipDurationSec).leadSec;
+}
+
+// ── the arrival's fade, engine → visualizer ────────────────────────────────
+// The engine registers the (possibly shortened) fade when it lands an
+// arrival; the visualizer's primary crossfade takes it for that target —
+// once, and only while fresh — so the fade it runs is the one the timing
+// was computed for.
+const ARRIVAL_FADE_TTL_MS = 4000;
+let arrivalFade: { mode: string; fadeMs: number; atMs: number } | null = null;
+const nowMs = () => (typeof performance !== "undefined" ? performance.now() : Date.now());
+
+export function registerMorphArrivalFade(mode: string, fadeMs: number): void {
+  arrivalFade = Number.isFinite(fadeMs) && fadeMs > 0 ? { mode, fadeMs, atMs: nowMs() } : null;
+}
+
+/** The registered arrival fade for `mode` (consumed), or null. */
+export function takeMorphArrivalFade(mode: string | null | undefined): number | null {
+  const a = arrivalFade;
+  if (!a || !mode || a.mode !== mode) return null;
+  arrivalFade = null;
+  return nowMs() - a.atMs <= ARRIVAL_FADE_TTL_MS ? a.fadeMs : null;
 }
 
 /** Should the arrival land now? `remainingSec` = duration - currentTime. */

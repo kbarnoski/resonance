@@ -178,7 +178,19 @@ const GENERATORS: Partial<Record<SoulId, Gen>> = {
     const ring = r() < 0.4 ? 1 : 0;
     const spd = lerp(0.15, 0.45, r);
     const helix = r() < 0.4 ? lerp(0.08, 0.22, r) : 0;
-    return { a: [n, sway, h, sp], b: [f, ring, spd, helix], c: Z, unfold: false, label: `tendrils ${n}× ${ring ? "ring" : "row"}${helix ? " helix" : ""} sway${bucket(sway, 0.25, 0.75)}` };
+    // (Karel 2026-10-13, a still of four upright strands in a row: "you use this
+    // pattern too much … dont get lazy with particle patterns") the strands now
+    // lean out as a SHEAF, root on a SMILE / ARCH, or rise to uneven heights —
+    // a plain upright row is never drawn again
+    let fan = r() < 0.45 ? lerp(0.12, 0.4, r) : 0;
+    const arc = !ring && r() < 0.45 ? sign(r) * lerp(0.05, 0.14, r) : 0;
+    const stagger = r() < 0.5 ? lerp(0.2, 0.55, r) : 0;
+    if (!ring && !fan && !arc) fan = lerp(0.15, 0.35, r);
+    const layout = ring ? "ring" : arc ? (arc > 0 ? "smile" : "arch") : "row";
+    return {
+      a: [n, sway, h, sp], b: [f, ring, spd, helix], c: [fan, arc, stagger, 0], unfold: false,
+      label: `tendrils ${n}× ${layout}${fan ? " sheaf" : ""}${stagger ? " staggered" : ""}${helix ? " helix" : ""} sway${bucket(sway, 0.25, 0.75)}`,
+    };
   },
   waves: (r) => {
     const k = lerp(0.6, 1.8, r);

@@ -18,7 +18,7 @@ import { EXPERIENCE_INTRO_MS } from "@/components/audio/installation-machine";
 import {
   CARD_MS, PRESTART_MS, SPINUP_MS, TITLE_AFTER_PRESTART_MS, TEXT_OUT_BEFORE_PRESTART_MS, REVEAL_AT_MS, REVEAL_MS, TEXT_FADE_MS,
   STOP_AT_MS, FADE_OUT_AT_MS, RELEASE_AT_MS, HOLD_MAX_MS, LATEST_REVEAL_MS, WINDOW_START_MS, WINDOW_END_MS, PIANO_OPACITY, PIANO_HEIGHT,
-  engineWorkAllowed, pianoSchedule, textOnlySchedule, stepAllowed, pianoPlaneScale, cardLayer,
+  engineWorkAllowed, pianoSchedule, textOnlySchedule, stepAllowed, pianoPlaneScale, cardLayer, heldCardClock, heldPianoWaits,
 } from "./statement-piano-plan";
 import { createPianoCard, type CardEngine } from "./statement-piano-card";
 import { critStep, type Crit } from "./image-follow";
@@ -242,5 +242,44 @@ describe("statement card — the hand-back to journey 0 is clean", () => {
     expect(src).toMatch(/if \(statementHoldActive\(\)\) \{ lastTick = performance\.now\(\); return; \}/);
     expect(src).toMatch(/if \(carry === 0\) engine\.snapImage\(true, false\);/);
     expect(readFileSync("src/lib/particles/shared-engine.ts", "utf8")).toMatch(/if \(statementHold\) return;/);
+  });
+});
+
+// Lab 2026-10-13 (mode matrix step 8): back from Live into a song-by-song hold,
+// the cold page missed the reveal deadline and the held card sat as static
+// text. A held card is ALWAYS the piano card: its piano forms late, never not.
+describe("statement card — a held card always gets its piano", () => {
+  it("held + not warm by the reveal: text first, the piano waits (no deadline)", () => {
+    expect(heldPianoWaits(false, true, true)).toBe(true);
+    expect(heldPianoWaits(true, true, true)).toBe(false); // ready: the normal schedule
+    expect(heldPianoWaits(false, true, false)).toBe(false); // not held: the boot card's text-only rule stands
+    expect(heldPianoWaits(false, false, true)).toBe(false); // no image at all: nothing to form
+  });
+  it("a held card's clock stays before the spin-up window, so a late form passes the guard", () => {
+    for (const t of [LATEST_REVEAL_MS + 1, WINDOW_START_MS, WINDOW_START_MS + 2000, 120_000]) {
+      expect(stepAllowed("upload", heldCardClock(t, true))).toBe(true);
+      expect(stepAllowed("form", heldCardClock(t, true))).toBe(true);
+    }
+    expect(heldCardClock(WINDOW_START_MS + 10, false)).toBe(WINDOW_START_MS + 10);
+    expect(stepAllowed("form", heldCardClock(WINDOW_START_MS + 10, false))).toBe(false);
+  });
+  it("a late form on a held card: formed and burning after the text, not released by the guard", () => {
+    const eng = fakeEngine();
+    let now = 60_000; // a minute into the hold
+    let revealed = false;
+    const card = createPianoCard({ engine: eng, at: () => heldCardClock(now, true), screenAspect: () => 16 / 9, samples: () => undefined, setHold: () => {}, reveal: () => { revealed = true; } });
+    card.run("reveal", null);
+    expect(revealed).toBe(true);
+    card.run("upload", piano);
+    now += 50;
+    card.run("form", piano);
+    expect(card.released).toBe(false);
+    expect(card.formed).toBe(true);
+    expect(eng.state()).toMatchObject({ running: true, image: "piano" });
+  });
+  it("the component takes the held path and the held clock", () => {
+    const src = readFileSync("src/components/audio/statement-piano.tsx", "utf8");
+    expect(src).toMatch(/at: \(\) => heldCardClock\(at\(\), holdRef\.current\)/);
+    expect(src).toMatch(/if \(heldPianoWaits\(ready, !!img, holdRef\.current\)\)/);
   });
 });

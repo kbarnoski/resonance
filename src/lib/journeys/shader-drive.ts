@@ -186,13 +186,60 @@ export type VisibleDrive = { bass: number; mid: number; treble: number; amplitud
 
 /** One frame of the visible-output slew. `prev` null = first drawn frame
  *  (the layer is still at opacity 0): adopt the target outright. */
-export function slewVisibleDrive(prev: VisibleDrive | null, target: VisibleDrive, dtSec: number): VisibleDrive {
+export function slewVisibleDrive(prev: VisibleDrive | null, target: VisibleDrive, dtSec: number, gain = 1): VisibleDrive {
   if (!prev) return { ...target };
+  // a calmer shader (SHADER_DRIVE_GAIN < 1) is also velocity-limited harder
+  const g = Math.max(0.2, Math.min(1, gain));
+  const u = UNIFORM_SLEW_PER_SEC * g;
   return {
-    bass: slewToward(prev.bass, target.bass, UNIFORM_SLEW_PER_SEC, dtSec),
-    mid: slewToward(prev.mid, target.mid, UNIFORM_SLEW_PER_SEC, dtSec),
-    treble: slewToward(prev.treble, target.treble, UNIFORM_SLEW_PER_SEC, dtSec),
-    amplitude: slewToward(prev.amplitude, target.amplitude, UNIFORM_SLEW_PER_SEC, dtSec),
-    scale: slewToward(prev.scale, target.scale, SCALE_SLEW_PER_SEC, dtSec),
+    bass: slewToward(prev.bass, target.bass, u, dtSec),
+    mid: slewToward(prev.mid, target.mid, u, dtSec),
+    treble: slewToward(prev.treble, target.treble, u, dtSec),
+    amplitude: slewToward(prev.amplitude, target.amplitude, u, dtSec),
+    scale: slewToward(prev.scale, target.scale, SCALE_SLEW_PER_SEC * g, dtSec),
   };
+}
+
+// ── per-shader drive gain (Karel 2026-10-13) ───────────────────────────────
+//
+// "that amber shared web responds too much to sound and over jiggles btw
+// lol" — the amber web is `magma`. Some shaders already put the audio
+// uniforms into big visible features (crack width, palette, heat warp), so
+// the loop-wide kinetic drive overdrives them. A per-shader gain (< 1 =
+// calmer) scales EVERY audio path the layer has, in one place:
+//   - the band drive's deviation (driveTarget gain) AND, because that drive
+//     saturates, the band clock-rate range, the kinetic u_amplitude voice
+//     and the band scale breath (each compressed around its rest),
+//   - the tempo-flow clock swing around its resting pace,
+//   - the FFT uniforms' deviation from the slow synthetic breath,
+//   - the visible slew (velocity limits) and the clock-rate smoothing, so
+//     what is left swells slowly instead of twitching.
+// 1 (or absent) = unchanged. Tune other shaders the same way.
+
+export const SHADER_DRIVE_GAIN: Readonly<Record<string, number>> = {
+  magma: 0.35, // the amber web: a calm, slow-breathing web, never jiggling
+};
+
+export function shaderDriveGain(mode?: string | null): number {
+  if (!mode) return 1;
+  const g = SHADER_DRIVE_GAIN[mode];
+  return g == null || !Number.isFinite(g) ? 1 : Math.max(0, Math.min(1, g));
+}
+
+/** Scale a value's deviation from its resting point by the shader's gain.
+ *  The band drive saturates (BAND_PROFILES gains of 19-38 clamp the level
+ *  at 0..1 on any real onset), so a smaller drive gain alone would still
+ *  swing the clock across the whole 0.08-3.2x range on loud notes — the
+ *  clock rate, kinetic voice and scale breath are ALSO compressed around
+ *  their rest (rate 1, level 0.5) by this. */
+export function calmToward(rest: number, value: number, gain: number): number {
+  return rest + (value - rest) * gain;
+}
+
+/** The clock-rate smoothing alpha (per 60 fps frame) for a shader: calmer
+ *  shaders ease their speed changes proportionally slower (0.045 ≈ 400 ms;
+ *  magma ×0.35 ≈ 1.1 s). */
+export const RATE_SMOOTH_K = 0.045;
+export function rateSmoothK(gain: number): number {
+  return RATE_SMOOTH_K * Math.max(0.2, Math.min(1, gain));
 }

@@ -12,9 +12,13 @@ import { createSeededRandom } from "@/lib/journeys/seeded-random";
 import { getTierProfile } from "@/lib/audio/device-tier";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { glitchRecord, glitchFlush } from "@/lib/journeys/glitch-recorder";
-import { morphShaderOn, morphShaderLeadSec, morphShaderDue } from "@/lib/journeys/morph-shader";
+import { morphShaderOn, morphShaderTiming, morphShaderDue } from "@/lib/journeys/morph-shader";
 import { isVideoActive, markVideoActive, markJourneyBoundary, inBoundarySettle, emitClipEnded, emitClipStarted } from "@/lib/journeys/video-activity";
 import { isWhisperImageryName, imageryDprCeil } from "@/lib/journeys/kinetic";
+import {
+  LAYERING, layeringOn, layeringAppliesTo, layeredCap, capOccupancy, dizzyGuard, idleMaxMs, pushGapOk,
+  rescueMayWalk, scriptedStillDue, bypassesCap, stillMotion, parallaxLagSrc,
+} from "@/lib/journeys/layering-floor";
 
 interface AiImageLayerProps {
   /** AI prompt for image generation */
@@ -222,6 +226,12 @@ export function AiImageLayer({
   // live phase intensity without rebuilding.
   const intensityRef = useRef(intensity);
   useEffect(() => { intensityRef.current = intensity; }, [intensity]);
+  /** LAYERING FLOOR (?layering=1, layering-floor.ts) — on for this journey?
+   *  Never for a mastered one (Snowflake, Ghost). */
+  const layeringNow = useCallback(
+    () => layeringOn() && layeringAppliesTo({ id: journeyIdRef.current, name: useAudioStore.getState().activeJourney?.name }, true),
+    [],
+  );
   /** How many image layers the current musical moment supports. The old
    *  behavior (tier cap always — 8 on high, 12 on installation) is what
    *  read as "a wall of moving images" (Karel 2026-09-28). */
@@ -255,8 +265,9 @@ export function AiImageLayer({
       const prog = st.duration > 0 ? st.currentTime / st.duration : 0;
       if (prog > 0.72 && prog < 0.88) return Math.min(getTierProfile().maxAiLayers, Math.max(2, cap));
     }
-    return Math.min(getTierProfile().maxAiLayers, cap);
-  }, []);
+    // Layering floor: at least two stills may stay (sparse/whisper returned above)
+    return Math.min(getTierProfile().maxAiLayers, layeringNow() ? layeredCap(cap, { sparse: false }) : cap);
+  }, [layeringNow]);
   // Video spotlight (Karel 2026-09-28: "the morphs are amazing and a
   // lot of great detail gets lost... because of effects"): while a
   // living clip is playing, the imagery canvas eases up toward 0.8 so
@@ -390,6 +401,11 @@ export function AiImageLayer({
   /** Wall-clock of the last ACTUAL visual push (still or clip) — the
    *  idle-rescue guarantee measures from here, not from tick time. */
   const lastVisualPushRef = useRef(0);
+  /** Layering floor: the last pinned-take still shown (so a due one fires the
+   *  tick), and the parallax lag's memory (previous shown still / last sent). */
+  const lastScriptShownRef = useRef<string | null>(null);
+  const prevShownStillRef = useRef<string | null>(null);
+  const lastParallaxSentRef = useRef<string | null>(null);
   const [available, setAvailable] = useState<boolean | null>(null);
   const promptRef = useRef(prompt);
   const denoisingRef = useRef(denoisingStrength);
@@ -454,6 +470,9 @@ export function AiImageLayer({
       lastClipPhaseRef.current = -1; // clips re-arm per journey
       heroPushedForRef.current = -1;
       pendingMorphRef.current = null;
+      lastScriptShownRef.current = null;
+      prevShownStillRef.current = null;
+      lastParallaxSentRef.current = null;
       // A new journey starts at p≈0: the previous journey's last progress
       // made the replay detector fire on EVERY journey change, zeroing the
       // handoff holdoffs set below (glitch RCA 2026-10-06).
@@ -555,7 +574,7 @@ export function AiImageLayer({
   // This creates a sense of video — imagery is always moving and always in transition.
   const idleRescueNowRef = useRef(false);
   const idleForceRef = useRef(false);
-  const pushImage = useCallback((img: HTMLImageElement | HTMLVideoElement): boolean => {
+  const pushImage = useCallback((img: HTMLImageElement | HTMLVideoElement, opts?: { scripted?: boolean }): boolean => {
     const service = getRealtimeImageService();
     // Only stills enter the LRU cache — videos are pack-local loops.
     if ("complete" in img) service.cacheImage(promptRef.current, img);
@@ -578,6 +597,12 @@ export function AiImageLayer({
     // the cover push EVICTED the only visible image (session sm78v1
     // 158s, the "abrupt drop"). The momentary overshoot just fades.
     const isCoverPush = !isVideoPush && coverBoostRef.current;
+    // Layering floor (?layering=1): departing stills free their cap slot,
+    // pinned-take stills land like covers, and an unscripted still waits
+    // while another is still arriving or three are already visible.
+    const layering = layeringNow();
+    const scriptedPush = !isVideoPush && !!opts?.scripted;
+    const capExempt = isVideoPush || bypassesCap(layering, scriptedPush, isCoverPush);
 
     // Evict fully invisible layers first
     for (let i = layers.length - 1; i >= 0; i--) {
@@ -590,8 +615,16 @@ export function AiImageLayer({
     // Only fade out the OLDEST visible layer when at capacity —
     // but skip layers that haven't held at peak for MIN_PEAK_DURATION yet.
     // If nothing can be evicted, drop the incoming image (next gen will try again).
-    const stillCount = layers.filter((l) => "complete" in l.img).length;
-    if (!isVideoPush && !isCoverPush && stillCount >= conductedMaxLayers()) {
+    const stillLayers = layers.filter((l) => "complete" in l.img);
+    if (layering && !capExempt) {
+      const g = dizzyGuard(stillLayers);
+      if (g !== "ok") {
+        glitchRecord("push-refused", `layering-${g}`);
+        return false;
+      }
+    }
+    const stillCount = capOccupancy(stillLayers, layering);
+    if (!capExempt && stillCount >= conductedMaxLayers()) {
       // Never cut a layer mid-entrance (Karel 2026-09-28: "right after
       // the text an image dropped"): a fading-in layer is only evictable
       // once it's been arriving for 2.5s+. If nothing can gracefully
@@ -628,7 +661,7 @@ export function AiImageLayer({
     }
 
     // Hard cap: if still over limit after starting a fade, force-remove oldest fading
-    if (!isVideoPush && !isCoverPush && stillCount >= conductedMaxLayers() + 1) {
+    if (!capExempt && stillCount >= conductedMaxLayers() + 1) {
       // Never hard-remove a layer the viewer can still see — a splice at
       // opacity 0.5 IS the "image drops out" glitch. Visible layers keep
       // fading; the momentary cap overshoot costs one extra drawImage.
@@ -668,7 +701,8 @@ export function AiImageLayer({
     const coverBoost = !isVideo && coverBoostRef.current;
     if (coverBoost) coverBoostRef.current = false;
     const baseMotion = isVideo ? 0 : t0 < 0.6 ? 0 : t0 < 0.85 ? 0.35 : mProg > 0.45 ? 1 : 0.35;
-    const motionScale = coverBoost ? Math.max(0.35, baseMotion) : baseMotion;
+    // Layering floor: every still drifts gently (videos stay static).
+    const motionScale = isVideo ? 0 : stillMotion(coverBoost ? Math.max(0.35, baseMotion) : baseMotion, layering);
     // Visible cinematic travel: up to 10-22% scale change per layer life,
     // alternating push-in and pull-back. Still-image endpoints stay ≥1.06
     // so cover-fit always overflows and the pan never exposes an edge;
@@ -686,7 +720,11 @@ export function AiImageLayer({
     // clones of images the viewer never saw).
     if (!isVideo) onImageReadyRef.current?.((img as HTMLImageElement).src);
     lastVisualPushRef.current = performance.now();
-    glitchRecord(isVideo ? "layer-push-video" : "layer-push-still", `n=${layers.length + 1} motion=${motionScale.toFixed(2)}`);
+    glitchRecord(
+      isVideo ? "layer-push-video" : "layer-push-still",
+      // vis = stills visible (> 0.25) before this push; n also counts departing + video layers
+      `n=${layers.length + 1} motion=${motionScale.toFixed(2)}${layering ? ` lay=1 vis=${stillLayers.filter((l) => l.opacity > LAYERING.VISIBLE_OPACITY).length}${scriptedPush ? " take" : ""}` : ""}`,
+    );
     layers.push({
       img,
       // Boundary settle: the new journey's first still must EASE in over
@@ -711,7 +749,7 @@ export function AiImageLayer({
       blendMode,
     });
     return true;
-  }, [releaseMedia, conductedMaxLayers]);
+  }, [releaseMedia, conductedMaxLayers, layeringNow]);
 
   // Trigger an image generation (REST)
   // skipCache=true for periodic refreshes (same prompt, want new image)
@@ -774,6 +812,8 @@ export function AiImageLayer({
         lastPackUrlRef.current = null;
         lastClipPhaseRef.current = -1;
         pendingMorphRef.current = null;
+        lastScriptShownRef.current = null;
+        prevShownStillRef.current = null;
         journeyChangeAtRef.current = 0; // replays skip the 9s clip holdoff
         const nowR = performance.now();
         for (const l of layersRef.current) {
@@ -796,6 +836,7 @@ export function AiImageLayer({
       // gate returned through travel-0's window and the loved morph
       // never played). Clips below always get their scheduling pass.
       const morphCover = morphCoverPendingRef.current;
+      const layering = layeringNow();
       const stillsBlocked = !morphCover && (
         isVideoActive() ||
         getJourneyEngine().getMsSinceAnySwitch() < 2500 ||
@@ -845,9 +886,10 @@ export function AiImageLayer({
         && !isVideoActive() && !inBoundarySettle();
       if (phaseEntry && phaseSlice) idx = phaseSlice.start;
       // a scripted image take (pinned-takes TAKE_STILL_SCRIPTS) replays its stills exactly
+      let scriptedName: string | null = null;
       {
         const sc = scriptedStillAt(journeyIdRef.current, currentTime);
-        if (sc) { const k = urls.findIndex((u) => u.endsWith("/" + sc)); if (k >= 0) idx = k; }
+        if (sc) { const k = urls.findIndex((u) => u.endsWith("/" + sc)); if (k >= 0) { idx = k; scriptedName = sc; } }
       }
       // A pending morph cover must ALWAYS land (session 04cmm4: the
       // finale's cover mapped to the still already on screen, the
@@ -889,11 +931,14 @@ export function AiImageLayer({
       // stillness windows breathe slower but still breathe.
       const idleFloor = Math.max(lastVisualPushRef.current, journeyChangeAtRef.current);
       const idleMs = performance.now() - idleFloor;
-      const idleMax = 10_000; // uniform 2026-10-01b — stillness no longer slows replacements
+      // uniform 10 s 2026-10-01b — stillness no longer slows replacements;
+      // 8 s under the layering floor
+      const idleMax = idleMaxMs(layering);
       const idleRescue = idleMs > idleMax && !isVideoActive() && !inBoundarySettle();
       idleRescueNowRef.current = idleRescue;
       idleForceRef.current = idleRescue && idleMs > 18_000;
-      if (idleRescue && urls.length > 1) {
+      // (never walks off a pinned take under the floor — the take IS the sequence)
+      if (idleRescue && urls.length > 1 && rescueMayWalk(layering, !!scriptedName)) {
         if (phaseSlice) {
           if (!isFresh(idx)) idx = nextSlotInSlice(idx, phaseSlice, isFresh);
         } else {
@@ -914,7 +959,14 @@ export function AiImageLayer({
       const lastPhaseStart = journeyPhases?.[journeyPhases.length - 1]?.start;
       const finaleAt = typeof lastPhaseStart === "number" ? lastPhaseStart : Infinity;
       const finaleDue = !!pendingFinaleStillRef.current && progress >= finaleAt && !isVideoActive() && !inBoundarySettle();
-      const canPush = (!stillsBlocked || idleRescue || phaseEntry || finaleDue) && !finaleHeldRef.current;
+      // Layering floor: a pinned-take still that is due lands through the soft
+      // gates like a phase entry (video + boundary settle stay sacred).
+      const scriptEntry = layering && !!scriptedName && scriptedName !== lastScriptShownRef.current && !isVideoActive() && !inBoundarySettle();
+      const canPush = (!stillsBlocked || idleRescue || phaseEntry || finaleDue || scriptEntry) && !finaleHeldRef.current;
+      // ...and unscripted stills keep their spacing (not dizzying); covers and
+      // the pinned finale always land.
+      const takeSlot = !!scriptedName && !!urls[idx]?.endsWith("/" + scriptedName);
+      const gapOk = morphCover || finaleDue || pushGapOk(performance.now(), lastVisualPushRef.current, layering, takeSlot);
       if (finaleDue) {
         const wanted = urls.indexOf(pendingFinaleStillRef.current!);
         pendingFinaleStillRef.current = null;
@@ -924,7 +976,7 @@ export function AiImageLayer({
       }
       // Slow phases have fewer images than 7s ticks — a repeated slot
       // skips (the idle rescue above bounds how long that can hold).
-      if (canPush && idx !== lastPackIndexRef.current) {
+      if (canPush && gapOk && idx !== lastPackIndexRef.current) {
         lastPackIndexRef.current = idx;
         if (phaseSlice) lastPushedPhaseStartRef.current = phaseSlice.start;
         if (phaseEntry) glitchRecord("phase-entry", `slot ${idx}`);
@@ -944,13 +996,17 @@ export function AiImageLayer({
         const onScreen = layersRef.current.some((l) => "complete" in l.img && l.state !== "fading-out" && (l.img as HTMLImageElement).src.endsWith(stillUrl));
         const dupStill = stillUrl === lastPackUrlRef.current || onScreen;
         if (!dupStill) lastPackUrlRef.current = stillUrl;
+        // a take still already on screen counts as shown (no due-tick loop)
+        else if (scriptedName && stillUrl.endsWith("/" + scriptedName)) lastScriptShownRef.current = scriptedName;
         if (!dupStill && morphCoverPendingRef.current) {
           morphCoverPendingRef.current = false;
           coverBoostRef.current = true; // arriving over a morph's freeze-frame — bring ACTION
         }
         if (!dupStill) loadImage(stillUrl)
           .then((img) => {
-            const shown = pushImage(img);
+            const isTake = !!scriptedName && stillUrl.endsWith("/" + scriptedName);
+            const shown = pushImage(img, { scripted: isTake });
+            if (shown && isTake) lastScriptShownRef.current = scriptedName;
             if (shown) glitchRecord("still", stillUrl.split("/").pop() ?? "");
             else if (phaseEntry && lastPackIndexRef.current === idx && phaseEntryRetriesRef.current < 3) {
               phaseEntryRetriesRef.current++;
@@ -974,12 +1030,19 @@ export function AiImageLayer({
             // Only a still the collage SHOWED (kiosk capture 2026-10-09:
             // refused stills retried every ~1.6 s each reached the depth
             // layer, which cut its own unfinished crossfade — images popped).
-            if (shown && stillUrl.includes("/images/journeys/")) {
+            // Layering floor: PARALLAX LAG — the depth base takes the still
+            // that is leaving the collage (the previous one), on a long mix, so
+            // it drifts on as a distinct second layer under the new one.
+            const depthSend = shown ? parallaxLagSrc(stillUrl, prevShownStillRef.current, lastParallaxSentRef.current, layering) : null;
+            if (shown) prevShownStillRef.current = stillUrl;
+            if (depthSend) lastParallaxSentRef.current = depthSend;
+            if (depthSend && depthSend.includes("/images/journeys/")) {
               setTimeout(() => {
                 window.dispatchEvent(new CustomEvent("resonance:pack-still", {
                   detail: {
-                    src: stillUrl,
-                    depthSrc: stillUrl.replace("/images/journeys/", "/depth/journeys/").replace(/\.jpg(\?.*)?$/, ".png"),
+                    src: depthSend,
+                    depthSrc: depthSend.replace("/images/journeys/", "/depth/journeys/").replace(/\.jpg(\?.*)?$/, ".png"),
+                    mixMs: layering ? LAYERING.PARALLAX_MIX_MS : undefined,
                   },
                 }));
               }, 1500);
@@ -1071,6 +1134,7 @@ export function AiImageLayer({
           // primary layer at opacity 0, so its arrival under the playing
           // morph costs no compile. Scripted takes → no plan.
           const morphPlan = travel && morphShaderOn() ? getJourneyEngine().planMorphShader() : null;
+          const morphStagedAt = performance.now();
           let morphLanded = false;
           const v = document.createElement("video");
           v.muted = true;
@@ -1091,16 +1155,18 @@ export function AiImageLayer({
             if (journeyEpochRef.current !== epoch) { releaseMedia(v); return; } // stale journey (C3)
             if (!pushImage(v)) { releaseMedia(v); dropPlan(); onRejected?.(); return; } // stack full (C2)
             if (morphPlan) {
-              // Land the staged shader ~3-4 s before the end frame (lead
-              // sized from the fade the visualizer will run) so it is
-              // fully in before the end frame and carries through the dwell.
-              const leadSec = morphShaderLeadSec(morphPlan.fadeMs, v.duration);
+              // Land the staged shader EARLY (Karel 2026-10-13: "they are
+              // still coming in but should already be there"): ~7 s before
+              // the end, or as the ~5 s clip starts, with a fade sized so it
+              // is FULLY in ≥ 1.5 s before the end frame (morphShaderTiming).
+              const timing = morphShaderTiming(morphPlan.fadeMs, v.duration, (performance.now() - morphStagedAt) / 1000);
+              const leadSec = timing.leadSec;
               const onTime = () => {
                 if (morphLanded || journeyEpochRef.current !== epoch) { v.removeEventListener("timeupdate", onTime); return; }
                 const remain = v.duration - v.currentTime;
                 if (!morphShaderDue(remain, leadSec)) return;
                 v.removeEventListener("timeupdate", onTime);
-                morphLanded = getJourneyEngine().landMorphShader(remain) != null;
+                morphLanded = getJourneyEngine().landMorphShader(remain, timing.fadeMs) != null;
               };
               v.addEventListener("timeupdate", onTime);
             }
@@ -1446,7 +1512,7 @@ export function AiImageLayer({
         if (isPackOverlay) liveOverlayBackoffUntil = performance.now() + LIVE_OVERLAY_BACKOFF_MS;
       })
       .finally(() => { loadingCountRef.current = Math.max(0, loadingCountRef.current - 1); });
-  }, [loadImage, pushImage, hasPropLocalImages]);
+  }, [loadImage, pushImage, hasPropLocalImages, layeringNow]);
   useEffect(() => { triggerGenerationRef.current = triggerGeneration; }, [triggerGeneration]);
 
 
@@ -1551,8 +1617,17 @@ export function AiImageLayer({
       // the solo-hold blocked it, and the next tick came ~11 s later): once
       // nothing has landed for 10.5 s, tick at once (at most every 1.5 s)
       const idleNow = now - Math.max(lastVisualPushRef.current, journeyChangeAtRef.current);
-      const rescueDue = hasLocalImagesRef.current && idleNow > 10_500 && now - lastGenTimeRef.current > 1500;
-      if (now - lastGenTimeRef.current < nextInterval && !rescueDue) return;
+      const layering = layeringNow();
+      const rescueDue = hasLocalImagesRef.current && idleNow > idleMaxMs(layering) + 500 && now - lastGenTimeRef.current > 1500;
+      // Layering floor: a pinned-take still that just came due fires the tick
+      // now instead of waiting out the 9-12 s interval (the take's timing).
+      let takeDue = false;
+      if (layering && hasLocalImagesRef.current) {
+        const sc = scriptedStillAt(journeyIdRef.current, useAudioStore.getState().currentTime);
+        takeDue = scriptedStillDue(true, sc, lastScriptShownRef.current, now, lastGenTimeRef.current)
+          && localImageUrlsRef.current.some((u) => u.endsWith("/" + sc));
+      }
+      if (now - lastGenTimeRef.current < nextInterval && !rescueDue && !takeDue) return;
       genCountRef.current++;
       const tierMul = getTierProfile().aiImageIntervalMultiplier;
       // Conductor: quiet phases breathe slower — fewer arrivals, longer
@@ -1577,7 +1652,7 @@ export function AiImageLayer({
       clearTimeout(stagger);
       clearInterval(id);
     };
-  }, [enabled, available, generating, triggerGeneration]);
+  }, [enabled, available, generating, triggerGeneration, layeringNow]);
 
   // Track aiOnly in a ref so the render loop can read it
   const aiOnlyRef = useRef(aiOnly);

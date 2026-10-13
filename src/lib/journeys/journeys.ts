@@ -276,6 +276,19 @@ export const PICKTIME_REALM_BLOCKLIST: Record<string, ReadonlySet<string>> = {
   ]),
 };
 
+/** Karel's PERSONAL bans — shaders he explicitly asked, in his own words, to
+ *  be out of Resonance. Unlike the wider GLOBAL_SHADER_BLOCKLIST (measured
+ *  washes etc., which recorded takes keep as recorded), these hold even
+ *  inside scripted/pinned takes: a scripted entry naming one plays a
+ *  deterministic replacement instead (journey-engine applyTakeScript).
+ *  - biofilm        2026-10-06 "that bright green cellular shader should never be used"
+ *  - dharma         2026-10-13 "i cant stand dharma in resonance"
+ *  - r3-monsoonveil 2026-10-13 "dont use that shader where the diaganol light keeps passing over"
+ *  - credo          2026-10-13 "i said to ban this shader from resonance" (screenshot, Realized) */
+export const KAREL_BANNED_SHADERS: ReadonlySet<string> = new Set([
+  "biofilm", "dharma", "r3-monsoonveil", "credo",
+]);
+
 export const GLOBAL_SHADER_BLOCKLIST: string[] = [
   // Karel 2026-10-06: "that bright green cellular shader should never be
   // used. it doesnt work" (seen in Ghost) — banned everywhere.
@@ -289,6 +302,10 @@ export const GLOBAL_SHADER_BLOCKLIST: string[] = [
   // (Spirit Trails — "the rainbow lines i love" — and Chinook — "that swirl
   // is fine" — were briefly banned with it and are back).
   "r3-monsoonveil",
+  // Karel 2026-10-13 (screenshot in Realized, credo @p0.382 as a scripted-take
+  // recast): "i said to ban this shader from resonance" — the gold concentric
+  // rings + radial spokes + bright core; Dharma's family. Banned everywhere.
+  "credo",
   // Measured full-screen washes / flicker (scripts/shader-vetting.json,
   // 2026-10-05): they lift the black floor or brighten the frame even
   // when dimmed — "full screen ones that brighten the screen and makes

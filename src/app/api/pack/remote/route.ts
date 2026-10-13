@@ -10,6 +10,11 @@ interface RemoteBus {
   commands: string[];
   status: Record<string, unknown> | null;
   statusAt: number;
+  /** kiosk long-polls parked until a command arrives (phone taps land at once) */
+  waiters?: Array<() => void>;
+  /** the kiosk's set + track lists change rarely: the phone fetches them only when this moves */
+  programsJson?: string;
+  programsRev?: number;
 }
 
 const bus: RemoteBus = ((globalThis as { __packRemoteBus?: RemoteBus }).__packRemoteBus ??= {
@@ -17,6 +22,10 @@ const bus: RemoteBus = ((globalThis as { __packRemoteBus?: RemoteBus }).__packRe
   status: null,
   statusAt: 0,
 });
+bus.waiters ??= [];
+
+/** The longest a kiosk long-poll is parked (it re-posts its status after). */
+const KIOSK_WAIT_MAX_MS = 1_500;
 
 // Optional shared key (maturity pass 2026-09-26, audit M-3): the hotspot
 // is open, so anyone joining it could drive the show. Set
@@ -46,12 +55,36 @@ export async function POST(request: Request) {
   if (body.role === "kiosk") {
     bus.status = body.status ?? null;
     bus.statusAt = Date.now();
+    const pj = JSON.stringify(bus.status?.programs ?? null);
+    if (pj !== bus.programsJson) {
+      bus.programsJson = pj;
+      bus.programsRev = (bus.programsRev ?? 0) + 1;
+    }
+    // LONG-POLL (?wait=1, phone responsiveness 2026-10-13): with nothing queued
+    // the kiosk's request is parked until a command arrives (or 1.5 s), so a
+    // tap reaches the kiosk in milliseconds instead of up to a 2 s poll —
+    // with no more requests than before.
+    const wait = new URL(request.url).searchParams.get("wait") === "1";
+    if (wait && bus.commands.length === 0) {
+      await new Promise<void>((resolve) => {
+        const done = () => { clearTimeout(t); resolve(); };
+        const t = setTimeout(() => {
+          bus.waiters = (bus.waiters ?? []).filter((w) => w !== done);
+          resolve();
+        }, KIOSK_WAIT_MAX_MS);
+        (bus.waiters ??= []).push(done);
+      });
+    }
     return NextResponse.json({ commands: bus.commands.splice(0) });
   }
 
   if (typeof body.command === "string" && body.command.length > 0 && body.command.length < 200) {
     bus.commands.push(body.command);
     if (bus.commands.length > 20) bus.commands.splice(0, bus.commands.length - 20);
+    // wake the parked kiosk poll: the command leaves now
+    const ws = bus.waiters ?? [];
+    bus.waiters = [];
+    for (const w of ws) w();
     return NextResponse.json({ ok: true });
   }
 
@@ -65,9 +98,18 @@ export async function GET(request: Request) {
   if (!keyOk(request)) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
-  return NextResponse.json({
-    status: bus.status,
-    statusAgeMs: bus.status ? Date.now() - bus.statusAt : null,
-    pendingCommands: bus.commands.length,
-  });
+  // the phone polls fast (500 ms while visible): it sends the lists' rev it
+  // holds and gets the ~10 KB of set + track lists only when they changed
+  const have = Number(new URL(request.url).searchParams.get("have"));
+  const rev = bus.programsRev ?? 0;
+  const status = bus.status && have === rev && rev > 0 ? { ...bus.status, programs: undefined } : bus.status;
+  return NextResponse.json(
+    {
+      status,
+      programsRev: rev,
+      statusAgeMs: bus.status ? Date.now() - bus.statusAt : null,
+      pendingCommands: bus.commands.length,
+    },
+    { headers: { "Cache-Control": "no-store" } },
+  );
 }
