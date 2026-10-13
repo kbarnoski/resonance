@@ -70,7 +70,7 @@ import { presenceAt, colorAt } from "@/lib/journeys/particle-casting";
 import { LOOP_MEMORY, planCast, chooseNext, noteForm, recordUsage, blossomAllowed, previousJourney, journeyAvoidSet } from "@/lib/journeys/particle-rotation";
 import { freshVariant, rememberDesign, RECENT_DESIGNS } from "@/lib/particles/form-variety";
 import { emblemEnvelope, imageSlotStep, underlayDue, EMBLEM_HANDOFF, IMAGE_CLEAR, type ImageSlot } from "@/lib/particles/image-follow";
-import { FLIGHT, birdFlightEnabled, closingFlightStart, flightHold, flightPose, openingFlightStart, signatureFlightFor, wingBeatHz, type FlightFlag } from "@/lib/particles/signature-flight";
+import { FLIGHT, birdFlightEnabled, closingFlightStart, flightHold, openingFlightStart, signatureFlightFor, type FlightFlag } from "@/lib/particles/signature-flight";
 import type { JourneyFrame } from "@/lib/journeys/types";
 import { journeyResponse } from "@/lib/journeys/kinetic";
 import { PARTICLE_PROFILES } from "@/lib/journeys/particle-profiles.generated";
@@ -1349,7 +1349,7 @@ export function ParticleLeadLayer({
     const sigFlight = signatureFlightFor(journeyId);
     let flightFlag: FlightFlag = { closing: false, opening: false };
     if (sigFlight) { try { flightFlag = birdFlightEnabled(undefined, window.sessionStorage); } catch { /* storage blocked: off */ } }
-    const flBeatHz = wingBeatHz(PARTICLE_PROFILES[journeyId]?.tempo?.bpm);
+    const flBpm = PARTICLE_PROFILES[journeyId]?.tempo?.bpm;
     let flightAt = -1, flightOcc = -1, flightDirX: -1 | 1 = 1;
     // (true at mount: a pose carried over from the last journey is reset once its image has cleared)
     let flightPosed = true;
@@ -1637,8 +1637,8 @@ export function ParticleLeadLayer({
       // it — the bird stays a bird); after it the far pose holds until the image
       // has cleared (or another image takes the slot), then the plane returns unseen
       if (sigFlight && flE >= 0 && imgLoaded === "emblem" && imgKey === `emblem:${flightOcc}` && !imgReleasing) {
-        const p = flightPose(flE, { ...sigFlight, dir: { x: flightDirX, y: 1 } }, flBeatHz, flightOcc === 0 ? FLIGHT.OPEN_SEC : FLIGHT.SEC);
-        engine.setImageFlight({ ...p, dirX: flightDirX, dirY: 1 });
+        // (the engine evaluates the path + the articulated wings every frame from this clock)
+        engine.setImageFlight({ e: flE, flight: { dir: { x: flightDirX, y: 1 }, wing: sigFlight.wing }, sec: flightOcc === 0 ? FLIGHT.OPEN_SEC : FLIGHT.SEC, bpm: flBpm });
         flightPosed = true;
       } else if (flightPosed && (engine.imageLevel() < IMAGE_CLEAR || (imgLoaded !== null && imgKey !== `emblem:${flightOcc}`))) {
         engine.setImageFlight(null);
