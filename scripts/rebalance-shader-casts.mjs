@@ -56,6 +56,7 @@ const SEQ = await jiti.import(ROOT + "src/lib/journeys/installation-sequence.ts"
 const SH = await jiti.import(ROOT + "src/lib/shaders/index.ts");
 const PT = await jiti.import(ROOT + "src/lib/journeys/pinned-takes.ts");
 const BAL = await jiti.import(ROOT + "src/lib/journeys/shader-balance.ts");
+const MAST = await jiti.import(ROOT + "src/lib/journeys/mastered.ts");
 const { VETTED_SHADER_POOL } = await jiti.import(ROOT + "src/lib/journeys/journey-casts.generated.ts");
 const { STD } = await import("./lib/snowflake-standard.mjs");
 
@@ -359,7 +360,11 @@ function trimToCap(m) {
 }
 for (const m of Object.keys(BAL.SHADER_NAMED_CAPS)) trimToCap(m);
 // banned-everywhere leftovers (e.g. biofilm, globally blocked 2026-10-06) get replaced too
-for (const w of W) for (const m of [...modesOf(w)]) if (J.GLOBAL_SHADER_BLOCKLIST.includes(m) && !(w.kind === "exp" && w.lead === m)) if (!replaceShader(w, m, `${m} is globally blocked`)) log.push(`FAIL blocked ${m} in ${w.name}`);
+// A globally blocked shader MUST go (the engine refuses it, so its slot is
+// dead air the engine fills by borrowing): cool first, then any hue — a
+// cool-hued blocked shader alone in its phase (The Knife (Jam) integration,
+// r3-monsoonveil 2026-10-13) otherwise had no candidate at all.
+for (const w of W) for (const m of [...modesOf(w)]) if (J.GLOBAL_SHADER_BLOCKLIST.includes(m) && !(w.kind === "exp" && w.lead === m)) if (!replaceShader(w, m, `${m} is globally blocked`) && !replaceShader(w, m, `${m} is globally blocked`, { allowAmber: true })) log.push(`FAIL blocked ${m} in ${w.name}`);
 for (let guard = 0; guard < 200; guard++) {
   const over = [...C.all].filter(([m, n]) => n > BAL.shaderLoopCap(m)).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
   if (!over.length) break;
@@ -399,14 +404,129 @@ for (let guard = 0; guard < 600 && amberStats().share > BAL.AMBER_SHARE_MAX; gua
   if (!did) { log.push(`FAIL amber share stuck at ${amberStats().share.toFixed(3)}`); break; }
 }
 
+// 5b. Globally blocked shaders OUTSIDE the loop: off-loop featured / album
+//     casts (The Crossing: r3-monsoonveil, 2026-10-13) take one replacement
+//     on every phase the blocked shader held (legacy casts keep each shader
+//     on one contiguous run); parked Expansion casts (pack only) drop it.
+const BLOCKED = new Set(J.GLOBAL_SHADER_BLOCKLIST);
+const offLoop = []; // {f, from, to}
+for (const f of featured.journeys) {
+  if (byId.has(f.id)) continue;
+  const used = new Set(Object.values(f.cast).flat());
+  for (const m of [...used].filter((x) => BLOCKED.has(x))) {
+    const b = J.getJourney(f.id);
+    const realm = b?.realmId;
+    const bans = new Set([...(b?.blockedShaders ?? []), ...(realm ? J.REALM_SHADER_BLOCKLIST[realm] ?? [] : []), ...(realm ? [...(J.PICKTIME_REALM_BLOCKLIST[realm] ?? [])] : []), ...(BAL.SHADER_JOURNEY_BANS[f.id] ?? [])]);
+    const pf = paletteFamilies(b?.theme?.palette ?? b?.phases?.[0]?.palette);
+    const firstPhase = Object.keys(f.cast)[0];
+    const budget = Object.entries(f.cast).some(([pid, l]) => pid === firstPhase && l.includes(m)) ? 20 : 40;
+    const rank = (allowAmber) => FEAT_POOL.filter((r) => !used.has(r) && !bans.has(r) && !BLOCKED.has(r) && !BAL.SUN_SHADER_SET.has(r) && !BAL.KIN_BORROW_AVOID.has(r) && (allowAmber || !BAL.isAmberShader(r)) && eff(r) <= budget)
+      .map((r) => ({ r, s: (V[r].category === "Cosmic" ? 2 : 0) + (COOL.has(V[r].hue) ? 1 : 0) + fit(r, pf) * 0.5 - (C.all.get(r) ?? 0) * 0.3 - Math.abs(eff(r) - eff(m)) * 0.03 - (LOW.has(r) ? 1.5 : 0) }))
+      .sort((a, c) => c.s - a.s || a.r.localeCompare(c.r));
+    const r = (rank(false)[0] ?? rank(true)[0])?.r;
+    if (!r) { log.push(`FAIL blocked ${m} in off-loop ${f.name}: no replacement`); continue; }
+    for (const pid of Object.keys(f.cast)) f.cast[pid] = f.cast[pid].map((x) => (x === m ? r : x));
+    used.delete(m); used.add(r);
+    offLoop.push({ f, from: m, to: r });
+    changes.push({ journey: f.name, id: f.id, phase: "(off-loop, every phase)", from: m, to: r, why: `${m} is globally blocked` });
+  }
+}
+const parkedDrops = []; // {e, from}
+for (const e of expansion.parked ?? []) {
+  if (!e.cast) continue;
+  for (const m of [...new Set(Object.values(e.cast).flat())].filter((x) => BLOCKED.has(x))) {
+    if (e.lead === m) { log.push(`FAIL parked ${e.title}: lead ${m} is globally blocked`); continue; }
+    for (const pid of Object.keys(e.cast)) e.cast[pid] = e.cast[pid].filter((x) => x !== m);
+    if (e.supports) e.supports = e.supports.filter((x) => x !== m);
+    parkedDrops.push({ e, from: m });
+    changes.push({ journey: e.title, id: e.id, phase: "(parked)", from: m, to: "(dropped)", why: `${m} is globally blocked` });
+  }
+}
+
+// 6. H-lens repair: a substitution must not make the engine hold one shader
+//    for too long (H4) or otherwise regress the replay. For every journey
+//    this run changed that now regresses, try the other ranked candidates
+//    for each newly placed shader (cool first, then amber) and keep the
+//    first that replays clean — else the least-bad one.
+const hRegress = (w, fa) => hFails(w, simulate(journeyFor(w, w.cast), w.dur), w.lead).filter((x) => !fa.some((y) => y.split(" ")[0] === x.split(" ")[0]));
+const hScore = (w) => { const H = simulate(journeyFor(w, w.cast), w.dur); return H.maxRun + Math.max(0, H.top[0]?.share ?? 0) * 0.1; };
+function altsFor(w, x) {
+  const slots = slotsOf(w, x), seen = new Set(), out = [];
+  for (const allowAmber of [false, true]) for (const dist of w.kind === "exp" ? EXP_DISTS : [0]) {
+    const per = slots.map(([pi, si]) => new Set(candidates(w, pi, si, x, { allowAmber, expDist: dist }).map((c) => c.r)));
+    for (const c of candidates(w, slots[0][0], slots[0][1], x, { allowAmber, expDist: dist })) if (per.every((s) => s.has(c.r)) && !seen.has(c.r)) { seen.add(c.r); out.push(c.r); }
+  }
+  return out;
+}
+function swapAll(w, x, r) { for (const [pi, si] of slotsOf(w, x)) w.cast[w.phaseIds[pi]][si] = r; if (w.lead === x) w.lead = r; recount(); }
+const H_TRIES = 16;
+for (const w of W) {
+  if (JSON.stringify(w.cast) === JSON.stringify(w.before)) continue;
+  const fa = hFails(w, simulate(journeyFor(w, w.before), w.dur), w.beforeLead);
+  if (!hRegress(w, fa).length) continue;
+  const beforeModes = new Set(Object.values(w.before).flat().filter(Boolean));
+  const placed = [...modesOf(w)].filter((m) => !beforeModes.has(m) && !protectedSlots.has(`${w.id}:${m}`) && !(w.kind === "exp" && w.lead === m));
+  let fixed = false;
+  for (const x of placed) {
+    let best = { r: x, score: hScore(w) }, cur = x;
+    for (const r of altsFor(w, x).slice(0, H_TRIES)) {
+      swapAll(w, cur, r); cur = r;
+      if (!hRegress(w, fa).length) { best = { r, score: -1 }; break; }
+      const sc = hScore(w); if (sc < best.score) best = { r, score: sc };
+    }
+    if (cur !== best.r) swapAll(w, cur, best.r);
+    if (best.r !== x) for (const c of changes) if (c.id === w.id && c.to === x) { c.to = best.r; c.why += ` (H-lens: ${x} held too long)`; }
+    if (best.score === -1) { fixed = true; break; }
+  }
+  // still long: the held shader's phase lacks a partner — MOVE the new voice
+  // there (a single-phase support; its old phase keeps >= 1 shader), trying
+  // each candidate in the new slot.
+  if (!fixed) for (const x of [...modesOf(w)].filter((m) => !beforeModes.has(m) && !protectedSlots.has(`${w.id}:${m}`) && !(w.kind === "exp" && w.lead === m))) {
+    const sl = slotsOf(w, x);
+    if (sl.length !== 1 || w.cast[w.phaseIds[sl[0][0]]].length < 2) continue;
+    const H = simulate(journeyFor(w, w.cast), w.dur);
+    const held = H.top.slice(0, 4).sort((a, b) => b.run - a.run)[0]?.m;
+    const targets = w.phaseIds.map((pid, pi) => pi).filter((pi) => pi !== sl[0][0] && pi !== w.sparseIdx && w.cast[w.phaseIds[pi]].includes(held));
+    const snapshot = clone(w.cast), from = w.phaseIds[sl[0][0]];
+    let best = { cast: snapshot, score: hScore(w) };
+    for (const pi of targets) {
+      for (const r of [x, ...altsFor(w, x)].slice(0, H_TRIES)) {
+        w.cast = clone(snapshot);
+        w.cast[from] = w.cast[from].filter((m) => m !== x);
+        if (r !== x && modesOf(w).has(r)) continue;
+        if (eff(r) > slotBudget(w, pi, w.cast[w.phaseIds[pi]].length)) continue;
+        w.cast[w.phaseIds[pi]].push(r); recount();
+        if (!hRegress(w, fa).length) { best = { cast: clone(w.cast), score: -1, r, to: w.phaseIds[pi] }; break; }
+        const sc = hScore(w); if (sc < best.score) best = { cast: clone(w.cast), score: sc, r, to: w.phaseIds[pi] };
+      }
+      if (best.score === -1) break;
+    }
+    w.cast = best.cast; recount();
+    if (best.to) for (const c of changes) if (c.id === w.id && c.to === x) { c.to = best.r; c.phase = `${c.phase}->${best.to}`; c.why += ` (H-lens: moved beside ${held})`; }
+    if (best.score === -1) { fixed = true; break; }
+  }
+  if (!fixed) log.push(`WARN H-lens repair: ${w.name} still ${hRegress(w, fa).join(", ")}`);
+}
+
 // ── verify with the real engine (H lens), before vs after ──
 function journeyFor(w, cast) {
   const phases = w.phases.map((p) => ({ ...p, shaderModes: cast[p.id] ?? p.shaderModes, shaderOwned: w.kind === "exp" || w.owned ? true : p.shaderOwned }));
   const base = w.builtin && !w.row ? w.builtin : { ...(w.row.theme ?? {}), realmId: w.row.realm_id, strictCamera: true };
   return { ...base, id: "cast-check", name: "cast-check", phases };
 }
+// One replay is chaotic (the seeded pick stream shifts with any roster
+// change: the same cast scored H4 0.23 on one seed and 0.34 on another), so
+// the H lens judges the MEAN over five seeded replays.
 function simulate(journey, dur) {
-  const eng = ENG.getJourneyEngine(); CLOCK = 1000; eng.start(journey, { seed: 20261005, trackDuration: dur });
+  const runs = [20261005, 1, 2, 3, 4].map((seed) => simulateOnce(journey, dur, seed));
+  const mean = (f) => runs.reduce((a, r) => a + f(r), 0) / runs.length;
+  const shares = new Map(), longest = new Map();
+  for (const r of runs) for (const t of r.top) { shares.set(t.m, (shares.get(t.m) ?? 0) + t.share / runs.length); longest.set(t.m, (longest.get(t.m) ?? 0) + t.run / runs.length); }
+  const top = [...shares].map(([m, share]) => ({ m, share, run: longest.get(m) })).sort((a, b) => b.share - a.share);
+  return { distinct: Math.round(mean((r) => r.distinct)), top, layers: mean((r) => r.layers), maxRun: mean((r) => r.maxRun), nonLeadMax: (lead) => mean((r) => r.top.filter((t) => t.m !== lead)[0]?.share ?? 0) };
+}
+function simulateOnce(journey, dur, seed) {
+  const eng = ENG.getJourneyEngine(); CLOCK = 1000; eng.start(journey, { seed, trackDuration: dur });
   const step = 0.5, on = new Map(), runs = new Map(), cur = new Map(); let layers = 0, n = 0;
   for (let t = 0; t <= dur; t += step) {
     CLOCK = 1000 + t * 1000; const f = eng.getFrame(t / dur); if (!f) continue;
@@ -422,7 +542,8 @@ function hFails(w, H, lead) {
   const f = [];
   if (H.distinct < STD.H1_distinct) f.push(`H1 ${H.distinct}`);
   const nonLead = H.top.filter((t) => w.kind !== "exp" || t.m !== lead);
-  if ((nonLead[0]?.share ?? 0) > STD.H2_maxShare) f.push(`H2 ${nonLead[0].m} ${nonLead[0].share.toFixed(2)}`);
+  const nl = H.nonLeadMax ? H.nonLeadMax(w.kind === "exp" ? lead : null) : nonLead[0]?.share ?? 0;
+  if (nl > STD.H2_maxShare) f.push(`H2 ${nonLead[0].m} ${nl.toFixed(2)}`);
   if (w.kind === "exp" && (H.top.find((t) => t.m === lead)?.share ?? 0) > STD.H3_leadShare) f.push("H3");
   if (H.maxRun > STD.H4_maxRun) f.push(`H4 ${H.maxRun.toFixed(2)}`);
   if (H.layers > STD.H5k_layers) f.push(`H5k ${H.layers.toFixed(2)}`);
@@ -434,6 +555,7 @@ for (const w of changed) {
   const a = simulate(journeyFor(w, w.before), w.dur), b = simulate(journeyFor(w, w.cast), w.dur);
   const fa = hFails(w, a, w.beforeLead), fb = hFails(w, b, w.lead);
   const amberSec = (H) => H.top.filter((t) => BAL.isAmberShader(t.m)).reduce((s, t) => s + t.share, 0);
+  if (process.argv.includes("--changes") && fb.length) console.log(`  H ${w.name}: before ${fa.join(",") || "ok"} [${a.top.map((t) => `${t.m} ${t.share.toFixed(2)}/${t.run.toFixed(2)}`).join(" ")}] after ${fb.join(",")} [${b.top.map((t) => `${t.m} ${t.share.toFixed(2)}/${t.run.toFixed(2)}`).join(" ")}]`);
   hReport.push({ name: w.name, kind: w.kind, before: { distinct: a.distinct, fails: fa, amberScreen: amberSec(a) }, after: { distinct: b.distinct, fails: fb, amberScreen: amberSec(b) }, regress: fb.filter((x) => !fa.some((y) => y.split(" ")[0] === x.split(" ")[0])) });
 }
 const regress = hReport.filter((r) => r.regress.length);
@@ -451,9 +573,15 @@ console.log(`H lens: ${hReport.length} replayed · regressions ${regress.length}
 if (regress.length && !process.argv.includes("--allow-h-regress")) { console.error("refusing to write: H-lens regressions"); process.exit(1); }
 if (log.some((x) => x.startsWith("FAIL"))) { console.error("refusing to write: FAIL above"); process.exit(1); }
 
-if (!DRY && changed.length) {
+if (!DRY && (changed.length || offLoop.length || parkedDrops.length)) {
   // featured / album casts -> featured-recast.json + the generated TS
   let ts = readFileSync(TS_PATH, "utf8");
+  for (const { f } of offLoop) {
+    f.shaders = [...new Set(Object.values(f.cast).flat())];
+    const re = new RegExp(`^  "${f.id}": \\{ name: "([^"]*)", cast: \\{.*?\\} \\},$`, "m");
+    if (!re.test(ts)) throw new Error(`cast line not found for off-loop ${f.name}`);
+    ts = ts.replace(re, (_, name) => `  "${f.id}": { name: "${name}", cast: ${JSON.stringify(f.cast)} },`);
+  }
   for (const w of changed.filter((x) => x.kind === "feat")) {
     const f = w.rec;
     f.cast = w.cast; f.shaders = [...modesOf(w)];
@@ -525,11 +653,35 @@ if (!DRY) {
     if (!row) { log.push(`WARN pinned journey ${id} not in the pack`); continue; }
     ensure[id] = { name: row.name, musts, bans: [...BAL.SHADER_BANNED_EVERYWHERE, ...(BAL.SHADER_JOURNEY_BANS[id] ?? [])], before: phaseMap(backup.get(id)), handEdited: phaseMap(row) };
   }
+  // purge: every other pack row (never a mastered one — Snowflake / Ghost are
+  // frozen) whose phases still name a globally blocked shader. Featured /
+  // album rows play their bundled cast at runtime, but the pack should not
+  // carry dead names: each blocked shader becomes the replacement this run
+  // chose for that journey, else it is dropped from the phase.
+  const purge = {};
+  // rows that play a scripted take (Snowflake / Ghost / Realized, matched by
+  // id or by the built-in's name) never read their pack shaders — left as is
+  const takeNames = new Set(Object.keys(PT.SCRIPTED_TAKES).map((id) => (J.getJourney(id)?.name ?? id).trim().toLowerCase()));
+  const playsTake = (row) => !!PT.SCRIPTED_TAKES[row.id] || takeNames.has((row.name ?? "").trim().toLowerCase());
+  for (const row of pack) {
+    if (apply[row.id] || MAST.isMasteredJourneyLike(row) || playsTake(row)) continue;
+    const held = new Set(row.phases.flatMap((p) => p.shaderModes ?? []).filter((m) => BLOCKED.has(m)));
+    if (!held.size) continue;
+    const map = {};
+    for (const m of held) {
+      const w = byId.get(row.id);
+      const fromCast = w ? [...modesOf(w)].filter((x) => !new Set(Object.values(w.before).flat()).has(x)) : [];
+      const ch = changes.filter((c) => c.id === row.id && c.from === m).at(-1);
+      map[m] = (ch && ch.to !== "(dropped)" ? ch.to : null) ?? (fromCast.length === 1 ? fromCast[0] : null);
+    }
+    purge[row.id] = { name: row.name, map, handEdited: phaseMap(row) };
+  }
+  for (const row of pack) if (MAST.isMasteredJourneyLike(row) && row.phases.some((p) => (p.shaderModes ?? []).some((m) => BLOCKED.has(m)))) console.log(`WARN mastered pack row ${row.name} names a globally blocked shader — left frozen (the engine refuses it at pick time)`);
   // --apply-out: a later targeted pass (2026-10-13b: the sun promotion) keeps
   // the earlier apply input as a record and writes its own
   const APPLY_OUT = arg("apply-out", "scripts/shader-recast-2026-10-13.expansion-casts.json");
-  writeFileSync(ROOT + APPLY_OUT, JSON.stringify({ by: "scripts/rebalance-shader-casts.mjs", note: `Expansion casts live in the pack (data/journeys.json phases[].shaderModes) + DB rows; apply with scripts/apply-shader-recast-2026-10-13.mjs --input=${APPLY_OUT}`, journeys: apply, ensure }, null, 1) + "\n");
-  console.log(`apply input: ${Object.keys(apply).length} Expansion journeys + ${Object.keys(ensure).length} parked pins → ${APPLY_OUT}`);
+  writeFileSync(ROOT + APPLY_OUT, JSON.stringify({ by: "scripts/rebalance-shader-casts.mjs", note: `Expansion casts live in the pack (data/journeys.json phases[].shaderModes) + DB rows; apply with scripts/apply-shader-recast-2026-10-13.mjs --input=${APPLY_OUT}`, journeys: apply, ensure, purge }, null, 1) + "\n");
+  console.log(`apply input: ${Object.keys(apply).length} Expansion journeys + ${Object.keys(ensure).length} parked pins + ${Object.keys(purge).length} blocked-shader purges → ${APPLY_OUT}`);
 }
 
 if (REPORT) {

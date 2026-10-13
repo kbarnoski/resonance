@@ -24,6 +24,10 @@
 // --input=...; ~/Documents/Resonance/pack-journeys.backup-2026-10-13-presun.json
 // is the pack before it.
 //
+// 2026-10-13d (chinook / r3-monsoonveil / r3-spirittrails banned): the
+// input also carries `purge` — non-mastered pack rows whose phases still
+// name a globally blocked shader (see purgeBlocked).
+//
 // Usage (repo root, on the kiosk Mac — no heavy work while Karel watches):
 //   node scripts/apply-shader-recast-2026-10-13.mjs                 # check only (writes nothing)
 //   node scripts/apply-shader-recast-2026-10-13.mjs --pack          # write the pack
@@ -37,7 +41,7 @@ const arg = (k, d) => process.argv.find((a) => a.startsWith(`--${k}=`))?.slice(k
 const PACK_PATH = arg("pack-path", "public/tramokyo-pack/data/journeys.json");
 const WRITE_PACK = process.argv.includes("--pack");
 const WRITE_DB = process.argv.includes("--db");
-const { journeys, ensure = {} } = JSON.parse(readFileSync(arg("input", "scripts/shader-recast-2026-10-13.expansion-casts.json"), "utf8"));
+const { journeys, ensure = {}, purge = {} } = JSON.parse(readFileSync(arg("input", "scripts/shader-recast-2026-10-13.expansion-casts.json"), "utf8"));
 const same = (a, b) => JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
 const problems = [];
 
@@ -83,6 +87,27 @@ function ensurePins(phases, e, where) {
   return { out, changed };
 }
 
+/** purge (2026-10-13d): every globally blocked shader a non-mastered row's
+ *  phases still name becomes its mapped replacement (unless the phase holds
+ *  it already), else is dropped — a phase is never left empty. */
+function purgeBlocked(phases, e) {
+  let changed = 0;
+  const out = phases.map((p) => {
+    let list = [...(p.shaderModes ?? [])];
+    for (const [b, r] of Object.entries(e.map)) {
+      const i = list.indexOf(b);
+      if (i < 0) continue;
+      if (r && !list.includes(r)) list[i] = r;
+      else if (list.length > 1) list.splice(i, 1);
+      else if (r) list[i] = r;
+      else continue;
+      changed++;
+    }
+    return changed ? { ...p, shaderModes: list } : p;
+  });
+  return { out: changed ? out : phases, changed };
+}
+
 // ── pack ──
 const pack = readPackJson(PACK_PATH);
 let packChanged = 0;
@@ -100,6 +125,13 @@ for (const [id, e] of Object.entries(ensure)) {
   row.phases = out; packChanged += changed;
   console.log(`pack ${e.name.padEnd(24)} ${changed ? `${changed} pin edit(s)` : `pins ok (${e.musts.join(", ")})`}`);
 }
+for (const [id, e] of Object.entries(purge)) {
+  const row = pack.data.find((r) => r.id === id);
+  if (!row) { problems.push(`pack: no row for ${e.name}`); continue; }
+  const { out, changed } = purgeBlocked(row.phases, e);
+  row.phases = out; packChanged += changed;
+  console.log(`pack ${e.name.padEnd(24)} ${changed ? `${changed} blocked-shader edit(s) ${JSON.stringify(e.map)}` : "no blocked shader left"}`);
+}
 if (problems.length) console.warn(`\nREPORT — ${problems.length} phase(s) not touched:\n  ${problems.join("\n  ")}\n`);
 if (WRITE_PACK && packChanged) {
   const dir = `${os.homedir()}/resonance-pack-backups/${arg("input", "shader-recast-2026-10-13").replace(/^.*\//, "").replace(/\.expansion-casts\.json$/, "")}-${new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19)}`;
@@ -113,11 +145,11 @@ if (WRITE_PACK && packChanged) {
 if (WRITE_DB) {
   const { createClient } = await import("@supabase/supabase-js");
   const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
-  const rows = [...Object.entries(journeys).map(([id, j]) => [id, j, false]), ...Object.entries(ensure).map(([id, e]) => [id, e, true])];
+  const rows = [...Object.entries(journeys).map(([id, j]) => [id, j, false]), ...Object.entries(ensure).map(([id, e]) => [id, e, true]), ...Object.entries(purge).map(([id, e]) => [id, e, "purge"])];
   for (const [id, j, isEnsure] of rows) {
     const { data, error } = await sb.from("journeys").select("phases").eq("id", id).single(); // fresh read right before writing
     if (error) { console.warn(`db   ${j.name}: ${error.message}`); continue; }
-    const { out, changed } = isEnsure ? ensurePins(data.phases, j, "db") : rewrite(data.phases, j, "db");
+    const { out, changed } = isEnsure === "purge" ? purgeBlocked(data.phases, j) : isEnsure ? ensurePins(data.phases, j, "db") : rewrite(data.phases, j, "db");
     if (!changed) { console.log(`db   ${j.name.padEnd(24)} nothing to change`); continue; }
     const { error: e2 } = await sb.from("journeys").update({ phases: out }).eq("id", id);
     if (e2) throw e2;

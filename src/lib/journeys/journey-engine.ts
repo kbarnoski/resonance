@@ -12,6 +12,7 @@ import { SHADER_HUES } from "@/lib/shaders/shader-hues.generated";
 import { VETTED_POOL } from "@/lib/shaders/shader-brightness.generated";
 import { KIN_BORROW_AVOID, isAmberShader, isShaderBannedFor } from "./shader-balance";
 import { isMasteredJourneyLike } from "./mastered";
+import { pickMorphShader, finaleSwitchRedundant, type MorphShaderPick } from "./morph-shader";
 import { getUserBlockedShaders, getUserDeletedShaders } from "@/lib/shader-preferences";
 import {
   getPhaseBlend,
@@ -238,6 +239,13 @@ class JourneyEngine {
    *  flight-recorder finding: 3 switches in 4s = visible frame-gap storm). */
   private lastAnySwitchMs = 0;
   private static readonly SWITCH_SPACING_MS = 4000;
+  /** Morph-shader arrival (morph-shader.ts, flag ?morphshader=1): the shader
+   *  planned to land over the playing travel morph — staged (compiled at
+   *  opacity 0) by the visualizer until landMorphShader() makes it primary. */
+  private morphPlan: MorphShaderPick | null = null;
+  private lastMorphArrivalMs = 0;
+  /** Own stream so planning never perturbs the seeded journey stream. */
+  private morphRandom: () => number = Math.random;
   /** Phase-owned choreography: how soon after a boundary the outgoing
    *  phase's primary yields (clears the phase-title moment). */
   private static readonly OWNED_ENTRY_DELAY_MS = 3500;
@@ -283,6 +291,9 @@ class JourneyEngine {
       ? createSeededRandom(options.seed)
       : Math.random;
     this.random = random;
+    this.morphPlan = null;
+    this.lastMorphArrivalMs = 0;
+    this.morphRandom = options?.seed != null ? createSeededRandom((options.seed ^ 0x5f3759df) >>> 0) : Math.random;
     this.trackDuration = (options?.trackDuration && options.trackDuration > 0)
       ? options.trackDuration
       : 300;
@@ -1050,6 +1061,7 @@ class JourneyEngine {
       halation: iv((p) => p.halation),
       dualShaderMode: this.dualShaderMode ?? undefined,
       tertiaryShaderMode: this.tertiaryShaderMode ?? undefined,
+      stagedShaderMode: this.morphPlan?.mode,
       eventImpulse: this.eventImpulse,
       eventType: this.eventType as JourneyFrame["eventType"],
       eventApproach,
@@ -1298,6 +1310,84 @@ class JourneyEngine {
     this.shaderStartMs = now;
     this.lastAnySwitchMs = now; this.nudgeForce = false;
     glitchRecord("shader-primary", `${pick} @p${this.lastProgress.toFixed(3)} (finale-forced)`);
+  }
+
+  /** MORPH SHADER — plan (Karel 2026-10-13: "shaders over them as they
+   *  approach their end frame"). Called when a travel morph is pushed: picks
+   *  the shader that will arrive over the clip's end frame and stages it
+   *  (frame.stagedShaderMode) so the visualizer compiles it at opacity 0 now,
+   *  not under the playing morph. Scripted takes decide for themselves → null. */
+  planMorphShader(): MorphShaderPick | null {
+    this.morphPlan = null;
+    if (!this.running || !this.journey || this.takeScript || this.scriptedTake || this.frozen) return null;
+    const phases = this.journey.phases;
+    const idx = phases.findIndex((p) => this.lastProgress >= p.start && this.lastProgress <= p.end);
+    const phase = phases[idx >= 0 ? idx : phases.length - 1];
+    if (!phase) return null;
+    const owned = phase.shaderOwned === true;
+    const next = idx >= 0 && idx + 1 < phases.length ? phases[idx + 1] : null;
+    const pick = pickMorphShader({
+      phaseModes: phase.shaderModes,
+      nextPhaseModes: next?.shaderModes ?? [],
+      owned,
+      current: this.currentShaderMode,
+      dual: this.dualShaderMode,
+      tertiary: this.tertiaryShaderMode,
+      seen: this.seenShaders,
+      allowed: (m) => !MODES_3D.has(m) && !GLOBAL_BLOCKED.has(m) && this.isShaderAllowed(m),
+      soloPrimaries: JourneyEngine.NEVER_DUAL_PRIMARIES,
+      random: this.morphRandom,
+    });
+    this.morphPlan = pick;
+    if (pick) glitchRecord("morph-shader-stage", `${pick.mode} fade ${(pick.fadeMs / 1000).toFixed(1)}s @p${this.lastProgress.toFixed(3)}`);
+    return pick;
+  }
+
+  /** MORPH SHADER — land the staged plan as the primary NOW (the image layer
+   *  calls this ~3-4 s before the clip's end). Bypasses the morph quiet
+   *  window on purpose: the program is already compiled and drawn once on
+   *  the parked layer, so the crossfade costs no compile. Returns the mode,
+   *  or null when the plan went stale (cancelled, freeze, layer conflict). */
+  landMorphShader(secondsBeforeEnd: number): string | null {
+    const plan = this.morphPlan;
+    this.morphPlan = null;
+    if (!plan || !this.running || !this.journey || this.takeScript || this.frozen || this.playbackPaused) return null;
+    const m = plan.mode;
+    // end-freeze: nothing new is born in the final 4% (it would die at the boundary)
+    if (this.lastProgress > 0.96) return null;
+    if (m === this.currentShaderMode || m === this.dualShaderMode || m === this.tertiaryShaderMode || !this.isShaderAllowed(m)) {
+      glitchRecord("morph-shader-stale", `${m} @p${this.lastProgress.toFixed(3)}`);
+      return null;
+    }
+    const now = typeof performance !== "undefined" ? performance.now() : Date.now();
+    this.closeHistoryEntry("primary", now);
+    this.currentShaderMode = m;
+    this.seenShaders.add(m);
+    this.shaderHistory.push({ mode: m, role: "primary", phaseId: this.currentPhaseId ?? "morph", startMs: now, endMs: 0 });
+    this.shaderStartMs = now;
+    this.shaderDurationMs = this.randomDuration(this.morphRandom, JourneyEngine.SHADER_SWITCH_MIN_SECS, JourneyEngine.SHADER_SWITCH_MAX_SECS);
+    this.lastAnySwitchMs = now; this.nudgeForce = false;
+    this.lastMorphArrivalMs = now;
+    glitchRecord("morph-shader-arrive", `${m} ${Math.max(0, secondsBeforeEnd).toFixed(1)}s-before-end @p${this.lastProgress.toFixed(3)}`);
+    return m;
+  }
+
+  /** Drop a staged plan (clip failed / never became visible). */
+  cancelMorphShader(): void {
+    if (this.morphPlan) glitchRecord("morph-shader-cancel", this.morphPlan.mode);
+    this.morphPlan = null;
+  }
+
+  getStagedShaderMode(): string | null {
+    return this.morphPlan?.mode ?? null;
+  }
+
+  /** A morph arrival just brought a fresh primary — the clip-end nudge and
+   *  the finale's forced switch stand down (one change, not two). */
+  morphArrivalFresh(): boolean {
+    if (this.lastMorphArrivalMs === 0) return false;
+    const now = typeof performance !== "undefined" ? performance.now() : Date.now();
+    return finaleSwitchRedundant(now - this.lastMorphArrivalMs);
   }
 
   getMsSinceAnySwitch(): number {

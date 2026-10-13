@@ -240,6 +240,10 @@ export interface JourneyFrame {
   dualShaderMode?: string;
   /** Optional third shader for even richer layering */
   tertiaryShaderMode?: string;
+  /** Morph-shader arrival (flag ?morphshader=1): the primary planned to land
+   *  over the playing travel morph — the visualizer pre-compiles it on the
+   *  parked primary layer so the arrival never compiles under the clip. */
+  stagedShaderMode?: string;
   /** Event impulse 0-1 (1 = just triggered, decays over ~1-3s depending on type) */
   eventImpulse?: number;
   /** Type of the current event impulse */
