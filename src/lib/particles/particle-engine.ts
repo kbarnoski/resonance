@@ -64,6 +64,11 @@ import {
 import type { SpectrumFrame } from "./spectrum";
 import { critStep, springTau, stillPreloadAllowed, type Crit } from "./image-follow";
 
+/** Cinematic look default: on (Karel's keep 2026-10-13); ?cine=0 turns it off. */
+export function cineEnabled(): boolean {
+  try { return typeof location === "undefined" || new URLSearchParams(location.search).get("cine") !== "0"; } catch { return true; }
+}
+
 export interface ParticleEngineOptions {
   /** Requested particle count (rounded to a square texture). Default 409,600. */
   count?: number;
@@ -94,7 +99,8 @@ export interface ParticleEngineOptions {
   /** Spatial pairing for image forms (spatial-pairing.ts). Default: ?pfx=1. */
   pairing?: boolean;
   /** CINEMATIC LOOK (particle upgrade): depth of field, bloom, colour drift.
-   *  Default ?cine=1 — off in the show until Karel approves the sample. */
+   *  ON in the show since Karel's keep (2026-10-13); ?cine=0 turns it off.
+   *  Per journey via setCine (the mastered takes keep their locked look). */
   cine?: boolean;
   /** Frame-time watchdog: called (once) when a frame's CPU time or the rAF gap
    *  while running exceeds the budget, or a program fails. */
@@ -202,6 +208,8 @@ export interface ParticleEngine {
   imageState(): { form: number; show: number; formTarget: number; showTarget: number; fire: number };
   /** Camera distance multiplier (near/large ↔ far/small) — glides ~5 s. */
   setCamScale(k: number): void;
+  /** Cinematic look for the current journey (off for the mastered takes). */
+  setCine(on: boolean): void;
   /** Off-centre placement: screen fractions of half-width / half-height. */
   setOffset(x: number, y: number): void;
   /** Image-form plane size (1 = full frame). */
@@ -485,7 +493,8 @@ export function createParticleEngine(
   // when it is on — with it off the program set is exactly the show build's
   // (the histogram pass blends 32-bit floats: EXT_float_blend, else off)
   const pairingOn = (opts.pairing ?? pairingEnabled()) && !!gl.getExtension("EXT_float_blend");
-  const cineOn = opts.cine ?? (() => { try { return typeof location !== "undefined" && new URLSearchParams(location.search).get("cine") === "1"; } catch { return false; } })();
+  const cineAllowed = opts.cine ?? cineEnabled();
+  let cineOn = cineAllowed;
   const pairProgs = pairingOn
     ? {
         stats: startProgram(gl, QUAD_VS, PAIR_STATS_FS),
@@ -1607,6 +1616,7 @@ export function createParticleEngine(
     },
     setHue(h, sv = 1) { hueTarget = h; satTarget = Math.max(0.3, Math.min(1.6, sv)); },
     setForm(f) { formTarget = [...f] as [number, number, number, number]; },
+    setCine(on) { cineOn = cineAllowed && on; },
     setCamScale(k) { camScaleTarget = camScaleBase * Math.max(0.3, Math.min(2.6, k)); },
     setOffset(x, y) { offTX = Math.max(-0.7, Math.min(0.7, x)); offTY = Math.max(-0.5, Math.min(0.5, y)); },
     setImageScale(k) { imgScaleT = Math.max(0.2, Math.min(1.2, k)); },

@@ -39,7 +39,7 @@
  * it on for the tab (remembered in sessionStorage), `?phrase=0` turns it off.
  */
 
-export const PHRASE_CONDUCTOR_DEFAULT = false;
+export const PHRASE_CONDUCTOR_DEFAULT = true; // Karel's keep 2026-10-13
 export const PHRASE_SESSION_KEY = "resonance-phrase";
 /** Locked, mastered journeys — never conducted by phrase. */
 export const PHRASE_LOCKED_JOURNEYS: ReadonlySet<string> = new Set(["first-snow", "ghost"]);
@@ -395,11 +395,14 @@ export function phraseConductorEnabled(search?: string, store?: Pick<Storage, "g
     q = new URLSearchParams(s).get("phrase");
   } catch { q = null; }
   try {
-    if (q === "1") store?.setItem(PHRASE_SESSION_KEY, "1");
-    else if (q === "0") store?.removeItem(PHRASE_SESSION_KEY);
+    if (q === "1" || q === "0") store?.setItem(PHRASE_SESSION_KEY, q);
   } catch { /* storage blocked */ }
   if (q === "1") return true;
   if (q === "0") return false;
-  try { if (store?.getItem(PHRASE_SESSION_KEY) === "1") return true; } catch { /* storage blocked */ }
+  try {
+    const kept = store?.getItem(PHRASE_SESSION_KEY);
+    if (kept === "1") return true;
+    if (kept === "0") return false;
+  } catch { /* storage blocked */ }
   return PHRASE_CONDUCTOR_DEFAULT;
 }

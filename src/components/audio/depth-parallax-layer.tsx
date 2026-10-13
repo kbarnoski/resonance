@@ -119,10 +119,10 @@ void main() {
   gl_FragColor = vec4(col, 1.0);
 }`;
 
-/** Scene motes strength for a journey (0 = off). Off in the show until Karel
- *  approves the sample: ?dust=1 turns them on for every journey but the
- *  mastered ones (their look is locked). */
-const DUST_FLAG = (() => { try { return typeof location !== "undefined" && new URLSearchParams(location.search).get("dust") === "1"; } catch { return false; } })();
+/** Scene motes strength for a journey (0 = off). On in the show since Karel's
+ *  keep (2026-10-13) for every journey but the mastered ones (their look is
+ *  locked); ?dust=0 turns them off. */
+const DUST_FLAG = (() => { try { return typeof location === "undefined" || new URLSearchParams(location.search).get("dust") !== "0"; } catch { return true; } })();
 const DUST_LOCKED = new Set(["first-snow", "ghost", "inferno"]);
 function sceneMotesFor(journeyId: string | undefined): number {
   if (!DUST_FLAG || !journeyId || DUST_LOCKED.has(journeyId)) return 0;

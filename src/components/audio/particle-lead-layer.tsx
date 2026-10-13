@@ -725,6 +725,8 @@ export function ParticleLeadLayer({
     engine.prepare(soulSequence(cast));
     // integrate, not dominate (Karel 2026-10-07): a touch less energy
     engine.setGain((cast.gain ?? 1) * 1.45);
+    // cinematic look (Karel's keep 2026-10-13) — never on the mastered takes
+    engine.setCine(!cast.mastered);
     engineRef.current = engine;
     engine.setMotion(cast.motion * CALM_TEMPO);
     engine.setForm(cast.form);

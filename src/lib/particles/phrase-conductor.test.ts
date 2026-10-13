@@ -152,10 +152,10 @@ describe("phrase conductor — Snowflake + Ghost are never conducted", () => {
 });
 
 describe("phrase conductor — flag OFF is the old hold clock, exactly", () => {
-  it("defaults off", () => {
-    expect(PHRASE_CONDUCTOR_DEFAULT).toBe(false);
-    expect(phraseConductorEnabled("")).toBe(false);
-    expect(phraseConductorEnabled("?pfx=1")).toBe(false);
+  it("defaults on (Karel's keep 2026-10-13)", () => {
+    expect(PHRASE_CONDUCTOR_DEFAULT).toBe(true);
+    expect(phraseConductorEnabled("")).toBe(true);
+    expect(phraseConductorEnabled("?pfx=1")).toBe(true);
   });
   it("?phrase=1 turns it on for the tab (kept across navigations), ?phrase=0 off", () => {
     const m = new Map<string, string>();
