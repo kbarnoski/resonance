@@ -196,8 +196,8 @@ export const SPECTRUM_FORMS: ReadonlySet<SoulId> = new Set(["mandala", "medallio
 /** Shaders drawn around the screen centre (suns, portals, mandalas …): the
  *  particles align exactly with that centre point (Karel 2026-10-06). */
 export const CENTERED_SHADERS: ReadonlySet<string> = new Set([
-  "portal", "halo", "yantra", "pulsar", "quasar", "supernova", "protostar", "nova", "whirlpool",
-  "orb", "lotus", "vortex", "eclipse-ring", "dark-bloom", "r2-portalrim", "r3-softorbit",
+  "halo", "yantra", "pulsar", "supernova", "protostar", "nova", // portal / quasar / whirlpool / dark-bloom deleted 2026-10-13
+  "orb", "lotus", "vortex", "eclipse-ring", "r2-portalrim", "r3-softorbit",
   "r3-coronastreams", "r3-sleepingbloom", "orbit-weaver", "binary-stars",
 ]);
 export function isCenteredShader(mode?: string | null): boolean {

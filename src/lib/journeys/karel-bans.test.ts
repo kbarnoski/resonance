@@ -45,6 +45,16 @@ describe("Karel's personal bans (KAREL_BANNED_SHADERS)", () => {
     for (const [id, m] of Object.entries(TAKE_FINALE_SHADERS)) expect(KAREL_BANNED_SHADERS.has(m), id).toBe(false);
   });
 
+  it("every scripted take / finale shader still exists (banned shaders deleted from the code 2026-10-13)", async () => {
+    const { SHADERS } = await import("@/lib/shaders");
+    for (const [id, take] of Object.entries(SCRIPTED_TAKES)) {
+      for (const e of take) if (e.mode) expect(SHADERS, `${id} @p${e.p} ${e.mode}`).toHaveProperty([e.mode]);
+    }
+    for (const [id, m] of Object.entries(TAKE_FINALE_SHADERS)) expect(SHADERS, id).toHaveProperty([m]);
+    // Ghost's ending keeps r-petals (Karel 2026-10-13: "the one for ghost has to stay for ghost")
+    expect(SCRIPTED_TAKES["ghost"].some((e) => e.mode === "r-petals")).toBe(true);
+  });
+
   it("a scripted entry naming credo plays a deterministic cast replacement, logged", () => {
     const base = getJourney("inferno")!;
     const realized = { ...base, phases: base.phases.map((p) => ({ ...p, shaderModes: ["credo", "ember", "redshift", "singularity", "lectio", "parsec"] })) };
@@ -76,8 +86,8 @@ describe("Karel's personal bans (KAREL_BANNED_SHADERS)", () => {
 
   it("the wider wash list is NOT applied to scripted takes (recorded entries kept)", () => {
     const base = getJourney("inferno")!;
-    const seen = run(base, [{ p: 0, role: "primary", mode: "ember" }, { p: 0.3, role: "primary", mode: "swell" }]);
-    expect(seen).toContain("swell");
-    expect(logs.some(([t, d]) => t === "shader-primary" && d.startsWith("swell") && d.endsWith("(scripted)"))).toBe(true);
+    const seen = run(base, [{ p: 0, role: "primary", mode: "ember" }, { p: 0.3, role: "primary", mode: "r-petals" }]); // r-petals: globally blocked, kept for Ghost's take
+    expect(seen).toContain("r-petals");
+    expect(logs.some(([t, d]) => t === "shader-primary" && d.startsWith("r-petals") && d.endsWith("(scripted)"))).toBe(true);
   });
 });
