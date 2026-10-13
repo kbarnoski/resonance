@@ -833,6 +833,7 @@ export function ParticleLeadLayer({
     // smoothly fade out not drop out"): what is shown is slew-limited —
     // ≥1.5 s to fade in, ≥3.5 s to fade out, whatever the conductor asks
     let shown = carry;
+    let regathered = false;
     let veilShown = 0;
     let veilZeroAt = -1;
     // density GATHERS on the way in but HOLDS on the way out — thinning while
@@ -1592,6 +1593,11 @@ export function ParticleLeadLayer({
         if (running && now - absentSince > 2500) { engine.stop(); running = false; }
       } else absentSince = now;
 
+      // EVERY journey starts from the boot cloud (Karel 2026-10-13: "the first journey
+      // after the title … forms the emblem quicker than all journeys after" — filmed:
+      // after Ghost the field began as a screen-wide scatter and took ~3.5 s to
+      // converge; after boot it gathers in < 1 s). Once, while still invisible.
+      if (!regathered && shown < 0.01 && !imgLoaded) { regathered = true; engine.regather(); glitchRecord("particle-regather", journeyId); }
       // MEASURE (Karel 2026-10-13, "use measurement"): seconds from an emblem load to
       // the field settling into it — compare the first journey after boot with later ones
       if (emblemFormAt > 0 && !emblemSettledLogged && imgLoaded === "emblem") {
