@@ -51,6 +51,7 @@ import { SHADERS, MODE_META, MODE_CATEGORIES, MODES_3D, MODES_AI } from "@/lib/s
 import { fadeMsFor } from "@/lib/shaders/shader-fade";
 import { morphShaderOn } from "@/lib/journeys/morph-shader";
 import { getDeviceTier } from "@/lib/audio/device-tier";
+import { isExportMode } from "@/lib/export/export-mode";
 import {
   frameAlpha, isSilentLevel, driveTarget, readSharedDriveEnvelope, shouldRelatchDriveFlags,
   crossfadeRetarget, dequeueAfterFade, tertiaryStep, slewVisibleDrive, type DriveFlags, type TertiaryPhase,
@@ -476,7 +477,8 @@ export function ShaderVisualizer({
     // a native-4K projector (already 8.3Mpx at dpr 1) never takes the 2.25x
     // fill-rate bump on top.
     const totalPx = (typeof innerWidth !== "undefined" ? innerWidth * innerHeight : 0) * devicePixelRatio * devicePixelRatio;
-    const dprCeil = tier === "high" && totalPx > 0 && totalPx < 4.5e6 * 2.25 ? 1.5 : 1;
+    // Offline export (?export=1): no realtime ceiling — shaders at native DPR.
+    const dprCeil = isExportMode() ? devicePixelRatio : tier === "high" && totalPx > 0 && totalPx < 4.5e6 * 2.25 ? 1.5 : 1;
     // Shaders stay at this 1.5x ceiling (2026-10-05 headed sweep on the
     // kiosk M4 Pro, 1512x982 CSS / DPR 2): native 2x and 1.75x shaders
     // dropped The Bloom and Expansion to ~45-61fps; 1.5x holds ~71-84fps.
@@ -485,7 +487,7 @@ export function ShaderVisualizer({
     // Frame-rate cap on weak hardware — halves GPU work vs uncapped rAF. 30fps
     // still reads as "smooth" for abstract shader motion; 45fps on medium is a
     // gentle safety net for hardware that can't quite sustain 60.
-    const minFrameMs = tier === "low" ? 1000 / 30 : tier === "medium" ? 1000 / 45 : 0;
+    const minFrameMs = isExportMode() ? 0 : tier === "low" ? 1000 / 30 : tier === "medium" ? 1000 / 45 : 0;
     // HEADROOM CAP (2026-10-08 soak): uncapped on the kiosk's 120 Hz panel the
     // kinetic journeys' band-split layers ran the GPU flat out (~75 fps,
     // 16-41 micro-gaps per Kinetic Lab journey vs ~0 elsewhere), so every
@@ -494,7 +496,7 @@ export function ShaderVisualizer({
     // motion reads the same. ?fpscap=0 disables, =60 caps every journey.
     const fpsCapQ = typeof location !== "undefined" ? new URLSearchParams(location.search).get("fpscap") : null;
     const headroomCapMs = () => {
-      if (fpsCapQ === "0") return 0;
+      if (fpsCapQ === "0" || isExportMode()) return 0;
       if (fpsCapQ === "60") return 1000 / 60 - 2;
       return isFullKineticJourney(useAudioStore.getState().activeJourney) ? 1000 / 60 - 2 : 0;
     };

@@ -150,6 +150,7 @@ import { bridgeEnabled, nextBoundaryStill, publishBridgeHint } from "@/lib/parti
 // packed imagery instead of live fal. Online the route 404s → null,
 // fetched once per session (shared with device-tier's installation probe).
 import { fetchPackLocalImages, isPackActive } from "@/lib/offline/pack-client";
+import { isExportMode } from "@/lib/export/export-mode";
 
 // ── Opportunistic live fal on the kiosk ──
 // Packed images are the guaranteed backbone; when the desert hotspot is
@@ -1631,7 +1632,8 @@ export function AiImageLayer({
     // whole draw when there is nothing to composite.
     // 45fps is indistinguishable for slow crossfades + Ken Burns pans
     // and halves the fill cost on 90-120Hz panels.
-    const minFrameMs = 1000 / 45;
+    // offline export (?export=1) draws every rendered frame
+    const minFrameMs = isExportMode() ? 0 : 1000 / 45;
     let lastDraw = 0;
 
     function render() {

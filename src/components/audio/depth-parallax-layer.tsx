@@ -7,6 +7,7 @@ import { getDeviceTier } from "@/lib/audio/device-tier";
 import { glitchRecord } from "@/lib/journeys/glitch-recorder";
 import { inBoundarySettle } from "@/lib/journeys/video-activity";
 import { mastersFeaturesEnabled } from "@/lib/particles/mastered-features";
+import { isExportMode } from "@/lib/export/export-mode";
 
 /**
  * Depth-parallax layer (Wave 2c; rebuilt after the 2026-09-25 audits).
@@ -406,7 +407,7 @@ function DepthParallaxLayerInner({
     let raf = 0;
     let running = false;
     let last = 0;
-    const FPS_MS = 1000 / 30;
+    const FPS_MS = isExportMode() ? 0 : 1000 / 30; // offline export draws every frame
     const t0 = performance.now();
 
     // Park: release the textures and present black (invisible under the
