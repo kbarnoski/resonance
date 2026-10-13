@@ -36,6 +36,7 @@ export function isVideoActive(): boolean {
 export function resetVideoActivity(): void {
   activeUntilMs = 0;
   boundaryUntilMs = 0;
+  boundaryStartMs = -Infinity;
 }
 
 /**
@@ -55,9 +56,26 @@ export function resetVideoActivity(): void {
  * the only movers.
  */
 let boundaryUntilMs = 0;
+let boundaryStartMs = -Infinity;
 
 export function markJourneyBoundary(settleMs: number): void {
   boundaryUntilMs = Math.max(boundaryUntilMs, nowMs() + settleMs);
+  boundaryStartMs = nowMs();
+}
+
+/** The shaders' audio drive holds only for the first moments of a handoff
+ *  (Karel 2026-10-13: "is waiting the 10 seconds before the shaders respond
+ *  to sound required? it feels weird to have it dead and then start"). It used
+ *  to hold for the whole 10.5 s settle window, so the music played into dead
+ *  shaders. Now it holds 2.5 s (the instant the old stills, parallax and title
+ *  all start moving), then eases in over the envelope's own ~3 s smoothstep.
+ *  The silence gate still parks it through the gap between tracks, and the
+ *  drive FLAGS still wait out the full window (shouldRelatchDriveFlags — the
+ *  2026-10-06 zoom snap), so only the response returns early. */
+export const DRIVE_HOLD_MS = 2500;
+
+export function inBoundaryDriveHold(): boolean {
+  return nowMs() - boundaryStartMs < DRIVE_HOLD_MS && nowMs() < boundaryUntilMs;
 }
 
 export function inBoundarySettle(): boolean {

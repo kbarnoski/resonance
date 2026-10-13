@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useLayoutEffect, useState, useCallback } from "react";
-import { inBoundarySettle } from "@/lib/journeys/video-activity";
+import { inBoundarySettle, inBoundaryDriveHold } from "@/lib/journeys/video-activity";
 import { glitchRecord } from "@/lib/journeys/glitch-recorder";
 import { X, Type, AudioLines, Share2, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Pause, Play, SkipBack, SkipForward, BookOpen, Library, Globe, Search, Maximize2, Minimize2, LogOut, Mic, Volume2, VolumeX } from "lucide-react";
 import { getAudioEngine, ensureResumed, type AnalyserLike } from "@/lib/audio/audio-engine";
@@ -753,8 +753,10 @@ export function ShaderVisualizer({
             actEma += (raw - actEma) * frameAlpha(0.008, dt);  // ~2s structural envelope
           }
           // Shared envelope: eases the drive OUT (~1.5 s) whenever playback
-          // stops or a journey handoff is open, back IN (~3 s) after.
-          const env = readSharedDriveEnvelope(now, useAudioStore.getState().isPlaying && !inBoundarySettle() && !silent);
+          // stops, the music is silent or a handoff has just begun, back IN
+          // (~3 s) after — 2.5 s into a handoff, not after the whole 10.5 s
+          // settle (Karel 2026-10-13: the shaders felt dead, then started).
+          const env = readSharedDriveEnvelope(now, useAudioStore.getState().isPlaying && !inBoundaryDriveHold() && !silent);
           const target = driveTarget(raw, slowEma, prof.gain, env, silent);
           // fast attack up, banded release down (keeps flashes snappy)
           eqLv += (target - eqLv) * frameAlpha(target > eqLv ? 0.6 : 1 - prof.decay, dt);
