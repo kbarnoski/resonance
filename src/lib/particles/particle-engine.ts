@@ -1726,6 +1726,11 @@ export function createParticleEngine(
       // the boot cloud again (Karel 2026-10-13: the emblem formed fast only for the
       // first journey after boot — later journeys started from the previous
       // journey's screen-wide scatter and took ~3.5 s to converge)
+      // …and the CAMERA back to neutral at once: it eases on a spring, so a journey
+      // inherited the last one's close dolly — the new emblem opened screen-wide
+      // and drew in for ~3.5 s while the camera drifted back (filmed 2026-10-13)
+      camScale = camScaleTarget = camScaleBase;
+      offX = offTX = 0; offY = offTY = 0;
       if (lost || !posInit.warm || !particlesInitialised) return;
       const g = gl;
       g.bindVertexArray(vao);
