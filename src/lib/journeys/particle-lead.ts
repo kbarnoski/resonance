@@ -124,6 +124,10 @@ export function particlePaletteDawn(voice = 1): ParticlePalette {
  *  `removals` = Karel's form review (form-removals.ts — the single filter
  *  point: removed souls are re-cast, removed moment images dropped; an empty
  *  list leaves every cast exactly as before). */
+/** Per-journey form bans (Karel's notes) — replaced like a removal, same family. */
+const JOURNEY_FORM_BANS: Readonly<Record<string, readonly string[]>> = {
+  "a5b5f0cf-9a6b-451a-8293-3d98f3904342": ["fountain"], // Bath (Karel 2026-10-13: "the fountain particle pattern isnt a fit for bath")
+};
 export function buildParticleLeads(removals: FormRemovals = FORM_REMOVALS): Readonly<Record<string, ParticleLeadCast>> {
   const ids = PARTICLE_JOURNEY_IDS;
   // the v9 expansion forms never enter a MASTERED cast (Snowflake, Ghost: locked
@@ -263,7 +267,7 @@ export function buildParticleLeads(removals: FormRemovals = FORM_REMOVALS): Read
       cast.souls = Object.fromEntries(Object.entries(cast.souls).map(([k, v]) => [k, ok(v)])) as typeof cast.souls;
       if (cast.phaseChars) cast.phaseChars = cast.phaseChars.map((c) => ({ ...c, forms: [...new Set(c.forms.map(ok))] }));
     }
-    out[id] = applySoulRemovals(cast, removals.souls, id);
+    out[id] = applySoulRemovals(cast, [...(JOURNEY_FORM_BANS[id] ?? []), ...removals.souls], id);
   });
   return out;
 }
