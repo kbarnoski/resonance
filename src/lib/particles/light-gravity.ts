@@ -38,7 +38,7 @@
  * (remembered in sessionStorage), `?gravity=0` turns it off.
  */
 
-export const GRAVITY_DEFAULT = false;
+export const GRAVITY_DEFAULT = true; // Karel kept it (2026-10-13)
 export const GRAVITY_SESSION_KEY = "resonance-gravity";
 /** Per-journey strength (0 = off for that journey, 1 = the law's strength,
  *  up to 2). Unlisted journeys = 1 — the mastered takes included. */

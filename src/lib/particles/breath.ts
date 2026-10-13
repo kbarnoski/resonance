@@ -39,7 +39,7 @@ import { phraseSeconds } from "./phrase-conductor";
 import { currentFreedom } from "./harmonic-currents";
 import type { SoulId } from "./souls";
 
-export const BREATH_DEFAULT = false;
+export const BREATH_DEFAULT = true; // Karel kept it (2026-10-13)
 export const BREATH_SESSION_KEY = "resonance-breath";
 /** Per-journey strength knob (0 = off … 1 = full; unlisted = 1). The mastered
  *  takes are listed so they can be tuned on their own (Karel 2026-10-13: breath

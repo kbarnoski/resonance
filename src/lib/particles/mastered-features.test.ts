@@ -7,10 +7,10 @@ import { PARTICLE_PROFILES } from "@/lib/journeys/particle-profiles.generated";
 const mem = () => { const m = new Map<string, string>(); return { getItem: (k: string) => m.get(k) ?? null, setItem: (k: string, v: string) => void m.set(k, v), removeItem: (k: string) => void m.delete(k), m }; };
 
 describe("particle features on the mastered journeys", () => {
-  it("is a lab switch, off by default, remembered per tab", () => {
-    expect(MASTERS_FEATURES_DEFAULT).toBe(false);
+  it("is a lab switch, on by default (Karel kept it), remembered per tab", () => {
+    expect(MASTERS_FEATURES_DEFAULT).toBe(true);
     const s = mem();
-    expect(mastersFeaturesEnabled("", s)).toBe(false);
+    expect(mastersFeaturesEnabled("", s)).toBe(true);
     expect(mastersFeaturesEnabled("?masters=1", s)).toBe(true);
     expect(s.m.get(MASTERS_SESSION_KEY)).toBe("1");
     expect(mastersFeaturesEnabled("", s)).toBe(true);

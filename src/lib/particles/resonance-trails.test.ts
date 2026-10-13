@@ -42,10 +42,10 @@ const disc = (r0: number): TrailGeom => ({ len: 0, r: Math.max(0.5, r0), fade: 0
 const base: TrailIn = { r0: 1.5, coc: 0, speedPx: 400, gain: 1, imgShow: 0, viewH: 1080, carrier: 1 };
 
 describe("resonance trails — the flag", () => {
-  it("is off by default; ?trails=1 / ?trails=0 switch it and are remembered for the tab", () => {
-    expect(TRAILS_DEFAULT).toBe(false);
+  it("is on by default (Karel kept it); ?trails=1 / ?trails=0 switch it and are remembered for the tab", () => {
+    expect(TRAILS_DEFAULT).toBe(true);
     const st = memStore();
-    expect(trailsEnabled("", st)).toBe(false);
+    expect(trailsEnabled("", st)).toBe(true);
     expect(trailsEnabled("?trails=1", st)).toBe(true);
     expect(st.m.get(TRAILS_SESSION_KEY)).toBe("1");
     expect(trailsEnabled("", st)).toBe(true);
@@ -53,7 +53,7 @@ describe("resonance trails — the flag", () => {
     expect(trailsEnabled("", st)).toBe(false);
     const broken = { getItem: () => { throw new Error("blocked"); }, setItem: () => { throw new Error("blocked"); } };
     expect(trailsEnabled("?trails=1", broken)).toBe(true);
-    expect(trailsEnabled("", broken)).toBe(false);
+    expect(trailsEnabled("", broken)).toBe(true);
   });
 
   it("runs on every journey — Snowflake + Ghost too — each with a strength knob (default 1)", () => {

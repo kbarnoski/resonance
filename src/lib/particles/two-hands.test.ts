@@ -220,10 +220,10 @@ describe("two hands — layers", () => {
 
 describe("two hands — every journey, each at its own strength", () => {
   const mem = () => { const m = new Map<string, string>(); return { getItem: (k: string) => m.get(k) ?? null, setItem: (k: string, v: string) => void m.set(k, v), m }; };
-  it("off by default; ?hands=1 on and kept for the session; ?hands=0 off", () => {
-    expect(HANDS_DEFAULT).toBe(false);
+  it("on by default (Karel kept it); ?hands=1 on and kept for the session; ?hands=0 off", () => {
+    expect(HANDS_DEFAULT).toBe(true);
     const st = mem();
-    expect(handsEnabled("", st)).toBe(false);
+    expect(handsEnabled("", st)).toBe(true);
     expect(handsEnabled("?hands=1", st)).toBe(true);
     expect(st.m.get(HANDS_SESSION_KEY)).toBe("1");
     expect(handsEnabled("?journey=x", st)).toBe(true);
@@ -231,7 +231,7 @@ describe("two hands — every journey, each at its own strength", () => {
     expect(handsEnabled("", st)).toBe(false);
     expect(handsEnabled("?hands=1", null)).toBe(true);
     const broken = { getItem: () => { throw new Error("blocked"); }, setItem: () => { throw new Error("blocked"); } };
-    expect(handsEnabled("", broken)).toBe(false);
+    expect(handsEnabled("", broken)).toBe(true);
     expect(handsEnabled("?hands=1", broken)).toBe(true);
   });
 

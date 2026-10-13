@@ -44,7 +44,7 @@
 
 import { OnsetDetector, binPitch, smoothstep, SCORE_TUNING, type Onset } from "./living-score";
 
-export const HANDS_DEFAULT = false;
+export const HANDS_DEFAULT = true; // Karel kept it (2026-10-13)
 export const HANDS_SESSION_KEY = "resonance-hands";
 /** Per-journey strength (multiplies both voices + the depth sorting; 0 = off
  *  for that journey). Unlisted journeys = 1. The mastered takes are listed so

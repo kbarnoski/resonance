@@ -172,10 +172,10 @@ describe("breath — freedom", () => {
 
 describe("breath — flag", () => {
   const mem = () => { const m = new Map<string, string>(); return { getItem: (k: string) => m.get(k) ?? null, setItem: (k: string, v: string) => void m.set(k, v), removeItem: (k: string) => void m.delete(k), m }; };
-  it("off by default; ?breath=1 turns it on and is kept for the session; ?breath=0 off", () => {
-    expect(BREATH_DEFAULT).toBe(false);
+  it("on by default (Karel kept it); ?breath=1 turns it on and is kept for the session; ?breath=0 off", () => {
+    expect(BREATH_DEFAULT).toBe(true);
     const st = mem();
-    expect(breathEnabled("", st)).toBe(false);
+    expect(breathEnabled("", st)).toBe(true);
     expect(breathEnabled("?breath=1", st)).toBe(true);
     expect(st.m.get(BREATH_SESSION_KEY)).toBe("1");
     expect(breathEnabled("?journey=x", st)).toBe(true);
@@ -183,7 +183,7 @@ describe("breath — flag", () => {
     expect(breathEnabled("", st)).toBe(false);
     expect(breathEnabled("?breath=1", null)).toBe(true);
     const broken = { getItem: () => { throw new Error("blocked"); }, setItem: () => { throw new Error("blocked"); }, removeItem: () => {} };
-    expect(breathEnabled("", broken)).toBe(false);
+    expect(breathEnabled("", broken)).toBe(true);
     expect(breathEnabled("?breath=1", broken)).toBe(true);
   });
 });

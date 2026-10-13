@@ -33,10 +33,10 @@ function still(base: number, suns: { x: number; y: number; r: number; v: number 
 const grid = (px: Uint8Array) => lumaGrid(px, 64, 36, L.GRID_W, L.GRID_H);
 
 describe("light gravity — flag", () => {
-  it("is off by default; ?gravity=1 / 0 are remembered in sessionStorage", () => {
-    expect(GRAVITY_DEFAULT).toBe(false);
+  it("is on by default (Karel kept it); ?gravity=1 / 0 are remembered in sessionStorage", () => {
+    expect(GRAVITY_DEFAULT).toBe(true);
     const st = memStore();
-    expect(gravityEnabled("", st)).toBe(false);
+    expect(gravityEnabled("", st)).toBe(true);
     expect(gravityEnabled("?gravity=1", st)).toBe(true);
     expect(st.getItem(GRAVITY_SESSION_KEY)).toBe("1");
     expect(gravityEnabled("", st)).toBe(true);

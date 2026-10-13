@@ -12,7 +12,7 @@
  * sessionStorage), `?masters=0` off.
  */
 
-export const MASTERS_FEATURES_DEFAULT = false;
+export const MASTERS_FEATURES_DEFAULT = true; // Karel kept Snowflake + Ghost with every feature (2026-10-13)
 export const MASTERS_SESSION_KEY = "resonance-masters";
 
 type Store = Pick<Storage, "getItem" | "setItem" | "removeItem"> | null | undefined;

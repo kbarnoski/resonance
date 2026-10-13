@@ -54,7 +54,7 @@
  * (remembered in sessionStorage across the kiosk loop), `?trails=0` off.
  */
 
-export const TRAILS_DEFAULT = false;
+export const TRAILS_DEFAULT = true; // Karel kept it (2026-10-13)
 export const TRAILS_SESSION_KEY = "resonance-trails";
 /** Per-journey strength (multiplies the gain; 0 = off for that journey).
  *  Unlisted journeys = 1. Snowflake + Ghost are listed so they can be tuned. */
