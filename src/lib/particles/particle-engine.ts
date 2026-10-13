@@ -1737,7 +1737,11 @@ export function createParticleEngine(
       g.bindFramebuffer(g.FRAMEBUFFER, simFbo[cur]);
       g.viewport(0, 0, side, side);
       g.useProgram(posInit.p);
+      // TIGHT, like the statement card's piano the first journey gathers from — the
+      // boot sphere (r 1.6) fills the screen at a neutral camera
+      g.uniform1f(g.getUniformLocation(posInit.p, "uInitR"), 0.35);
       g.drawArrays(g.TRIANGLES, 0, 3);
+      g.uniform1f(g.getUniformLocation(posInit.p, "uInitR"), 1.6);
       g.bindFramebuffer(g.FRAMEBUFFER, null);
       g.bindVertexArray(null);
     },
