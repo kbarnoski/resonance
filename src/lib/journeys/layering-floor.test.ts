@@ -37,10 +37,10 @@ const longestRun = (s: SimSecond[], bad: (x: SimSecond) => boolean) => {
 };
 
 describe("layering flag", () => {
-  it("defaults OFF and is kept in sessionStorage", () => {
+  it("defaults ON (shipped 2026-10-13) and is kept in sessionStorage", () => {
     const m = new Map<string, string>();
     const store = { getItem: (k: string) => m.get(k) ?? null, setItem: (k: string, v: string) => void m.set(k, v), removeItem: (k: string) => void m.delete(k) };
-    expect(layeringEnabled("", store)).toBe(false);
+    expect(layeringEnabled("", store)).toBe(true);
     expect(layeringEnabled("?layering=1", store)).toBe(true);
     expect(layeringEnabled("", store)).toBe(true); // kept across the kiosk loop's navigations
     expect(layeringEnabled("?layering=0", store)).toBe(false);

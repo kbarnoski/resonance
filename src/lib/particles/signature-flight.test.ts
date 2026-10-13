@@ -29,19 +29,19 @@ describe("signature flight — who flies", () => {
 });
 
 describe("signature flight — flag", () => {
-  it("is off by default; =1 flies both emblems, kept for the tab", () => {
+  it("is ON by default (shipped 2026-10-13); =0 / =1 kept for the tab", () => {
     const st = memStore();
-    expect(birdFlightEnabled("", st)).toEqual({ closing: false, opening: false });
+    expect(birdFlightEnabled("", st)).toEqual({ closing: true, opening: true });
     expect(birdFlightEnabled("?birdflight=1", st)).toEqual({ closing: true, opening: true });
     expect(birdFlightEnabled("", st)).toEqual({ closing: true, opening: true });
     expect(birdFlightEnabled("?birdflight=0", st)).toEqual({ closing: false, opening: false });
     expect(birdFlightEnabled("", st)).toEqual({ closing: false, opening: false });
-    expect(birdFlightEnabled("?birdflight=yes", null)).toEqual({ closing: false, opening: false });
+    expect(birdFlightEnabled("?birdflight=yes", null)).toEqual({ closing: true, opening: true });
   });
   it("survives blocked storage", () => {
     const bad = { getItem: () => { throw new Error("blocked"); }, setItem: () => { throw new Error("blocked"); } };
     expect(birdFlightEnabled("?birdflight=1", bad)).toEqual({ closing: true, opening: true });
-    expect(birdFlightEnabled("", bad)).toEqual({ closing: false, opening: false });
+    expect(birdFlightEnabled("", bad)).toEqual({ closing: true, opening: true });
   });
 });
 

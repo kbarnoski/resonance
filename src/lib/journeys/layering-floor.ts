@@ -55,7 +55,7 @@
  */
 import { isMasteredJourneyLike } from "./mastered";
 
-export const LAYERING_DEFAULT = false;
+export const LAYERING_DEFAULT = true; // shipped 2026-10-13 (Karel: "ensure journeys have image layering"; A/B filmed, flicker gate PASS)
 const LAYERING_SESSION_KEY = "resonance.layering";
 
 /** Tunables (A/B on the kiosk; see the module doc for why each exists). */
