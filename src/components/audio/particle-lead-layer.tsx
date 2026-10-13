@@ -82,6 +82,7 @@ import { createGravityGlide, describeGravity, gravityActive, gravityEnabled, lig
 import { TwoHands, handsAllowed, handsEnabled, handsGain, handsSessionStore, handsStrength, HANDS_TUNING, type HandsVoices } from "@/lib/particles/two-hands";
 import { conductCurrents, currentAt, createTide, tideStep, withTide, currentsEnabled, clearestRelease, CURRENTS_LOCKED_JOURNEYS, type CurrentTimeline } from "@/lib/particles/harmonic-currents";
 import { conductBreath, breathAt, breathEnabled, breathSummary, type BreathTimeline } from "@/lib/particles/breath";
+import { SustainMeter, trailsEnabled, trailsForJourney, trailsSessionStore } from "@/lib/particles/resonance-trails";
 
 /** PHRASE CONDUCTOR (?phrase=1, off by default — phrase-conductor.ts): the deep
  *  analysis's section starts / crests / breaths time the form changes and the
@@ -761,6 +762,16 @@ export function ParticleLeadLayer({
     let scoreGainTarget = 0; // set by the tick (presence × ladder × held / busy)
     if (score) glitchRecord("particle-score", `on: ${journeyId}`);
     engine.setScore(null, 0);
+    // RESONANCE TRAILS (?trails=1, off by default — resonance-trails.ts): while
+    // the sound is held the moving motes draw faint tails that shorten as it
+    // dies away. Reads the RAW analyser bytes (sustain = level vs the track's
+    // peak × calm spectral flux, ≥ 1.5 s up / ≥ 3 s down). EVERY journey, the
+    // mastered takes too (Karel 2026-10-13), each with its strength knob;
+    // emblems / image forms are gated out in the engine.
+    const trailsK = engine.trailsCompiled() ? trailsForJourney(journeyId, trailsEnabled(undefined, trailsSessionStore())) : 0;
+    const sustainMeter = trailsK > 0 ? new SustainMeter() : null;
+    engine.setTrails(null, true); // a fresh journey never inherits the last one's tails
+    if (sustainMeter) glitchRecord("particle-trails", `on: ${journeyId} strength=${trailsK}`);
     sh.hooks.audio = (dt) => {
       const a = analyserRef.current;
       let fresh = false;
@@ -785,6 +796,7 @@ export function ParticleLeadLayer({
           engine.setHands(handsOut);
         }
       }
+      if (sustainMeter) engine.setTrails(sustainMeter.push(fresh ? bytes : null, dt) * trailsK);
       return calmFrame(proc.frame(), dt);
     };
     // a fresh journey: no leftover image form / variant / field from the last one
@@ -2035,6 +2047,7 @@ export function ParticleLeadLayer({
         ...(breathNow ? { breath: breathNow } : {}),
         ...(gravityOn ? { gravity: { active: gravityActive(gravGlide, gravNow()), still: gravUrl ? gravUrl.split("/").pop() : null, ...engine.gravityState() } } : {}),
         ...(currentNow ? { currents: { ...currentNow, next: currentsTl?.marks.find((m) => m.t > t)?.label ?? null } } : {}),
+        ...(sustainMeter ? { trails: { strength: trailsK, sustain: +sustainMeter.sustain.toFixed(3), gain: +sustainMeter.gain.toFixed(3), shown: +engine.trailsShown().toFixed(3), presence: +sustainMeter.presence.toFixed(3), busy: +sustainMeter.busy.toFixed(3) } } : {}),
       };
     };
     const iv = window.setInterval(tick, 100);
@@ -2056,6 +2069,7 @@ export function ParticleLeadLayer({
       offGravHint();
       offGravClip();
       engine.setGravity(null);
+      engine.setTrails(null); // tails glide away with the fade (never snapped)
       // keep the shared engine + context for the next journey; a VISIBLE field
       // fades out over 1.5 s (jump / skip) instead of vanishing in one frame
       disposed = true;

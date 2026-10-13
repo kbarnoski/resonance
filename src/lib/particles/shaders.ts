@@ -14,6 +14,7 @@
 import { SCORE_TUNING } from "./living-score";
 import { BREATH_LAWS } from "./breath";
 import { HANDS_TUNING } from "./two-hands";
+import { trailsGlslConsts } from "./resonance-trails";
 
 export const QUAD_VS = /* glsl */ `#version 300 es
 const vec2 P[3] = vec2[3](vec2(-1.0,-1.0), vec2(3.0,-1.0), vec2(-1.0,3.0));
@@ -1472,6 +1473,14 @@ uniform vec3 uBridgeR;       // camera right × half-width (world units per NDC 
 uniform vec3 uBridgeU;       // camera up × half-height
 out vec3 vCol;
 out float vCoc;
+#ifdef TRAILS
+// RESONANCE TRAILS (resonance-trails.ts, ?trails=1): the trail gain (0 = none)
+// and the drawing buffer's size in device px
+uniform float uTrail;
+uniform vec2 uViewPx;
+out vec4 vTrail;   // xy = head direction in sprite coords (y down), z = length px (0 = no tail), w = half-width px
+out vec3 vTrailK;  // x = tail-end fade, y = cross-profile softening, z = sprite side px
+#endif
 // screen NDC → uv of a still shown cover-fit full screen (like the journey stills)
 vec2 bridgeUv(vec2 ndc, float imgAspect, float scrAspect){
   vec2 d = ndc;
@@ -1566,6 +1575,11 @@ void main(){
   }
   vec4 clip = uVP * vec4(p.xyz, 1.0);
   vCoc = 0.0;
+#ifdef TRAILS
+  vTrail = vec4(0.0);
+  vTrailK = vec3(0.0);
+  float trScale = 1.0;
+#endif
   if (clip.w <= 0.05) { gl_Position = vec4(2.0, 2.0, 2.0, 1.0); gl_PointSize = 0.0; vCol = vec3(0.0); return; }
   gl_Position = clip;
 
@@ -1601,6 +1615,40 @@ void main(){
   }
   if (size < 1.0) { a *= size * size; size = 1.0; }
   gl_PointSize = min(size, 24.0);
+#ifdef TRAILS
+  // RESONANCE TRAILS: while the sound is held, a share of the motes stretch
+  // along their SCREEN velocity (the sim's velocity texture — no previous-frame
+  // buffer, no feedback) into a soft capsule fading head → tail. The streak's
+  // integrated light is normalised to the untrailed mote's (trScale ≤ 1): the
+  // mote SPREADS, it never brightens. Bokeh discs don't streak; images don't.
+  if (uTrail > 0.001) {
+    float r0 = max(0.5, min(size, 24.0) * 0.5);
+    vec4 c1 = uVP * vec4(p.xyz + v.xyz * 0.05, 1.0);
+    vec2 vpx = c1.w > 0.05 ? (c1.xy / c1.w - clip.xy / clip.w) * (0.5 / 0.05) * uViewPx : vec2(0.0);
+    float sp = length(vpx);
+    float trH = fract(sin(dot(s, vec4(3.17, 91.31, 17.93, 5.27))) * 24634.6345);
+    float carrier = 1.0 - smoothstep(TR_SHARE - 0.08, TR_SHARE + 0.08, trH);
+    float cap = TR_MAX1080 * max(0.25, uViewPx.y / 1080.0);
+    float raw = sp * TR_EXPO * uTrail * (1.0 - uImgShow) * (1.0 - vCoc) * carrier;
+    float L = cap * (1.0 - exp(-raw / cap));
+    if (L > 0.02 && sp > 1e-3) {
+      float R = max(r0, mix(r0, TR_MIN_R, smoothstep(0.0, 2.0, L)));
+      L = min(L, max(0.0, TR_SPRITE_CAP - 2.0 * R));
+      float k = L / (L + R);
+      float fadeT = TR_TAIL_FADE * k, softT = min(1.0, TR_SOFTEN * k);
+      float g2u = mix(TR_G2C, TR_G2B, vCoc), g1u = mix(TR_G1C, TR_G1B, vCoc);
+      float g2t = mix(g2u, TR_G2S, softT), g1t = mix(g1u, TR_G1S, softT);
+      float e = (1.0 - 0.5 * fadeT) * (R * R * g2t + R * L * g1t);
+      trScale = min(1.0, r0 * r0 * g2u / max(e, 1e-6));
+      vec2 dir = vpx / sp;
+      // the sprite centres on the streak's middle: the head stays on the mote
+      gl_Position.xy -= dir * (0.5 * L) * (2.0 / uViewPx) * clip.w;
+      gl_PointSize = 2.0 * R + L;
+      vTrail = vec4(dir.x, -dir.y, L, R);
+      vTrailK = vec3(fadeT, softT, 2.0 * R + L);
+    }
+  }
+#endif
 
   vec3 col = band < 0.5 ? mix(uPalLow, uPalMid, band * 2.0) : mix(uPalMid, uPalHigh, band * 2.0 - 1.0);
   vec4 Id = instOf(s, uInst, uInstSeed);
@@ -1675,6 +1723,9 @@ void main(){
     img = mix(img, col * il * 2.2, uImgTint);
   }
   vCol = mix(world, img * uImgGain, uImgShow);
+#ifdef TRAILS
+  vCol *= trScale;
+#endif
 }
 `;
 
@@ -1682,8 +1733,31 @@ export const DRAW_FS = /* glsl */ `#version 300 es
 precision mediump float;
 in vec3 vCol;
 in float vCoc;
+#ifdef TRAILS
+in vec4 vTrail;
+in vec3 vTrailK;
+#endif
 out vec4 o;
 void main(){
+#ifdef TRAILS
+  // RESONANCE TRAILS: distance to the head→tail segment, light fading along it
+  // (resonance-trails.ts trailFragment is the CPU mirror the test integrates)
+  if (vTrail.z > 0.0) {
+    vec2 q = (gl_PointCoord - 0.5) * vTrailK.z;
+    float tl = vTrail.z, tr = vTrail.w;
+    float sa = clamp(dot(q, vTrail.xy), -0.5 * tl, 0.5 * tl);
+    vec2 dq = q - sa * vTrail.xy;
+    float t2 = dot(dq, dq) / (tr * tr);
+    if (t2 > 1.0) discard;
+    float gt = exp(-t2 * 7.0) + 0.3 * exp(-t2 * 1.8);
+    float bt = (1.0 - smoothstep(0.15, 1.0, t2)) * 0.62 + 0.12 * exp(-t2 * 2.0);
+    gt = mix(gt, bt, vCoc);
+    gt = mix(gt, 1.3 * exp(-t2 * 2.0) * (1.0 - smoothstep(0.5, 1.0, t2)), vTrailK.y);
+    gt *= 1.0 - vTrailK.x * (0.5 * tl - sa) / tl;
+    o = vec4(vCol * gt * 1.15, 1.0);
+    return;
+  }
+#endif
   vec2 d = gl_PointCoord * 2.0 - 1.0;
   float r2 = dot(d, d);
   if (r2 > 1.0) discard;
@@ -1696,6 +1770,20 @@ void main(){
   o = vec4(vCol * g * 1.15, 1.0);
 }
 `;
+
+/** RESONANCE TRAILS: the draw program's source with the trails compiled in
+ *  (`#define TRAILS` right after `#version`, the constants after the float
+ *  precision statement — a fragment shader has no default float precision).
+ *  Off = the untouched show source. */
+export function withTrails(src: string): string {
+  const nl = src.indexOf("\n");
+  let out = `${src.slice(0, nl + 1)}#define TRAILS 1\n${src.slice(nl + 1)}`;
+  const m = /^precision \w+ float;\n/m.exec(out);
+  if (!m) throw new Error("withTrails: no float precision statement");
+  const at = m.index + m[0].length;
+  out = `${out.slice(0, at)}${trailsGlslConsts()}\n${out.slice(at)}`;
+  return out;
+}
 
 export const FADE_FS = /* glsl */ `#version 300 es
 precision highp float;
