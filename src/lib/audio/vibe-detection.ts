@@ -9,6 +9,7 @@ export type Mood =
   | "flowing"
   | "transcendent";
 export type VisualizerMode =
+  | "sun-corona" | "sun-veil" | "sun-dawn" | "sun-halo" | "sun-wind" | "sun-aster" // SUN (lab 2026-10-12, promoted 2026-10-13)
   | "sparkler" | "resonant-rings" // kinetic EQ shaders (2026-09-30)
   | "comet-swarm" | "ember-fountain" | "firefly-field" | "ribbon-of-light" | "orbit-weaver" | "meteor-rain" | "murmuration" | "will-o-wisp" | "galaxy-seed" // lead-actor company (2026-09-30b)
   | "pendulum-dust" | "helix-stream" | "fracture-light" | "rose-window" | "cascade-veil" | "binary-stars" // company second six (2026-09-30c)

@@ -1,6 +1,6 @@
 import type { Journey, JourneyPhase } from "./types";
 import { applyAnalysisBounds } from "./analysis-phase-bounds";
-import { MODE_META } from "@/lib/shaders";
+import { MODE_META, LAB_SHADERS } from "@/lib/shaders";
 import { seededShuffle } from "./seeded-random";
 import { applyShaderPreferences } from "./adaptive-engine";
 import { getUserBlockedShaders, getUserDeletedShaders } from "@/lib/shader-preferences";
@@ -414,6 +414,7 @@ function pickJourneyShaders(
   const categoryMap = new Map<string, string[]>();
   for (const meta of MODE_META) {
     if (meta.category === "AI Imagery") continue;
+    if (LAB_SHADERS.has(meta.mode)) continue; // LAB shaders — audition only, never rotated
     if (blocklist.has(meta.mode)) continue;
     const list = categoryMap.get(meta.category) ?? [];
     list.push(meta.mode);
@@ -2295,8 +2296,8 @@ export function castJourneyShaders(journey: Journey): Journey | null {
   const phases = journey.phases.map((phase) => {
     const list = cast[phase.id];
     if (!list) return phase;
-    const allowed = list.filter((m) => !blocked.has(m));
-    return { ...phase, shaderModes: allowed.length > 0 ? allowed : [...list] };
+    const allowed = list.filter((m) => !blocked.has(m) && !LAB_SHADERS.has(m));
+    return { ...phase, shaderModes: allowed.length > 0 ? allowed : list.filter((m) => !LAB_SHADERS.has(m)) };
   });
   recordUsedShaders(phases.flatMap((p) => p.shaderModes));
   return { ...journey, phases };
@@ -2340,9 +2341,9 @@ export function regenerateJourneyShaders(
   // ghost is getting the treatment"): an uncast journey (a user's own, a
   // new import) rotates only through the vetted, brightness-normalized
   // pool. The mastered three keep their exact pools (pinned takes).
-  const allShaders = isMasteredJourneyLike(journey)
+  const allShaders = (isMasteredJourneyLike(journey)
     ? blockedFiltered
-    : blockedFiltered.filter((m) => VETTED_SHADER_POOL.has(m));
+    : blockedFiltered.filter((m) => VETTED_SHADER_POOL.has(m))).filter((m) => !LAB_SHADERS.has(m));
   const usedShaders = new Set<string>();
 
   // Base budgets for a ~5min track (30 total). Scale up for longer tracks

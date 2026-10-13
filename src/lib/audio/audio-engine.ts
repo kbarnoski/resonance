@@ -49,6 +49,8 @@ export function getAudioEngine(): AudioEngine {
 
   if (!audioElement) {
     audioElement = new Audio();
+    // LAB ONLY (?lab=1): the filming rig seeks into a journey via window.__resonanceAudio
+    try { if (typeof window !== "undefined" && new URLSearchParams(location.search).get("lab") === "1") (window as unknown as { __resonanceAudio?: HTMLAudioElement }).__resonanceAudio = audioElement; } catch { /* no-op */ }
     audioElement.crossOrigin = "anonymous";
     audioElement.preload = "auto";
   }

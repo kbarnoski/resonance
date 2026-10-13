@@ -9,6 +9,7 @@ import type { SoulId } from "@/lib/particles/souls";
 import { PARTICLE_LEADS } from "./particle-lead";
 import { PARTICLE_PROFILES } from "./particle-profiles.generated";
 import { TRAMOKYO_MAIN } from "./installation-sequence";
+import { conductPhrases, PHRASE_LAWS, PHRASE_LOCKED_JOURNEYS, type PhraseTimeline } from "@/lib/particles/phrase-conductor";
 import { createLoopMemory, planCast, chooseNext, noteForm, recordUsage, blossomAllowed, previousJourney, type LoopMemory } from "./particle-rotation";
 
 export interface PlayLog { journeyId: string; name: string; mastered: boolean; lead: SoulId | null; forms: { soul: SoulId; sec: number }[] }
@@ -18,7 +19,10 @@ export function loopOrder(): string[] {
   return TRAMOKYO_MAIN.sets.flatMap((s) => s.journeyIds).filter((id) => PARTICLE_LEADS[id]);
 }
 
-export function replayLoop(order: readonly string[] = loopOrder(), loops = 2, mem: LoopMemory = createLoopMemory()): PlayLog[] {
+/** `phrase`: the phrase conductor's form events (phrase-conductor.ts) time the
+ *  evolving forms instead of the ~13.5 s clock (never the locked journeys).
+ *  Off (default) = the replay exactly as before. */
+export function replayLoop(order: readonly string[] = loopOrder(), loops = 2, mem: LoopMemory = createLoopMemory(), opts: { phrase?: boolean } = {}): PlayLog[] {
   const out: PlayLog[] = [];
   for (let l = 0; l < loops; l++) for (const id of order) {
     const base = PARTICLE_LEADS[id];
@@ -34,6 +38,10 @@ export function replayLoop(order: readonly string[] = loopOrder(), loops = 2, me
     for (const w of cast.windows) ev.push({ t: w.start, soul: w.soul });
     ev.sort((a, b) => a.t - b.t);
     const end = D - 17; // the closing emblem owns the end
+    const prof = PARTICLE_PROFILES[id];
+    const tl = opts.phrase && prof && !base.mastered && !PHRASE_LOCKED_JOURNEYS.has(id)
+      ? conductPhrases({ ...prof, phaseBounds: pbs }, { journeyId: id, formChanges: cast.windows.map((w) => w.start) })
+      : null;
     const log: PlayLog = { journeyId: id, name: PARTICLE_PROFILES[id]?.name ?? id, mastered: base.mastered, lead: null, forms: [] };
     const recent: SoulId[] = [];
     let blossomShown = false, cycleIdx = 0, oldIdx = 0;
@@ -53,7 +61,7 @@ export function replayLoop(order: readonly string[] = loopOrder(), loops = 2, me
     while (k < ev.length && ev[k].t <= 16) k++;
     while (t < end) {
       const nextFixed = k < ev.length ? ev[k].t : Infinity;
-      const nt = Math.min(t + 13.5, nextFixed, end);
+      const nt = Math.min(tl ? nextPhraseChange(tl, t, curAt) : t + 13.5, nextFixed, end);
       if (nt >= end) break;
       if (nt === nextFixed) { show(ev[k].soul, nt); k++; }
       else {
@@ -73,6 +81,13 @@ export function replayLoop(order: readonly string[] = loopOrder(), loops = 2, me
     out.push(log);
   }
   return out;
+}
+
+/** The next phrase-conducted change after t: a form / refigure event once the
+ *  current form has held ≥ 10 s, else the layer's fallback clock (13.5 × 2.2). */
+export function nextPhraseChange(tl: PhraseTimeline, t: number, curAt: number): number {
+  const e = tl.events.find((x) => (x.action === "form" || x.action === "refigure") && x.t > t && x.t - curAt >= PHRASE_LAWS.MIN_FORM_HOLD_SEC);
+  return Math.min(e ? e.t : Infinity, Math.max(t, curAt) + 13.5 * 2.2);
 }
 
 export function shares(logs: PlayLog[]): Map<SoulId, number> {

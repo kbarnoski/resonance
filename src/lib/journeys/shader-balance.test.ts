@@ -12,6 +12,7 @@ import {
   SHADER_LOOP_CAP, SHADER_NAMED_CAPS, shaderLoopCap, AMBER_SHARE_MAX, isAmberShader, SHADER_BANNED_EVERYWHERE,
   FIRST_LIGHT_ID, GRASSHOPPER_ID, BATH_ID, SURROUNDED_BY_LIGHT_IDS, SHADER_JOURNEY_BANS, SHADER_JOURNEY_MUSTS,
   LIGHT_FAVOURED, LIGHT_JOURNEY_IDS, KIN_BORROW_AVOID, SECONDS_PER_VOICE,
+  SUN_SHADERS, SUN_SHADER_PINS,
 } from "./shader-balance";
 import type { Journey } from "./types";
 
@@ -79,6 +80,51 @@ describe("shader balance across the kiosk loop", () => {
     // the parked takes (19, 3) carry it in the pack (apply step's `ensure`)
     const apply = read("scripts/shader-recast-2026-10-13.expansion-casts.json") as { ensure: Record<string, { musts: string[] }> };
     for (const id of SURROUNDED_BY_LIGHT_IDS.filter((x) => !TRAMOKYO_SETLIST.includes(x))) expect(apply.ensure[id]?.musts, id).toContain("seraph");
+  });
+
+  it("SUN shaders (promoted 2026-10-13): each in 2-3 light journeys, <= 2 per journey, never in two neighbouring loop journeys", () => {
+    const light = [...new Set([...LIGHT_JOURNEY_IDS, ...SURROUNDED_BY_LIGHT_IDS])];
+    // loop journeys from their casts; the parked takes (19, 3) from the pack
+    // where it exists, else from the 2026-10-13b apply step's `ensure`
+    const packPath = join(process.cwd(), "public/tramokyo-pack/data/journeys.json");
+    const pack = existsSync(packPath) ? JSON.parse(readFileSync(packPath, "utf8")) as { id: string; phases: { shaderModes: string[] }[] }[] : null;
+    const sunApply = read("scripts/shader-recast-2026-10-13b.expansion-casts.json") as { ensure: Record<string, { musts: string[] }> };
+    const sunsOf = (id: string): string[] => {
+      const j = loop.find((x) => x.id === id);
+      if (j) return SUN_SHADERS.filter((m) => j.modes.has(m));
+      const row = pack?.find((r) => r.id === id);
+      const modes = new Set(row ? row.phases.flatMap((p) => p.shaderModes ?? []) : sunApply.ensure[id]?.musts ?? []);
+      return SUN_SHADERS.filter((m) => modes.has(m));
+    };
+    const where = new Map<string, string[]>(SUN_SHADERS.map((m) => [m, []]));
+    for (const id of light) {
+      const suns = sunsOf(id);
+      expect(suns.length, id).toBeLessThanOrEqual(2);
+      expect([...suns].sort(), id).toEqual([...(SUN_SHADER_PINS[id] ?? [])].sort());
+      for (const m of suns) where.get(m)!.push(id);
+    }
+    for (const [m, ids] of where) {
+      expect(ids.length, `${m} in ${ids.join(", ")}`).toBeGreaterThanOrEqual(2);
+      expect(ids.length, `${m} in ${ids.join(", ")}`).toBeLessThanOrEqual(3);
+    }
+    // light journeys only: no other loop journey, mastered take or featured cast holds one
+    for (const j of loop) if (!light.includes(j.id)) for (const m of SUN_SHADERS) expect(j.modes.has(m), `${j.name}: ${m}`).toBe(false);
+    for (const j of featured.journeys) if (!light.includes(j.id)) for (const m of SUN_SHADERS) expect(Object.values(j.cast).flat(), j.name).not.toContain(m);
+    // neighbours in the loop (and on the March Light path: Surrounded By Light / Afterglow) never share one
+    for (let i = 0; i < loop.length; i++) {
+      const a = loop[i], b = loop[(i + 1) % loop.length];
+      for (const m of SUN_SHADERS) expect(a.modes.has(m) && b.modes.has(m), `${a.name} / ${b.name}: ${m}`).toBe(false);
+    }
+    const ml = ["f7b01537-af1b-4ade-b788-f21c6565b057", "fb56b19e-ee23-43c6-ad41-5714e7969aad"].map(sunsOf);
+    expect(ml[0].filter((m) => ml[1].includes(m))).toEqual([]);
+    // Seraph and Aureole are never displaced by a sun
+    expect(loop.find((j) => j.id === FIRST_LIGHT_ID)!.modes.has("aureole")).toBe(true);
+    for (const id of [FIRST_LIGHT_ID, ...SURROUNDED_BY_LIGHT_IDS]) {
+      const j = loop.find((x) => x.id === id);
+      const row = pack?.find((r) => r.id === id);
+      if (j) expect(j.modes.has("seraph"), j.name).toBe(true);
+      else if (row) expect(row.phases.some((p) => p.shaderModes.includes("seraph")), id).toBe(true);
+    }
   });
 
   it("Bath never casts ember or parsec (\"no ember 3d plane moving shader in bath\")", () => {

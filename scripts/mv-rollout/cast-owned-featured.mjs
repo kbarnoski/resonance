@@ -113,7 +113,7 @@ for (const j of SETJ) {
   const pos = L.indexOf(j.id);
   const builtin = J.getJourney(j.id);
   const bans = new Set([...(builtin?.blockedShaders ?? []), ...(row.realm_id ? J.REALM_SHADER_BLOCKLIST[row.realm_id] ?? [] : [])]);
-  const POOL = [...VETTED_SHADER_POOL].filter((m) => vet.pool.includes(m) && !J.GLOBAL_SHADER_BLOCKLIST.includes(m) && !J.PICKTIME_SHADER_BLOCKLIST.has(m) && !REJ.has(m) && !KLAB.has(m) && !GEOMETRY.has(m) && !SH.MODES_3D.has(m) && !bans.has(m));
+  const POOL = [...VETTED_SHADER_POOL].filter((m) => !BAL.SUN_SHADER_SET.has(m) && vet.pool.includes(m) && !J.GLOBAL_SHADER_BLOCKLIST.includes(m) && !J.PICKTIME_SHADER_BLOCKLIST.has(m) && !REJ.has(m) && !KLAB.has(m) && !GEOMETRY.has(m) && !SH.MODES_3D.has(m) && !bans.has(m));
   // forbidden by spacing: same-set journeys closer than OWNED_DIST, album path closer than floor(len/2)
   const ban = new Set();
   L.forEach((id, k) => { if (k !== pos && SET_OF[k] === SET_OF[pos] && Math.abs(k - pos) < OWNED_DIST) for (const m of modesOf(id)) ban.add(m); });

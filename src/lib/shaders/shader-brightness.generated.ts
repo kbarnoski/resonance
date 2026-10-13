@@ -127,6 +127,12 @@ export const SHADER_MEAN_LUMA: Readonly<Record<string, number>> = {
   "stamen": 8.9,
   "starfield": 3.8,
   "stigmata": 51.3,
+  "sun-aster": 3,
+  "sun-corona": 5.2,
+  "sun-dawn": 4.3,
+  "sun-halo": 3.1,
+  "sun-veil": 11.8,
+  "sun-wind": 2.3,
   "supernova": 19.8,
   "swell": 91.8,
   "symbiosis": 16,
@@ -149,7 +155,10 @@ export const SHADER_MEAN_LUMA: Readonly<Record<string, number>> = {
 // The vetted pool (shader-vetting.json "pool": passes the wash / floor / flash
 // budgets) — the journey engine borrows KINDRED shaders from it once a
 // journey's own roster is spent (Karel 2026-10-12: "you used that web shader
-// over and over").
+// over and over"). The SUN shaders (promoted 2026-10-13) are in the vetting
+// pool but deliberately NOT here: they reach the screen only where a light
+// journey's cast pins them (SUN_SHADER_PINS), and adding them would shift
+// the mastered takes' deterministic kin picks (Snowflake / Ghost frozen).
 export const VETTED_POOL: readonly string[] = [
   "astral",
   "aureole",

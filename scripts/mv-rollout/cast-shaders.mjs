@@ -89,7 +89,7 @@ for (const m of castsTs.matchAll(/^ {2}"([^"]+)": \{ name: "([^"]*)", cast: (\{.
 const REJ = new Set(["chakra", "redshift", "gnosis", "biolume", "coral", "r3-balllightning", "sparkler"]);
 const MASTERED_LEADS = new Set(["sparkler", "comet-swarm", "helix-stream", "ember-fountain", "galaxy-seed"]);
 const LOW = new Set(J.LOW_TIER_BLOCKED_SHADERS);
-const POOL = vet.pool.filter((m) => !J.GLOBAL_SHADER_BLOCKLIST.includes(m) && !J.PICKTIME_SHADER_BLOCKLIST.has(m) && !REJ.has(m) && !MASTERED_LEADS.has(m));
+const POOL = vet.pool.filter((m) => !BAL.SUN_SHADER_SET.has(m) && !J.GLOBAL_SHADER_BLOCKLIST.includes(m) && !J.PICKTIME_SHADER_BLOCKLIST.has(m) && !REJ.has(m) && !MASTERED_LEADS.has(m));
 const V = vet.verdicts;
 const eff = (m) => V[m].mean * (V[m].gain ?? 1);
 

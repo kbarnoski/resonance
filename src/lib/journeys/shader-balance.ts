@@ -76,13 +76,42 @@ export const SHADER_JOURNEY_BANS: Readonly<Record<string, readonly string[]>> = 
   [BATH_ID]: ["ember", "parsec"],
 };
 
+export const AFTERGLOW_ID = "fb56b19e-ee23-43c6-ad41-5714e7969aad";
+
+/** The SUN shaders (lab 2026-10-12, promoted 2026-10-13 — Karel kept all
+ *  six; seraph is their bar). They belong to the light journeys only: no
+ *  general recast or cap/amber repair may place one anywhere else. */
+export const SUN_SHADERS: readonly string[] = ["sun-corona", "sun-veil", "sun-dawn", "sun-halo", "sun-wind", "sun-aster"];
+export const SUN_SHADER_SET: ReadonlySet<string> = new Set(SUN_SHADERS);
+
+/** Where each sun shader is cast — PINNED like seraph. Each sun shader in
+ *  2-3 light journeys, at most 2 per journey; the March Light pair that sits
+ *  two apart in the loop and on the album path (Surrounded By Light f7b01537
+ *  / Afterglow) shares none. Order matters: the rebalancer places the first
+ *  one first, and a dim one (halo / wind) may land in a dark sparse
+ *  interlude where a brighter one (veil, mean 11.8) should not. */
+export const SUN_SHADER_PINS: Readonly<Record<string, readonly string[]>> = {
+  [FIRST_LIGHT_ID]: ["sun-dawn", "sun-aster"], // dawn fan + aster: first light
+  "f7b01537-af1b-4ade-b788-f21c6565b057": ["sun-halo", "sun-wind"], // Surrounded By Light (loop 5, March Light set)
+  [AFTERGLOW_ID]: ["sun-veil", "sun-corona"], // veiled sun, breathing corona (loop 7, March Light set)
+  "69ac68d7-30c9-4c1e-bb0e-1727fb5643f3": ["sun-corona", "sun-halo"], // Surrounded By Light (loop 13)
+  "6251d682-b5e4-46b6-98cf-ceb6b609a7bc": ["sun-wind", "sun-veil"], // Surrounded by Light 6
+  "21448504-ec00-48c3-8b0a-c92da2cf216a": ["sun-dawn", "sun-corona"], // Surrounded by Light 19 (parked)
+  "06b07942-bf94-4513-8e71-ef00508ced3e": ["sun-aster", "sun-veil"], // Surrounded by Light 3 (parked)
+};
+
 /** Shaders a specific journey must cast — PINNED, never swapped out.
  *  First Light: Aureole (2026-10-12) + seraph; seraph ALWAYS in First Light
- *  and every Surrounded by Light journey (Karel 2026-10-13). */
-export const SHADER_JOURNEY_MUSTS: Readonly<Record<string, readonly string[]>> = {
-  [FIRST_LIGHT_ID]: ["seraph", "aureole"],
-  ...Object.fromEntries(SURROUNDED_BY_LIGHT_IDS.map((id) => [id, ["seraph"]])),
-};
+ *  and every Surrounded by Light journey (Karel 2026-10-13); the sun
+ *  shaders where SUN_SHADER_PINS places them. */
+export const SHADER_JOURNEY_MUSTS: Readonly<Record<string, readonly string[]>> = (() => {
+  const musts: Record<string, string[]> = {
+    [FIRST_LIGHT_ID]: ["seraph", "aureole"],
+    ...Object.fromEntries(SURROUNDED_BY_LIGHT_IDS.map((id) => [id, ["seraph"]])),
+  };
+  for (const [id, suns] of Object.entries(SUN_SHADER_PINS)) musts[id] = [...(musts[id] ?? []), ...suns];
+  return musts;
+})();
 
 /** The light-ray shaders Karel favours ("dope"). */
 export const LIGHT_FAVOURED: readonly string[] = ["zenith", "seraph"];
@@ -92,7 +121,7 @@ export const LIGHT_JOURNEY_IDS: readonly string[] = [
   FIRST_LIGHT_ID,
   "69ac68d7-30c9-4c1e-bb0e-1727fb5643f3", // Surrounded By Light (March Light)
   "f7b01537-af1b-4ade-b788-f21c6565b057", // Surrounded By Light (album)
-  "fb56b19e-ee23-43c6-ad41-5714e7969aad", // Afterglow
+  AFTERGLOW_ID, // Afterglow
   "6251d682-b5e4-46b6-98cf-ceb6b609a7bc", // Surrounded by Light 6 (Expansion)
 ];
 

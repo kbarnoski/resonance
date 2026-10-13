@@ -43,6 +43,11 @@ void main() {
 
 const FRAG = `
 precision mediump float;
+#ifdef GL_FRAGMENT_PRECISION_HIGH
+#define HP highp
+#else
+#define HP mediump
+#endif
 varying vec2 vUv;
 uniform sampler2D uImgA; uniform sampler2D uDepthA;
 uniform sampler2D uImgB; uniform sampler2D uDepthB;
@@ -54,20 +59,75 @@ uniform vec2 uScaleB; uniform vec2 uOffB;
 // 8% overscan gives the camera room to move without CLAMP_TO_EDGE smear.
 const float OVERSCAN = 1.08;
 
-vec3 sampleLayer(sampler2D img, sampler2D dep, vec2 scale, vec2 off) {
+vec3 sampleLayer(sampler2D img, sampler2D dep, vec2 scale, vec2 off, out float dOut) {
   vec2 uv0 = (vUv - 0.5) / OVERSCAN + 0.5;
   vec2 uv = uv0 * scale + off;
   // Base camera move + depth differential (near slides more than far).
   float d = texture2D(dep, uv + uCam * 0.5).r;
+  dOut = d;
   vec2 duv = uCam * (0.55 + (d - 0.5) * 0.9);
   return texture2D(img, uv + duv).rgb;
 }
 
+// SCENE MOTES (particle upgrade v2, 2026-10-13; uDust = 0 is the show build):
+// dust adrift INSIDE the picture — three depth planes of motes that ride the
+// same parallax camera as the still, hide behind nearer material (the depth
+// map), and are lit only where the scene holds light. Near planes are larger
+// soft bokeh, far planes fine points; they rise slowly and twinkle.
+uniform float uDust;
+uniform float uTime;
+uniform vec2 uRes;
+float h21(HP vec2 p) { p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
+vec3 sceneMotes(vec3 col, float dScene) {
+  float lum = dot(col, vec3(0.299, 0.587, 0.114));
+  float light = smoothstep(0.1, 0.55, lum);
+  if (light <= 0.0) return vec3(0.0);
+  HP float asp = uRes.x / max(uRes.y, 1.0);
+  float acc = 0.0;
+  for (int i = 0; i < 3; i++) {
+    float fi = float(i);
+    float near = 0.22 + 0.3 * fi;
+    float cells = 30.0 - 8.0 * fi;
+    // the plane slides with the camera exactly as scene material at its depth does
+    HP vec2 q = vUv + uCam * (0.55 + (near - 0.5) * 0.9) * OVERSCAN;
+    HP vec2 p = vec2(q.x * asp, q.y) * cells;
+    p.y -= uTime * (0.05 + 0.08 * near) * cells * 0.06;
+    p.x += sin(uTime * 0.07 + fi * 2.1 + q.y * 3.0) * 0.35;
+    HP vec2 id = floor(p);
+    vec2 f = fract(p);
+    float r = h21(id + fi * 17.0);
+    if (r < 0.38) {
+      vec2 c = vec2(h21(id + 7.1 + fi), h21(id + 3.3 + fi)) * 0.64 + 0.18;
+      float rad = (0.05 + 0.06 * h21(id + 11.0)) * (0.7 + 0.7 * near);
+      float soft = mix(0.25, 0.9, near);
+      float m = 1.0 - smoothstep(rad * (1.0 - soft), rad, length(f - c));
+      float tw = 0.5 + 0.5 * sin(uTime * (0.35 + 1.1 * h21(id + 5.0)) + r * 40.0);
+      float vis = smoothstep(dScene - 0.05, dScene + 0.05, near);
+      acc += m * tw * vis * mix(1.0, 0.5, near);
+    }
+  }
+  vec3 tint = mix(vec3(1.0, 0.96, 0.88), col * 1.6 + 0.08, 0.45);
+  return tint * acc * light * uDust * 0.55;
+}
+
 void main() {
-  vec3 a = sampleLayer(uImgA, uDepthA, uScaleA, uOffA);
-  vec3 b = sampleLayer(uImgB, uDepthB, uScaleB, uOffB);
-  gl_FragColor = vec4(mix(a, b, uMix), 1.0);
+  float dA; float dB;
+  vec3 a = sampleLayer(uImgA, uDepthA, uScaleA, uOffA, dA);
+  vec3 b = sampleLayer(uImgB, uDepthB, uScaleB, uOffB, dB);
+  vec3 col = mix(a, b, uMix);
+  if (uDust > 0.0) col += sceneMotes(col, mix(dA, dB, uMix));
+  gl_FragColor = vec4(col, 1.0);
 }`;
+
+/** Scene motes strength for a journey (0 = off). On in the show since Karel's
+ *  keep (2026-10-13) for every journey but the mastered ones (their look is
+ *  locked); ?dust=0 turns them off. */
+const DUST_FLAG = (() => { try { return typeof location === "undefined" || new URLSearchParams(location.search).get("dust") !== "0"; } catch { return true; } })();
+const DUST_LOCKED = new Set(["first-snow", "ghost", "inferno"]);
+function sceneMotesFor(journeyId: string | undefined): number {
+  if (!DUST_FLAG || !journeyId || DUST_LOCKED.has(journeyId)) return 0;
+  return 1;
+}
 
 interface Slot {
   img: WebGLTexture;
@@ -272,7 +332,9 @@ function DepthParallaxLayerInner({
       imgA: U("uImgA"), depA: U("uDepthA"), imgB: U("uImgB"), depB: U("uDepthB"),
       mix: U("uMix"), cam: U("uCam"),
       scaleA: U("uScaleA"), offA: U("uOffA"), scaleB: U("uScaleB"), offB: U("uOffB"),
+      dust: U("uDust"), time: U("uTime"), res: U("uRes"),
     };
+    gl.uniform1f(u.dust, 0);
 
     sizeRef.current = { w: canvas.clientWidth, h: canvas.clientHeight };
     const ro = new ResizeObserver((es) => {
@@ -407,6 +469,11 @@ function DepthParallaxLayerInner({
       gl.activeTexture(gl.TEXTURE3); gl.bindTexture(gl.TEXTURE_2D, slotB.depth); gl.uniform1i(u.depB, 3);
       gl.uniform1f(u.mix, m);
       gl.uniform2f(u.cam, camX, camY);
+      {
+        const dust = sceneMotesFor(useAudioStore.getState().activeJourney?.id);
+        gl.uniform1f(u.dust, dust);
+        if (dust > 0) { gl.uniform1f(u.time, (performance.now() % 3_600_000) / 1000); gl.uniform2f(u.res, canvas.width, canvas.height); }
+      }
       const coverFit = (aspect: number): [number, number, number, number] => {
         const ca = w / Math.max(1, h);
         if (aspect > ca) { const sx = ca / aspect; return [sx, 1, (1 - sx) / 2, 0]; }
