@@ -71,6 +71,7 @@ import { LOOP_MEMORY, planCast, chooseNext, noteForm, recordUsage, blossomAllowe
 import { freshVariant, rememberDesign, RECENT_DESIGNS } from "@/lib/particles/form-variety";
 import { emblemEnvelope, imageSlotStep, underlayDue, EMBLEM_HANDOFF, type ImageSlot } from "@/lib/particles/image-follow";
 import type { JourneyFrame } from "@/lib/journeys/types";
+import { journeyResponse } from "@/lib/journeys/kinetic";
 
 export const budgetFor = () => TIER_BUDGET[getDeviceTier()] ?? TIER_BUDGET.medium;
 
@@ -1080,6 +1081,7 @@ export function ParticleLeadLayer({
     let flashTail = 0;
     let imgLoaded: "angel" | "emblem" | "moment" | "motif" | "echo" | null = null;
     let angelUvWarm = false;
+    const respK = journeyResponse({ id: journeyId, name: cast.name });
     let emblemFormAt = -1;
     let emblemSettledLogged = false;
     let angelPairWarm = false;
@@ -1611,7 +1613,9 @@ export function ParticleLeadLayer({
       // much more responsive (Karel 2026-10-06): 2.2× always, up to 3.8× alone on black
       // +20 % (Karel 2026-10-12: "bump up the responsiveness to the music by 20%"):
       // 2.64× always, up to the engine's 4× ceiling alone on black
-      engine.setReact(2.64 + 1.92 * veil);
+      // …and the vibe ladder (Karel 2026-10-13: solo piano noticeable, the intense
+      // tracks full on) — the locked journeys keep their mastered response
+      engine.setReact((2.64 + 1.92 * veil) * (cast.mastered ? 1 : 0.8 + 0.2 * respK));
 
       // colour: harmony per section + a drift on swells (hue/sat only — luma-safe)
       const st = engine.stats();

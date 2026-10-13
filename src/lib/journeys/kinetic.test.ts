@@ -128,21 +128,22 @@ describe("steady-clock shaders (Karel 2026-10-11: graphic swirls must not lurch 
 });
 
 describe("per-journey response (Karel 2026-10-12: the big energy tracks respond more)", () => {
-  it("a ladder: piano ×1, far out ×1.1, ambient ×1.2, groove ×1.35, big ×1.6 — slew unchanged, breath under the zoom ceiling, never freezes", async () => {
+  it("a ladder (steeper 2026-10-13): piano ×1.3, far out ×1.5, ambient ×1.7, groove ×2, big ×2.5 (Snowflake + Ghost ×1) — slew unchanged, breath under the zoom ceiling, never freezes", async () => {
     const { journeyResponse, boostedProfile, BAND_PROFILES } = await import("./kinetic");
-    expect(journeyResponse({ id: "6ee9f014-8203-437c-b05c-9d8bd0de9d3e" })).toBe(1.6);
-    expect(journeyResponse({ id: "84a82478-f0f2-4c49-b800-b4fe722f1df5" })).toBe(1.35);
-    expect(journeyResponse({ id: "8ca69280-944c-4ccb-9f7f-692f3f7f7a6f" })).toBe(1.2);
-    expect(journeyResponse({ id: "cosmic-drift" })).toBe(1.1);
-    expect(journeyResponse({ id: "87e106f9-4d74-4886-b944-fd625a827b02" })).toBe(1);
+    expect(journeyResponse({ id: "6ee9f014-8203-437c-b05c-9d8bd0de9d3e" })).toBe(2.5);
+    expect(journeyResponse({ id: "84a82478-f0f2-4c49-b800-b4fe722f1df5" })).toBe(2);
+    expect(journeyResponse({ id: "8ca69280-944c-4ccb-9f7f-692f3f7f7a6f" })).toBe(1.7);
+    expect(journeyResponse({ id: "cosmic-drift" })).toBe(1.5);
+    expect(journeyResponse({ id: "87e106f9-4d74-4886-b944-fd625a827b02" })).toBe(1.3);
+    expect(journeyResponse({ id: "ghost" })).toBe(1);
     expect(journeyResponse({ id: "first-snow" })).toBe(1);
     for (const b of ["bass", "mid", "treble"] as const) {
-      const p = boostedProfile(BAND_PROFILES[b], 1.6), o = BAND_PROFILES[b];
-      expect(p.gain).toBeCloseTo(o.gain * 1.6, 6);
+      const p = boostedProfile(BAND_PROFILES[b], 2.5), o = BAND_PROFILES[b];
+      expect(p.gain).toBeCloseTo(o.gain * 2.5, 6);
       expect(p.decay).toBe(o.decay);
       expect(p.scale).toBeLessThan(0.05);
       expect(p.rateLo).toBeGreaterThan(0);
-      expect(p.rateHi).toBeCloseTo(1 + (o.rateHi - 1) * 1.6, 6);
+      expect(p.rateHi).toBeCloseTo(1 + (o.rateHi - 1) * 2.5, 6);
     }
   });
 });

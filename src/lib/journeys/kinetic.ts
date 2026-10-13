@@ -198,7 +198,10 @@ export function isSteadyClockShader(mode?: string | null): boolean {
 // …a LADDER (Karel 2026-10-12: "the solo piano ones get the base setting, then
 // the next level gets more and so on such that the intense stuff is highly
 // reactive") — the Rise Above vibe tiers. Journeys outside RA stay at base.
-const FAR_OUT = 1.1, AMBIENT = 1.2, GROOVE = 1.35, BIG = 1.6;
+// steeper (Karel 2026-10-13: "the responsiveness for even the opening solo piano
+// set should be more noticeable and then increasing such that the highest intense
+// set type of tracks get full on intensity of audio responsiveness")
+const SOLO = 1.3, FAR_OUT = 1.5, AMBIENT = 1.7, GROOVE = 2.0, BIG = 2.5;
 export const JOURNEY_RESPONSE: Readonly<Record<string, number>> = {
   // solo piano — base (×1): First Light, Bath, The First (Expanded), Testimony 3,
   // Grasshopper, Yellow Bird, The Summit, Welcome Home, Afterglow, Realized
@@ -253,10 +256,12 @@ const FAMILY_RESPONSE: ReadonlyArray<[RegExp, number]> = [
   [/^(tranquility|torraine|northern plane|yellow bird|night wind|amboise|rise|singular|nothing|never forget|redwoods sway)\s+\d+[a-z]?$/i, AMBIENT],
 ];
 export function journeyResponse(journey?: { id?: string | null; name?: string | null } | null): number {
+  // Snowflake + Ghost keep their mastered response
+  if (journey?.id === "first-snow" || journey?.id === "ghost") return 1;
   if (journey?.id && JOURNEY_RESPONSE[journey.id]) return JOURNEY_RESPONSE[journey.id];
   const name = (journey?.name ?? "").trim();
   for (const [re, k] of FAMILY_RESPONSE) if (re.test(name)) return k;
-  return 1;
+  return SOLO;
 }
 /** A band profile scaled by a journey's response multiplier. */
 export function boostedProfile(prof: BandProfile, k: number): BandProfile {
