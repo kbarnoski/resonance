@@ -12,7 +12,7 @@ import { createSeededRandom } from "@/lib/journeys/seeded-random";
 import { getTierProfile } from "@/lib/audio/device-tier";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { glitchRecord, glitchFlush } from "@/lib/journeys/glitch-recorder";
-import { morphShaderOn, morphShaderLeadSec, morphShaderDue } from "@/lib/journeys/morph-shader";
+import { morphShaderOn, morphShaderTiming, morphShaderDue } from "@/lib/journeys/morph-shader";
 import { isVideoActive, markVideoActive, markJourneyBoundary, inBoundarySettle, emitClipEnded, emitClipStarted } from "@/lib/journeys/video-activity";
 import { isWhisperImageryName, imageryDprCeil } from "@/lib/journeys/kinetic";
 import {
@@ -1134,6 +1134,7 @@ export function AiImageLayer({
           // primary layer at opacity 0, so its arrival under the playing
           // morph costs no compile. Scripted takes → no plan.
           const morphPlan = travel && morphShaderOn() ? getJourneyEngine().planMorphShader() : null;
+          const morphStagedAt = performance.now();
           let morphLanded = false;
           const v = document.createElement("video");
           v.muted = true;
@@ -1154,16 +1155,18 @@ export function AiImageLayer({
             if (journeyEpochRef.current !== epoch) { releaseMedia(v); return; } // stale journey (C3)
             if (!pushImage(v)) { releaseMedia(v); dropPlan(); onRejected?.(); return; } // stack full (C2)
             if (morphPlan) {
-              // Land the staged shader ~3-4 s before the end frame (lead
-              // sized from the fade the visualizer will run) so it is
-              // fully in before the end frame and carries through the dwell.
-              const leadSec = morphShaderLeadSec(morphPlan.fadeMs, v.duration);
+              // Land the staged shader EARLY (Karel 2026-10-13: "they are
+              // still coming in but should already be there"): ~7 s before
+              // the end, or as the ~5 s clip starts, with a fade sized so it
+              // is FULLY in ≥ 1.5 s before the end frame (morphShaderTiming).
+              const timing = morphShaderTiming(morphPlan.fadeMs, v.duration, (performance.now() - morphStagedAt) / 1000);
+              const leadSec = timing.leadSec;
               const onTime = () => {
                 if (morphLanded || journeyEpochRef.current !== epoch) { v.removeEventListener("timeupdate", onTime); return; }
                 const remain = v.duration - v.currentTime;
                 if (!morphShaderDue(remain, leadSec)) return;
                 v.removeEventListener("timeupdate", onTime);
-                morphLanded = getJourneyEngine().landMorphShader(remain) != null;
+                morphLanded = getJourneyEngine().landMorphShader(remain, timing.fadeMs) != null;
               };
               v.addEventListener("timeupdate", onTime);
             }
