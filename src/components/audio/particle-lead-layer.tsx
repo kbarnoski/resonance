@@ -79,6 +79,7 @@ import { bridgeEnabled, createBridgeState, nextBridgeBoundary, onBridgeHint, ste
 import { sampleBridgeStill, type BridgeStill } from "@/lib/particles/bridge-sampler";
 import { mastersFeaturesEnabled } from "@/lib/particles/mastered-features";
 import { createGravityGlide, describeGravity, gravityActive, gravityEnabled, lightsOfStill, packGravity, retargetGravity, sampleGravity, gravityStrengthFor } from "@/lib/particles/light-gravity";
+import { TwoHands, handsAllowed, handsEnabled, handsGain, handsSessionStore, handsStrength, HANDS_TUNING, type HandsVoices } from "@/lib/particles/two-hands";
 import { conductCurrents, currentAt, createTide, tideStep, withTide, currentsEnabled, clearestRelease, CURRENTS_LOCKED_JOURNEYS, type CurrentTimeline } from "@/lib/particles/harmonic-currents";
 import { conductBreath, breathAt, breathEnabled, breathSummary, type BreathTimeline } from "@/lib/particles/breath";
 
@@ -741,7 +742,21 @@ export function ParticleLeadLayer({
     // tempo; these ripples are local, eased in, and gated below). Never for the
     // mastered takes (Snowflake, Ghost); compiled out of the engine when off.
     const scoreOn = engine.scoreCompiled() && livingScoreEnabled(undefined, scoreSessionStore()) && (mastersFeaturesEnabled() || (!cast.mastered && !SCORE_LOCKED_JOURNEYS.has(journeyId)));
-    const onsetDet = scoreOn ? new OnsetDetector() : null;
+    // TWO HANDS (?hands=1, off by default — two-hands.ts): the left hand (low
+    // register) swells the far layer of the free motes, the right hand (high
+    // register) stirs the near one — call and response. Every journey,
+    // Snowflake + Ghost too (Karel 2026-10-13), each at its own strength;
+    // images / emblems untouched (gated by the image form + presence and a
+    // zero gain while one is worn). Compiled out of the engine when off.
+    const handsOn = engine.handsCompiled() && handsAllowed(journeyId, handsEnabled(undefined, handsSessionStore()));
+    const handsK = handsStrength(journeyId);
+    const hands = handsOn ? new TwoHands() : null;
+    const handsOut: HandsVoices = { low: 0, high: 0, strata: 0 };
+    let handsGainTarget = 0; // set by the tick (presence × ladder × held / busy)
+    engine.setHands(null); // a fresh journey never inherits the last one's hands (glides out ~0.5 s)
+    if (hands) glitchRecord("particle-hands", `on: ${journeyId} strength ${handsK} split ${HANDS_TUNING.SPLIT}${cast.mastered ? " (mastered)" : ""}`);
+    // one onset detector feeds both the score and the hands
+    const onsetDet = scoreOn || hands ? new OnsetDetector() : null;
     const score = scoreOn ? new LivingScore(Array.from(journeyId).reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, 7)) : null;
     let scoreGainTarget = 0; // set by the tick (presence × ladder × held / busy)
     if (score) glitchRecord("particle-score", `on: ${journeyId}`);
@@ -761,9 +776,14 @@ export function ParticleLeadLayer({
         }
       }
       proc.step(dt);
-      if (score && onsetDet) {
+      if (onsetDet) {
         const on = onsetDet.push(fresh ? bytes : null, dt);
-        engine.setScore(score.packed, score.step(dt, on, scoreGainTarget));
+        if (score) engine.setScore(score.packed, score.step(dt, on, scoreGainTarget));
+        if (hands) {
+          const v = hands.step(fresh ? bytes : null, on, dt, handsGainTarget);
+          handsOut.low = v.low * handsK; handsOut.high = v.high * handsK; handsOut.strata = v.strata * handsK;
+          engine.setHands(handsOut);
+        }
       }
       return calmFrame(proc.frame(), dt);
     };
@@ -1708,6 +1728,7 @@ export function ParticleLeadLayer({
       // the living score: subtle on solo piano, fuller up the ladder; silent with
       // the field, held back while any image / emblem / motif form is worn and
       // inside the one-big-change busy zone (the score itself slews this ~0.6 s)
+      if (hands) handsGainTarget = handsGain({ respK, shown, held: imgLoaded || dissolving || motifAt >= 0 || flashP > 0.05 ? 1 : 0, busy: busyNow });
       if (score) scoreGainTarget = scoreGain({ respK, shown, held: imgLoaded || dissolving || motifAt >= 0 || flashP > 0.05 ? 1 : 0, busy: busyNow });
       // FORM TIMING: the hold clock (flag off: exactly `held > formDur`), or the
       // phrase conductor's next section / phrase event once the form has held ≥ 10 s
@@ -2025,6 +2046,7 @@ export function ParticleLeadLayer({
       setParticlePresent(false);
       window.removeEventListener("resize", onResize);
       sh.hooks.audio = null;
+      engine.setHands(null); // glides out (a force only — never a jump)
       offStart();
       offDisable();
       offBridgeHint();

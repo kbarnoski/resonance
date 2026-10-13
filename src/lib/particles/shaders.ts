@@ -13,6 +13,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 import { SCORE_TUNING } from "./living-score";
 import { BREATH_LAWS } from "./breath";
+import { HANDS_TUNING } from "./two-hands";
 
 export const QUAD_VS = /* glsl */ `#version 300 es
 const vec2 P[3] = vec2[3](vec2(-1.0,-1.0), vec2(3.0,-1.0), vec2(-1.0,3.0));
@@ -1859,17 +1860,65 @@ export const SCORE_FORCE_GLSL = /* glsl */ `  // THE LIVING SCORE: each note a s
 
 `;
 
+// ── TWO HANDS (two-hands.ts) ─────────────────────────────────────────────────
+// Compiled in ONLY when the flag is on (`?hands=1`): off, the simulation source
+// is byte-for-byte the show build's. Every mote belongs (softly) to one of two
+// layers — a stable per-mote hash, leaned by its depth: the LEFT HAND's deep
+// layer (far, broad lazy swells rolling through on the hands' own steady clock)
+// or the RIGHT HAND's fine layer (near the camera, delicate quick-but-smooth
+// eddies). Each layer's force is scaled by its hand's eased activity, so when
+// the melody answers the bass the motion passes from far to near. FORCE ONLY —
+// no size, alpha or colour channel; never a position / velocity set; images
+// and emblems untouched (gated by the image form and presence); the
+// transition acceleration cap below still applies.
+const glf = (x: number) => (Number.isInteger(x) ? x.toFixed(1) : String(x));
+const H = HANDS_TUNING;
+export const HANDS_UNIFORMS_GLSL = /* glsl */ `// TWO HANDS (two-hands.ts): x left-hand drive · y right-hand drive (× soul freedom)
+// · z the hands' own steady clock (s) · w depth sorting (presence × freedom)
+uniform vec4 uHands;
+uniform vec3 uHandsEye;    // unit vector toward the camera
+uniform vec3 uHandsRight;  // camera right
+`;
+export const HANDS_FORCE_GLSL = /* glsl */ `  // TWO HANDS: the left hand swells the far layer, the right hand stirs the near one
+  float handsG = (1.0 - uImgForm) * (1.0 - uImgShow);
+  if (handsG > 0.001 && uHands.x + uHands.y + uHands.w > 0.001) {
+    vec3 hE = uHandsEye, hR = uHandsRight, hU = normalize(cross(hE, hR));
+    float hT = uHands.z;
+    float hdc = dot(p, hE);
+    float hNear = clamp(hdc * 0.3 + 0.5, 0.0, 1.0);
+    float hBias = (hash11(s.a * 251.7 + 3.1) - 0.5) * ${glf(2 * H.HASH_W)} + (hNear - 0.5) * ${glf(2 * H.DEPTH_W)};
+    float hHi = smoothstep(${glf(-H.MEMBER_SOFT)}, ${glf(H.MEMBER_SOFT)}, hBias);
+    float hLo = 1.0 - hHi;
+    // LEFT HAND — long, slow waves rolling through the deep layer
+    float hw1 = sin(dot(p, hR) * ${glf(H.LOW_K)} + hdc * 0.25 - hT * ${glf(H.LOW_W)} + 1.3);
+    float hw2 = sin(dot(p, hU) * ${glf(H.LOW_K * 0.8)} - hT * ${glf(H.LOW_W * 0.7)} + 0.4);
+    vec3 hLoF = hU * (0.6 * hw1) + hR * (0.35 * hw2) + curlNoise(p * 0.3 + vec3(0.0, hT * 0.025, 0.0)) * 0.3;
+    // RIGHT HAND — fine eddies near the camera; lighter motes answer more
+    vec3 hHiF = curlNoise(p * ${glf(H.HIGH_K)} + vec3(hT * ${glf(H.HIGH_DRIFT)}, -hT * ${glf(H.HIGH_DRIFT * 0.75)}, hT * ${glf(H.HIGH_DRIFT * 0.55)})) * (0.75 + 0.5 * hash11(s.a * 41.3));
+    vec3 fhd = hLoF * (uHands.x * hLo * ${glf(H.FORCE_LOW)}) + hHiF * (uHands.y * hHi * ${glf(H.FORCE_HIGH)});
+    // the two layers settle apart in depth (gently, with presence — never the beat)
+    fhd += hE * (mix(${glf(H.STRATA_FAR)}, ${glf(H.STRATA_NEAR)}, hHi) - hdc) * ${glf(H.STRATA_K)} * uHands.w;
+    float hpr = length(p);
+    if (hpr > 3.2) fhd -= (p / hpr) * (hpr - 3.2) * 1.2 * uHands.w;
+    f.xyz += fhd * handsG;
+  }
+
+`;
+
 /** SIM_FS with only the given souls' force laws (others fall to a gentle stop).
- *  `score`: compile the living score's force field in (off = the show source). */
-export function buildSimFS(souls: readonly number[], opts: { score?: boolean } = {}): string {
+ *  `score`: compile the living score's force field in; `hands`: the two
+ *  hands' layer forces (both off = the show source, byte for byte). */
+export function buildSimFS(souls: readonly number[], opts: { score?: boolean; hands?: boolean } = {}): string {
   split ??= splitSim();
   const uniq = [...new Set(souls)].sort((a, b) => a - b);
   const src = split.head + uniq.map((i) => split!.blocks.get(i) ?? "").join("") + split.tail;
-  if (!opts.score) return src;
+  if (!opts.score && !opts.hands) return src;
   if (!src.includes(SCORE_ANCHOR_UNIFORMS) || !src.includes(SCORE_ANCHOR_FORCE)) return src; // anchors moved: stay safe (test guards)
+  const uni = (opts.hands ? HANDS_UNIFORMS_GLSL : "") + (opts.score ? SCORE_UNIFORMS_GLSL : "");
+  const force = (opts.hands ? HANDS_FORCE_GLSL : "") + (opts.score ? SCORE_FORCE_GLSL : "");
   return src
-    .replace(SCORE_ANCHOR_UNIFORMS, SCORE_UNIFORMS_GLSL + SCORE_ANCHOR_UNIFORMS)
-    .replace(SCORE_ANCHOR_FORCE, SCORE_FORCE_GLSL + SCORE_ANCHOR_FORCE);
+    .replace(SCORE_ANCHOR_UNIFORMS, uni + SCORE_ANCHOR_UNIFORMS)
+    .replace(SCORE_ANCHOR_FORCE, force + SCORE_ANCHOR_FORCE);
 }
 
 /** How many soul blocks the full simulation carries (test hook). */
