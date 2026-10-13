@@ -42,6 +42,8 @@ interface KioskStatus {
   currentTime?: number;
   duration?: number;
   volume?: number;
+  /** Live Theatre: the Nord's USB MIDI line (null when MIDI isn't in use) */
+  midi?: string | null;
 }
 
 function fmt(sec: number | undefined): string {
@@ -139,6 +141,9 @@ export function RemoteClient() {
             </span>
           ) : null}
         </div>
+        {inLive && status?.midi ? (
+          <div className="mt-1.5 text-xs text-ink-faint">{status.midi}</div>
+        ) : null}
       </div>
 
       {sendError ? (

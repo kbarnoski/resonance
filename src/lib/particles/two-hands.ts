@@ -227,8 +227,11 @@ export class TwoHands {
 
   /** Advance by dt with this frame's bytes (null = silence / no feed), the
    *  living score's onset (null = none) and the gain target (handsGain).
-   *  Returns the voices (the same object, updated in place — no allocation). */
-  step(bytes: ArrayLike<number> | null, onset: Onset | null, dt: number, gainTarget: number): HandsVoices {
+   *  Returns the voices (the same object, updated in place — no allocation).
+   *  `ext` (MIDI, midi-drive.ts): exact per-register activity targets mixed
+   *  over the audio targets by ext.weight — the easing / contrast / slew laws
+   *  below apply to the mix unchanged (absent or weight 0 = audio only). */
+  step(bytes: ArrayLike<number> | null, onset: Onset | null, dt: number, gainTarget: number, ext?: { low: number; high: number; weight: number } | null): HandsVoices {
     const h = Math.max(0, Math.min(0.1, Number.isFinite(dt) ? dt : 0));
     // ── onsets → per-register note rate ──
     const dR = Math.exp(-h / T.RATE_TAU);
@@ -283,8 +286,13 @@ export class TwoHands {
     }
     // ── eased activity: attack ≥ 0.6 s, release ≥ 2 s ──
     const ease = (x: number, target: number) => x + (target - x) * (1 - Math.exp(-h / (target > x ? T.ATTACK_SEC : T.RELEASE_SEC)));
-    const tgtL = clamp01(T.ONSET_W * (1 - Math.exp(-this.rateL / T.RATE_REF)) + T.RISE_W * this.riseL);
-    const tgtH = clamp01(T.ONSET_W * (1 - Math.exp(-this.rateH / T.RATE_REF)) + T.RISE_W * this.riseH);
+    let tgtL = clamp01(T.ONSET_W * (1 - Math.exp(-this.rateL / T.RATE_REF)) + T.RISE_W * this.riseL);
+    let tgtH = clamp01(T.ONSET_W * (1 - Math.exp(-this.rateH / T.RATE_REF)) + T.RISE_W * this.riseH);
+    const w = ext && Number.isFinite(ext.weight) ? clamp01(ext.weight) : 0;
+    if (w > 0) {
+      tgtL += (clamp01(Number.isFinite(ext!.low) ? ext!.low : 0) - tgtL) * w;
+      tgtH += (clamp01(Number.isFinite(ext!.high) ? ext!.high : 0) - tgtH) * w;
+    }
     this.low = ease(this.low, tgtL);
     this.high = ease(this.high, tgtH);
     // ── the gate (presence × ladder × held) ──
