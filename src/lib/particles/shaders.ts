@@ -1502,7 +1502,8 @@ void main(){
   // bright core + soft glow — reads over imagery without growing the footprint
   float g = exp(-r2 * 7.0) + 0.3 * exp(-r2 * 1.8);
   // out of focus: a soft-edged bokeh disc (cinematic look; vCoc = 0 → unchanged)
-  float bokeh = (1.0 - smoothstep(0.55, 1.0, r2)) * 0.62 + 0.12 * exp(-r2 * 2.0);
+  // (soft edge: a hard rim pulsed as the sprite's size stepped pixel to pixel)
+  float bokeh = (1.0 - smoothstep(0.15, 1.0, r2)) * 0.62 + 0.12 * exp(-r2 * 2.0);
   g = mix(g, bokeh, vCoc);
   o = vec4(vCol * g * 1.15, 1.0);
 }
@@ -1587,8 +1588,12 @@ void main(){
       }
       b += (t / 16.0) * (i == 0 ? 0.5 : i == 1 ? 0.32 : 0.18);
     }
+    // SOFT KNEE (Karel 2026-10-13: "be careful with the intensity of the
+    // flickering glow … too rapid flickering not good"): a hard 0.18 cut made a
+    // drifting mote's glow switch on/off as it crossed the line — the glow now
+    // eases in over a wide knee, so it can only swell and settle
     float bl = max(max(b.r, b.g), b.b);
-    b *= max(bl - 0.18, 0.0) / max(bl, 1e-4);
+    b *= smoothstep(0.1, 0.5, bl) * max(bl - 0.1, 0.0) / max(bl, 1e-4);
     h += b * uBloom;
   }
   // HUE-PRESERVING tone map (Karel 2026-10-06: "they should almost always

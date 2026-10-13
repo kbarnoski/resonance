@@ -1271,7 +1271,7 @@ export function createParticleEngine(
     g.uniform1f(draw.u.uHueWave, hueWave);
     g.uniform1f(draw.u.uTimeD, time);
     if (draw.u.uDof) {
-      g.uniform1f(draw.u.uDof, cineOn ? 0.9 : 0);
+      g.uniform1f(draw.u.uDof, cineOn ? 0.6 : 0); // 0.9 → 0.6: smaller discs, calmer (Karel: flicker)
       g.uniform1f(draw.u.uFocusD, dist);
       g.uniform1f(draw.u.uDrift, cineOn ? 1 : 0);
     }
@@ -1357,7 +1357,7 @@ export function createParticleEngine(
     bindTex(0, hdrTex[hcur], comp.u.uHdr);
     bindTex(1, expTex[ecur], comp.u.uExp);
     g.uniform1f(comp.u.uTransparent, transparent ? 1 : 0);
-    if (comp.u.uBloom) g.uniform1f(comp.u.uBloom, cineOn ? 0.55 : 0);
+    if (comp.u.uBloom) g.uniform1f(comp.u.uBloom, cineOn ? 0.4 : 0); // 0.55 → 0.4 (Karel: flicker)
     g.drawArrays(g.TRIANGLES, 0, 3);
     g.bindVertexArray(null);
     const cpu = performance.now() - frameT0;
