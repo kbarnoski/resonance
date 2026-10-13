@@ -280,6 +280,13 @@ export const STABLE_DEFAULT = true;
 export function stableEnabled(search?: string, store?: Store | null): boolean {
   return sessionFlag("stable", STABLE_SESSION_KEY, search, store, STABLE_DEFAULT);
 }
+/** The temporal resolve half of ?stable (perf A/B on the kiosk's Retina
+ *  screen): `?taa=0` keeps the shimmer-free sprites but skips the history
+ *  pass. Default on (with ?stable). */
+export const TAA_SESSION_KEY = "resonance-taa";
+export function taaEnabled(search?: string, store?: Store | null): boolean {
+  return sessionFlag("taa", TAA_SESSION_KEY, search, store, true);
+}
 /** Temporally stable bloom: `?glow=1` / `?glow=0`, sessionStorage-kept; default off. */
 export function glowEnabled(search?: string, store?: Store | null): boolean {
   return sessionFlag("glow", GLOW_SESSION_KEY, search, store);

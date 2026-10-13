@@ -59,7 +59,7 @@ import {
   TAA_FS,
   BLOOM_FS,
 } from "./shaders";
-import { stableEnabled, glowEnabled, particleSessionStore, taaKeep, bloomKeep, STABLE_LAWS } from "./stable-motes";
+import { stableEnabled, taaEnabled, glowEnabled, particleSessionStore, taaKeep, bloomKeep, STABLE_LAWS } from "./stable-motes";
 import { trailsEnabled, trailsSessionStore, TRAILS_LAWS } from "./resonance-trails";
 import { pairingEnabled, PAIR_GROUPS } from "./spatial-pairing";
 import {
@@ -585,7 +585,7 @@ export function createParticleEngine(
   const lum = startProgram(gl, QUAD_VS, LUM_FS);
   const expo = startProgram(gl, QUAD_VS, EXPO_FS);
   const comp = startProgram(gl, QUAD_VS, glowOn ? withGlow(COMP_FS) : COMP_FS);
-  const taa = stableOn ? startProgram(gl, QUAD_VS, TAA_FS) : null;
+  const taa = stableOn && (opts.stable !== undefined || taaEnabled(undefined, particleSessionStore())) ? startProgram(gl, QUAD_VS, TAA_FS) : null;
   const bloomP = glowOn ? startProgram(gl, QUAD_VS, BLOOM_FS) : null;
   const seedInit = startProgram(gl, QUAD_VS, SEED_INIT_FS);
   const posInit = startProgram(gl, QUAD_VS, POS_INIT_FS);
@@ -824,7 +824,7 @@ export function createParticleEngine(
       gl!.clear(gl!.COLOR_BUFFER_BIT);
       return f;
     });
-    if (stableOn) {
+    if (taa) {
       for (const t of taaTex) gl!.deleteTexture(t);
       for (const f of taaFbo) gl!.deleteFramebuffer(f);
       const tl = glowOn ? levels : 1;
