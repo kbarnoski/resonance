@@ -1574,13 +1574,21 @@ void main(){
     vec2 res = vec2(textureSize(uHdr, 0));
     vec2 uv = (vec2(c) + 0.5) / res;
     vec3 b = vec3(0.0);
+    // fine levels only (2-4) with a 9-tap tent each: the coarse level-7 box read as
+    // a lighter RECTANGLE around the field (A/B film 2026-10-13) — and only light
+    // above a threshold blooms, so the black floor never lifts
     for (int i = 0; i < 3; i++) {
-      float lod = 3.0 + 2.0 * float(i);
+      float lod = 2.0 + float(i);
       vec2 tx = exp2(lod) / res;
-      vec3 t4 = textureLod(uHdr, uv + vec2(-0.5, -0.5) * tx, lod).rgb + textureLod(uHdr, uv + vec2(0.5, -0.5) * tx, lod).rgb
-              + textureLod(uHdr, uv + vec2(-0.5, 0.5) * tx, lod).rgb + textureLod(uHdr, uv + vec2(0.5, 0.5) * tx, lod).rgb;
-      b += t4 * 0.25 * (i == 0 ? 0.5 : i == 1 ? 0.3 : 0.2);
+      vec3 t = vec3(0.0);
+      for (int y = -1; y <= 1; y++) for (int x = -1; x <= 1; x++) {
+        float w = (2.0 - abs(float(x))) * (2.0 - abs(float(y)));
+        t += textureLod(uHdr, uv + vec2(float(x), float(y)) * tx, lod).rgb * w;
+      }
+      b += (t / 16.0) * (i == 0 ? 0.5 : i == 1 ? 0.32 : 0.18);
     }
+    float bl = max(max(b.r, b.g), b.b);
+    b *= max(bl - 0.18, 0.0) / max(bl, 1e-4);
     h += b * uBloom;
   }
   // HUE-PRESERVING tone map (Karel 2026-10-06: "they should almost always
