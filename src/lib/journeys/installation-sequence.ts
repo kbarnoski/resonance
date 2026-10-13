@@ -248,48 +248,48 @@ const GRATITUDE: ProgramDedication = {
 // One version of a track per set (Karel 2026-10-09: "we cant have two versions of the same track in ra") —
 // except Night Wind (2 early, 9 mid, 4 late — far apart, Karel's own placements). ONE Tranquility only: 38 (Karel 2026-10-12).
 const RISE_ABOVE = [
-  "first-snow", //  1. Snowflake
-  "ghost", //  2. Ghost
+  "ghost", //  1. Ghost
+  "first-snow", //  2. Snowflake
   "87e106f9-4d74-4886-b944-fd625a827b02", //  3. First Light — I. pure piano
-  "f0362f24-75f1-4717-8487-cc9cf12c7bcc", //  4. The First (Expanded) — before Bath (Karel 2026-10-13: "bath is so mellow it needs to come later … it just would look better")
-  "fdc6470e-5c7e-43b4-968c-3e907f1fa88f", //  5. Grasshopper
-  "c80a89bc-2c88-4bde-bec8-4be6916acb62", //  6. Yellow Bird
-  "cosmic-drift", //  7. Cosmic Drift — featured solo piano: the bridge from his piano into the Expansion (Karel 2026-10-11: "the featured journey tracks are all solo piano so they bridge the piano tracks to the evolving more full band ones") — soulful solo-piano ambient, to wander
-  "1f5e3884-5317-4146-ba18-4742eaf74ce9", //  8. Chemiluminescence — far out, in the mix with Cosmic Drift, beside Mycelium Dream (Karel 2026-10-12: "has to be in ra in the mix with cosmic drift. its pretty out there") — was wave 2's opener
-  "mycelium-dream", //  9. Mycelium Dream — featured solo piano bridge — spacey, far out there, visionary (Karel 2026-10-09)
-  "a5b5f0cf-9a6b-451a-8293-3d98f3904342", // 10. Bath — slow, ambient: in the spacey corner of the solo piano bridge, after Mycelium Dream (Karel 2026-10-13: "since bath is so slow and ambient")
-  "the-ascent", // 11. The Summit — featured solo piano bridge — a classical, moving piece into the mix (Karel 2026-10-09), handing to Amboise 1's classical strings
-  "dc8d9705-785a-485e-b91f-a12c85bf7b92", // 12. Testimony 3 — the LAST solo piano, where the bridge to the fuller sound happens: "a pick me upper gospel vibe with some organ under piano" (Karel 2026-10-13; was #6)
-  "6ff51cde-f4ca-4285-8707-0f77eaf9394c", // 13. Amboise 1 — end of the bridge: classical strings + piano, right after the solo piano completes, into the Expansion (Karel 2026-10-12) — wave 1 wakes from here
-  "1f83e254-a0c8-45ec-974f-8b363038a98d", // 14. Rise 1 — the first voice after Amboise 1's strings: voice and a little piano, peaceful and beautiful (Karel 2026-10-12: "right after amboise"; was the ballad before Singular 4)
-  "e9beec7a-6aa4-41bb-83f0-c827603ed51d", // 15. Northern Plane 3 — a transporting ambient one, a must (Karel 2026-10-09); far from Northern Plane 5
-  "4cd35ec2-bc13-4b9a-b26c-9e38e956fb80", // 16. Night Wind 2
-  "6251d682-b5e4-46b6-98cf-ceb6b609a7bc", // 17. Surrounded by Light 6
-  "8ca69280-944c-4ccb-9f7f-692f3f7f7a6f", // 18. Singular 4 — crest 1 (the portal) — a sensational portal, transporting (Karel 2026-10-09): the passage from the chill into the build
-  "a96b4696-c02b-4004-a1a5-a0b1eee09308", // 19. Loire 2 — III. wave 2 opens (Chemiluminescence moved to the bridge 2026-10-12)
-  "6407bf5c-7862-49e8-883d-59754c4caf18", // 20. No question 8 — one of his best: smoky night-club jazz lounge, ambient vocals (Karel 2026-10-09)
-  "84a82478-f0f2-4c49-b800-b4fe722f1df5", // 21. Stand 10 — a jazzy lounge groove (Karel 2026-10-11)
-  "81683231-3b3c-4542-8696-13dfcf56469a", // 22. Loire 5A — loungey groove, borderline dance (Karel 2026-10-09)
-  "3ee9acf2-c89d-42b2-b9a3-d5fce97da2ac", // 23. Cabin Soul 8 — "a great jazzy groove that is loungey just like stand 10" (Karel 2026-10-11; his RA take over Cabin Soul 6)
-  "86b64938-26ea-40b9-9ea1-461323a049d5", // 24. Chenin 3 — "wow that is dope" (Karel 2026-10-09)
-  "4ef43223-42cf-4ce8-9088-7578569f7de6", // 25. Sancerre Cry 4 — beat, attitude, groove
-  "aadbf1d3-5db1-4f80-a60d-f6d0c4a6e7b6", // 26. Velvet Tears 1 — crest 2 — tribal dance groove, unique (Karel 2026-10-09)
-  "13e71555-03d6-4b27-ad32-2c6834559c24", // 27. Northern Plane 5 — breath
-  "4d17da19-6834-4005-a944-34c27a88a320", // 28. Amboise 2 — IV. wave 3 — darker, bigger — another tribal ambient groove (Karel 2026-10-09; in as a groove, never the opener)
-  "85124aed-c3b4-42e2-870a-b14bc5425b72", // 29. Night Wind 9 — groovy chill with a beat, not a peak (Karel 2026-10-09); between Night Wind 2 and 4
-  "ecf0d90f-7e1b-4ecb-a654-ecea936caca8", // 30. Bells 1 — dark trip-hop groove
-  "3814f116-5c54-499c-9d9b-355201700fdc", // 31. Rattler 2 — funky, groovy: a fun peak (Karel 2026-10-09)
-  "c7a0c1c2-c5d2-487b-8c54-73b134e6f09a", // 32. Horses 1
-  "24101852-61ee-4ac9-8fd7-da2ae19ab0a3", // 33. The Other Side 9 — the only Other Side; one of the peaks, super soulful (Karel 2026-10-09; replaced The Other Side 10)
-  "6ee9f014-8203-437c-b05c-9d8bd0de9d3e", // 34. Chenin 5 — THE PEAK — the screeching, intense one
-  "19acdb4c-5a52-4532-99bd-a59652c7ff8e", // 35. No question 7 — building up soulfully, after the peak
-  "79cad85a-13fa-4db9-b4cd-a507b62a6084", // 36. Nothing 30 — a heartfelt ballad, so soulful (Karel 2026-10-09)
-  "87009cf3-8c07-48eb-88d8-e7acb6a14e41", // 37. Night Wind 4
-  "9662fec9-04fa-4202-9859-8f01cd287aad", // 38. Tranquility 38 — the ONLY Tranquility in RA (Karel 2026-10-12: "only use the last one that just played"; replaced 17, 33, 8, 34, 36 — all stay in the Expansion); in Tranquility 8's crest slot, its closest sibling (same shimmer voice, palette)
-  "8f3e82e2-0a30-499f-ba74-5158208a07a0", // 39. Never Forget 4 — deep, painful
-  "99b7ad2c-a212-440e-85fa-0c670c1e4296", // 40. Redwoods Sway 2 — the feel-good finale
-  "79e33115-7f1e-44bc-b950-7adf5055dd55", // 41. Welcome Home
-  "fb56b19e-ee23-43c6-ad41-5714e7969aad", // 42. Afterglow
+  "c80a89bc-2c88-4bde-bec8-4be6916acb62", //  4. Yellow Bird
+  "f0362f24-75f1-4717-8487-cc9cf12c7bcc", //  5. The First (Expanded) — before Bath (Karel 2026-10-13: "bath is so mellow it needs to come later … it just would look better")
+  "fdc6470e-5c7e-43b4-968c-3e907f1fa88f", //  6. Grasshopper
+  "fb56b19e-ee23-43c6-ad41-5714e7969aad", //  7. Afterglow — the warm close of the piano opening, after Grasshopper (Karel 2026-10-13: "ghost>snowflake>first light>yellow bird>first expanded>grasshopper>afterglow>testimony", the bridge kept)
+  "cosmic-drift", //  8. Cosmic Drift — featured solo piano: the bridge from his piano into the Expansion (Karel 2026-10-11: "the featured journey tracks are all solo piano so they bridge the piano tracks to the evolving more full band ones") — soulful solo-piano ambient, to wander
+  "1f5e3884-5317-4146-ba18-4742eaf74ce9", //  9. Chemiluminescence — far out, in the mix with Cosmic Drift, beside Mycelium Dream (Karel 2026-10-12: "has to be in ra in the mix with cosmic drift. its pretty out there") — was wave 2's opener
+  "mycelium-dream", // 10. Mycelium Dream — featured solo piano bridge — spacey, far out there, visionary (Karel 2026-10-09)
+  "a5b5f0cf-9a6b-451a-8293-3d98f3904342", // 11. Bath — slow, ambient: in the spacey corner of the solo piano bridge, after Mycelium Dream (Karel 2026-10-13: "since bath is so slow and ambient")
+  "the-ascent", // 12. The Summit — featured solo piano bridge — a classical, moving piece into the mix (Karel 2026-10-09), handing to Amboise 1's classical strings
+  "dc8d9705-785a-485e-b91f-a12c85bf7b92", // 13. Testimony 3 — the LAST solo piano, where the bridge to the fuller sound happens: "a pick me upper gospel vibe with some organ under piano" (Karel 2026-10-13; was #6)
+  "6ff51cde-f4ca-4285-8707-0f77eaf9394c", // 14. Amboise 1 — end of the bridge: classical strings + piano, right after the solo piano completes, into the Expansion (Karel 2026-10-12) — wave 1 wakes from here
+  "1f83e254-a0c8-45ec-974f-8b363038a98d", // 15. Rise 1 — the first voice after Amboise 1's strings: voice and a little piano, peaceful and beautiful (Karel 2026-10-12: "right after amboise"; was the ballad before Singular 4)
+  "e9beec7a-6aa4-41bb-83f0-c827603ed51d", // 16. Northern Plane 3 — a transporting ambient one, a must (Karel 2026-10-09); far from Northern Plane 5
+  "4cd35ec2-bc13-4b9a-b26c-9e38e956fb80", // 17. Night Wind 2
+  "6251d682-b5e4-46b6-98cf-ceb6b609a7bc", // 18. Surrounded by Light 6
+  "8ca69280-944c-4ccb-9f7f-692f3f7f7a6f", // 19. Singular 4 — crest 1 (the portal) — a sensational portal, transporting (Karel 2026-10-09): the passage from the chill into the build
+  "a96b4696-c02b-4004-a1a5-a0b1eee09308", // 20. Loire 2 — III. wave 2 opens (Chemiluminescence moved to the bridge 2026-10-12)
+  "6407bf5c-7862-49e8-883d-59754c4caf18", // 21. No question 8 — one of his best: smoky night-club jazz lounge, ambient vocals (Karel 2026-10-09)
+  "84a82478-f0f2-4c49-b800-b4fe722f1df5", // 22. Stand 10 — a jazzy lounge groove (Karel 2026-10-11)
+  "81683231-3b3c-4542-8696-13dfcf56469a", // 23. Loire 5A — loungey groove, borderline dance (Karel 2026-10-09)
+  "3ee9acf2-c89d-42b2-b9a3-d5fce97da2ac", // 24. Cabin Soul 8 — "a great jazzy groove that is loungey just like stand 10" (Karel 2026-10-11; his RA take over Cabin Soul 6)
+  "86b64938-26ea-40b9-9ea1-461323a049d5", // 25. Chenin 3 — "wow that is dope" (Karel 2026-10-09)
+  "4ef43223-42cf-4ce8-9088-7578569f7de6", // 26. Sancerre Cry 4 — beat, attitude, groove
+  "aadbf1d3-5db1-4f80-a60d-f6d0c4a6e7b6", // 27. Velvet Tears 1 — crest 2 — tribal dance groove, unique (Karel 2026-10-09)
+  "13e71555-03d6-4b27-ad32-2c6834559c24", // 28. Northern Plane 5 — breath
+  "4d17da19-6834-4005-a944-34c27a88a320", // 29. Amboise 2 — IV. wave 3 — darker, bigger — another tribal ambient groove (Karel 2026-10-09; in as a groove, never the opener)
+  "85124aed-c3b4-42e2-870a-b14bc5425b72", // 30. Night Wind 9 — groovy chill with a beat, not a peak (Karel 2026-10-09); between Night Wind 2 and 4
+  "ecf0d90f-7e1b-4ecb-a654-ecea936caca8", // 31. Bells 1 — dark trip-hop groove
+  "3814f116-5c54-499c-9d9b-355201700fdc", // 32. Rattler 2 — funky, groovy: a fun peak (Karel 2026-10-09)
+  "c7a0c1c2-c5d2-487b-8c54-73b134e6f09a", // 33. Horses 1
+  "24101852-61ee-4ac9-8fd7-da2ae19ab0a3", // 34. The Other Side 9 — the only Other Side; one of the peaks, super soulful (Karel 2026-10-09; replaced The Other Side 10)
+  "6ee9f014-8203-437c-b05c-9d8bd0de9d3e", // 35. Chenin 5 — THE PEAK — the screeching, intense one
+  "19acdb4c-5a52-4532-99bd-a59652c7ff8e", // 36. No question 7 — building up soulfully, after the peak
+  "79cad85a-13fa-4db9-b4cd-a507b62a6084", // 37. Nothing 30 — a heartfelt ballad, so soulful (Karel 2026-10-09)
+  "87009cf3-8c07-48eb-88d8-e7acb6a14e41", // 38. Night Wind 4
+  "9662fec9-04fa-4202-9859-8f01cd287aad", // 39. Tranquility 38 — the ONLY Tranquility in RA (Karel 2026-10-12: "only use the last one that just played"; replaced 17, 33, 8, 34, 36 — all stay in the Expansion); in Tranquility 8's crest slot, its closest sibling (same shimmer voice, palette)
+  "8f3e82e2-0a30-499f-ba74-5158208a07a0", // 40. Never Forget 4 — deep, painful
+  "99b7ad2c-a212-440e-85fa-0c670c1e4296", // 41. Redwoods Sway 2 — the feel-good finale
+  "79e33115-7f1e-44bc-b950-7adf5055dd55", // 42. Welcome Home
   "inferno", // 43. Realized
   "6cb979ce-3b76-4851-a0ba-3f100fddfcb3", // 44. Yellow Bird 3 — the last track (Karel 2026-10-09; replaced Yellow Bird 6)
 ] as const;
