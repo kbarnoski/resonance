@@ -313,7 +313,7 @@ for (const [id, bans] of Object.entries(BAL.SHADER_JOURNEY_BANS)) {
     if (secs < 45 || pi === w.sparseIdx) return;
     const need = Math.ceil(secs / BAL.SECONDS_PER_VOICE);
     while (w.cast[pid].length < need) {
-      const c = candidates(w, pi, w.cast[pid].length, null)[0];
+      const c = candidates(w, pi, w.cast[pid].length, null)[0] ?? candidates(w, pi, w.cast[pid].length, null, { allowAmber: true })[0];
       if (!c) { log.push(`FAIL Grasshopper/${pid}: no candidate for voice ${w.cast[pid].length + 1}`); break; }
       setSlot(w, pi, w.cast[pid].length, c.r, `Grasshopper: ${Math.round(secs)} s phase -> ${need} voices`);
     }
@@ -361,6 +361,19 @@ for (let guard = 0; guard < 200; guard++) {
   const before = changes.length;
   for (const [m] of over) trimToCap(m);
   if (changes.length === before) break;
+}
+
+// 4b. Rise Above neighbours (Karel's self-running loop, reordered often):
+//     two adjacent pieces never share a shader. Repair from the side that
+//     can give it up (not pinned, not an Expansion lead, not a mastered take).
+for (let i = 0; i < RA.length; i++) {
+  const a = byId.get(RA[i]), b = byId.get(RA[(i + 1) % RA.length]);
+  const ra = rosterAt(RA[i]), rb = rosterAt(RA[(i + 1) % RA.length]);
+  for (const m of [...ra].filter((x) => rb.has(x))) {
+    const free = (w) => w && !protectedSlots.has(`${w.id}:${m}`) && !(w.kind === "exp" && w.lead === m);
+    const sides = [b, a].filter(free).sort((x, y) => (x.lead === m) - (y.lead === m));
+    if (!sides.some((w) => replaceShader(w, m, "Rise Above neighbours"))) log.push(`WARN Rise Above ${a?.name ?? RA[i]} / ${b?.name ?? RA[(i + 1) % RA.length]} still share ${m}`);
+  }
 }
 
 // 5. amber share: retire amber appearances, most-used amber shader first,

@@ -11,8 +11,8 @@ Counts are **loop journeys a shader appears in** (kiosk setlist, 100 journeys; m
 |---|---|---|
 | amber share of cast appearances (non-mastered) | 37.3 % (433/1161) | 24.9 % (290/1163) |
 | most-used shader | ember ×16 | binary-stars ×15 |
-| journeys whose cast changed | — | 69 (34 featured/album, 35 Expansion) |
-| slot substitutions | — | 160 |
+| journeys whose cast changed | — | 74 (35 featured/album, 39 Expansion) |
+| slot substitutions | — | 184 |
 | dharma in | 12: Surrounded By Light, Rise, Message, Interplay, The Knife (Jam), Bells 1, No question 7, Tranquility 36, Cabin Soul 6, Tranquility 34, Rise 1, Northern Plane 3 | 0:  |
 
 | shader | before | after |
@@ -33,22 +33,22 @@ Counts are **loop journeys a shader appears in** (kiosk setlist, 100 journeys; m
 | 2 | nadir (violet) | 16 | cascade-veil (blue) | 15 |
 | 3 | pendulum-dust (blue) | 16 | cirrus (blue) | 15 |
 | 4 | aureole (gold) | 15 | dark-tide (blue) | 15 |
-| 5 | chinook (gold) | 15 | diatom (blue) | 15 |
-| 6 | furnace (ember) | 15 | drift (blue) | 15 |
-| 7 | parsec (violet) | 15 | dusk (prismatic) | 15 |
-| 8 | pelagic (blue) | 15 | firefly-field (blue) | 15 |
-| 9 | r-embers (ember) | 15 | flagella (blue) | 15 |
-| 10 | seraph (gold) | 15 | fracture-light (blue) | 15 |
-| 11 | volcanic (ember) | 15 | kepler (prismatic) | 15 |
-| 12 | cirrus (blue) | 14 | lightyear (violet) | 15 |
-| 13 | covenant (gold) | 14 | meteor-rain (blue) | 15 |
-| 14 | dark-tide (blue) | 14 | murmuration (blue) | 15 |
-| 15 | drift (blue) | 14 | nadir (violet) | 15 |
-| 16 | firefly-field (blue) | 14 | orbit-weaver (blue) | 15 |
-| 17 | jubilee (gold) | 14 | pelagic (blue) | 15 |
-| 18 | kairos (gold) | 14 | pendulum-dust (blue) | 15 |
-| 19 | kelp (green) | 14 | photon (prismatic) | 15 |
-| 20 | lectio (gold) | 14 | protostar (prismatic) | 15 |
+| 5 | chinook (gold) | 15 | drift (blue) | 15 |
+| 6 | furnace (ember) | 15 | dusk (prismatic) | 15 |
+| 7 | parsec (violet) | 15 | firefly-field (blue) | 15 |
+| 8 | pelagic (blue) | 15 | fracture-light (blue) | 15 |
+| 9 | r-embers (ember) | 15 | kepler (prismatic) | 15 |
+| 10 | seraph (gold) | 15 | lightyear (violet) | 15 |
+| 11 | volcanic (ember) | 15 | meteor-rain (blue) | 15 |
+| 12 | cirrus (blue) | 14 | murmuration (blue) | 15 |
+| 13 | covenant (gold) | 14 | nadir (violet) | 15 |
+| 14 | dark-tide (blue) | 14 | orbit-weaver (blue) | 15 |
+| 15 | drift (blue) | 14 | pelagic (blue) | 15 |
+| 16 | firefly-field (blue) | 14 | pendulum-dust (blue) | 15 |
+| 17 | jubilee (gold) | 14 | photon (prismatic) | 15 |
+| 18 | kairos (gold) | 14 | plankton (prismatic) | 15 |
+| 19 | kelp (green) | 14 | protostar (prismatic) | 15 |
+| 20 | lectio (gold) | 14 | pulsar (prismatic) | 15 |
 
 ## First Light
 
@@ -58,7 +58,7 @@ Counts are **loop journeys a shader appears in** (kiosk setlist, 100 journeys; m
 ## Bath (no ember, no parsec)
 
 - before: threshold: ribbon-of-light, binary-stars · expansion: rose-window, fracture-light · transcendence: aureole, r2-spiralgal · illumination: pollen · return: r-mercury, r3-sleepingbloom, r3-fernunfurl · integration: meteor-rain, ember
-- after: threshold: ribbon-of-light, binary-stars · expansion: rose-window, fracture-light · transcendence: aureole, r2-spiralgal · illumination: pollen · return: r-mercury, r3-sleepingbloom, r3-fernunfurl · integration: meteor-rain, will-o-wisp
+- after: threshold: ribbon-of-light, binary-stars · expansion: rose-window, fracture-light · transcendence: aureole, nadir · illumination: pollen · return: r-mercury, r3-sleepingbloom, r3-fernunfurl · integration: meteor-rain, will-o-wisp
 - The engine also refuses journey-banned shaders at pick time (`isShaderAllowed` → `isShaderBannedFor`), so the finale-forced switch (`forceShaderSwitch`, which logged "ember (finale-forced)" at p0.887) can no longer land on ember in Bath.
 
 ## Seraph pins (First Light + every Surrounded by Light)
@@ -77,12 +77,13 @@ Counts are **loop journeys a shader appears in** (kiosk setlist, 100 journeys; m
 ## Grasshopper
 
 - before: threshold: resonant-rings · expansion: maelstrom-dark · transcendence: lectio, seraph · illumination: ember, photon, r-droplets, parsec · return: murmuration, cirrus · integration: plankton, singularity
-- after: threshold: resonant-rings · expansion: maelstrom-dark · transcendence: lectio, r2-spiralgal · illumination: torrent, photon, r-droplets, r2-photon, r-smokerings, r3-monsoonveil · return: murmuration, cirrus · integration: plankton, singularity
+- after: threshold: resonant-rings · expansion: maelstrom-dark · transcendence: lectio, supernova · illumination: drift, photon, r-droplets, r2-spiralgal, r-smokerings, r2-pixie · return: murmuration, cirrus · integration: plankton, singularity
 
 ## Why slots changed
 
-- amber share: 100
+- amber share: 91
 - loop caps: 42
+- Rise Above neighbours: 33
 - make room: seraph in Surrounded By Light: 3
 - Karel: seraph pinned in Surrounded By Light: 2
 - Grasshopper: 66 s phase -> 6 voices: 2
@@ -99,10 +100,11 @@ Counts are **loop journeys a shader appears in** (kiosk setlist, 100 journeys; m
 
 ## H lens (real JourneyEngine replay, every changed journey)
 
-69 journeys replayed before/after · regressions: none.
-Amber screen-time (sum of per-shader on-screen share) across changed journeys: 50.0 → 34.6.
+74 journeys replayed before/after · regressions: none.
+Amber screen-time (sum of per-shader on-screen share) across changed journeys: 51.2 → 35.8.
 - The First: before [H4 0.29] → after [H4 0.29]
 - The First (Expanded): before [H4 0.29] → after [H4 0.29]
+- Yellow Bird: before [H4 0.34] → after [H4 0.34]
 - Spectre: before [H2 r2-portalrim 0.42, H4 0.42] → after [H2 r2-portalrim 0.42, H4 0.42]
 - The Knife: before [H2 r3-lightningveil 0.42, H4 0.42] → after [H2 r3-lightningveil 0.42, H4 0.42]
 - All Together: before [H4 0.28] → after [H4 0.28]
@@ -110,6 +112,7 @@ Amber screen-time (sum of per-shader on-screen share) across changed journeys: 5
 - Open Jam: before [H4 0.26] → after [H4 0.26]
 - Calling: before [H4 0.34] → after [H4 0.34]
 - Cabin Soul 5: before [H4 0.31] → after [H4 0.31]
+- Sancerre Cry 4: before [H4 0.29] → after [H4 0.29]
 - Torraine 7: before [H4 0.26] → after [H4 0.26]
 - Night Wind 5: before [H4 0.29] → after [H4 0.29]
 - Cabin Soul 8: before [H4 0.25] → after [H4 0.25]
@@ -125,72 +128,77 @@ Amber screen-time (sum of per-shader on-screen share) across changed journeys: 5
 
 ## Changed journeys
 
-- The First (featured/album): expansion magma→threshold, transcendence magma→threshold, illumination magma→threshold, return magma→threshold
-- The First (Expanded) (featured/album): illumination molten-vein→drift
-- Dad's Song II (featured/album): return seraph→pulsar, return ember→kepler, illumination volcanic→photon, return maelstrom-dark→fracture-light, transcendence lectio→supernova
+- The First (featured/album): expansion magma→zenith, transcendence magma→zenith, illumination magma→zenith, return magma→zenith
+- The First (Expanded) (featured/album): expansion shadow-fire→r-mercury
+- Dad's Song II (featured/album): return seraph→pulsar, return ember→kepler, illumination volcanic→starfield, return maelstrom-dark→cascade-veil, illumination r2-pixie→r-droplets
+- Yellow Bird (featured/album): expansion nadir→dusk
 - Spectre (featured/album): return zenith→protostar
 - Surrounded By Light (featured/album): expansion dharma→seraph
-- Mexican Boy (featured/album): expansion magma→drift, expansion event-horizon→dark-tide, expansion flame→ripple
+- Mexican Boy (featured/album): expansion magma→r2-photon, expansion event-horizon→torrent, expansion r-blackhole→r3-monsoonveil, expansion flame→dark-tide
 - Afterglow (featured/album): return drift→zenith
-- Grasshopper (featured/album): transcendence seraph→r2-spiralgal, illumination parsec→r2-photon, illumination +→r-smokerings, illumination +→r3-monsoonveil, illumination ember→torrent
-- Love Again (featured/album): transcendence zenith→supernova, transcendence rapture→astral
-- Rise (featured/album): illumination dharma→kepler, illumination magma→resonant-rings, expansion aureole→orbit-weaver, integration chinook→mandorla, threshold flame→r2-thermal
-- Openings (featured/album): illumination shadow-fire→meteor-rain, expansion yantra→r2-photon
+- Grasshopper (featured/album): transcendence seraph→supernova, illumination parsec→r2-spiralgal, illumination +→r-smokerings, illumination +→r2-pixie, illumination ember→drift
+- Love Again (featured/album): transcendence zenith→r2-portalrim, transcendence kairos→astral
+- Rise (featured/album): illumination dharma→kepler, illumination magma→resonant-rings, expansion aureole→supernova, integration chinook→mandorla, transcendence jubilee→plankton
+- Openings (featured/album): expansion yantra→orbit-weaver, illumination shadow-fire→ribbon-of-light
 - Surrounded By Light (featured/album): expansion parsec→seraph
 - Drift (featured/album): transcendence seraph→pulsar
-- Self (featured/album): transcendence iron-forge→ribbon-of-light
-- Message (featured/album): integration dharma→r2-portalrim, transcendence kairos→threshold, illumination jubilee→stigmata
-- Grace (featured/album): expansion volcanic→torrent, transcendence molten-vein→r3-fernunfurl
-- Held (featured/album): transcendence kenosis→dusk
-- Interplay (featured/album): transcendence dharma→pulsar, expansion r2-pixie→r-stardust, illumination kairos→cascade-veil, threshold seraph→typhoon
-- Bath (featured/album): integration ember→will-o-wisp
-- Welcome Home (featured/album): transcendence hubble→flagella
-- The Knife (featured/album): threshold r3-heartwarmth→resonant-rings, expansion r-embers→diatom, expansion shadow-fire→ocean
+- Self (featured/album): expansion r3-fairyglow→meteor-rain, threshold merkaba→dark-nebula
+- Message (featured/album): integration dharma→threshold, illumination aureole→stigmata, illumination jubilee→r3-fernunfurl
+- Grace (featured/album): expansion volcanic→r2-portalrim
+- Held (featured/album): threshold r2-pixie→torrent, transcendence kenosis→dusk
+- Interplay (featured/album): transcendence dharma→pulsar, expansion r2-pixie→cascade-veil, illumination kairos→ocean, threshold seraph→typhoon
+- Bath (featured/album): integration ember→will-o-wisp, transcendence r2-spiralgal→nadir
+- Welcome Home (featured/album): transcendence hubble→r2-spiralgal
+- The Knife (featured/album): threshold r3-heartwarmth→diatom, expansion molten-vein→tide
 - 2019 (featured/album): integration parsec→jubilee
 - The Knife (Jam) (featured/album): threshold dharma→cirrus
 - Rebound (featured/album): integration r3-heartwarmth→symbiosis
 - Rolling (featured/album): threshold ember→r2-spore
 - All Together (featured/album): integration nadir→orbit-weaver
-- Vespers 2 (featured/album): transcendence magma→zenith, return parsec→rose-window, return r3-heartwarmth→r3-plasmastorm
+- Vespers 2 (featured/album): transcendence magma→rose-window, return parsec→binary-stars, return r3-heartwarmth→r-mercury
 - Lantern (featured/album): return ember→r-stardust
-- Open Jam (featured/album): return kenosis→binary-stars
-- Testimony 3 (featured/album): illumination pendulum-dust→cascade-veil
+- Open Jam (featured/album): transcendence volcanic→r2-thermal
+- Testimony 3 (featured/album): illumination pendulum-dust→drift, return protostar→r2-photon, integration starfield→r3-plasmastorm, threshold r3-lightningveil→obsidian-flow, expansion kepler→monsoon, transcendence mandorla→r3-sleepingbloom, expansion r2-thermal→dark-nebula
 - Calling (featured/album): return aureole→dusk
 - First Light (featured/album): expansion r-embers→aureole
 - Chemiluminescence 1 (Expansion): threshold biofilm→meteor-rain
-- Night Wind 2 (Expansion): return magma→pulsar, expansion chinook→kepler, threshold r-embers→mandorla, integration yantra→rose-window, threshold hubble→r3-lightningveil, expansion kenosis→plankton, transcendence pollen→monsoon, illumination r-blackhole→dusk
-- Loire 2 (Expansion): integration aureole→chrysalis
+- Night Wind 2 (Expansion): return magma→pulsar, expansion kenosis→mandorla, threshold r-embers→rose-window, expansion chinook→stigmata, threshold merkaba→r3-lightningveil, transcendence pollen→dusk, integration yantra→monsoon, illumination r-blackhole→typhoon
+- Loire 2 (Expansion): expansion satori→photon, integration r3-fernunfurl→kepler, illumination stigmata→plankton
 - Tranquility 21 (Expansion): expansion magma→binary-stars, expansion ember→r2-spiralgal
-- Bells 1 (Expansion): illumination dharma→pulsar, integration molten-vein→murmuration
+- Bells 1 (Expansion): illumination dharma→pulsar, return r2-photon→meteor-rain, integration molten-vein→murmuration
 - Chenin 3 (Expansion): illumination hubble→r2-thermal
-- Tranquility 17 (Expansion): transcendence ember→protostar, illumination furnace→photon, expansion r3-fairyglow→kepler, illumination event-horizon→mandorla, expansion vestige→supernova, integration volcanic→obsidian-flow, expansion iron-forge→mycelium
-- No question 7 (Expansion): expansion dharma→binary-stars, transcendence magma→meteor-rain
-- Cabin Soul 5 (Expansion): threshold ember→fracture-light, return volcanic→flagella
-- Never Forget 4 (Expansion): expansion aureole→protostar, integration covenant→threshold, illumination chinook→r2-spiralgal, transcendence lectio→lightyear, illumination satori→dusk, expansion vestige→mycelium
-- Tranquility 30 (Expansion): threshold ember→supernova, illumination furnace→will-o-wisp, illumination iron-forge→rose-window, transcendence r3-fairyglow→mandorla, illumination kairos→plankton, integration r-embers→r3-lightningveil
-- Amboise 1 (Expansion): expansion seraph→pulsar, expansion magma→binary-stars
+- Tranquility 17 (Expansion): transcendence ember→supernova, illumination furnace→photon, expansion r3-fairyglow→r2-photon, expansion iron-forge→binary-stars, return molten-vein→mycelium, integration volcanic→r3-lightningveil, expansion vestige→plankton
+- No question 7 (Expansion): expansion dharma→protostar, transcendence magma→meteor-rain, threshold shadow-fire→ribbon-of-light
+- Cabin Soul 5 (Expansion): threshold ember→fracture-light
+- Northern Plane 5 (Expansion): return chrysalis→r2-spiralgal, return r3-monsoonveil→rose-window, expansion torrent→r-stardust, integration r-mercury→resonant-rings, integration ribbon-of-light→mandorla
+- Never Forget 4 (Expansion): illumination chinook→pulsar, expansion aureole→threshold, integration covenant→dusk, transcendence lectio→mycelium, threshold flame→obsidian-flow, illumination satori→chrysalis
+- Tranquility 30 (Expansion): threshold ember→supernova, illumination furnace→ribbon-of-light, illumination kairos→will-o-wisp, transcendence r3-fairyglow→r3-lightningveil, illumination iron-forge→plankton, integration r-embers→flagella
+- Amboise 1 (Expansion): expansion seraph→binary-stars, expansion magma→zenith
 - Surrounded by Light 6 (Expansion): integration r-mercury→seraph
-- Night Wind 4 (Expansion): integration ember→protostar, transcendence jubilee→threshold, illumination furnace→obsidian-flow, transcendence pollen→stigmata, illumination shadow-fire→r2-thermal
-- Torraine 7 (Expansion): expansion aureole→pulsar, expansion chinook→supernova, expansion molten-vein→lightyear, expansion flame→fracture-light, illumination merkaba→mycelium, integration rapture→firefly-field, expansion r-blackhole→r3-sleepingbloom, threshold r2-pixie→monsoon
-- Tranquility 36 (Expansion): expansion dharma→kepler, illumination magma→r2-portalrim
-- Stand 10 (Expansion): integration parsec→ribbon-of-light
-- Yellow Bird 6 (Expansion): return r3-heartwarmth→binary-stars, illumination maelstrom-dark→threshold
-- Redwoods Sway 2 (Expansion): expansion covenant→supernova, transcendence vestige→r3-sleepingbloom
-- Cabin Soul 6 (Expansion): transcendence dharma→protostar, expansion seraph→r2-portalrim, threshold r2-pixie→r-mercury, return yantra→diatom
-- Night Wind 5 (Expansion): integration parsec→lightyear, return satori→ocean, expansion pollen→r3-monsoonveil
-- Cabin Soul 8 (Expansion): illumination furnace→meteor-rain
+- Night Wind 4 (Expansion): integration ember→protostar, transcendence jubilee→stigmata, illumination furnace→r2-thermal, illumination iron-forge→monsoon, transcendence pollen→r-smokerings
+- Sancerre Cry 4 (Expansion): expansion dusk→lightyear
+- Torraine 7 (Expansion): expansion aureole→supernova, expansion chinook→binary-stars, threshold r2-pixie→fracture-light, expansion flame→firefly-field, expansion molten-vein→threshold, illumination merkaba→r3-lightningveil, integration rapture→r3-sleepingbloom, expansion satori→r3-waveveil
+- Tranquility 36 (Expansion): expansion dharma→pulsar, illumination magma→r2-portalrim
+- Stand 10 (Expansion): integration parsec→kepler
+- Yellow Bird 6 (Expansion): return r3-heartwarmth→lightyear, illumination maelstrom-dark→mycelium
+- Redwoods Sway 2 (Expansion): transcendence vestige→protostar, expansion covenant→photon
+- Cabin Soul 6 (Expansion): transcendence dharma→kepler, expansion seraph→r3-monsoonveil, expansion lectio→r-mercury, expansion rapture→ocean
+- Night Wind 5 (Expansion): integration parsec→lightyear, illumination aureole→chrysalis
+- Cabin Soul 8 (Expansion): illumination furnace→mandorla
 - Tranquility 34 (Expansion): expansion dharma→kepler
-- Chemiluminescence (Expansion): transcendence lectio→supernova, expansion volcanic→r2-thermal, return r-blackhole→stigmata, illumination merkaba→mandorla, expansion event-horizon→r3-lightningveil
+- Chemiluminescence (Expansion): transcendence lectio→protostar, expansion volcanic→mycelium, return r-blackhole→supernova, integration r-embers→r-smokerings, expansion event-horizon→r3-lightningveil
 - Nothing 30 (Expansion): expansion parsec→photon
-- Rise 1 (Expansion): return dharma→fracture-light, expansion rapture→monsoon
-- Chenin 5 (Expansion): integration ember→kepler, illumination furnace→mycelium
+- Rise 1 (Expansion): return dharma→fracture-light, expansion rapture→mandorla, illumination yantra→r2-thermal
+- Chenin 5 (Expansion): integration ember→kepler, illumination furnace→obsidian-flow
 - Horses 1 (Expansion): return parsec→starfield
-- No question 8 (Expansion): return maelstrom-dark→obsidian-flow, illumination jubilee→threshold
-- Northern Plane 3 (Expansion): transcendence dharma→r-smokerings, threshold r3-fairyglow→dark-nebula
-- Torraine 5 (Expansion): expansion kairos→pulsar, illumination covenant→supernova, expansion r-embers→will-o-wisp, expansion lectio→threshold, threshold merkaba→mandorla
-- Tranquility 35 (Expansion): expansion jubilee→zenith, threshold seraph→singularity, integration aureole→r3-waveveil, return yantra→r3-lightningveil
-- Rattler 2 (Expansion): expansion r3-fairyglow→r2-portalrim
-- Amboise 2 (Expansion): expansion chinook→r-smokerings
+- No question 8 (Expansion): integration symbiosis→r2-portalrim, return maelstrom-dark→r2-thermal
+- Velvet Tears 1 (Expansion): transcendence rose-window→obsidian-flow, expansion r2-spiralgal→pulsar, illumination nadir→threshold
+- Northern Plane 3 (Expansion): transcendence dharma→r-smokerings, expansion vestige→kepler
+- Torraine 5 (Expansion): expansion kairos→r2-spiralgal, expansion hubble→fracture-light, expansion r-embers→mandorla, illumination covenant→threshold, expansion lectio→supernova
+- Tranquility 35 (Expansion): expansion jubilee→singularity, threshold seraph→rose-window, transcendence kenosis→r3-monsoonveil, transcendence pollen→r3-waveveil
+- Night Wind 9 (Expansion): return photon→will-o-wisp
+- Rattler 2 (Expansion): transcendence stigmata→protostar, illumination event-horizon→nadir, expansion r3-fairyglow→symbiosis
+- Amboise 2 (Expansion): expansion chinook→threshold
 - Singular 4 (Expansion): return parsec→rose-window
 - The Bloom (featured/album): return jubilee→r3-fernunfurl
 - Cosmic Drift (featured/album): expansion parsec→plankton
