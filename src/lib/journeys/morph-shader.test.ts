@@ -39,9 +39,9 @@ describe("flag", () => {
     const m = new Map<string, string>();
     return { getItem: (k: string) => m.get(k) ?? null, setItem: (k: string, v: string) => void m.set(k, v), removeItem: (k: string) => void m.delete(k) };
   };
-  it("is OFF by default until Karel films it on the kiosk", () => {
-    expect(MORPH_SHADER_DEFAULT).toBe(false);
-    expect(morphShaderEnabled("", store())).toBe(false);
+  it("is ON by default (Karel 2026-10-13: shaders over every morph's end)", () => {
+    expect(MORPH_SHADER_DEFAULT).toBe(true);
+    expect(morphShaderEnabled("", store())).toBe(true);
   });
   it("?morphshader=1 turns it on and is kept for the session; =0 turns it off", () => {
     const s = store();

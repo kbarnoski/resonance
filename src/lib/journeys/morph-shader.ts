@@ -31,7 +31,7 @@
 import { SHADER_MEAN_LUMA } from "@/lib/shaders/shader-brightness.generated";
 import { fadeMsFor } from "@/lib/shaders/shader-fade";
 
-export const MORPH_SHADER_DEFAULT = false;
+export const MORPH_SHADER_DEFAULT = true; // Karel 2026-10-13: "all morphs there should be shaders over them as they approach their end frame"
 const MORPH_SHADER_SESSION_KEY = "resonance.morphshader";
 
 /** Is the morph-shader arrival on for this tab? `?morphshader=1` / `=0` (kept
