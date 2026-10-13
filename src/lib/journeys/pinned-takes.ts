@@ -122,6 +122,22 @@ export function pickPinnedTake(journeyId: string): number | null {
 /** Pinned TITLING still — the image under the journey title card,
  *  every lap (Karel 2026-10-01: "keep that intro image always in
  *  titling section"). */
+/** SCRIPTED STILL SEQUENCES — a journey's image take, replayed exactly: from
+ *  each time (seconds into the track) the pack push shows that still (the
+ *  intro still stays TAKE_INTRO_STILLS). Snowflake: Karel 2026-10-13, "use this
+ *  take of snowflake. well done" — the sequence that run showed (session n9mxek). */
+export const TAKE_STILL_SCRIPTS: Record<string, readonly (readonly [number, string])[]> = {
+  "first-snow": [[16, "gen-102.jpg"], [30, "gen-103.jpg"], [46, "gen-102.jpg"], [61, "gen-103.jpg"], [72, "gen-017.jpg"], [78, "gen-104.jpg"], [92, "gen-105.jpg"], [100, "gen-031.jpg"], [116, "gen-042.jpg"], [130, "gen-124.jpg"], [142, "gen-120.jpg"], [152, "gen-116.jpg"], [163, "gen-113.jpg"], [171, "gen-114.jpg"]],
+};
+/** The scripted still for a journey at time t (seconds), or null. */
+export function scriptedStillAt(journeyId: string | null | undefined, t: number): string | null {
+  const s = journeyId ? TAKE_STILL_SCRIPTS[journeyId] : undefined;
+  if (!s) return null;
+  let hit: string | null = null;
+  for (const [at, name] of s) if (t + 0.5 >= at) hit = name;
+  return hit;
+}
+
 export const TAKE_INTRO_STILLS: Record<string, string> = {
   "first-snow": "/tramokyo-pack/images/journeys/first-snow/gen-106.jpg",
 };
