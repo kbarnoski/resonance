@@ -46,7 +46,7 @@
  * (remembered in sessionStorage across the kiosk loop), `?score=0` off.
  */
 
-export const LIVING_SCORE_DEFAULT = false; // until Karel sees it
+export const LIVING_SCORE_DEFAULT = true; // Karel kept it (2026-10-13)
 export const SCORE_SESSION_KEY = "resonance-score";
 /** Mastered journeys — never played by the score. */
 export const SCORE_LOCKED_JOURNEYS: ReadonlySet<string> = new Set(["first-snow", "ghost"]);

@@ -36,7 +36,7 @@
  * kiosk URL turns it on for the tab (kept in sessionStorage), `?bridge=0` off.
  */
 
-export const BRIDGE_DEFAULT = false;
+export const BRIDGE_DEFAULT = true; // Karel kept it (2026-10-13)
 export const BRIDGE_SESSION_KEY = "resonance-bridge";
 /** Locked, mastered journeys — never bridged. */
 export const BRIDGE_LOCKED_JOURNEYS: ReadonlySet<string> = new Set(["first-snow", "ghost"]);

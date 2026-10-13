@@ -181,9 +181,9 @@ describe("bridge flag + plumbing", () => {
     const m = new Map<string, string>();
     return { getItem: (k: string) => m.get(k) ?? null, setItem: (k: string, v: string) => { m.set(k, v); }, removeItem: (k: string) => { m.delete(k); } };
   };
-  it("off by default; ?bridge=1 turns it on for the tab, ?bridge=0 off", () => {
+  it("on by default (Karel kept it 2026-10-13); ?bridge=0 off for the tab, ?bridge=1 on", () => {
     const st = mem();
-    expect(bridgeEnabled("", st)).toBe(false);
+    expect(bridgeEnabled("", st)).toBe(true);
     expect(bridgeEnabled("?bridge=1", st)).toBe(true);
     expect(bridgeEnabled("", st)).toBe(true);
     expect(bridgeEnabled("?bridge=0", st)).toBe(false);

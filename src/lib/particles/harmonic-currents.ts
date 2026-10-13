@@ -47,7 +47,7 @@
 
 import type { SoulId } from "./souls";
 
-export const CURRENTS_DEFAULT = false; // until Karel sees it on the kiosk
+export const CURRENTS_DEFAULT = true; // Karel kept it (2026-10-13)
 export const CURRENTS_SESSION_KEY = "resonance-currents";
 /** Locked, mastered journeys — never carried by a current. */
 export const CURRENTS_LOCKED_JOURNEYS: ReadonlySet<string> = new Set(["first-snow", "ghost"]);

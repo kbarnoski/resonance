@@ -179,10 +179,10 @@ describe("harmonic currents — freedom", () => {
 
 describe("harmonic currents — flag", () => {
   const mem = () => { const m = new Map<string, string>(); return { getItem: (k: string) => m.get(k) ?? null, setItem: (k: string, v: string) => void m.set(k, v), removeItem: (k: string) => void m.delete(k), m }; };
-  it("off by default; ?currents=1 turns it on and is kept for the session; ?currents=0 off", () => {
-    expect(CURRENTS_DEFAULT).toBe(false);
+  it("on by default (Karel kept it 2026-10-13); ?currents=1 turns it on and is kept for the session; ?currents=0 off", () => {
+    expect(CURRENTS_DEFAULT).toBe(true);
     const st = mem();
-    expect(currentsEnabled("", st)).toBe(false);
+    expect(currentsEnabled("", st)).toBe(true);
     expect(currentsEnabled("?currents=1", st)).toBe(true);
     expect(st.m.get(CURRENTS_SESSION_KEY)).toBe("1");
     expect(currentsEnabled("?journey=x", st)).toBe(true);
@@ -190,7 +190,7 @@ describe("harmonic currents — flag", () => {
     expect(currentsEnabled("", st)).toBe(false);
     expect(currentsEnabled("?currents=1", null)).toBe(true);
     const broken = { getItem: () => { throw new Error("blocked"); }, setItem: () => { throw new Error("blocked"); }, removeItem: () => {} };
-    expect(currentsEnabled("", broken)).toBe(false);
+    expect(currentsEnabled("", broken)).toBe(true);
     expect(currentsEnabled("?currents=1", broken)).toBe(true);
   });
 });

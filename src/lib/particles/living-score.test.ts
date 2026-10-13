@@ -294,9 +294,9 @@ describe("living score — flag", () => {
     const m = new Map<string, string>();
     return { getItem: (k: string) => m.get(k) ?? null, setItem: (k: string, v: string) => void m.set(k, v), m };
   };
-  it("off by default until Karel sees it", () => {
-    expect(LIVING_SCORE_DEFAULT).toBe(false);
-    expect(livingScoreEnabled("", mem())).toBe(false);
+  it("on by default (Karel kept it 2026-10-13)", () => {
+    expect(LIVING_SCORE_DEFAULT).toBe(true);
+    expect(livingScoreEnabled("", mem())).toBe(true);
   });
   it("?score=1 turns it on and is kept for the tab; ?score=0 turns it off", () => {
     const st = mem();
