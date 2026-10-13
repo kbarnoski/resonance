@@ -176,6 +176,30 @@ uniform vec3 uPlaneU;     // plane up × half-height
 // direction in plane ndc (the tail is the opposite side)
 uniform vec3 uShedV;
 uniform vec2 uShedDir;
+// …and its WINGS articulate (signature-flight.ts wingDisplacement — mirrored
+// exactly): in q-space (x × image aspect, centred, y up) the hinge + body axis
+// (uWingH), the wing normal + length + root band (uWingN), the along-axis band
+// (uWingR); angles root / tip + body lift this frame (uWingT) and last frame
+// (uWingP). uWingOn 0 = off (the branch is skipped).
+uniform float uWingOn;
+uniform vec4 uWingH;
+uniform vec4 uWingN;
+uniform vec2 uWingR;
+uniform vec3 uWingT;
+uniform vec3 uWingP;
+vec3 wingDisp(vec2 q, vec3 W){
+  vec2 rel = q - uWingH.xy;
+  float a = dot(rel, uWingH.zw), r = dot(rel, uWingN.xy);
+  float inW = smoothstep(0.0, uWingN.w, r) * smoothstep(uWingR.x - 0.04, uWingR.x, a) * (1.0 - smoothstep(uWingR.y, uWingR.y + 0.04, a));
+  vec3 d = vec3(0.0);
+  if (inW > 0.0) {
+    float th = mix(W.x, W.y, smoothstep(0.0, 1.0, r / uWingN.z));
+    float dn = (r * cos(th) - r) * inW;
+    d = vec3(uWingN.xy * dn, r * sin(th) * inW);
+  }
+  d.y += W.z;
+  return d;
+}
 uniform float uImgAspect;
 uniform float uScrAspect;
 // HARMONIC CURRENTS (harmonic-currents.ts, ?currents=1): x = amount × the
@@ -1329,9 +1353,27 @@ void main(){
   // image dissolve / reform: spring onto the image plane; while released,
   // the particles swirl with their own band (mids curl, bass surges)
   vec3 imgT = vec3(0.0);
+  vec3 wingStep = vec3(0.0); // this frame's wing motion (world), carried kinematically
   if (uImgForm > 0.001 || uImgShow > 0.001 || uSnap > 0.5) {
     vec2 ndc = coverNdc(imgUv(c, s, uTexW), uImgAspect, uScrAspect);
     imgT = uPlaneC + uPlaneR * ndc.x + uPlaneU * ndc.y;
+    // THE WINGS: the target turns with the wing, and the mote is carried by
+    // the wing's own motion this frame (a 2-3 Hz stroke is far above the image
+    // spring's reach — followed by force alone the wing would not move). The
+    // spring still holds the mote to its (moving) point. Motion only.
+    if (uWingOn > 0.5) {
+      vec2 uv0 = imgUv(c, s, uTexW);
+      vec2 q = vec2((uv0.x - 0.5) * uImgAspect, uv0.y - 0.5);
+      float qW = length(uPlaneR) * 2.12 * max(1.0, uImgAspect / uScrAspect) / uImgAspect;
+      vec3 N = normalize(cross(uPlaneR, uPlaneU));
+      vec3 dA = wingDisp(q, uWingT), dB = wingDisp(q, uWingP);
+      vec2 nA = coverNdc(uv0 + vec2(dA.x / uImgAspect, dA.y), uImgAspect, uScrAspect) - ndc;
+      vec2 nB = coverNdc(uv0 + vec2(dB.x / uImgAspect, dB.y), uImgAspect, uScrAspect) - ndc;
+      vec3 wA = uPlaneR * nA.x + uPlaneU * nA.y + N * dA.z * qW;
+      vec3 wB = uPlaneR * nB.x + uPlaneU * nB.y + N * dB.z * qW;
+      imgT += wA;
+      wingStep = (wA - wB) * uImgForm;
+    }
     // SPATIAL PAIRING: the form's own pull is not left in (paired to a point on
     // its own side, it printed the previous form into the image — sample 1,
     // The Bloom from a lissajous); the softness it gave returns as a slow drift
@@ -1372,6 +1414,7 @@ void main(){
   float sp2 = length(v);
   if (sp2 > uMaxSpeed) v *= uMaxSpeed / sp2;
   p += v * dt;
+  p += wingStep;
 
   if (uSnap > 0.5) { p = imgT; v = vec3(0.0); }
   if (uDisperse > 0.5) {
