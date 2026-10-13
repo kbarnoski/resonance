@@ -48,7 +48,8 @@ const Visualizer3D = dynamic(() => import("./visualizer-3d").then((m) => m.Visua
 import { isFullKineticJourney, isAudioReactiveJourney, driveOnlyRate, BAND_PROFILES, journeyLayerGain, isSteadyClockShader, journeyResponse, boostedProfile } from "@/lib/journeys/kinetic";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { SHADERS, MODE_META, MODE_CATEGORIES, MODES_3D, MODES_AI } from "@/lib/shaders";
-import { SHADER_MEAN_LUMA } from "@/lib/shaders/shader-brightness.generated";
+import { fadeMsFor } from "@/lib/shaders/shader-fade";
+import { morphShaderOn } from "@/lib/journeys/morph-shader";
 import { getDeviceTier } from "@/lib/audio/device-tier";
 import {
   frameAlpha, isSilentLevel, driveTarget, readSharedDriveEnvelope, shouldRelatchDriveFlags,
@@ -91,17 +92,9 @@ function advanceFade(progress: number, elapsedMs: number, durationMs = SHADER_FA
   return Math.min(1, progress + Math.min(elapsedMs, 100) / (inBoundarySettle() ? Math.max(BOUNDARY_SHADER_FADE_MS, durationMs) : durationMs));
 }
 
-/** BRIGHTNESS-AWARE FADE (Karel 2026-10-12, Snowflake: "a slight jump in color
- *  brightness … at same spot every time"): plasma (mean luma 0.1) → swell (91.8)
- *  in 2.5 s lifted the whole frame ~1 level per frame. A fade to a much brighter
- *  shader now stretches ~1 s per 30 luma of rise, up to 7 s; darker or similar
- *  shaders keep the 2.5 s fade. `from` null = fading in from nothing. */
-export function fadeMsFor(from: string | null | undefined, to: string | null | undefined): number {
-  const a = from ? SHADER_MEAN_LUMA[from] ?? 20 : 0;
-  const b = to ? SHADER_MEAN_LUMA[to] ?? 20 : 0;
-  const rise = Math.max(0, b - a);
-  return Math.min(7000, SHADER_FADE_DURATION_MS * (1 + rise / 75));
-}
+// BRIGHTNESS-AWARE FADE moved to a pure module (the morph-shader timing
+// predicts the same fade) — re-exported for existing importers.
+export { fadeMsFor };
 
 /** Pick a deterministic backdrop shader for an AI mode */
 function getAiBackdropShader(aiMode: string): VisualizerMode {
@@ -149,6 +142,9 @@ export interface VisualizerCoreProps {
   journeyDualShaderMode?: string | null;
   /** Optional third shader layered during peak journey moments */
   journeyTertiaryShaderMode?: string | null;
+  /** Morph-shader arrival (flag ?morphshader=1): the primary the engine will
+   *  land over the playing morph — pre-compiled on the parked A/B layer. */
+  journeyStagedShaderMode?: string | null;
   /** Journey phase for poetry */
   journeyPhase?: string | null;
   /** Journey voice override */
@@ -276,6 +272,7 @@ export function ShaderVisualizer({
   tempoFlow = false,
   paused = false,
   refireReadyOnResume = false,
+  warmDraw = false,
   onReady,
   modeTag,
 }: {
@@ -306,6 +303,11 @@ export function ShaderVisualizer({
    *  with the SAME shader never recompiles, so it signals ready again on
    *  its first frame after `paused` flips false. */
   refireReadyOnResume?: boolean;
+  /** Morph-shader staging (flag ?morphshader=1): a shader loaded onto a
+   *  PARKED layer draws exactly one frame (at opacity 0) after it links, so
+   *  the driver's first-draw pipeline work happens now — not on the first
+   *  visible frame of its crossfade under a playing morph. */
+  warmDraw?: boolean;
   /** Fires when the shader has compiled and rendered its first frame.
    *  `ok=false` means compilation/linking failed — callers should abort any
    *  pending crossfade instead of fading into a dead layer. */
@@ -338,6 +340,8 @@ export function ShaderVisualizer({
   latestFlagsRef.current = { smoothMotion, tempoFlow, bandFocus, bandDriveOnly };
   const flagsRef = useRef<DriveFlags>(latestFlagsRef.current);
   const pausedRef = useRef(paused);
+  const warmDrawRef = useRef(warmDraw);
+  warmDrawRef.current = warmDraw;
   const resumeReadyRef = useRef(false);
   const onReadyRef = useRef(onReady);
   onReadyRef.current = onReady;
@@ -458,6 +462,7 @@ export function ShaderVisualizer({
     let compilePhase: "linking" | "ready" = "linking";
     const settleBrakeLastRef = { current: 0 };
     let readyFired = false;
+    let warmDrawn = false; // per shader: the one parked warm-up frame (warmDraw)
 
     // Render-resolution scaling. Already capped at 1x DPR (retina is wasted on
     // soft fragment shaders). Older GPUs are still fragment-bound at 1x, so we
@@ -656,7 +661,7 @@ export function ShaderVisualizer({
       // Suspended (layer parked at opacity ≈ 0) — keep the context + program
       // alive but skip the draw. Cheap idle poll; resumes on the next frame
       // after `paused` flips false.
-      if (pausedRef.current) {
+      if (pausedRef.current && (warmDrawn || !warmDrawRef.current)) {
         animId = requestAnimationFrame(render);
         return;
       }
@@ -776,6 +781,7 @@ export function ShaderVisualizer({
       gl.uniform1f(uAmplitude, shown.amplitude * REACTIVITY);
 
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      warmDrawn = true;
       if (!wasReady) syncNote("first-draw", tSync);
       // EQ embodiment (Karel 2026-09-30: "basically an incredible eq
       // viz" — uniforms alone read as ambient because most shaders use
@@ -908,6 +914,7 @@ export function VisualizerCore({
   journeyShaderMode,
   journeyDualShaderMode,
   journeyTertiaryShaderMode,
+  journeyStagedShaderMode,
   journeyPhase,
   journeyVoice,
   journeyPoetryInterval,
@@ -1299,6 +1306,33 @@ export function VisualizerCore({
     }
   };
 
+  // MORPH SHADER STAGING (Karel 2026-10-13, flag ?morphshader=1): the engine
+  // names the primary it will land over a playing travel morph ~3-4 s before
+  // the clip's end. Load it NOW onto the parked inactive layer — compile, the
+  // one sync frame and one warm draw (warmDraw) all happen at opacity 0 while
+  // the clip is still loading — so when the switch lands, beginPrimaryTransition
+  // finds it resident (L15) and the crossfade starts with no compile under the
+  // morph. Only an already-mounted, idle, parked layer is used: never a new
+  // canvas/context, never a layer that is mid-fade.
+  const morphStageOnRef = useRef<boolean | null>(null);
+  if (morphStageOnRef.current === null) morphStageOnRef.current = morphShaderOn();
+  const morphStageOn = morphStageOnRef.current;
+  useEffect(() => {
+    if (!morphStageOn || shadersHidden) return;
+    const target = journeyStagedShaderMode as VisualizerMode | null | undefined;
+    if (!target || !SHADERS[target] || MODES_3D.has(target) || MODES_AI.has(target)) return;
+    if (primaryFadingRef.current || primaryWaitingForRef.current) return;
+    const active = activeLayerRef.current;
+    const inactive: 'a' | 'b' = active === 'a' ? 'b' : 'a';
+    if (idlePrimaryLayer !== inactive) return;
+    const activeMode = active === 'a' ? layerAMode : layerBMode;
+    const inactiveMode = inactive === 'a' ? layerAMode : layerBMode;
+    if (!inactiveMode || inactiveMode === target || activeMode === target) return;
+    glitchRecord("morph-shader-prewarm", `${target} on ${inactive}`);
+    if (inactive === 'a') setLayerAMode(target);
+    else setLayerBMode(target);
+  }, [morphStageOn, shadersHidden, journeyStagedShaderMode, idlePrimaryLayer, layerAMode, layerBMode]);
+
   // Primary shader A/B crossfade — triggered when actualPrimaryMode changes
   // (from mode change, dimmed→undimmed transition, or journey shader switch)
   useEffect(() => {
@@ -1615,7 +1649,7 @@ export function VisualizerCore({
     const DEFAULT_FALLBACK: VisualizerMode = "drift";
     const safeMode = SHADERS[layerMode] ? layerMode : DEFAULT_FALLBACK;
     return SHADERS[safeMode] ? (
-      <ShaderVisualizer analyser={analyser} dataArray={dataArray} fragShader={SHADERS[safeMode]!} modeTag={safeMode} smoothMotion={smoothMotionProp ?? false} tempoFlow={tempoFlowProp ?? false} bandFocus={bandPrimary} bandDriveOnly={bandDriveOnly} paused={layerPaused} onReady={onShaderReady} />
+      <ShaderVisualizer analyser={analyser} dataArray={dataArray} fragShader={SHADERS[safeMode]!} modeTag={safeMode} smoothMotion={smoothMotionProp ?? false} tempoFlow={tempoFlowProp ?? false} bandFocus={bandPrimary} bandDriveOnly={bandDriveOnly} paused={layerPaused} warmDraw={morphStageOn} onReady={onShaderReady} />
     ) : null;
   };
 

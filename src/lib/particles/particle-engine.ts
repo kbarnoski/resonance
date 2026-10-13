@@ -63,6 +63,8 @@ import {
 } from "./souls";
 import type { SpectrumFrame } from "./spectrum";
 import { critStep, springTau, stillPreloadAllowed, type Crit } from "./image-follow";
+import { livingScoreEnabled, scoreSessionStore, SCORE_STRIDE, SCORE_TUNING } from "./living-score";
+import { currentFreedom, type CurrentState } from "./harmonic-currents";
 
 /** Cinematic look default: on (Karel's keep 2026-10-13); ?cine=0 turns it off. */
 export function cineEnabled(): boolean {
@@ -102,6 +104,10 @@ export interface ParticleEngineOptions {
    *  ON in the show since Karel's keep (2026-10-13); ?cine=0 turns it off.
    *  Per journey via setCine (the mastered takes keep their locked look). */
   cine?: boolean;
+  /** THE LIVING SCORE (living-score.ts): compile the note-ripple force field
+   *  into the simulation. Default: ?score=1 (sessionStorage-kept), else off —
+   *  off, the simulation source is exactly the show build's. */
+  score?: boolean;
   /** Frame-time watchdog: called (once) when a frame's CPU time or the rAF gap
    *  while running exceeds the budget, or a program fails. */
   watchdog?: { cpuMs: number; gapMs: number; onStall: (why: string) => void };
@@ -210,6 +216,17 @@ export interface ParticleEngine {
   setCamScale(k: number): void;
   /** Cinematic look for the current journey (off for the mastered takes). */
   setCine(on: boolean): void;
+  /** THE LIVING SCORE: this frame's packed ripples (living-score.ts LivingScore
+   *  .packed, `n` live) — null / 0 clears. Not refreshed for 0.25 s (the layer
+   *  let go) = the ripples fade out on their own. No-op when compiled out. */
+  setScore(packed: Float32Array | null, n: number): void;
+  /** Is the living score compiled into this engine? */
+  scoreCompiled(): boolean;
+  /** HARMONIC CURRENTS (harmonic-currents.ts): the free-flowing field's current
+   *  character — amount, tension (laminar drift ↔ gathering vortices), depth
+   *  layering. Glides ~2.5 s on top of the eased timeline; null = off (glides
+   *  to 0, or at once with `snap` — a force only, so even a snap never jumps a mote). */
+  setCurrents(c: CurrentState | null, snap?: boolean): void;
   /** Off-centre placement: screen fractions of half-width / half-height. */
   setOffset(x: number, y: number): void;
   /** Image-form plane size (1 = full frame). */
@@ -233,6 +250,16 @@ export interface ParticleEngine {
   setImageVariant(mirror: boolean, tilt: number): void;
   /** 1 = image forms take the journey palette (luminance kept), 0 = true colours. */
   setImageTint(k: number): void;
+  /** THE BRIDGE (bridge.ts): a still's tiny colour field (RGBA bytes, rows
+   *  bottom-up, from the worker sampler) into slot 0 (outgoing) / 1 (incoming).
+   *  Refused (false) while that slot is on screen — a worn colour never swaps. */
+  loadBridgeStill(slot: 0 | 1, px: Uint8Array, w: number, h: number, aspect: number): boolean;
+  /** THE BRIDGE targets (glided per frame): carriers' presence, outgoing →
+   *  incoming mix, drift toward the incoming light, share of motes that carry.
+   *  Chroma only — the motes keep their own luminance. */
+  setBridge(presence: number, mix: number, drift: number, fraction: number): void;
+  /** THE BRIDGE as drawn (glided values; diagnostics + tests). */
+  bridgeState(): { presence: number; mix: number; drift: number; fraction: number };
   /** Follow a screen point (NDC −1..1) with a trailing stream; w = 0 releases. */
   setFollow(x: number, y: number, w: number): void;
   /** Load an image the field can form into (no dissolve timeline). */
@@ -495,6 +522,12 @@ export function createParticleEngine(
   const pairingOn = (opts.pairing ?? pairingEnabled()) && !!gl.getExtension("EXT_float_blend");
   const cineAllowed = opts.cine ?? cineEnabled();
   let cineOn = cineAllowed;
+  // THE LIVING SCORE: decided once per engine (its programs carry it or not)
+  const scoreOn = opts.score ?? livingScoreEnabled(undefined, scoreSessionStore());
+  const SCORE_MAX = SCORE_TUNING.MAX_RIPPLES;
+  const scoreIn = new Float32Array(SCORE_MAX * SCORE_STRIDE);
+  const scoreA = new Float32Array(SCORE_MAX * 4), scoreB = new Float32Array(SCORE_MAX * 4);
+  let scoreN = 0, scoreStale = 1e9, scoreLive = 0;
   const pairProgs = pairingOn
     ? {
         stats: startProgram(gl, QUAD_VS, PAIR_STATS_FS),
@@ -520,7 +553,7 @@ export function createParticleEngine(
     const k = `s:${b}`;
     let pr = simProgs.get(k);
     if (!pr) {
-      pr = startProgram(gl!, QUAD_VS, buildSimFS([b]));
+      pr = startProgram(gl!, QUAD_VS, buildSimFS([b], { score: scoreOn }));
       simProgs.set(k, pr);
     }
     return pr;
@@ -759,6 +792,11 @@ export function createParticleEngine(
   let disperseNext = false;
   let hueSpread = 0.35, hueSpreadTarget = 0.35, hueWave = 0;
 
+  // ── THE BRIDGE (bridge.ts): two tiny still colour fields + glided envelope ─
+  let bridgePS = 0, bridgePT = 0, bridgeMS = 0, bridgeMT = 0, bridgeDS = 0, bridgeDT = 0;
+  let bridgeFS = 0.2, bridgeFT = 0.2;
+  const bridgeAsp: [number, number] = [16 / 9, 16 / 9];
+
   // ── image slots (A = outgoing still, B = incoming) ──────────────────────
   const mkImgTex = () => {
     const t = gl.createTexture()!;
@@ -771,6 +809,7 @@ export function createParticleEngine(
     return t;
   };
   let imgTex: [WebGLTexture, WebGLTexture] = [mkImgTex(), mkImgTex()];
+  const bridgeTex: [WebGLTexture, WebGLTexture] = [mkImgTex(), mkImgTex()];
   // per-particle sampled image coordinates (RG32F, side × side) — crisp image forms
   const imgUvTex = gl.createTexture()!;
   gl.bindTexture(gl.TEXTURE_2D, imgUvTex);
@@ -797,6 +836,9 @@ export function createParticleEngine(
   let pairUse = false;     // the worn image uses the paired uvs
   let pairLit = 1;         // the image's literal level (setImageLiteral)
   let hoverT = 0, hoverS = 0; // setHover target / glided
+  // harmonic currents: targets / glided, the soul freedom (glided), the steady clock
+  const curT = { amount: 0, tension: 0, layering: 0 }, curS = { amount: 0, tension: 0, layering: 0 };
+  let curFree = 0, curClock = 0;
   let imgAspect: [number, number] = [16 / 9, 16 / 9];
   let haveB = false;
   // image pull + presence followers (image-follow.ts critStep)
@@ -1147,6 +1189,26 @@ export function createParticleEngine(
     }
     hoverS += (hoverT - hoverS) * (1 - Math.exp(-dt / 0.35));
     if (sim.u.uHover) g.uniform1f(sim.u.uHover, hoverS);
+    // HARMONIC CURRENTS: everything glides (the timeline is already eased over
+    // 8-20 s); the soul's freedom follows the soul blend; a mote released by an
+    // image (hover) drifts on the current too. The clock is steady (real time,
+    // never the music's dilated clocks). Off (amount 0) = uniforms at rest.
+    {
+      const kc = 1 - Math.exp(-dt / 2.5);
+      curS.amount += (curT.amount - curS.amount) * kc;
+      curS.tension += (curT.tension - curS.tension) * kc;
+      curS.layering += (curT.layering - curS.layering) * kc;
+      const freeT = Math.max(lerpS((x) => currentFreedom(x.id)), 0.5 * hoverT);
+      curFree += (freeT - curFree) * (1 - Math.exp(-dt / 3));
+      if (curS.amount > 1e-3) curClock += dt;
+      if (sim.u.uCur) {
+        const amt = curS.amount * curFree;
+        g.uniform4f(sim.u.uCur, amt > 1e-3 ? amt : 0, curS.tension, curS.layering, curClock);
+        const el = Math.hypot(eye[0], eye[1], eye[2]) || 1;
+        g.uniform3f(sim.u.uCurEye, eye[0] / el, eye[1] / el, eye[2] / el);
+        g.uniform3f(sim.u.uCurRight, right[0], right[1], right[2]);
+      }
+    }
     if (sim.u.uPull) { const pk = Math.min(1, pullT / 2); g.uniform1f(sim.u.uPull, 0.5 + 0.5 * pk * pk * (3 - 2 * pk)); }
     if (sim.u.uAccCap) {
       // since the latest re-aim (shape step or glide event): 1.0 u/s² at first,
@@ -1171,6 +1233,33 @@ export function createParticleEngine(
     } else {
       g.uniform3f(sim.u.uMelody, melody[0], melody[1], melody[2]);
       g.uniform1f(sim.u.uMelodyW, melodyW);
+    }
+    // THE LIVING SCORE: screen-plane ripples → world, faded when the layer lets
+    // go (stale > 0.25 s) and held back while an image form is worn
+    if (scoreOn && sim.u.uScoreN) {
+      scoreStale += dt;
+      scoreLive += ((scoreStale < 0.25 ? 1 : 0) - scoreLive) * (1 - Math.exp(-dt / 0.3));
+      const held = 1 - 0.85 * Math.min(1, Math.max(env.imgForm, env.imgShow));
+      const k = scoreLive * held;
+      const n = k > 1e-3 ? scoreN : 0;
+      for (let i = 0; i < n; i++) {
+        const o = i * SCORE_STRIDE, x = scoreIn[o] * halfW, y = scoreIn[o + 1] * halfH;
+        for (let j = 0; j < 3; j++) scoreA[i * 4 + j] = o3[j] + right[j] * x + up[j] * y;
+        scoreA[i * 4 + 3] = scoreIn[o + 2] * k;
+        scoreB[i * 4] = Math.max(0.05, scoreIn[o + 3] * halfH);
+        scoreB[i * 4 + 1] = scoreIn[o + 4];
+        scoreB[i * 4 + 2] = scoreIn[o + 5];
+        scoreB[i * 4 + 3] = scoreIn[o + 6];
+      }
+      g.uniform1i(sim.u.uScoreN, n);
+      if (n > 0) {
+        if (sim.u["uScoreA[0]"]) g.uniform4fv(sim.u["uScoreA[0]"], scoreA);
+        if (sim.u["uScoreB[0]"]) g.uniform4fv(sim.u["uScoreB[0]"], scoreB);
+        if (sim.u.uScoreAxis) {
+          const ax = [right[1] * up[2] - right[2] * up[1], right[2] * up[0] - right[0] * up[2], right[0] * up[1] - right[1] * up[0]];
+          g.uniform3f(sim.u.uScoreAxis, ax[0], ax[1], ax[2]);
+        }
+      }
     }
     const pairOn = pairUse && dissolveT === null;
     g.uniform1f(sim.u.uImgForm, pairOn ? Math.min(1, env.imgForm / pairLit) : env.imgForm);
@@ -1295,6 +1384,30 @@ export function createParticleEngine(
     }
     g.uniform1f(draw.u.uImgAspect, imgAspect[1]);
     g.uniform1f(draw.u.uScrAspect, W / H);
+    // THE BRIDGE: every value glides (~1 s) on top of the scheduler's own eased
+    // envelope — a tick-rate target can never step on screen. Mix and the
+    // carrier share only move freely while nothing is worn (presence ≈ 0).
+    {
+      const k = 1 - Math.exp(-dt / 0.9);
+      bridgePS += (bridgePT - bridgePS) * k;
+      if (bridgePS < 0.005) { bridgeMS = bridgeMT; bridgeFS = bridgeFT; }
+      else bridgeMS += (bridgeMT - bridgeMS) * k;
+      bridgeDS += (bridgeDT - bridgeDS) * (1 - Math.exp(-dt / 1.2));
+      if (bridgePS < 1e-4 && bridgePT === 0) bridgePS = 0;
+    }
+    if (draw.u.uBridge) {
+      g.uniform1f(draw.u.uBridge, bridgePS);
+      if (bridgePS > 0) {
+        bindTex(6, bridgeTex[0], draw.u.uBridgeA);
+        bindTex(7, bridgeTex[1], draw.u.uBridgeB);
+        g.uniform1f(draw.u.uBridgeMix, bridgeMS);
+        g.uniform1f(draw.u.uBridgeDrift, bridgeDS);
+        g.uniform1f(draw.u.uBridgeFrac, bridgeFS);
+        g.uniform2f(draw.u.uBridgeAsp, bridgeAsp[0], bridgeAsp[1]);
+        g.uniform3f(draw.u.uBridgeR, right[0] * halfW, right[1] * halfW, right[2] * halfW);
+        g.uniform3f(draw.u.uBridgeU, up[0] * halfH, up[1] * halfH, up[2] * halfH);
+      }
+    }
     g.drawArrays(g.POINTS, 0, count);
     g.disable(g.BLEND);
     hcur = hn;
@@ -1545,7 +1658,7 @@ export function createParticleEngine(
       velRead?.dispose();
       jumpRead?.dispose();
       lumRead?.dispose();
-      for (const t of [...posTex, ...velTex, ...hdrTex, lumTex, specTex, ...imgTex, ...expTex]) gl.deleteTexture(t);
+      for (const t of [...posTex, ...velTex, ...hdrTex, lumTex, specTex, ...imgTex, ...bridgeTex, ...expTex]) gl.deleteTexture(t);
       if (pairT) for (const t of [pairT.sorted, pairT.stats.tex, pairT.hist.tex, pairT.acdf.tex, pairT.rcdf.tex]) gl.deleteTexture(t);
       if (pairUv) gl.deleteTexture(pairUv.tex);
       if (seedTex) gl.deleteTexture(seedTex);
@@ -1622,6 +1735,21 @@ export function createParticleEngine(
     setHue(h, sv = 1) { hueTarget = h; satTarget = Math.max(0.3, Math.min(1.6, sv)); },
     setForm(f) { formTarget = [...f] as [number, number, number, number]; },
     setCine(on) { cineOn = cineAllowed && on; },
+    setScore(packed, n) {
+      if (!scoreOn) return;
+      if (!packed || n <= 0) { scoreN = 0; scoreStale = 0; return; }
+      scoreN = Math.min(SCORE_MAX, n, Math.floor(packed.length / SCORE_STRIDE));
+      scoreIn.set(packed.subarray(0, scoreN * SCORE_STRIDE));
+      scoreStale = 0;
+    },
+    scoreCompiled() { return scoreOn; },
+    setCurrents(c, snap = false) {
+      const fin = (x: number) => (Number.isFinite(x) ? Math.max(0, Math.min(1, x)) : 0);
+      curT.amount = c ? fin(c.amount) : 0;
+      curT.tension = c ? fin(c.tension) : curT.tension;
+      curT.layering = c ? fin(c.layering) : curT.layering;
+      if (snap) { curS.amount = curT.amount; curS.tension = curT.tension; curS.layering = curT.layering; }
+    },
     setCamScale(k) { camScaleTarget = camScaleBase * Math.max(0.3, Math.min(2.6, k)); },
     setOffset(x, y) { offTX = Math.max(-0.7, Math.min(0.7, x)); offTY = Math.max(-0.5, Math.min(0.5, y)); },
     setImageScale(k) { imgScaleT = Math.max(0.2, Math.min(1.2, k)); },
@@ -1644,6 +1772,23 @@ export function createParticleEngine(
     },
     setImageVariant(mirror, tilt) { imgMirrorT = mirror ? -1 : 1; imgTiltT = Math.max(-3.2, Math.min(3.2, tilt)); },
     setImageTint(k) { imgTintT = Math.max(0, Math.min(1, k)); },
+    loadBridgeStill(slot, px, w, h, aspect) {
+      if (lost || w < 1 || h < 1 || px.length < w * h * 4) return false;
+      // a slot on screen never swaps (outgoing: while worn; incoming: once mixed in)
+      const worn = Math.max(bridgePS, bridgePT) > 0.005;
+      if (slot === 0 && worn) return false;
+      if (slot === 1 && worn && Math.max(bridgeMS, bridgeMT) > 0.005) return false;
+      gl.bindTexture(gl.TEXTURE_2D, bridgeTex[slot]);
+      gl.pixelStorei(gl.UNPACK_ALIGNMENT, 4);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, w, h, 0, gl.RGBA, gl.UNSIGNED_BYTE, px);
+      bridgeAsp[slot] = aspect > 0 ? aspect : 16 / 9;
+      return true;
+    },
+    setBridge(presence, mix, drift, fraction) {
+      const c = (x: number) => (Number.isFinite(x) ? Math.max(0, Math.min(1, x)) : 0);
+      bridgePT = c(presence); bridgeMT = c(mix); bridgeDT = c(drift); bridgeFT = Math.min(0.5, c(fraction));
+    },
+    bridgeState() { return { presence: bridgePS, mix: bridgeMS, drift: bridgeDS, fraction: bridgeFS }; },
     setVariant(v, now = false) { varStaged = v; if (now) applyVariant(); },
     imageShown() { return imgS.x; },
     setFire(k, line) { fireT = Math.max(0, Math.min(1.5, k)); if (line !== undefined) fireLine = line; },

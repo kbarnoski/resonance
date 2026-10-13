@@ -12,6 +12,7 @@ import { createSeededRandom } from "@/lib/journeys/seeded-random";
 import { getTierProfile } from "@/lib/audio/device-tier";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { glitchRecord, glitchFlush } from "@/lib/journeys/glitch-recorder";
+import { morphShaderOn, morphShaderLeadSec, morphShaderDue } from "@/lib/journeys/morph-shader";
 import { isVideoActive, markVideoActive, markJourneyBoundary, inBoundarySettle, emitClipEnded, emitClipStarted } from "@/lib/journeys/video-activity";
 import { isWhisperImageryName, imageryDprCeil } from "@/lib/journeys/kinetic";
 
@@ -138,6 +139,7 @@ const KEN_BURNS_DURATION = 22; // seconds — matches ~20s layer life
 // pre-baked images use the identical prompt assembly.
 import { CINEMATIC_PERSPECTIVES, PROMPT_INTERPRETATIONS, PROMPT_MOODS, tramokyoGradeForPhase } from "@/lib/journeys/prompt-decoration";
 import { packImageIndexForProgress, packPhaseSliceForProgress, nextSlotInSlice } from "@/lib/journeys/pack-image-allocation";
+import { bridgeEnabled, nextBoundaryStill, publishBridgeHint } from "@/lib/particles/bridge";
 
 // Figures removed — Ghost journey has its own figure prompts baked into aiPrompts.
 // All other journeys generate imagery from their aiPrompt only.
@@ -308,6 +310,8 @@ export function AiImageLayer({
   const canHevcRef = useRef<boolean | null>(null);
   const lastClipPhaseRef = useRef<number>(-1);
   const lastPackUrlRef = useRef<string | null>(null);
+  // THE BRIDGE flag (?bridge=1), read once per mount (null = not read yet)
+  const bridgeOnRef = useRef<boolean | null>(null);
   const heroPushedForRef = useRef<number>(-1);
   const activeVideoRef = useRef<HTMLVideoElement | null>(null);
   const pendingVideoRef = useRef<HTMLVideoElement | null>(null);
@@ -991,6 +995,29 @@ export function AiImageLayer({
           });
       }
 
+      // THE BRIDGE (?bridge=1, particle layer — bridge.ts): tell the particles
+      // which stills meet at the next boundary (the one on screen now, and the
+      // next phase's opening still this layer will push there) and whether a
+      // travel morph is armed for it. Deduped; nothing at all when the flag is off.
+      if (bridgeOnRef.current === null) {
+        try { bridgeOnRef.current = bridgeEnabled(undefined, window.sessionStorage); } catch { bridgeOnRef.current = false; }
+      }
+      if (bridgeOnRef.current && !legacySlideshow && journeyIdRef.current) {
+        const nb = nextBoundaryStill(journeyPhases, urls, progress, duration, (p) => packPhaseSliceForProgress(journeyPhases, urls.length, p));
+        if (nb) {
+          const jc = clipsRef.current?.[journeyIdRef.current];
+          const bp = duration > 0 ? nb.boundarySec / duration : 1;
+          publishBridgeHint({
+            journeyId: journeyIdRef.current,
+            boundarySec: nb.boundarySec,
+            outgoing: lastPackUrlRef.current,
+            incoming: nb.incoming,
+            // the same gates the clip scheduler applies (tier, the ≤ 0.90 cutoff)
+            morph: !!jc?.["t" + (nb.phaseIdx - 1)] && bp <= 0.9 && getTierProfile().maxAiLayers >= 8,
+          });
+        }
+      }
+
       // ── Living video (Wave 2, rebuilt after 2026-09-25 audits): travel
       // morphs at phase boundaries + hero loops within phases. High tier
       // only; one video pending/active at a time; every element released.
@@ -1035,8 +1062,16 @@ export function AiImageLayer({
           if (Array.isArray(e)) e = e.length ? e[Math.floor(Math.random() * e.length)] : undefined;
           return typeof e === "string" ? e : e ? (canHevcRef.current && e.hevc ? e.hevc : e.h264) : undefined;
         };
-        const pushVideoUrl = (url: string, onRejected?: () => void) => {
+        const pushVideoUrl = (url: string, onRejected?: () => void, travel = false) => {
           const epoch = journeyEpochRef.current;
+          // MORPH SHADER (Karel 2026-10-13: "all morphs there should be
+          // shaders over them as they approach their end frame"; flag
+          // ?morphshader=1): plan + stage the arriving shader NOW, while the
+          // clip is still loading — the visualizer compiles it on the parked
+          // primary layer at opacity 0, so its arrival under the playing
+          // morph costs no compile. Scripted takes → no plan.
+          const morphPlan = travel && morphShaderOn() ? getJourneyEngine().planMorphShader() : null;
+          let morphLanded = false;
           const v = document.createElement("video");
           v.muted = true;
           v.loop = false; // play once, hold last frame — restarts visibly jump
@@ -1044,15 +1079,31 @@ export function AiImageLayer({
           v.preload = "auto";
           v.src = url;
           pendingVideoRef.current = v; // synchronous — busy is honest (#8)
+          const dropPlan = () => { if (morphPlan && journeyEpochRef.current === epoch) getJourneyEngine().cancelMorphShader(); };
           v.addEventListener("error", () => {
             if (pendingVideoRef.current === v) pendingVideoRef.current = null;
             releaseMedia(v);
+            dropPlan();
             onRejected?.(); // re-arm so the phase can retry (#9)
           }, { once: true });
           v.addEventListener("canplay", () => {
             if (pendingVideoRef.current === v) pendingVideoRef.current = null;
             if (journeyEpochRef.current !== epoch) { releaseMedia(v); return; } // stale journey (C3)
-            if (!pushImage(v)) { releaseMedia(v); onRejected?.(); return; } // stack full (C2)
+            if (!pushImage(v)) { releaseMedia(v); dropPlan(); onRejected?.(); return; } // stack full (C2)
+            if (morphPlan) {
+              // Land the staged shader ~3-4 s before the end frame (lead
+              // sized from the fade the visualizer will run) so it is
+              // fully in before the end frame and carries through the dwell.
+              const leadSec = morphShaderLeadSec(morphPlan.fadeMs, v.duration);
+              const onTime = () => {
+                if (morphLanded || journeyEpochRef.current !== epoch) { v.removeEventListener("timeupdate", onTime); return; }
+                const remain = v.duration - v.currentTime;
+                if (!morphShaderDue(remain, leadSec)) return;
+                v.removeEventListener("timeupdate", onTime);
+                morphLanded = getJourneyEngine().landMorphShader(remain) != null;
+              };
+              v.addEventListener("timeupdate", onTime);
+            }
             glitchRecord("clip", url.split("/").pop() ?? url);
             emitClipStarted(url, v.duration); // particle layer: overlap the morph
             activeVideoRef.current = v;
@@ -1065,6 +1116,13 @@ export function AiImageLayer({
             v.addEventListener("ended", () => {
               glitchRecord("video-ended");
               emitClipEnded(url); // particle layer: emerge at the end of a morph
+              // Morph shader: a staged plan that never landed (clip shorter
+              // than its lead, missed timeupdate) lands NOW — precompiled,
+              // so it replaces the 800 ms nudge below rather than adding one.
+              if (morphPlan && !morphLanded && journeyEpochRef.current === epoch) {
+                morphLanded = getJourneyEngine().landMorphShader(0) != null;
+              }
+              const arrivalFresh = morphLanded && getJourneyEngine().morphArrivalFresh();
               // END-ON-MORPH (Karel 2026-09-29: "id like snowflake to
               // end on that morph"): a clip that finishes in the final
               // stretch HOLDS its last frame — no fade, no cover, no
@@ -1082,7 +1140,10 @@ export function AiImageLayer({
                   // DIRECT drive — cover pushed synchronously and the
                   // shader switched NOW, no tick, no gate roulette.
                   triggerGenerationRef.current?.(true);
-                  getJourneyEngine().forceShaderSwitch();
+                  // a morph-shader arrival already brought the fresh shader
+                  // over this frame — the finale doesn't switch again on top
+                  if (arrivalFresh) glitchRecord("morph-finale-shader-kept");
+                  else getJourneyEngine().forceShaderSwitch();
                   // ...and it releases IMMEDIATELY (Karel 2026-09-30:
                   // "you HAVE to transition from that last morph when
                   // it completes and do not wait. its blocking the
@@ -1126,7 +1187,9 @@ export function AiImageLayer({
               // only the frame's own slow melt waits out the dwell.
               morphCoverPendingRef.current = true;
               lastGenTimeRef.current = 0;
-              getJourneyEngine().nudgeShaderRotation(800);
+              // (skipped when the morph-shader arrival already landed: the
+              // fresh shader is ON the frame — one change, not two)
+              if (!arrivalFresh) getJourneyEngine().nudgeShaderRotation(800);
               setTimeout(() => {
                 const layer = layersRef.current.find((l) => l.img === v);
                 if (layer && layer.state !== "fading-out") {
@@ -1181,7 +1244,7 @@ export function AiImageLayer({
             // the next tick retries instead of losing the morph.
             glitchRecord("clip-fail", attempt.url.split("/").pop() ?? "");
             if (pendingMorphRef.current == null) pendingMorphRef.current = attempt;
-          });
+          }, true);
         } else if (!morph || morph.forPhase !== phaseIdx) {
           if (morph) pendingMorphRef.current = null; // phase moved on — drop stale morph
           const heroUrl = HEROES_ENABLED ? pick(clips[String(phaseIdx)] as string | { h264: string; hevc?: string } | Array<string | { h264: string; hevc?: string }>) : undefined;

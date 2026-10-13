@@ -1847,6 +1847,7 @@ export function VisualizerClient({
           journeyShaderMode={journeyFrame?.shaderMode}
           journeyDualShaderMode={getTierProfile().enableDualShader ? journeyFrame?.dualShaderMode : null}
           journeyTertiaryShaderMode={journeyFrame?.tertiaryShaderMode}
+          journeyStagedShaderMode={journeyFrame?.stagedShaderMode}
           journeyPhase={journeyFrame?.phase}
           journeyVoice={journeyFrame?.voice}
           journeyPoetryInterval={journeyFrame?.poetryIntervalSeconds}

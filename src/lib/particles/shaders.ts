@@ -11,6 +11,7 @@
 // LUM   : 16×16 downsample of the tonemapped frame for the WCAG governor.
 // COMP  : tonemap (1 - e^-x·exposure) + sRGB + 1/255 ordered dither → canvas.
 // ─────────────────────────────────────────────────────────────────────────────
+import { SCORE_TUNING } from "./living-score";
 
 export const QUAD_VS = /* glsl */ `#version 300 es
 const vec2 P[3] = vec2[3](vec2(-1.0,-1.0), vec2(3.0,-1.0), vec2(-1.0,3.0));
@@ -166,6 +167,13 @@ uniform vec3 uPlaneR;     // plane right × half-width
 uniform vec3 uPlaneU;     // plane up × half-height
 uniform float uImgAspect;
 uniform float uScrAspect;
+// HARMONIC CURRENTS (harmonic-currents.ts, ?currents=1): x = amount × the
+// soul's freedom (0 = off — the branch is skipped, the show build exactly),
+// y = tension (0 laminar drift … 1 gathering vortices), z = depth layering,
+// w = the currents' own steady clock (s) · eye = unit vector toward the camera
+uniform vec4 uCur;
+uniform vec3 uCurEye;
+uniform vec3 uCurRight;
 layout(location = 0) out vec4 oPos;
 layout(location = 1) out vec4 oVel;
 ${NOISE}
@@ -1146,6 +1154,55 @@ void main(){
     f.w = mix(f.w, 1.6, uHover);
   }
 
+  // HARMONIC CURRENTS (inno-currents 2026-10-13): the free-flowing field rides a
+  // volumetric current whose CHARACTER follows the music's harmony + structure
+  // (tension → deep converging vortices + layered depth; release → wide laminar
+  // drift, wind over water). A FORCE only — never a position / velocity set —
+  // so on, off and every change of character are continuous; the eased
+  // timeline (≥ 8 s swings) and the steady clock keep it off the beat. Images
+  // and emblems are untouched: gated by the image form and presence.
+  float curG = uCur.x * (1.0 - uImgForm) * (1.0 - uImgShow);
+  if (curG > 0.001) {
+    vec3 E = uCurEye, R = uCurRight, U = normalize(cross(E, R));
+    float T = uCur.w, ten = uCur.y;
+    // depth strata: every mote belongs to the far, mid or near layer
+    float layer = floor(hash11(s.a * 173.31 + 5.7) * 2.999);
+    float dc = dot(p, E);                         // + toward the camera
+    // PARALLAX: a mote's current speed grows with its nearness — near motes
+    // slide past far ones (real volume, the cinematic part)
+    float par = mix(0.4, 1.6, clamp(dc * 0.3 + 0.5, 0.0, 1.0));
+    vec3 deep = curlNoise(p * 0.45 + vec3(T * 0.017, 0.0, -T * 0.011));
+    // RELEASE — laminar sheets sliding sideways (the wind slowly turns about
+    // on its own clock, ~5 min), each layer at its own speed, a long swell
+    // rolling through them like wind over water
+    float ph = T * 0.021 + 0.7;
+    float swell = sin(dot(p, R) * 1.3 + dc * 0.6 - T * 0.32 + layer * 1.7);
+    vec3 lam = R * cos(ph) * 0.26 * (0.55 + 0.25 * layer) + U * (0.09 * swell + 0.05 * sin(ph * 1.3)) + deep * 0.12;
+    // TENSION — two slow counter-turning vortices about the camera's UP axis
+    // (tilted in depth: seen side-on, a spiral, never a circle on screen),
+    // drawing the motes in; their cores wander on the steady clock
+    vec3 vx = deep * 0.14;
+    for (int i = 0; i < 2; i++) {
+      float fi = float(i), sg = fi > 0.5 ? -1.0 : 1.0;
+      vec3 cc = R * (1.05 * sin(T * 0.017 + fi * 3.1)) + U * (0.35 * sin(T * 0.013 + fi * 1.7)) + E * (0.6 * cos(T * 0.015 + fi * 2.3));
+      vec3 ax = normalize(U + E * (0.3 * sg) + R * (0.15 * sin(T * 0.011 + fi)));
+      vec3 d = p - cc;
+      vec3 rr = d - ax * dot(d, ax);
+      float r = length(rr) + 1e-4;
+      float reach = exp(-r * r / 1.1);
+      vec3 tang = cross(ax, rr / r) * sg;
+      vx += (tang * (0.3 * r / (r * r + 0.12)) - (rr / r) * 0.2 * smoothstep(0.15, 0.7, r) + ax * (0.05 * sg)) * reach;
+    }
+    vec3 vT = mix(lam, vx, ten) * par;
+    // the motes follow the current (a velocity match, eased by curG) and, with
+    // tension, settle into their depth strata
+    vec3 fc = (vT - v) * 0.7 + E * ((layer - 1.0) * 0.85 - dc) * 0.22 * uCur.z;
+    // never carried out of the world: a soft wall past radius 3.2
+    float pr = length(p);
+    if (pr > 3.2) fc -= (p / pr) * (pr - 3.2) * 1.2;
+    f.xyz += fc * curG;
+  }
+
   // image dissolve / reform: spring onto the image plane; while released,
   // the particles swirl with their own band (mids curl, bass surges)
   vec3 imgT = vec3(0.0);
@@ -1335,8 +1392,30 @@ uniform vec3 uFireU;
 uniform float uDof;
 uniform float uFocusD;
 uniform float uDrift;
+// THE BRIDGE (bridge.ts, flag ?bridge=1): at a phase boundary a sparse share of
+// the motes wears the colours of the outgoing still where each sits on screen,
+// recolours toward the incoming still and drifts a little toward its light.
+// CHROMA ONLY (YIQ I/Q onto the mote's own luma): never brighter, never darker,
+// black pixels leave a mote as it is. uBridge = 0 → nothing here runs.
+uniform sampler2D uBridgeA;  // outgoing still, 64 px colour field (rows bottom-up)
+uniform sampler2D uBridgeB;  // incoming still
+uniform float uBridge;       // presence 0..1
+uniform float uBridgeMix;    // outgoing → incoming 0..1
+uniform float uBridgeDrift;  // drift toward the incoming light 0..1
+uniform float uBridgeFrac;   // share of motes that carry
+uniform vec2 uBridgeAsp;     // the two stills' aspects
+uniform vec3 uBridgeR;       // camera right × half-width (world units per NDC x)
+uniform vec3 uBridgeU;       // camera up × half-height
 out vec3 vCol;
 out float vCoc;
+// screen NDC → uv of a still shown cover-fit full screen (like the journey stills)
+vec2 bridgeUv(vec2 ndc, float imgAspect, float scrAspect){
+  vec2 d = ndc;
+  if (imgAspect > scrAspect) d.x *= scrAspect / imgAspect; else d.y *= imgAspect / scrAspect;
+  return clamp(d * 0.5 + 0.5, 0.0, 1.0);
+}
+vec3 toYIQ(vec3 c){ return vec3(dot(c, vec3(0.299, 0.587, 0.114)), dot(c, vec3(0.596, -0.274, -0.322)), dot(c, vec3(0.211, -0.523, 0.312))); }
+vec3 fromYIQ(vec3 y){ return vec3(y.x + 0.956 * y.y + 0.621 * y.z, y.x - 0.272 * y.y - 0.647 * y.z, y.x - 1.106 * y.y + 1.703 * y.z); }
 float lifeOf(vec4 s){ return 6.0 + 9.0 * s.g; }
 ${IMG_UV}
 // Rotate hue / scale saturation in YIQ: luma (Y) is untouched, so colour can
@@ -1382,6 +1461,43 @@ void main(){
       dy += isE * eph * 0.65;
       emberA = mix(1.0, smoothstep(0.0, 0.08, eph) * smoothstep(1.0, 0.5, eph), isE * step(0.001, heat));
       p.xyz += (uFireR * dx + uFireU * dy) * heat;
+    }
+  }
+  // THE BRIDGE: is this mote a carrier, and what still colour sits under it?
+  float bridgeW = 0.0;
+  vec3 bridgeC = vec3(0.0);
+  if (uBridge > 0.001 && uImgShow < 0.999) {
+    float bh = fract(sin(dot(s, vec4(12.9898, 78.233, 37.719, 4.581))) * 43758.5453);
+    float carrier = 1.0 - smoothstep(uBridgeFrac * 0.75, uBridgeFrac, bh);
+    // (a mote the density hides costs nothing here either — same rank as below)
+    float rankB = id == 0 ? 0.0 : fract(s.g * 7.31 + s.b * 3.17);
+    float visB = mix(1.0 - smoothstep(uDensity * 0.6, uDensity + 1e-6, rankB), 1.0, smoothstep(0.9, 1.0, uDensity));
+    if (carrier > 0.0 && visB > 0.003) {
+      // each carrier keeps its own moment: light trickles across, never a switch
+      float ph = fract(bh * 7.13 + s.a * 3.7);
+      float lp = smoothstep(0.0, 1.0, clamp((uBridge - ph * 0.35) / 0.65, 0.0, 1.0));
+      float lm = smoothstep(0.0, 1.0, clamp((uBridgeMix - ph * 0.4) / 0.6, 0.0, 1.0));
+      vec4 c0 = uVP * vec4(p.xyz, 1.0);
+      vec2 ndc = c0.xy / max(c0.w, 0.05);
+      vec2 ua = bridgeUv(ndc, uBridgeAsp.x, uScrAspect), ub = bridgeUv(ndc, uBridgeAsp.y, uScrAspect);
+      vec3 ca = pow(texture(uBridgeA, ua).rgb, vec3(2.2));
+      vec3 cb = pow(texture(uBridgeB, ub).rgb, vec3(2.2));
+      bridgeC = mix(ca, cb, lm);
+      // over black the mote keeps its own colour (the black floor stays black)
+      float conf = smoothstep(0.012, 0.05, dot(bridgeC, vec3(0.299, 0.587, 0.114)));
+      bridgeW = carrier * lp * conf * (1.0 - uImgShow);
+      // DRIFT toward where the incoming world's light is (its smoothed luma
+      // gradient) — a few % of the screen at most, eased by the same envelope
+      if (uBridgeDrift > 0.001) {
+        vec2 e = vec2(1.0 / 64.0, 0.0);
+        vec3 lw = vec3(0.299, 0.587, 0.114);
+        float gx = dot(texture(uBridgeB, ub + e.xy).rgb - texture(uBridgeB, ub - e.xy).rgb, lw);
+        float gy = dot(texture(uBridgeB, ub + e.yx).rgb - texture(uBridgeB, ub - e.yx).rgb, lw);
+        vec2 gv = vec2(gx, gy);
+        float gn = length(gv);
+        vec2 dir = gv / (gn + 0.02) * smoothstep(0.0, 0.06, gn);
+        p.xyz += (uBridgeR * dir.x + uBridgeU * dir.y) * 0.05 * uBridgeDrift * carrier * lp * (1.0 - uImgShow);
+      }
     }
   }
   vec4 clip = uVP * vec4(p.xyz, 1.0);
@@ -1441,6 +1557,14 @@ void main(){
   // dense form reads as a material, not a flat fill (luma-preserving)
   float drift = uDrift * 0.3 * sin(uTimeD * 0.06 + s.a * 6.2831853) * sin(uTimeD * 0.023 + s.b * 4.1);
   col = hueSat(col, uHue + (band - 0.5) * 0.15 * uSat + uHueSpread * grad + uHueWave * wave + drift, uSat);
+  // THE BRIDGE: the still's chroma on the mote's own luma (capped in gamut)
+  if (bridgeW > 0.001) {
+    vec3 yc = toYIQ(col), yi = toYIQ(bridgeC);
+    vec2 iq = yi.yz / max(yi.x, 0.04) * yc.x;
+    float m = length(iq), cap = 0.6 * yc.x;
+    if (m > cap) iq *= cap / max(m, 1e-6);
+    col = mix(col, max(fromYIQ(vec3(yc.x, iq)), 0.0), bridgeW);
+  }
 
   float life = lifeOf(s);
   // a recycled mote fades in by its age (sim: reborn → age −1.6 … 0)
@@ -1637,11 +1761,52 @@ function splitSim(): { head: string; blocks: Map<number, string>; tail: string }
 }
 let split: ReturnType<typeof splitSim> | null = null;
 
-/** SIM_FS with only the given souls' force laws (others fall to a gentle stop). */
-export function buildSimFS(souls: readonly number[]): string {
+// ── THE LIVING SCORE (living-score.ts) ───────────────────────────────────────
+// Compiled in ONLY when the flag is on (`?score=1`): off, the simulation source
+// is byte-for-byte the show build's. Each live ripple is a soft gaussian swirl
+// about the camera axis that opens and spreads over its life, a gentle outward
+// breath early on, and a per-mote random heading so no ring is ever printed.
+// The motes of the note's own register (seed .r ≈ the band each mote hears)
+// answer most. FORCE ONLY — no size, alpha or colour channel (motion, not
+// brightness); the transition acceleration cap below still applies.
+export const SCORE_ANCHOR_UNIFORMS = "layout(location = 0) out vec4 oPos;";
+export const SCORE_ANCHOR_FORCE = "  // TRANSITIONS ARE ACCELERATION-LIMITED";
+export const SCORE_UNIFORMS_GLSL = /* glsl */ `// THE LIVING SCORE (living-score.ts): up to ${SCORE_TUNING.MAX_RIPPLES} note ripples
+uniform int uScoreN;
+uniform vec4 uScoreA[${SCORE_TUNING.MAX_RIPPLES}];   // xyz world centre · w signed amplitude (spin × envelope × gate)
+uniform vec4 uScoreB[${SCORE_TUNING.MAX_RIPPLES}];   // x world radius · y pitch 0..1 · z life phase 0..1 · w seed
+uniform vec3 uScoreAxis;  // camera forward (the swirl axis)
+`;
+export const SCORE_FORCE_GLSL = /* glsl */ `  // THE LIVING SCORE: each note a soft local swirl where it is written
+  for (int i = 0; i < ${SCORE_TUNING.MAX_RIPPLES}; i++) {
+    if (i >= uScoreN) break;
+    vec4 A = uScoreA[i];
+    vec4 B = uScoreB[i];
+    float R = B.x * (0.55 + 0.45 * B.z);
+    vec3 d = p - A.xyz;
+    float q = dot(d, d) / (R * R);
+    if (q > 6.0) continue;
+    float g = exp(-q);
+    float reg = 0.35 + 0.65 * exp(-(s.r - B.y) * (s.r - B.y) * 11.0);
+    vec3 hd = hash31(s.a * 37.1 + B.w * 91.7) - 0.5;
+    vec3 sw = cross(uScoreAxis, d) / R;
+    float m = abs(A.w);
+    f.xyz += (sw * 2.3 * A.w + (d / R * 0.5 * (1.0 - B.z) + hd * 0.9) * m) * g * reg * ${SCORE_TUNING.FORCE.toFixed(3)};
+  }
+
+`;
+
+/** SIM_FS with only the given souls' force laws (others fall to a gentle stop).
+ *  `score`: compile the living score's force field in (off = the show source). */
+export function buildSimFS(souls: readonly number[], opts: { score?: boolean } = {}): string {
   split ??= splitSim();
   const uniq = [...new Set(souls)].sort((a, b) => a - b);
-  return split.head + uniq.map((i) => split!.blocks.get(i) ?? "").join("") + split.tail;
+  const src = split.head + uniq.map((i) => split!.blocks.get(i) ?? "").join("") + split.tail;
+  if (!opts.score) return src;
+  if (!src.includes(SCORE_ANCHOR_UNIFORMS) || !src.includes(SCORE_ANCHOR_FORCE)) return src; // anchors moved: stay safe (test guards)
+  return src
+    .replace(SCORE_ANCHOR_UNIFORMS, SCORE_UNIFORMS_GLSL + SCORE_ANCHOR_UNIFORMS)
+    .replace(SCORE_ANCHOR_FORCE, SCORE_FORCE_GLSL + SCORE_ANCHOR_FORCE);
 }
 
 /** How many soul blocks the full simulation carries (test hook). */

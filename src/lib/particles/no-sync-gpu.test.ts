@@ -132,6 +132,35 @@ describe("particle activation never blocks the main thread", () => {
     engine.dispose();
   });
 
+  it("THE BRIDGE: still colours upload as plain bytes, glide, and a worn slot never swaps", async () => {
+    const { createParticleEngine } = await import("./particle-engine");
+    const { gl, calls } = fakeGL({ compilePolls: 0 });
+    const engine = createParticleEngine(fakeCanvas(gl) as unknown as HTMLCanvasElement, { count: 4096, soul: "rings" });
+    engine.prepare(["rings"]);
+    for (let i = 0; i < 80 && !engine.isWarm(); i++) { now += 400; engine.prewarm(); }
+    engine.start();
+    const px = new Uint8Array(64 * 36 * 4).fill(128);
+    expect(engine.loadBridgeStill(0, px, 64, 36, 16 / 9)).toBe(true);
+    expect(engine.loadBridgeStill(1, px, 64, 36, 16 / 9)).toBe(true);
+    engine.setBridge(1, 0, 0, 0.2);
+    step(16.7, 3);
+    const p3 = engine.bridgeState().presence;
+    expect(p3).toBeGreaterThan(0);
+    expect(p3).toBeLessThan(0.1); // glides (~1 s), never a step
+    // outgoing is worn → refused; incoming not mixed in yet → still accepted
+    expect(engine.loadBridgeStill(0, px, 64, 36, 16 / 9)).toBe(false);
+    expect(engine.loadBridgeStill(1, px, 64, 36, 16 / 9)).toBe(true);
+    engine.setBridge(1, 1, 0.5, 0.2);
+    step(16.7, 120);
+    expect(engine.loadBridgeStill(1, px, 64, 36, 16 / 9)).toBe(false);
+    engine.setBridge(0, 1, 0, 0.2);
+    step(16.7, 600);
+    expect(engine.bridgeState().presence).toBe(0);
+    expect(engine.loadBridgeStill(0, px, 64, 36, 16 / 9)).toBe(true);
+    expect(calls.filter((c) => FORBIDDEN.includes(c.name)).map((c) => c.name)).toEqual([]);
+    engine.dispose();
+  });
+
   it("warm draws are throttled: one GPU pipeline build per 350 ms at most", async () => {
     const { createParticleEngine } = await import("./particle-engine");
     const { gl } = fakeGL({ compilePolls: 0 });
