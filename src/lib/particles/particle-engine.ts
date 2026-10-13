@@ -93,6 +93,9 @@ export interface ParticleEngineOptions {
   probe?: boolean;
   /** Spatial pairing for image forms (spatial-pairing.ts). Default: ?pfx=1. */
   pairing?: boolean;
+  /** CINEMATIC LOOK (particle upgrade): depth of field, bloom, colour drift.
+   *  Default ?cine=1 — off in the show until Karel approves the sample. */
+  cine?: boolean;
   /** Frame-time watchdog: called (once) when a frame's CPU time or the rAF gap
    *  while running exceeds the budget, or a program fails. */
   watchdog?: { cpuMs: number; gapMs: number; onStall: (why: string) => void };
@@ -480,6 +483,7 @@ export function createParticleEngine(
   // when it is on — with it off the program set is exactly the show build's
   // (the histogram pass blends 32-bit floats: EXT_float_blend, else off)
   const pairingOn = (opts.pairing ?? pairingEnabled()) && !!gl.getExtension("EXT_float_blend");
+  const cineOn = opts.cine ?? (() => { try { return typeof location !== "undefined" && new URLSearchParams(location.search).get("cine") === "1"; } catch { return false; } })();
   const pairProgs = pairingOn
     ? {
         stats: startProgram(gl, QUAD_VS, PAIR_STATS_FS),
@@ -1255,6 +1259,11 @@ export function createParticleEngine(
     g.uniform1f(draw.u.uHueSpread, hueSpread);
     g.uniform1f(draw.u.uHueWave, hueWave);
     g.uniform1f(draw.u.uTimeD, time);
+    if (draw.u.uDof) {
+      g.uniform1f(draw.u.uDof, cineOn ? 0.9 : 0);
+      g.uniform1f(draw.u.uFocusD, dist);
+      g.uniform1f(draw.u.uDrift, cineOn ? 1 : 0);
+    }
     g.uniform1f(draw.u.uDensity, Math.min(density, densityCap));
     g.uniform1f(draw.u.uWorldFade, env.worldFade);
     bindTex(3, imgTex[0], draw.u.uImgA);
@@ -1325,12 +1334,19 @@ export function createParticleEngine(
     }
 
     // ── 4. COMPOSITE ──────────────────────────────────────────────────────
+    // (the cinematic bloom reads the HDR mip chain — fresh every frame when on;
+    // the governor above rebuilds it every 4th)
+    if (cineOn && frames % 4 !== 0) {
+      g.bindTexture(g.TEXTURE_2D, hdrTex[hcur]);
+      g.generateMipmap(g.TEXTURE_2D);
+    }
     g.bindFramebuffer(g.FRAMEBUFFER, null);
     g.viewport(0, 0, W, H);
     g.useProgram(comp.p);
     bindTex(0, hdrTex[hcur], comp.u.uHdr);
     bindTex(1, expTex[ecur], comp.u.uExp);
     g.uniform1f(comp.u.uTransparent, transparent ? 1 : 0);
+    if (comp.u.uBloom) g.uniform1f(comp.u.uBloom, cineOn ? 0.55 : 0);
     g.drawArrays(g.TRIANGLES, 0, 3);
     g.bindVertexArray(null);
     const cpu = performance.now() - frameT0;

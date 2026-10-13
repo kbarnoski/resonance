@@ -1330,7 +1330,13 @@ uniform float uFire;
 uniform float uFireLine;
 uniform vec3 uFireR;
 uniform vec3 uFireU;
+// CINEMATIC LOOK (particle upgrade, 2026-10-12; 0 = off, the show build):
+// depth of field around the focal plane, a slow per-mote colour drift
+uniform float uDof;
+uniform float uFocusD;
+uniform float uDrift;
 out vec3 vCol;
+out float vCoc;
 float lifeOf(vec4 s){ return 6.0 + 9.0 * s.g; }
 ${IMG_UV}
 // Rotate hue / scale saturation in YIQ: luma (Y) is untouched, so colour can
@@ -1379,6 +1385,7 @@ void main(){
     }
   }
   vec4 clip = uVP * vec4(p.xyz, 1.0);
+  vCoc = 0.0;
   if (clip.w <= 0.05) { gl_Position = vec4(2.0, 2.0, 2.0, 1.0); gl_PointSize = 0.0; vCol = vec3(0.0); return; }
   gl_Position = clip;
 
@@ -1402,6 +1409,16 @@ void main(){
   // bass = heavier motes, treble = the finest dust
   float size = mix(1.55, 0.5, band) * mix(0.45 + 1.6 * s.b * s.b * s.b, 0.75, uImgShow) * uPointPx * (uFocal / clip.w) * boost * mix(uSize, 0.7, uImgShow);
   float a = uAlpha;
+  // DEPTH OF FIELD: away from the focal plane a mote opens into a soft bokeh
+  // disc carrying the SAME light (area up, intensity down) — depth, never flare.
+  // Image forms stay sharp (they must read).
+  if (uDof > 0.0) {
+    float coc = clamp(abs(clip.w - uFocusD) / max(uFocusD, 0.1) * uDof, 0.0, 1.0) * (1.0 - uImgShow);
+    float k = 1.0 + 2.6 * coc;
+    size *= k;
+    a /= k * k;
+    vCoc = coc;
+  }
   if (size < 1.0) { a *= size * size; size = 1.0; }
   gl_PointSize = min(size, 24.0);
 
@@ -1420,7 +1437,10 @@ void main(){
   // spectrum forms (large uHueSpread): colour bands ripple outward through the rings
   grad += 0.55 * sin(length(p.xz) * 5.0 - uTimeD * 0.35) * smoothstep(0.8, 2.0, uHueSpread);
   float wave = sin(length(p.xyz) * 2.2 - uTimeD * 0.8);
-  col = hueSat(col, uHue + (band - 0.5) * 0.15 * uSat + uHueSpread * grad + uHueWave * wave, uSat);
+  // COLOUR DRIFT (cinematic): each mote wanders slowly within the palette, so a
+  // dense form reads as a material, not a flat fill (luma-preserving)
+  float drift = uDrift * 0.3 * sin(uTimeD * 0.06 + s.a * 6.2831853) * sin(uTimeD * 0.023 + s.b * 4.1);
+  col = hueSat(col, uHue + (band - 0.5) * 0.15 * uSat + uHueSpread * grad + uHueWave * wave + drift, uSat);
 
   float life = lifeOf(s);
   // a recycled mote fades in by its age (sim: reborn → age −1.6 … 0)
@@ -1473,6 +1493,7 @@ void main(){
 export const DRAW_FS = /* glsl */ `#version 300 es
 precision mediump float;
 in vec3 vCol;
+in float vCoc;
 out vec4 o;
 void main(){
   vec2 d = gl_PointCoord * 2.0 - 1.0;
@@ -1480,6 +1501,9 @@ void main(){
   if (r2 > 1.0) discard;
   // bright core + soft glow — reads over imagery without growing the footprint
   float g = exp(-r2 * 7.0) + 0.3 * exp(-r2 * 1.8);
+  // out of focus: a soft-edged bokeh disc (cinematic look; vCoc = 0 → unchanged)
+  float bokeh = (1.0 - smoothstep(0.55, 1.0, r2)) * 0.62 + 0.12 * exp(-r2 * 2.0);
+  g = mix(g, bokeh, vCoc);
   o = vec4(vCol * g * 1.15, 1.0);
 }
 `;
@@ -1536,6 +1560,7 @@ precision highp float;
 uniform sampler2D uHdr;
 uniform sampler2D uExp;     // 1×1: r = exposure (GPU governor)
 uniform float uTransparent; // 1 = premultiplied alpha = brightest channel
+uniform float uBloom;       // cinematic look: glow from the HDR mip chain (0 = off)
 out vec4 o;
 // interleaved-gradient dither (Jimenez) — kills 8-bit banding in the glow
 // falloff; gated off on pure black so the floor stays RGB 0,0,0.
@@ -1543,6 +1568,21 @@ float ign(vec2 p){ return fract(52.9829189 * fract(dot(p, vec2(0.06711056, 0.005
 void main(){
   ivec2 c = ivec2(gl_FragCoord.xy);
   vec3 h = texelFetch(uHdr, c, 0).rgb;
+  // BLOOM (cinematic look): light spills softly into the dark — three blurred
+  // levels of the HDR mip chain, each a 4-tap tent so no mip blocks show
+  if (uBloom > 0.0) {
+    vec2 res = vec2(textureSize(uHdr, 0));
+    vec2 uv = (vec2(c) + 0.5) / res;
+    vec3 b = vec3(0.0);
+    for (int i = 0; i < 3; i++) {
+      float lod = 3.0 + 2.0 * float(i);
+      vec2 tx = exp2(lod) / res;
+      vec3 t4 = textureLod(uHdr, uv + vec2(-0.5, -0.5) * tx, lod).rgb + textureLod(uHdr, uv + vec2(0.5, -0.5) * tx, lod).rgb
+              + textureLod(uHdr, uv + vec2(-0.5, 0.5) * tx, lod).rgb + textureLod(uHdr, uv + vec2(0.5, 0.5) * tx, lod).rgb;
+      b += t4 * 0.25 * (i == 0 ? 0.5 : i == 1 ? 0.3 : 0.2);
+    }
+    h += b * uBloom;
+  }
   // HUE-PRESERVING tone map (Karel 2026-10-06: "they should almost always
   // have color"): compress the brightest channel and scale the others with
   // it — per-channel 1-exp() bleached every dense overlap to white
