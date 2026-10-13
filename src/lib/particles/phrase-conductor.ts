@@ -87,6 +87,8 @@ export interface PhraseInput {
 
 export interface PhraseOptions {
   journeyId?: string;
+  /** conduct a locked journey anyway (mastered-features.ts, ?masters=1) */
+  allowLocked?: boolean;
   /** other big FORM changes known ahead (conducted window starts …) */
   formChanges?: readonly number[];
   /** extra untouchable windows [start, end] (signature moments) */
@@ -228,7 +230,7 @@ export function conductPhrases(input: PhraseInput, opts: PhraseOptions = {}): Ph
   const formBlocked = formBlockedZones(D, reserved);
   const phraseSec = phraseSeconds(input.tempo?.bpm);
   const empty: PhraseTimeline = { journeyId, duration: D, phraseSec, events: [], emblemWindows: emblems, formBlocked, skipped: [] };
-  if (PHRASE_LOCKED_JOURNEYS.has(journeyId) || D < 30 || !input.sections?.length) return empty;
+  if ((!opts.allowLocked && PHRASE_LOCKED_JOURNEYS.has(journeyId)) || D < 30 || !input.sections?.length) return empty;
 
   // other FORM changes the layer makes on its own: travel morphs at the phase
   // bounds, conducted windows' forms — a phrase form keeps a full hold from each

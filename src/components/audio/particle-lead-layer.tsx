@@ -77,6 +77,7 @@ import { OnsetDetector, LivingScore, livingScoreEnabled, scoreGain, scoreSession
 import { conductPhrases, createPhraseCursor, formHoldDue, takePhraseEvent, swellAt, phraseConductorEnabled, PHRASE_LOCKED_JOURNEYS, type PhraseTimeline } from "@/lib/particles/phrase-conductor";
 import { bridgeEnabled, createBridgeState, nextBridgeBoundary, onBridgeHint, stepBridge, BRIDGE_LOCKED_JOURNEYS, type BridgeHint } from "@/lib/particles/bridge";
 import { sampleBridgeStill, type BridgeStill } from "@/lib/particles/bridge-sampler";
+import { mastersFeaturesEnabled } from "@/lib/particles/mastered-features";
 import { conductCurrents, currentAt, createTide, tideStep, withTide, currentsEnabled, clearestRelease, CURRENTS_LOCKED_JOURNEYS, type CurrentTimeline } from "@/lib/particles/harmonic-currents";
 
 /** PHRASE CONDUCTOR (?phrase=1, off by default — phrase-conductor.ts): the deep
@@ -86,10 +87,11 @@ import { conductCurrents, currentAt, createTide, tideStep, withTide, currentsEna
 function phraseTimelineFor(cast: ParticleLeadCast, journeyId: string): PhraseTimeline | null {
   let on = false;
   try { on = phraseConductorEnabled(undefined, typeof window !== "undefined" ? window.sessionStorage : null); } catch { on = false; }
-  if (!on || cast.mastered || PHRASE_LOCKED_JOURNEYS.has(journeyId)) return null;
+  const masters = mastersFeaturesEnabled();
+  if (!on || (!masters && (cast.mastered || PHRASE_LOCKED_JOURNEYS.has(journeyId)))) return null;
   const p = PARTICLE_PROFILES[journeyId];
   if (!p) return null;
-  const tl = conductPhrases({ ...p, phaseBounds: cast.phaseBounds ?? p.phaseBounds }, { journeyId, formChanges: cast.windows.map((w) => w.start) });
+  const tl = conductPhrases({ ...p, phaseBounds: cast.phaseBounds ?? p.phaseBounds }, { journeyId, allowLocked: masters, formChanges: cast.windows.map((w) => w.start) });
   return tl.events.length ? tl : null;
 }
 
@@ -101,9 +103,10 @@ function phraseTimelineFor(cast: ParticleLeadCast, journeyId: string): PhraseTim
 function currentsTimelineFor(cast: ParticleLeadCast, journeyId: string): CurrentTimeline | null {
   let on = false;
   try { on = currentsEnabled(undefined, typeof window !== "undefined" ? window.sessionStorage : null); } catch { on = false; }
-  if (!on || cast.mastered || CURRENTS_LOCKED_JOURNEYS.has(journeyId)) return null;
+  const masters = mastersFeaturesEnabled();
+  if (!on || (!masters && (cast.mastered || CURRENTS_LOCKED_JOURNEYS.has(journeyId)))) return null;
   const p = PARTICLE_PROFILES[journeyId];
-  return p ? conductCurrents(p, journeyId) : null;
+  return p ? conductCurrents(p, journeyId, masters) : null;
 }
 
 export const budgetFor = () => TIER_BUDGET[getDeviceTier()] ?? TIER_BUDGET.medium;
@@ -721,7 +724,7 @@ export function ParticleLeadLayer({
     // Reads the RAW onsets (the calm frame keeps the field's own motion at rest
     // tempo; these ripples are local, eased in, and gated below). Never for the
     // mastered takes (Snowflake, Ghost); compiled out of the engine when off.
-    const scoreOn = engine.scoreCompiled() && livingScoreEnabled(undefined, scoreSessionStore()) && !cast.mastered && !SCORE_LOCKED_JOURNEYS.has(journeyId);
+    const scoreOn = engine.scoreCompiled() && livingScoreEnabled(undefined, scoreSessionStore()) && (mastersFeaturesEnabled() || (!cast.mastered && !SCORE_LOCKED_JOURNEYS.has(journeyId)));
     const onsetDet = scoreOn ? new OnsetDetector() : null;
     const score = scoreOn ? new LivingScore(Array.from(journeyId).reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, 7)) : null;
     let scoreGainTarget = 0; // set by the tick (presence × ladder × held / busy)
@@ -760,7 +763,7 @@ export function ParticleLeadLayer({
     // integrate, not dominate (Karel 2026-10-07): a touch less energy
     engine.setGain((cast.gain ?? 1) * 1.45);
     // cinematic look (Karel's keep 2026-10-13) — never on the mastered takes
-    engine.setCine(!cast.mastered);
+    engine.setCine(!cast.mastered || mastersFeaturesEnabled());
     engineRef.current = engine;
     engine.setMotion(cast.motion * CALM_TEMPO);
     engine.setForm(cast.form);
@@ -939,7 +942,7 @@ export function ParticleLeadLayer({
     // other mover. Never for the locked journeys. Off = the exact old behaviour.
     let bridgeOn = false;
     try { bridgeOn = bridgeEnabled(undefined, window.sessionStorage); } catch { bridgeOn = false; }
-    if (cast.mastered || BRIDGE_LOCKED_JOURNEYS.has(journeyId)) bridgeOn = false;
+    if (!mastersFeaturesEnabled() && (cast.mastered || BRIDGE_LOCKED_JOURNEYS.has(journeyId))) bridgeOn = false;
     let bridgeSt = createBridgeState();
     // hints per boundary (a running bridge keeps its own after the image layer
     // has moved on to announcing the next boundary)
@@ -1594,6 +1597,7 @@ export function ParticleLeadLayer({
           phaseBounds: pbs,
           journeyId,
           mastered: !!cast.mastered,
+          allowLocked: mastersFeaturesEnabled(),
           // the incoming still must be known too (no prediction → no bridge)
           aReady: !!h && !!h.outgoing && !!h.incoming && bridgeLoaded[0] === h.outgoing,
           bReady: !!h && !!h.incoming && bridgeLoaded[1] === h.incoming,

@@ -6,6 +6,7 @@ import { useAudioStore } from "@/lib/audio/audio-store";
 import { getDeviceTier } from "@/lib/audio/device-tier";
 import { glitchRecord } from "@/lib/journeys/glitch-recorder";
 import { inBoundarySettle } from "@/lib/journeys/video-activity";
+import { mastersFeaturesEnabled } from "@/lib/particles/mastered-features";
 
 /**
  * Depth-parallax layer (Wave 2c; rebuilt after the 2026-09-25 audits).
@@ -125,7 +126,7 @@ void main() {
 const DUST_FLAG = (() => { try { return typeof location === "undefined" || new URLSearchParams(location.search).get("dust") !== "0"; } catch { return true; } })();
 const DUST_LOCKED = new Set(["first-snow", "ghost", "inferno"]);
 function sceneMotesFor(journeyId: string | undefined): number {
-  if (!DUST_FLAG || !journeyId || DUST_LOCKED.has(journeyId)) return 0;
+  if (!DUST_FLAG || !journeyId || (DUST_LOCKED.has(journeyId) && !(journeyId !== "inferno" && mastersFeaturesEnabled()))) return 0;
   return 1;
 }
 

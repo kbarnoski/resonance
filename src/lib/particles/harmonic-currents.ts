@@ -207,10 +207,10 @@ function slew(xs: number[], rate: number): number[] {
 }
 
 /** The currents timeline for one journey. null for the locked journeys / no analysis. */
-export function conductCurrents(input: CurrentInput, journeyId = ""): CurrentTimeline | null {
+export function conductCurrents(input: CurrentInput, journeyId = "", allowLocked = false): CurrentTimeline | null {
   const L = CURRENTS_LAWS;
   const D = Math.max(0, input.duration || 0);
-  if (CURRENTS_LOCKED_JOURNEYS.has(journeyId) || D < 60 || !input.sections?.length) return null;
+  if ((!allowLocked && CURRENTS_LOCKED_JOURNEYS.has(journeyId)) || D < 60 || !input.sections?.length) return null;
   const secs = [...input.sections].sort((a, b) => a.start - b.start);
   const curve = (input.curve ?? []).filter((p) => Number.isFinite(p[0]) && Number.isFinite(p[1]));
 
