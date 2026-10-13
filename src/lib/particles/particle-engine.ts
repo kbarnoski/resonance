@@ -241,6 +241,8 @@ export interface ParticleEngine {
   setMotion(k: number): void;
   /** Playful impulse — motion only. */
   impulse(kind: "scatter" | "bounce", strength?: number): void;
+  /** Re-seed every mote into the compact boot cloud (call only while the field is invisible). */
+  regather(): void;
   /** Melodic attractor for ~14% follower particles (null = off). */
   setMelody(pos: [number, number, number] | null, weight?: number): void;
   /** An entrance: scatter wide (invisible at presence 0) and GATHER into the
@@ -1704,6 +1706,20 @@ export function createParticleEngine(
       melodyWTarget = Math.max(0, Math.min(1, w));
     },
     resize,
+    regather() {
+      // the boot cloud again (Karel 2026-10-13: the emblem formed fast only for the
+      // first journey after boot — later journeys started from the previous
+      // journey's screen-wide scatter and took ~3.5 s to converge)
+      if (lost || !posInit.warm || !particlesInitialised) return;
+      const g = gl;
+      g.bindVertexArray(vao);
+      g.bindFramebuffer(g.FRAMEBUFFER, simFbo[cur]);
+      g.viewport(0, 0, side, side);
+      g.useProgram(posInit.p);
+      g.drawArrays(g.TRIANGLES, 0, 3);
+      g.bindFramebuffer(g.FRAMEBUFFER, null);
+      g.bindVertexArray(null);
+    },
     stats(): ParticleStats {
       const sorted = [...frameTimes].sort((a, b) => b - a);
       const p95 = sorted.length ? sorted[Math.floor(sorted.length * 0.05)] : 1 / 60;
