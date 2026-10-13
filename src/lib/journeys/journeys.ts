@@ -414,7 +414,7 @@ function pickJourneyShaders(
   const categoryMap = new Map<string, string[]>();
   for (const meta of MODE_META) {
     if (meta.category === "AI Imagery") continue;
-    if (LAB_SHADERS.has(meta.mode)) continue; // SUN lab — audition only, never rotated
+    if (LAB_SHADERS.has(meta.mode)) continue; // LAB shaders — audition only, never rotated
     if (blocklist.has(meta.mode)) continue;
     const list = categoryMap.get(meta.category) ?? [];
     list.push(meta.mode);

@@ -265,8 +265,8 @@ import {
   R3_FAIRYGLOW, R3_WISHTRAILS, R3_MEMORYFLOW, R3_AURORADREAM,
   R3_RIPPLECASCADE, R3_PULSERINGSSOFT, R3_HEARTWARMTH, R3_SOFTORBIT, R3_INNERGLOW,
 } from "./review-pack-3";
-// SUN lab (2026-10-12) — LAB_SHADERS below: registered for audition only,
-// never in any journey, pool, cast or rotation.
+// SUN lab (2026-10-12) — promoted 2026-10-13 on Karel's keep; cast in the
+// light journeys (SUN_SHADER_PINS, src/lib/journeys/shader-balance.ts).
 import { FRAG as SUN_CORONA_FRAG } from "./sun-corona";
 import { FRAG as SUN_VEIL_FRAG } from "./sun-veil";
 import { FRAG as SUN_DAWN_FRAG } from "./sun-dawn";
@@ -570,7 +570,7 @@ export const SHADERS: Partial<Record<VisualizerMode, string>> = {
   "r3-heartwarmth": R3_HEARTWARMTH,
   "r3-softorbit": R3_SOFTORBIT,
   "r3-innerglow": R3_INNERGLOW,
-  // ─── SUN lab (LAB_SHADERS — audition only) ───
+  // ─── SUN (lab 2026-10-12, promoted 2026-10-13) ───
   "sun-corona": SUN_CORONA_FRAG,
   "sun-veil": SUN_VEIL_FRAG,
   "sun-dawn": SUN_DAWN_FRAG,
@@ -579,17 +579,19 @@ export const SHADERS: Partial<Record<VisualizerMode, string>> = {
   "sun-aster": SUN_ASTER_FRAG,
 };
 
-/** LAB shaders (SUN lab, 2026-10-12 — Karel: "one day you'll want to
- *  explore with me some new sun themed shaders", seraph as the bar).
- *  Registered so they can be auditioned by hand, but EXCLUDED from every
- *  automatic picker: journey pools (pickJourneyShaders), casts
- *  (castJourneyShaders), the engine's pick-time gate (isShaderAllowed),
- *  the vetted pools (scripts/vet-shaders.mjs full runs) and the viz-mode
- *  cycle. Promote one by removing it here after Karel approves it.
- *  Guarded by src/lib/shaders/lab-shaders.test.ts. */
-export const LAB_SHADERS: ReadonlySet<string> = new Set([
-  "sun-corona", "sun-veil", "sun-dawn", "sun-halo", "sun-wind", "sun-aster",
-]);
+/** LAB shaders — registered so they can be auditioned by hand, but
+ *  EXCLUDED from every automatic picker: journey pools
+ *  (pickJourneyShaders), casts (castJourneyShaders), the engine's pick-time
+ *  gate (isShaderAllowed), the vetted pools (scripts/vet-shaders.mjs full
+ *  runs) and the viz-mode cycle. Promote one by removing it here after
+ *  Karel approves it. Guarded by src/lib/shaders/lab-shaders.test.ts.
+ *
+ *  EMPTY since 2026-10-13: the SUN lab (sun-corona, sun-veil, sun-dawn,
+ *  sun-halo, sun-wind, sun-aster — 2026-10-12, Karel: "one day you'll want
+ *  to explore with me some new sun themed shaders", seraph as the bar) was
+ *  promoted on Karel's keep of all six; they are cast in the light journeys
+ *  (SUN_SHADER_PINS in src/lib/journeys/shader-balance.ts). */
+export const LAB_SHADERS: ReadonlySet<string> = new Set<string>([]);
 
 export interface ModeMeta {
   mode: VisualizerMode;
@@ -950,7 +952,7 @@ export const MODE_META: ModeMeta[] = [
   { mode: "r3-heatshimmer", label: "Heat Shimmer", category: "Elemental" },
   { mode: "r3-monsoonveil", label: "Monsoon Veil", category: "Elemental" },
   { mode: "r3-waveveil", label: "Wave Veil", category: "Elemental" },
-  // ─── SUN lab (LAB_SHADERS — audition only, never picked) ───
+  // ─── SUN (lab 2026-10-12, promoted 2026-10-13 — light journeys) ───
   { mode: "sun-corona", label: "Sun · Corona Breath", category: "Visionary", addedDate: "2026-10-12" },
   { mode: "sun-veil", label: "Sun · Veiled Sun", category: "Visionary", addedDate: "2026-10-12" },
   { mode: "sun-dawn", label: "Sun · Dawn Fan", category: "Visionary", addedDate: "2026-10-12" },

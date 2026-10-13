@@ -180,7 +180,7 @@ function solve(c, iters = 300000) {
   const pfs = T.map((t) => paletteFamilies(t.palette));
   const domain = T.map((t) => {
     const ban = new Set([...(t.blocked ?? []), ...(J.REALM_SHADER_BLOCKLIST[t.realm] ?? []), ...(J.PICKTIME_REALM_BLOCKLIST[t.realm] ?? []), ...(BAL.SHADER_JOURNEY_BANS[t.id] ?? [])]);
-    return POOL.filter((m) => !ban.has(m) && !(t.pos != null && (fixed.get(m) ?? []).some((f) => cdist(f.pos, t.pos, L) < (f.lead ? Math.max(LEAD_SUPPORT_DIST, c.minDist) : c.minDist))));
+    return POOL.filter((m) => !ban.has(m) && !BAL.SUN_SHADER_SET.has(m) /* sun: light-journey pins only (rebalance) */ && !(t.pos != null && (fixed.get(m) ?? []).some((f) => cdist(f.pos, t.pos, L) < (f.lead ? Math.max(LEAD_SUPPORT_DIST, c.minDist) : c.minDist))));
   });
   const at = new Map(POOL.map((m) => [m, new Set()]));
   const sets = T.map(() => new Set());

@@ -19,6 +19,11 @@
 //     no banned shader (dharma) anywhere; minimal edits, idempotent.
 // The pack file is backed up first and written in its own layout.
 //
+// 2026-10-13b (sun promotion — Karel kept all six sun shaders): the same
+// script applies scripts/shader-recast-2026-10-13b.expansion-casts.json via
+// --input=...; ~/Documents/Resonance/pack-journeys.backup-2026-10-13-presun.json
+// is the pack before it.
+//
 // Usage (repo root, on the kiosk Mac — no heavy work while Karel watches):
 //   node scripts/apply-shader-recast-2026-10-13.mjs                 # check only (writes nothing)
 //   node scripts/apply-shader-recast-2026-10-13.mjs --pack          # write the pack
@@ -63,9 +68,14 @@ function ensurePins(phases, e, where) {
     if (must) p.shaderModes[i] = must; else p.shaderModes.splice(i--, 1);
     changed++;
   }
+  // each missing must goes to the most intense phase not yet given one in
+  // this pass (2026-10-13b: two sun shaders per parked take, spread, not
+  // stacked on one peak phase)
+  const given = new Set();
   for (const m of e.musts) if (!has(m)) {
-    const peak = [...out].sort((a, b) => intensity(b) - intensity(a))[0];
-    peak.shaderModes.push(m); changed++;
+    const ranked = [...out].sort((a, b) => intensity(b) - intensity(a));
+    const peak = ranked.find((p) => !given.has(p.id) && !p.sparse) ?? ranked[0];
+    peak.shaderModes.push(m); given.add(peak.id); changed++;
   }
   const known = same(phases.map((p) => p.shaderModes), Object.values(e.before ?? {})) || same(phases.map((p) => p.shaderModes), Object.values(e.handEdited ?? {}));
   if (!known) console.warn(`  ! ${where} ${e.name}: phases are neither the backup nor the hand-edited state (pins still ensured)`);
@@ -92,7 +102,7 @@ for (const [id, e] of Object.entries(ensure)) {
 }
 if (problems.length) console.warn(`\nREPORT — ${problems.length} phase(s) not touched:\n  ${problems.join("\n  ")}\n`);
 if (WRITE_PACK && packChanged) {
-  const dir = `${os.homedir()}/resonance-pack-backups/shader-recast-2026-10-13-${new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19)}`;
+  const dir = `${os.homedir()}/resonance-pack-backups/${arg("input", "shader-recast-2026-10-13").replace(/^.*\//, "").replace(/\.expansion-casts\.json$/, "")}-${new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19)}`;
   mkdirSync(dir, { recursive: true });
   copyFileSync(PACK_PATH, `${dir}/journeys.json`);
   pack.write();

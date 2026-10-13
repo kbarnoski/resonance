@@ -60,7 +60,7 @@ function getGeometryModes(): Set<string> {
   return _geometryModes;
 }
 
-// LAB shaders (SUN lab) are stripped like global bans — a stored/DB journey
+// LAB shaders (audition only; none since the SUN lab was promoted 2026-10-13) are stripped like global bans — a stored/DB journey
 // that names one never plays it.
 const GLOBAL_BLOCKED = new Set([...GLOBAL_SHADER_BLOCKLIST, ...LAB_SHADERS]);
 function withoutGlobalBlocked(j: Journey): Journey {
@@ -1475,7 +1475,7 @@ class JourneyEngine {
    *  browser's context limit and triggers context-loss bursts). */
   private isShaderAllowed(mode: string): boolean {
     if (PICKTIME_SHADER_BLOCKLIST.has(mode)) return false;
-    // SUN lab (2026-10-12): registered for audition only — never picked.
+    // LAB shaders (audition only) — never picked (empty since 2026-10-13).
     if (LAB_SHADERS.has(mode)) return false;
     // Shader balance (Karel 2026-10-13): dharma never; per-journey bans
     // (Bath: no ember / parsec) hold for EVERY picker, finale-forced included.

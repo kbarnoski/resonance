@@ -83,6 +83,12 @@
   "singularity",
   "starfield",
   "stigmata",
+  "sun-aster",
+  "sun-corona",
+  "sun-dawn",
+  "sun-halo",
+  "sun-veil",
+  "sun-wind",
   "supernova",
   "symbiosis",
   "threshold",
@@ -180,7 +186,6 @@
   "drift": 7,
   "dusk": 7,
   "firefly-field": 7,
-  "fracture-light": 7,
   "kelp": 7,
   "kepler": 7,
   "meteor-rain": 7,
@@ -188,7 +193,6 @@
   "nadir": 7,
   "obsidian-flow": 7,
   "ocean": 7,
-  "orbit-weaver": 7,
   "plankton": 7,
   "protostar": 7,
   "r2-photon": 7,
@@ -210,10 +214,12 @@
   "typhoon": 7,
   "cirrus": 6,
   "flagella": 6,
+  "fracture-light": 6,
   "furnace": 6,
   "lightyear": 6,
   "mandorla": 6,
   "mycelium": 6,
+  "orbit-weaver": 6,
   "pelagic": 6,
   "pendulum-dust": 6,
   "photon": 6,
@@ -227,33 +233,39 @@
   "threshold": 6,
   "zenith": 6,
   "astral": 5,
-  "aureole": 5,
   "chinook": 5,
   "event-horizon": 5,
   "flame": 5,
-  "hubble": 5,
   "lectio": 5,
   "maelstrom-dark": 5,
   "molten-vein": 5,
   "murmuration": 5,
   "r3-fairyglow": 5,
   "r3-lightningveil": 5,
+  "aureole": 4,
+  "hubble": 4,
   "iron-forge": 4,
   "kairos": 4,
   "kenosis": 4,
-  "merkaba": 4,
   "pollen": 4,
   "r-blackhole": 4,
   "seraph": 4,
-  "vestige": 4,
   "yantra": 4,
   "jubilee": 3,
+  "merkaba": 3,
   "r2-pixie": 3,
-  "r3-heartwarmth": 3,
+  "vestige": 3,
   "volcanic": 3,
   "shadow-fire": 2,
+  "sun-corona": 2,
+  "sun-halo": 2,
   "ember": 1,
-  "parsec": 1
+  "parsec": 1,
+  "r3-heartwarmth": 1,
+  "sun-aster": 1,
+  "sun-dawn": 1,
+  "sun-veil": 1,
+  "sun-wind": 1
  },
  "journeys": [
   {
@@ -567,8 +579,8 @@
    "pathLen": null,
    "dur": 150,
    "shaders": [
-    "merkaba",
-    "vestige",
+    "sun-dawn",
+    "sun-aster",
     "seraph",
     "aureole",
     "r-droplets",
@@ -582,10 +594,10 @@
    ],
    "cast": {
     "threshold": [
-     "merkaba"
+     "sun-dawn"
     ],
     "expansion": [
-     "vestige",
+     "sun-aster",
      "seraph",
      "aureole"
     ],
@@ -1707,12 +1719,12 @@
    "pathLen": 12,
    "dur": 248,
    "shaders": [
-    "hubble",
+    "sun-corona",
     "astral",
     "seraph",
     "lightyear",
     "nadir",
-    "r3-heartwarmth",
+    "sun-halo",
     "starfield",
     "zenith",
     "dusk",
@@ -1722,7 +1734,7 @@
    ],
    "cast": {
     "threshold": [
-     "hubble"
+     "sun-corona"
     ],
     "expansion": [
      "astral",
@@ -1733,7 +1745,7 @@
      "nadir"
     ],
     "illumination": [
-     "r3-heartwarmth",
+     "sun-halo",
      "starfield"
     ],
     "return": [
@@ -2440,13 +2452,13 @@
    "shaders": [
     "merkaba",
     "kelp",
-    "r3-heartwarmth",
+    "sun-wind",
     "seraph",
     "hubble",
     "r2-thermal",
     "jubilee",
     "vestige",
-    "aureole",
+    "sun-halo",
     "mandorla",
     "stigmata",
     "threshold"
@@ -2455,7 +2467,7 @@
     "threshold": [
      "merkaba",
      "kelp",
-     "r3-heartwarmth"
+     "sun-wind"
     ],
     "expansion": [
      "seraph"
@@ -2469,7 +2481,7 @@
     ],
     "return": [
      "vestige",
-     "aureole",
+     "sun-halo",
      "mandorla",
      "stigmata"
     ],
@@ -2544,9 +2556,9 @@
    "shaders": [
     "cascade-veil",
     "r-mercury",
-    "fracture-light",
+    "sun-veil",
     "r2-curlswarm",
-    "orbit-weaver",
+    "sun-corona",
     "r-stardust",
     "chrysalis",
     "firefly-field",
@@ -2559,11 +2571,11 @@
     "threshold": [
      "cascade-veil",
      "r-mercury",
-     "fracture-light"
+     "sun-veil"
     ],
     "expansion": [
      "r2-curlswarm",
-     "orbit-weaver",
+     "sun-corona",
      "r-stardust"
     ],
     "transcendence": [

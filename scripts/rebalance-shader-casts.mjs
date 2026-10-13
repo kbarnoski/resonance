@@ -34,7 +34,8 @@
 // (the pack/DB apply input for scripts/apply-shader-recast-2026-10-13.mjs) and,
 // with --report, docs/shader-recast-2026-10-13.md.
 // Reads the Tramokyo pack READ-ONLY (phase bounds, sparse flags, durations).
-// Usage: node scripts/rebalance-shader-casts.mjs [--dry-run] [--report] [--pack=<dir>]
+// Usage: node scripts/rebalance-shader-casts.mjs [--dry-run] [--changes] [--no-ra-repair] [--report] [--pack=<dir>] [--apply-out=scripts/<name>.json]
+// 2026-10-13b (sun promotion): --no-ra-repair --apply-out=scripts/shader-recast-2026-10-13b.expansion-casts.json
 import { createJiti } from "jiti";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -201,6 +202,7 @@ function candidates(w, pi, si, m, { allowAmber = false, expDist = EXP_DISTS[0], 
     if (!poolOf(w).includes(r)) continue;
     if (!allowAmber && BAL.isAmberShader(r)) continue;
     if (BAL.KIN_BORROW_AVOID.has(r) && !want) continue; // never ADD an over-seen shader
+    if (BAL.SUN_SHADER_SET.has(r) && !want) continue; // sun shaders: light journeys only, placed as pins (SUN_SHADER_PINS)
     if (eff(r) > budget) continue;
     if (!capOk(w, r) || !spacingOk(w, r, expDist)) continue;
     const v = V[r];
@@ -217,7 +219,7 @@ function setSlot(w, pi, si, r, why) {
   const from = w.cast[pid][si] ?? null;
   if (si >= w.cast[pid].length) w.cast[pid].push(r); else w.cast[pid][si] = r;
   if (from && from === w.lead) w.lead = r;
-  changes.push({ journey: w.name, id: w.id, phase: pid, from, to: r, why });
+  changes.push({ journey: w.name, id: w.id, phase: pid, from, to: r, why, sparse: pi === w.sparseIdx });
   recount();
 }
 function slotsOf(w, m) { const out = []; w.phaseIds.forEach((pid, pi) => w.cast[pid].forEach((x, si) => { if (x === m) out.push([pi, si]); })); return out; }
@@ -258,8 +260,10 @@ function placePinned(w, want, why, { force = false } = {}) {
   const resolvable = (vid) => { const v = byId.get(vid); return v && !protectedSlots.has(`${vid}:${want}`) && !(v.kind === "exp" && v.lead === want); };
   if (!force && !viol.every(resolvable)) return false;
   const banned = (m) => w.bans.has(m) || !poolOf(w).includes(m);
+  const sunSparse = (m) => +(BAL.SUN_SHADER_SET.has(want) && slotsOf(w, m)[0][0] === w.sparseIdx);
   const opts = [...modesOf(w)].filter((m) => m !== w.lead && !protectedSlots.has(`${w.id}:${m}`) && slotsOf(w, m).length === 1)
-    .sort((a, b) => (banned(b) - banned(a)) || (BAL.isAmberShader(b) - BAL.isAmberShader(a)) || ((C.all.get(b) ?? 0) - (C.all.get(a) ?? 0)) || a.localeCompare(b));
+    // a sun shader lights a light-bearing phase rather than the dark sparse interlude
+    .sort((a, b) => (banned(b) - banned(a)) || (BAL.isAmberShader(b) - BAL.isAmberShader(a)) || (sunSparse(a) - sunSparse(b)) || ((C.all.get(b) ?? 0) - (C.all.get(a) ?? 0)) || a.localeCompare(b));
   const m = opts.find((x) => { const [pi, si] = slotsOf(w, x)[0]; return eff(want) <= slotBudget(w, pi, si); });
   if (!m) { log.push(`${force ? "FAIL" : "WARN"} ${w.name}: no slot can hold ${want}`); return false; }
   const [pi, si] = slotsOf(w, m)[0];
@@ -293,7 +297,8 @@ for (const w of W) {
 }
 
 // 1. Karel's pins (seraph in First Light + every Surrounded by Light, Aureole
-//    in First Light), then the journey bans (Grasshopper / Bath).
+//    in First Light, the SUN shaders per SUN_SHADER_PINS), then the journey
+//    bans (Grasshopper / Bath).
 for (const [id, musts] of Object.entries(BAL.SHADER_JOURNEY_MUSTS)) {
   const w = byId.get(id);
   if (!w) continue; // parked takes: pack-only (the apply step ensures it)
@@ -366,12 +371,16 @@ for (let guard = 0; guard < 200; guard++) {
 // 4b. Rise Above neighbours (Karel's self-running loop, reordered often):
 //     two adjacent pieces never share a shader. Repair from the side that
 //     can give it up (not pinned, not an Expansion lead, not a mastered take).
+// --no-ra-repair: report the shared pairs, change nothing (a targeted pass
+// — e.g. the 2026-10-13 sun promotion — must not churn unrelated journeys).
+const RA_REPAIR = !process.argv.includes("--no-ra-repair");
 for (let i = 0; i < RA.length; i++) {
   const a = byId.get(RA[i]), b = byId.get(RA[(i + 1) % RA.length]);
   const ra = rosterAt(RA[i]), rb = rosterAt(RA[(i + 1) % RA.length]);
   for (const m of [...ra].filter((x) => rb.has(x))) {
     const free = (w) => w && !protectedSlots.has(`${w.id}:${m}`) && !(w.kind === "exp" && w.lead === m);
     const sides = [b, a].filter(free).sort((x, y) => (x.lead === m) - (y.lead === m));
+    if (!RA_REPAIR) { log.push(`WARN Rise Above ${a?.name ?? RA[i]} / ${b?.name ?? RA[(i + 1) % RA.length]} share ${m} (--no-ra-repair)`); continue; }
     if (!sides.some((w) => replaceShader(w, m, "Rise Above neighbours"))) log.push(`WARN Rise Above ${a?.name ?? RA[i]} / ${b?.name ?? RA[(i + 1) % RA.length]} still share ${m}`);
   }
 }
@@ -433,6 +442,7 @@ const regress = hReport.filter((r) => r.regress.length);
 const after = { counts: C.all, amber: amberStats(), dharmaIn: W.filter((w) => modesOf(w).has("dharma")).map((w) => w.name) };
 const top = (cnt) => [...cnt].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
 console.log(log.join("\n"));
+if (process.argv.includes("--changes")) for (const c of changes) console.log(`  ${c.journey.padEnd(26)} ${(c.phase + (c.sparse ? "*" : "")).padEnd(14)} ${String(c.from ?? "+").padEnd(16)} -> ${c.to.padEnd(16)} ${c.why}`);
 console.log(`changed journeys ${changed.length} (featured ${changed.filter((w) => w.kind === "feat").length}, Expansion ${changed.filter((w) => w.kind === "exp").length}) · slot changes ${changes.length}`);
 console.log(`amber share ${before.amber.share.toFixed(3)} -> ${after.amber.share.toFixed(3)} · max uses ${top(before.counts)[0].join(":")} -> ${top(after.counts)[0].join(":")}`);
 for (const m of ["dharma", "magma", "parsec", "ember", "zenith", "seraph", "aureole"]) console.log(`  ${m.padEnd(8)} ${before.counts.get(m) ?? 0} -> ${after.counts.get(m) ?? 0}`);
@@ -515,8 +525,11 @@ if (!DRY) {
     if (!row) { log.push(`WARN pinned journey ${id} not in the pack`); continue; }
     ensure[id] = { name: row.name, musts, bans: [...BAL.SHADER_BANNED_EVERYWHERE, ...(BAL.SHADER_JOURNEY_BANS[id] ?? [])], before: phaseMap(backup.get(id)), handEdited: phaseMap(row) };
   }
-  writeFileSync(ROOT + "scripts/shader-recast-2026-10-13.expansion-casts.json", JSON.stringify({ by: "scripts/rebalance-shader-casts.mjs", note: "Expansion casts live in the pack (data/journeys.json phases[].shaderModes) + DB rows; apply with scripts/apply-shader-recast-2026-10-13.mjs", journeys: apply, ensure }, null, 1) + "\n");
-  console.log(`apply input: ${Object.keys(apply).length} Expansion journeys + ${Object.keys(ensure).length} parked pins → scripts/shader-recast-2026-10-13.expansion-casts.json`);
+  // --apply-out: a later targeted pass (2026-10-13b: the sun promotion) keeps
+  // the earlier apply input as a record and writes its own
+  const APPLY_OUT = arg("apply-out", "scripts/shader-recast-2026-10-13.expansion-casts.json");
+  writeFileSync(ROOT + APPLY_OUT, JSON.stringify({ by: "scripts/rebalance-shader-casts.mjs", note: `Expansion casts live in the pack (data/journeys.json phases[].shaderModes) + DB rows; apply with scripts/apply-shader-recast-2026-10-13.mjs --input=${APPLY_OUT}`, journeys: apply, ensure }, null, 1) + "\n");
+  console.log(`apply input: ${Object.keys(apply).length} Expansion journeys + ${Object.keys(ensure).length} parked pins → ${APPLY_OUT}`);
 }
 
 if (REPORT) {
