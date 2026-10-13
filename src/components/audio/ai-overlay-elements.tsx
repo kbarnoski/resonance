@@ -3,6 +3,8 @@
 import { glitchRecord } from "@/lib/journeys/glitch-recorder";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
 import { inBoundarySettle } from "@/lib/journeys/video-activity";
+import { layeringOn, layeringAppliesTo, cloneCap } from "@/lib/journeys/layering-floor";
+import { useAudioStore } from "@/lib/audio/audio-store";
 
 import { useEffect, useRef, useCallback } from "react";
 import { getTierProfile } from "@/lib/audio/device-tier";
@@ -113,9 +115,14 @@ export function AiOverlayElements({
       // Midpoint (Karel 2026-09-29b: "bring back some of the layers"):
       // quiet stays clone-free, the build carries one or two, the
       // climax three — still never a cloud of copies.
-      const conductedCap = getJourneyEngine().sparseInterludeActive()
+      const sparse = getJourneyEngine().sparseInterludeActive();
+      const baseCap = sparse
         ? 0 // cosmic-sparse interlude: shaders + one small still only
         : t < 0.45 ? 0 : t < 0.7 ? 1 : 2; // top trimmed 3->2 (2026-09-30)
+      // Layering floor (?layering=1): one gentle drifting clone even in quiet
+      // passages — never in the sparse interlude, never on a mastered journey.
+      const aj = useAudioStore.getState().activeJourney;
+      const conductedCap = cloneCap(baseCap, layeringOn() && layeringAppliesTo(aj ? { id: aj.id, name: aj.name } : null, true), sparse);
       const maxClones = Math.min(conductedCap, Math.max(1, Math.round(MAX_CLONES_BASE * tier.cloneScale)));
       if (activeClonesRef.current.length >= maxClones) return;
 

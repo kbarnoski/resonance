@@ -78,6 +78,10 @@ export function journeyLayerGain(journey?: { id?: string | null; name?: string |
 export const JOURNEY_SHADER_DIM: Readonly<Record<string, Readonly<Record<string, number>>>> = {
   // Karel 2026-10-13: "the triangles shader in ghost is a bit too bright. should be a bit more transparent"
   ghost: { yantra: 0.65 },
+  // Karel 2026-10-13: "make that colored line shader i love that is at final morph in
+  // snowflake a bit brighter so as the morph completes you already are seeing it
+  // overlay" — the lines arrive at p0.82 at 52 % layer opacity; ×1.55 → ~80 %
+  "first-snow": { "r2-photon": 1.55 },
 };
 
 /** Band-split reactive shaders (bass/mid/treble per layer). */
