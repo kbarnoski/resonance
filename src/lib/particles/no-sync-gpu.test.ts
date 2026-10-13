@@ -132,6 +132,34 @@ describe("particle activation never blocks the main thread", () => {
     engine.dispose();
   });
 
+  it("RESONANCE TRAILS: compiled in only when on, no new context, no synchronous GPU call", async () => {
+    const { createParticleEngine } = await import("./particle-engine");
+    const { gl, calls } = fakeGL({ compilePolls: 2 });
+    const engine = createParticleEngine(fakeCanvas(gl) as unknown as HTMLCanvasElement, { count: 4096, soul: "rings", trails: true });
+    expect(engine.trailsCompiled()).toBe(true);
+    engine.prepare(["rings"]);
+    for (let i = 0; i < 80 && !engine.isWarm(); i++) { now += 400; engine.prewarm(); }
+    engine.start();
+    engine.setTrails(1);
+    step(16.7, 60);
+    expect(engine.trailsShown()).toBeGreaterThan(0.5);
+    engine.setImageForm(1, 1); // an image form takes the stage: the tails glide away
+    step(16.7, 400);
+    expect(engine.trailsShown()).toBeLessThan(0.05);
+    engine.setTrails(null, true);
+    expect(engine.trailsShown()).toBe(0);
+    const srcs = calls.filter((c) => c.name === "shaderSource").map((c) => String(c.args[1]));
+    expect(srcs.filter((s) => s.includes("#define TRAILS")).length).toBe(2);
+    expect(calls.filter((c) => FORBIDDEN.includes(c.name)).map((c) => c.name)).toEqual([]);
+    engine.dispose();
+    // off: the draw source is the show build's
+    const off = fakeGL({ compilePolls: 1 });
+    const e2 = createParticleEngine(fakeCanvas(off.gl) as unknown as HTMLCanvasElement, { count: 4096, soul: "rings", trails: false });
+    expect(e2.trailsCompiled()).toBe(false);
+    expect(off.calls.filter((c) => c.name === "shaderSource").some((c) => String(c.args[1]).includes("TRAILS 1"))).toBe(false);
+    e2.dispose();
+  });
+
   it("THE BRIDGE: still colours upload as plain bytes, glide, and a worn slot never swaps", async () => {
     const { createParticleEngine } = await import("./particle-engine");
     const { gl, calls } = fakeGL({ compilePolls: 0 });

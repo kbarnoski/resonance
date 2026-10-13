@@ -48,7 +48,9 @@ import {
   PAIR_ACDF_FS,
   PAIR_RCDF_FS,
   PAIR_ASSIGN_FS,
+  withTrails,
 } from "./shaders";
+import { trailsEnabled, trailsSessionStore, TRAILS_LAWS } from "./resonance-trails";
 import { pairingEnabled, PAIR_GROUPS } from "./spatial-pairing";
 import {
   SOULS,
@@ -108,6 +110,10 @@ export interface ParticleEngineOptions {
    *  into the simulation. Default: ?score=1 (sessionStorage-kept), else off —
    *  off, the simulation source is exactly the show build's. */
   score?: boolean;
+  /** RESONANCE TRAILS (resonance-trails.ts): compile the velocity streaks into
+   *  the draw program. Default: ?trails=1 (sessionStorage-kept), else off —
+   *  off, the draw source is exactly the show build's. */
+  trails?: boolean;
   /** Frame-time watchdog: called (once) when a frame's CPU time or the rAF gap
    *  while running exceeds the budget, or a program fails. */
   watchdog?: { cpuMs: number; gapMs: number; onStall: (why: string) => void };
@@ -227,6 +233,15 @@ export interface ParticleEngine {
    *  layering. Glides ~2.5 s on top of the eased timeline; null = off (glides
    *  to 0, or at once with `snap` — a force only, so even a snap never jumps a mote). */
   setCurrents(c: CurrentState | null, snap?: boolean): void;
+  /** RESONANCE TRAILS: the trail gain 0..1 (resonance-trails.ts SustainMeter ×
+   *  the journey's strength). Glides ~0.6 s and is gated by (1 − image form /
+   *  show) — emblems and image forms never streak. null = off (glides to 0, or
+   *  at once with `snap`). No-op when compiled out. */
+  setTrails(gain: number | null, snap?: boolean): void;
+  /** Are the trails compiled into this engine's draw program? */
+  trailsCompiled(): boolean;
+  /** The trail gain on screen now (after the glide + image gate). */
+  trailsShown(): number;
   /** Off-centre placement: screen fractions of half-width / half-height. */
   setOffset(x: number, y: number): void;
   /** Image-form plane size (1 = full frame). */
@@ -509,7 +524,9 @@ export function createParticleEngine(
 
   const par = gl.getExtension("KHR_parallel_shader_compile") as { COMPLETION_STATUS_KHR: number } | null;
   const probe = !!opts.probe;
-  const draw = startProgram(gl, DRAW_VS, DRAW_FS);
+  // RESONANCE TRAILS: decided once per engine (its draw program carries it or not)
+  const trailsOn = opts.trails ?? trailsEnabled(undefined, trailsSessionStore());
+  const draw = trailsOn ? startProgram(gl, withTrails(DRAW_VS), withTrails(DRAW_FS)) : startProgram(gl, DRAW_VS, DRAW_FS);
   const fade = startProgram(gl, QUAD_VS, FADE_FS);
   const lum = startProgram(gl, QUAD_VS, LUM_FS);
   const expo = startProgram(gl, QUAD_VS, EXPO_FS);
@@ -785,6 +802,7 @@ export function createParticleEngine(
   let imgTintS = 0, imgTintT = 0;
   // living fire on a worn photograph (statement piano only; 0 everywhere else)
   let fireS = 0, fireT = 0, fireLine = 0.6;
+  let trailS = 0, trailT = 0; // resonance trails: shown / target gain
   let snapPending = false; // snapToImage: place every mote on the image next frame
   const fireR = new Float32Array(3), fireU = new Float32Array(3);
   const speedCap = opts.maxSpeed ?? 3.5;
@@ -1408,6 +1426,17 @@ export function createParticleEngine(
         g.uniform3f(draw.u.uBridgeU, up[0] * halfH, up[1] * halfH, up[2] * halfH);
       }
     }
+    // RESONANCE TRAILS: glide (~0.6 s) toward the meter's gain, gated by the
+    // image form / show (emblems + image forms never streak)
+    if (trailsOn) {
+      const gate = 1 - Math.min(1, Math.max(env.imgForm, env.imgShow));
+      trailS += (trailT * gate - trailS) * (1 - Math.exp(-dt / TRAILS_LAWS.ENGINE_GLIDE_SEC));
+      if (trailS < 1e-4 && trailT === 0) trailS = 0;
+      if (draw.u.uTrail) {
+        g.uniform1f(draw.u.uTrail, trailS);
+        g.uniform2f(draw.u.uViewPx, W, H);
+      }
+    }
     g.drawArrays(g.POINTS, 0, count);
     g.disable(g.BLEND);
     hcur = hn;
@@ -1750,6 +1779,13 @@ export function createParticleEngine(
       curT.layering = c ? fin(c.layering) : curT.layering;
       if (snap) { curS.amount = curT.amount; curS.tension = curT.tension; curS.layering = curT.layering; }
     },
+    setTrails(gain, snap = false) {
+      if (!trailsOn) return;
+      trailT = gain !== null && Number.isFinite(gain) ? Math.max(0, Math.min(1, gain)) : 0;
+      if (snap) trailS = trailT;
+    },
+    trailsCompiled() { return trailsOn; },
+    trailsShown() { return trailS; },
     setCamScale(k) { camScaleTarget = camScaleBase * Math.max(0.3, Math.min(2.6, k)); },
     setOffset(x, y) { offTX = Math.max(-0.7, Math.min(0.7, x)); offTY = Math.max(-0.5, Math.min(0.5, y)); },
     setImageScale(k) { imgScaleT = Math.max(0.2, Math.min(1.2, k)); },
