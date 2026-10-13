@@ -10,7 +10,7 @@ import { PARTICLE_LEADS } from "./particle-lead";
 import { PARTICLE_PROFILES } from "./particle-profiles.generated";
 import { TRAMOKYO_MAIN } from "./installation-sequence";
 import { conductPhrases, PHRASE_LAWS, PHRASE_LOCKED_JOURNEYS, type PhraseTimeline } from "@/lib/particles/phrase-conductor";
-import { createLoopMemory, planCast, chooseNext, noteForm, recordUsage, blossomAllowed, previousJourney, type LoopMemory } from "./particle-rotation";
+import { createLoopMemory, planCast, chooseNext, noteForm, recordUsage, blossomAllowed, previousJourney, journeyAvoidSet, type LoopMemory } from "./particle-rotation";
 
 export interface PlayLog { journeyId: string; name: string; mastered: boolean; lead: SoulId | null; forms: { soul: SoulId; sec: number }[] }
 
@@ -67,7 +67,7 @@ export function replayLoop(order: readonly string[] = loopOrder(), loops = 2, me
       else {
         const fl = formsAt(nt);
         let pick: SoulId | undefined;
-        if (!base.mastered) pick = chooseNext(fl, { recent, mem, blossomOk: blossomAllowed(mem, id, blossomShown), cycleIdx: cycleIdx++, jitter: 0.5, neighbour: previousJourney(mem, id)?.forms });
+        if (!base.mastered) pick = chooseNext(fl, { recent, mem, blossomOk: blossomAllowed(mem, id, blossomShown), cycleIdx: cycleIdx++, jitter: 0.5, neighbour: previousJourney(mem, id)?.forms, shown: journeyAvoidSet(mem, id, cast), pool: cast.formCycle, journeyId: id });
         else {
           // the mastered conductor (unchanged): next in phase order, not one of the last shown
           for (let i = 1; i <= fl.length && !pick; i++) { const c = fl[(oldIdx + i) % fl.length]; if (!recent.includes(c)) { oldIdx += i; pick = c; } }
