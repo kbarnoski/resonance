@@ -85,7 +85,7 @@ function buildReportOnlyCsp(nonce: string): string {
     "img-src 'self' data: blob: https://*.supabase.co https://*.fal.media https://fal.media https://v3.fal.media",
     "media-src 'self' data: blob: https://*.supabase.co",
     `font-src 'self' data: https://fonts.gstatic.com${dreamSrc}`,
-    "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.fal.run https://fal.run https://*.fal.ai https://*.fal.media https://fal.media https://api.openai.com https://api.anthropic.com wss://*.fal.run wss://*.fal.ai blob:",
+    "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.fal.run https://fal.run https://*.fal.ai https://*.fal.media https://fal.media https://api.openai.com https://api.anthropic.com wss://*.fal.run wss://*.fal.ai blob: ws://127.0.0.1:* ws://localhost:*",
     "worker-src 'self' blob:",
     "frame-ancestors 'none'",
     "base-uri 'self'",

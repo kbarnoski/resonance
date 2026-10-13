@@ -86,6 +86,7 @@ import { conductCurrents, currentAt, createTide, tideStep, withTide, currentsEna
 import { conductBreath, breathAt, breathEnabled, breathSummary, type BreathTimeline } from "@/lib/particles/breath";
 import { SustainMeter, trailsEnabled, trailsForJourney, trailsSessionStore } from "@/lib/particles/resonance-trails";
 import { liveMidiDrive } from "@/lib/particles/midi-drive";
+import { VJ_TAP, vjTapWanted, vjTapJourney } from "@/lib/vj-bridge/tap";
 import { midiRequestedByUrl, startMidiInput } from "@/lib/audio/midi-input";
 
 /** PHRASE CONDUCTOR (?phrase=1, off by default — phrase-conductor.ts): the deep
@@ -761,7 +762,9 @@ export function ParticleLeadLayer({
     engine.setHands(null); // a fresh journey never inherits the last one's hands (glides out ~0.5 s)
     if (hands) glitchRecord("particle-hands", `on: ${journeyId} strength ${handsK} split ${HANDS_TUNING.SPLIT}${cast.mastered ? " (mastered)" : ""}`);
     // one onset detector feeds both the score and the hands
-    const onsetDet = scoreOn || hands ? new OnsetDetector() : null;
+    // the VJ bridge (?osc=1, off by default) also hears the onsets — the
+    // detector then runs even where the score / hands are off
+    const onsetDet = scoreOn || hands || vjTapWanted() ? new OnsetDetector() : null;
     const score = scoreOn ? new LivingScore(Array.from(journeyId).reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, 7)) : null;
     let scoreGainTarget = 0; // set by the tick (presence × ladder × held / busy)
     if (score) glitchRecord("particle-score", `on: ${journeyId}`);
@@ -794,6 +797,8 @@ export function ParticleLeadLayer({
         }
       }
       proc.step(dt);
+      // VJ bridge: lend it this frame's spectrum (a reference — no extra analyser read)
+      if (fresh && VJ_TAP.on) { VJ_TAP.bytes = bytes; VJ_TAP.bytesAt = performance.now(); }
       // MIDI (Live Theatre / ?midi=1 — midi-drive.ts): the Nord's exact notes,
       // velocities and pedal replace the audio guesses while it is played,
       // cross-faded ≥ 2 s both ways; null elsewhere (behaviour unchanged)
@@ -801,6 +806,7 @@ export function ParticleLeadLayer({
       if (md) md.step(performance.now());
       if (onsetDet) {
         const heard = onsetDet.push(fresh ? bytes : null, dt);
+        if (heard && VJ_TAP.on) VJ_TAP.events.push(["onset", heard.strength, heard.pitch, performance.now()]);
         if (score) engine.setScore(score.packed, score.step(dt, md ? md.scoreOnset(heard) : heard, scoreGainTarget));
         if (hands) {
           const v = hands.step(fresh ? bytes : null, heard, dt, handsGainTarget, md ? md.hands : null);
@@ -1051,6 +1057,8 @@ export function ParticleLeadLayer({
     const breathTl = breathTimelineFor(journeyId);
     engine.setBreath(null, true); // a fresh journey never inherits the last one's breath
     if (breathTl) glitchRecord("particle-breath", breathSummary(breathTl));
+    // VJ bridge: the conducted timelines (the bridge walks them off the render path)
+    if (vjTapWanted()) vjTapJourney(journeyId, phraseTl, breathTl);
     // LIGHT GRAVITY (?gravity=1, off by default — light-gravity.ts): the free
     // motes slowly drift toward where the light is in the picture on screen
     // and let go when it changes. The still is sampled small in the bridge's
@@ -1252,6 +1260,7 @@ export function ParticleLeadLayer({
       // one arriving from invisible — starts it; the same look re-asked does not
       if (soul !== currentSoul || quiet) soulAt = performance.now();
       currentSoul = soul;
+      if (VJ_TAP.on) VJ_TAP.soul = soul;
       formAt = performance.now();
       appearance();
       // a blossom GROWS as it opens: it arrives further away and drifts in
@@ -1410,6 +1419,7 @@ export function ParticleLeadLayer({
       // breath: the phrase-long, slew-limited timeline (never per beat)
       const breathNow = breathTl ? breathAt(breathTl, t) : null;
       if (breathNow) engine.setBreath(breathNow);
+      if (VJ_TAP.on) { VJ_TAP.swell = phraseSw; VJ_TAP.current = currentNow; VJ_TAP.breath = breathNow; }
       if (gravityOn) engine.setGravity(packGravity(sampleGravity(gravGlide, gravNow()), gravPacked), gravStrength);
       // MORPH LAW (Karel 2026-10-06: "particle system always overlaps the
       // morph and is present when morph videos end in all cases ever"):
@@ -1581,7 +1591,7 @@ export function ParticleLeadLayer({
           imgReleasing = true; imgReleaseAt = slot.releaseAt; glitchRecord("particle-image-release", `${imgKey} -> ${wantKey}`);
           // Ghost: the tree's blossoms SCATTER as the image clears — falling
           // petals, not an abstract interim form (Karel 2026-10-11)
-          if (cast.signatureImage === "angel" && imgKey?.startsWith("moment") && currentSoul !== "petals") { engine.setSoul("petals", 3.5); currentSoul = "petals"; glitchRecord("particle-form", "petals (blossoms scatter)"); }
+          if (cast.signatureImage === "angel" && imgKey?.startsWith("moment") && currentSoul !== "petals") { engine.setSoul("petals", 3.5); currentSoul = "petals"; if (VJ_TAP.on) VJ_TAP.soul = "petals"; glitchRecord("particle-form", "petals (blossoms scatter)"); }
         }
         else if (act === "unload") { imgReleasing = false; imgLoaded = null; imgKey = null; formAt = soulAt = performance.now(); }
         loadNow = act === "load";
@@ -1656,6 +1666,7 @@ export function ParticleLeadLayer({
         engine.setImageFlight(null);
         flightPosed = false;
       }
+      if (VJ_TAP.on) { VJ_TAP.image = imgLoaded; VJ_TAP.emblem = emblemOn; }
       // HOVER (Karel 2026-10-12, Ghost blossom → wings: "a weird back and forth"):
       // while an image hands off to the next, the motes stay where they are; after
       // an image with nothing following, they hover 1.5 s, then ease into the form
@@ -2053,6 +2064,7 @@ export function ParticleLeadLayer({
       const phaseIdx = pbs.filter((b) => b <= t).length;
       const ip = JOURNEY_IMAGE_PALETTES[journeyId];
       const ipPhase = ip ? (ip.phases[phaseIdx] ?? ip) : null;
+      if (VJ_TAP.on) VJ_TAP.imagePalette = ipPhase ? ipPhase.colors : null;
       const pp = palRef.current;
       // ALWAYS changing (Karel 2026-10-06: "the colors need to always be
       // changing and reflecting the palette not static"): a continuous glide
