@@ -31,11 +31,11 @@ describe("paletteHueFamilies", () => {
 describe("filterShadersForPalette", () => {
   it("removes clashing families, keeps matching, neutral and prismatic", () => {
     const fams = paletteHueFamilies(GRASSHOPPER_PALETTE);
-    const pool = ["deep-current", "flame", "galaxy", "aurora-wave", "pollen", "lightning"];
-    // deep-current + lightning are blue-family; the rest are gold/neutral/prismatic
+    const pool = ["deep-current", "flame", "galaxy", "aurora-wave", "pollen", "cascade-veil"];
+    // deep-current + cascade-veil are blue-family; the rest are gold/neutral/prismatic
     const out = filterShadersForPalette([...pool, ...Array(40).fill("flame")], fams);
     expect(out).not.toContain("deep-current");
-    expect(out).not.toContain("lightning");
+    expect(out).not.toContain("cascade-veil");
     expect(out).toContain("flame");
     expect(out).toContain("galaxy");
     expect(out).toContain("aurora-wave");

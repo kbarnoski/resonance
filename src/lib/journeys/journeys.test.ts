@@ -37,7 +37,7 @@ const GLOBALLY_BLOCKED_SAMPLE = [
   "hollow", "dark-bloom", "abyss-light",
 ];
 
-const LOW_TIER_BLOCKED = ["dark-nebula", "supernova", "quasar", "magma", "inferno"];
+const LOW_TIER_BLOCKED = ["dark-nebula", "supernova", "magma", "inferno"]; // quasar deleted 2026-10-13
 
 function allPickedShaders(phases: { shaderModes: string[] }[]): string[] {
   return phases.flatMap((p) => p.shaderModes);

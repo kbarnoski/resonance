@@ -26,9 +26,7 @@ const FIXED: Record<string, string[]> = {
   supernova: ["float cycleEnv = rsWrapEnv((age - 0.3) / 5.0);", "shockTotal * 0.7 * cycleEnv", "* (0.6 + u_mid * 0.4) * cycleEnv", "interior * (0.5 + u_mid * 0.5) * cycleEnv"],
   redshift: ["return ring * rsWrapEnv(ph);"],
   nova: ["float cycleEnv = rsWrapEnv(phase);", "smoothstep(0.0, 0.08, ringPhase)", "expandT * cycleEnv", "rings * 0.5 + t * 0.15 + paletteShift"],
-  terminus: ["float waveEnv = rsWrapEnv(wavePh);", "* waveEnv;", "mix(1.0, smoothstep(waveFront - 0.05, waveFront + 0.3, pDist), waveEnv)"],
   "mobius-strip": ["smoothstep(0.0, 0.2, lpm1)", "smoothstep(0.0, 0.2, lpm2)"],
-  lightning: ["smoothstep(0.0, 0.03, fadePhase) * (1.0 - smoothstep(0.85, 1.0, fadePhase))"],
   brachistochrone: ["glow * trail * 0.07 * curveEnv", "* beadEnv;"],
   "fracture-light": ["float wNew = smoothstep(0.0, 0.06, age);", "float sclk = u_time * 0.17;"],
   "r-smokerings": ["(1.0 - life) * smoothstep(0.0, 0.08, life)"],
@@ -47,14 +45,14 @@ const FIXED: Record<string, string[]> = {
 
 /** Periodic time, but the render audit found no one-frame cut. */
 const SCANNED_CLEAN = new Set([
-  "monsoon", "neon", "ember", "pulsar", "quasar", "enzyme", "biofilm", "moire",
+  "monsoon", "ember", "pulsar", "enzyme", "moire",
   "catenary", "halo", "gnosis", "stigmata", "aureole", "apophatic", "satori", "photon", "kepler",
   "fibonacci-spiral", "maelstrom", "deluge", "flame", "maelstrom-dark", "furnace", "epicycloid", "stamen",
-  "meristem", "ember-drift", "shadow-fire", "smoke-signal", "iron-forge", "abyss-light", "dark-crystal",
-  "night-rain", "volcanic", "dark-bloom", "lightning-field", "night-forest", "agape", "jubilee", "lectio",
-  "credo", "ember-fountain", "meteor-rain", "galaxy-seed", "cascade-veil", "r3-peelingbark",
+  "meristem", "ember-drift", "shadow-fire", "smoke-signal", "iron-forge", "dark-crystal",
+  "volcanic", "lightning-field", "night-forest", "jubilee", "lectio",
+  "ember-fountain", "meteor-rain", "galaxy-seed", "cascade-veil",
   // floor(time) selections that cross-fade or only switch while invisible
-  "rain", "ripple",
+  "ripple",
 ]);
 
 function lockedRoster(): Set<string> {

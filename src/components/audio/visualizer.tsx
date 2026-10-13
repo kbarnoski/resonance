@@ -63,7 +63,7 @@ export type { VisualizerMode } from "@/lib/audio/vibe-detection";
 // Every id here MUST exist in SHADERS — "nebula" lingered after its registry
 // removal and produced deterministic black backdrops + 3s crossfade stalls.
 const AI_BACKDROP_SHADERS: VisualizerMode[] = [
-  "fog", "drift",
+  "dusk", "drift", // "fog" deleted from the codebase 2026-10-13 — dusk keeps the 4-slot hash
   "tide", "ember",
 ];
 
@@ -955,7 +955,7 @@ export function VisualizerCore({
   // window between mount and engine.start, hitting the same WebGL
   // context limit that blocks 3D primaries from the engine picker.
   const safeStoreMode: VisualizerMode = (installationMode && MODES_3D.has(storeMode))
-    ? ("neon" as VisualizerMode)
+    ? ("drift" as VisualizerMode) // was "neon" — deleted from the codebase 2026-10-13
     : storeMode;
   const mode = (journeyShaderMode as VisualizerMode) ?? safeStoreMode;
 

@@ -182,7 +182,7 @@ export function isAudioReactiveJourney(journey?: { id?: string | null; name?: st
  *  maelstrom-dark (the dark hurricane) deliberately stay reactive. */
 export const STEADY_CLOCK_SHADERS: ReadonlySet<string> = new Set([
   "r2-spiralgal", "r3-fernunfurl", "fibonacci-spiral", "chrysalis",
-  "r-blackhole", "r-kaleido", "whirlpool", "spiral",
+  "r-blackhole", "r-kaleido", "spiral", // whirlpool deleted from the codebase 2026-10-13
 ]);
 
 export function isSteadyClockShader(mode?: string | null): boolean {

@@ -102,8 +102,8 @@ describe("timing", () => {
   it("the shared fade module matches the visualizer's brightness-aware fade", () => {
     expect(fadeMsFor("drift", "drift")).toBe(SHADER_FADE_DURATION_MS);
     expect(fadeMsFor(null, null)).toBe(SHADER_FADE_DURATION_MS);
-    expect(fadeMsFor("plasma", "swell")).toBeGreaterThan(SHADER_FADE_DURATION_MS);
-    expect(fadeMsFor("plasma", "swell")).toBeLessThanOrEqual(7000);
+    expect(fadeMsFor("plasma", "cataphatic")).toBeGreaterThan(SHADER_FADE_DURATION_MS);
+    expect(fadeMsFor("plasma", "cataphatic")).toBeLessThanOrEqual(7000);
   });
   // Karel 2026-10-13: "your shaders come in a bit late such that when the
   // final frames of the morph are reached they are still coming in but should

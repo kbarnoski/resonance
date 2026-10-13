@@ -43,21 +43,6 @@ void main() {
 }
 `;
 
-// 3. Marble texture flow
-export const R2_MARBLE = HEAD + `
-void main() {
-  vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution) / u_resolution.y;
-  float t = u_time * 0.1;
-  vec2 q = uv * 2.0;
-  float a = fbm(q + t);
-  float b = fbm(q * 1.4 + a * 1.5);
-  float marble = sin((q.x + b * 4.0) * 4.0) * 0.5 + 0.5;
-  vec3 col = mix(vec3(0.05, 0.04, 0.03), vec3(0.85, 0.8, 0.7), pow(marble, 1.5));
-  col += vec3(0.4, 0.35, 0.25) * pow(marble, 6.0);
-  gl_FragColor = vec4(col, 1.0);
-}
-`;
-
 // 4. Wave interference rings
 export const R2_INTERFERENCE = HEAD + `
 void main() {
@@ -119,23 +104,6 @@ void main() {
     vec3 hue = palette(fi * 0.04 + t * 0.02, vec3(0.4), vec3(0.4), vec3(1.0), vec3(0.0, 0.3, 0.6));
     col += thread * hue * 0.25;
   }
-  gl_FragColor = vec4(col, 1.0);
-}
-`;
-
-// 7. Kelvin-Helmholtz atmospheric instability
-export const R2_KELVIN = HEAD + `
-void main() {
-  vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution) / u_resolution.y;
-  float t = u_time * 0.2;
-  vec2 q = uv * 1.5;
-  q.x += t * 0.5;
-  q.y += sin(q.x * 1.5 + t) * 0.3;
-  float h = fbm(q * 2.0);
-  vec3 cool = vec3(0.1, 0.2, 0.45);
-  vec3 warm = vec3(0.85, 0.55, 0.25);
-  vec3 col = mix(cool, warm, smoothstep(0.0, 0.6, h));
-  col += pow(smoothstep(0.5, 0.85, h), 4.0) * vec3(0.95, 0.85, 0.5) * 0.3;
   gl_FragColor = vec4(col, 1.0);
 }
 `;
