@@ -190,12 +190,12 @@ describe.each([["closing", FLIGHT.SEC], ["opening", FLIGHT.OPEN_SEC]] as const)(
 
 describe("signature flight — the stroke", () => {
   const bpm = prof.tempo.bpm;
-  it("rates: powerful 2-3 Hz takeoff easing to a slower cruise, locked to the beat", () => {
+  it("rates: takeoff on the beat (≤ 2.2 Hz — photosensitive-safe) easing to a half-beat cruise", () => {
     const { takeoff, cruise } = strokeHz(bpm);
-    expect(takeoff).toBeGreaterThanOrEqual(2);
-    expect(takeoff).toBeLessThanOrEqual(3);
-    expect(takeoff).toBeCloseTo((111 / 60) * 1.5, 3);
-    expect(cruise).toBeCloseTo(111 / 60, 3);
+    expect(takeoff).toBeGreaterThanOrEqual(1.5);
+    expect(takeoff).toBeLessThanOrEqual(2.2);
+    expect(takeoff).toBeCloseTo(111 / 60, 3);
+    expect(cruise).toBeCloseTo(111 / 120, 3);
     expect(cruise).toBeLessThan(takeoff);
     const r0 = (strokePhase(0.11, 6, bpm) - strokePhase(0.1, 6, bpm)) / 0.01;
     const r1 = (strokePhase(5.01, 6, bpm) - strokePhase(5, 6, bpm)) / 0.01;

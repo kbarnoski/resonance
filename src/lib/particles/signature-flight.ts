@@ -101,10 +101,13 @@ export const FLIGHT = {
   SHED_TO: 2.2,
   /** WINGS — stroke rate: takeoff = 1.5 × the beat (held 2-3 Hz), easing to
    *  cruise = the beat (held 1.5-2.2 Hz) over TAKEOFF_EASE of the flight */
-  TAKEOFF_HZ_MIN: 2,
-  TAKEOFF_HZ_MAX: 3,
-  CRUISE_HZ_MIN: 1.5,
-  CRUISE_HZ_MAX: 2.2,
+  // ≤ 2.2 strokes/s: a bright wing sweeping the same spot 3×/s read as flicker
+  // on the photosensitive meter (Karel's seizure law) — takeoff = the beat,
+  // cruise = half the beat
+  TAKEOFF_HZ_MIN: 1.5,
+  TAKEOFF_HZ_MAX: 2.2,
+  CRUISE_HZ_MIN: 0.8,
+  CRUISE_HZ_MAX: 1.4,
   TAKEOFF_EASE: 0.6,
   /** downstroke share of a stroke (real birds: fast power stroke, slower recovery) */
   DOWN_SHARE: 0.4,
@@ -113,10 +116,10 @@ export const FLIGHT = {
   DOWN_TAKEOFF: 2.2,
   DOWN_CRUISE: 1.8,
   /** continuous takeoff strokes before the flap-flap-flap-glide pattern */
-  TAKEOFF_STROKES: 4,
+  TAKEOFF_STROKES: 3,
   /** the pattern: this many flaps, then a glide this many stroke-lengths long */
-  PATTERN_FLAPS: 3,
-  GLIDE_STROKES: 1.6,
+  PATTERN_FLAPS: 2,
+  GLIDE_STROKES: 0.75,
   /** glide pose: wings held out, slightly up */
   GLIDE_ANGLE: 0.8,
   /** the wings settle into the glide pose over the flight's last seconds */
@@ -248,12 +251,12 @@ export function offFrame(p: FlightPose, half: { x: number; y: number }, cx = 0, 
 
 // ── the wings ───────────────────────────────────────────────────────────────
 
-/** Stroke rates (Hz) from the tempo: takeoff 1.5 × the beat, cruise = the beat. */
+/** Stroke rates (Hz) from the tempo: takeoff = the beat, cruise = half the beat. */
 export function strokeHz(bpm?: number): { takeoff: number; cruise: number } {
   const b = bpm && bpm > 0 ? bpm / 60 : 1.8;
   return {
-    takeoff: clamp(b * 1.5, FLIGHT.TAKEOFF_HZ_MIN, FLIGHT.TAKEOFF_HZ_MAX),
-    cruise: clamp(b, FLIGHT.CRUISE_HZ_MIN, FLIGHT.CRUISE_HZ_MAX),
+    takeoff: clamp(b, FLIGHT.TAKEOFF_HZ_MIN, FLIGHT.TAKEOFF_HZ_MAX),
+    cruise: clamp(b / 2, FLIGHT.CRUISE_HZ_MIN, FLIGHT.CRUISE_HZ_MAX),
   };
 }
 
