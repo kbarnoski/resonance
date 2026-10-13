@@ -1553,7 +1553,12 @@ export function ParticleLeadLayer({
         const prog = Math.min(1, (performance.now() - dollyAt) / (dollyFrom < 0.9 ? 7000 : Math.max(4000, formDur * 1.6)));
         // calm journeys hold the camera while an image is worn — the dolly
         // under a forming figure read as the field contracting and expanding
-        if (!(calm && imgLoaded)) engine.setCamScale(dollyFrom + (dollyTo - dollyFrom) * prog);
+        // EMBLEMS form at the neutral distance (Karel 2026-10-13: the emblem formed fast
+        // for the first journey, slow for later ones — filmed: an appearance can open
+        // CLOSE (k 0.45) and dolly out over 7 s, so the emblem filled the screen and
+        // visibly contracted for ~3.5 s; which run got it was the luck of the draw)
+        if (imgLoaded === "emblem") engine.setCamScale(1);
+        else if (!(calm && imgLoaded)) engine.setCamScale(dollyFrom + (dollyTo - dollyFrom) * prog);
         // a CENTRED shader (suns, portals, mandalas…) pins the field to its
         // exact centre point (Karel 2026-10-06)
         const mode = frameRef.current?.shaderMode;
