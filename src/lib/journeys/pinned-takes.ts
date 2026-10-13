@@ -94,6 +94,8 @@ export const SCRIPTED_TAKES: Record<string, TakeScriptEntry[]> = {
 };
 
 export const PINNED_TAKES: Record<string, number | number[]> = {
+  // First Light (Karel 2026-10-13: "good take on first light") — session 8zjg63
+  "87e106f9-4d74-4886-b944-fd625a827b02": 1090929246,
   "ghost": 1034657006,
   // Karel 2026-09-29: "i really liked the take up until the helix...
   // retain that" — the r-growth slot re-picks via the pick-time ban;
@@ -127,6 +129,8 @@ export function pickPinnedTake(journeyId: string): number | null {
  *  intro still stays TAKE_INTRO_STILLS). Snowflake: Karel 2026-10-13, "use this
  *  take of snowflake. well done" — the sequence that run showed (session n9mxek). */
 export const TAKE_STILL_SCRIPTS: Record<string, readonly (readonly [number, string])[]> = {
+  // First Light — Karel 2026-10-13: "good take on first light" (session 8zjg63)
+  "87e106f9-4d74-4886-b944-fd625a827b02": [[11, "gen-001.jpg"], [24, "gen-004.jpg"], [34, "gen-005.jpg"], [39, "gen-006.jpg"], [53, "gen-010.jpg"], [67, "gen-012.jpg"], [81, "gen-015.jpg"], [95, "gen-017.jpg"], [108, "gen-019.jpg"], [123, "gen-000.jpg"], [137, "gen-024.jpg"]],
   "first-snow": [[16, "gen-102.jpg"], [30, "gen-103.jpg"], [46, "gen-102.jpg"], [61, "gen-103.jpg"], [72, "gen-017.jpg"], [78, "gen-104.jpg"], [92, "gen-105.jpg"], [100, "gen-031.jpg"], [116, "gen-042.jpg"], [130, "gen-124.jpg"], [142, "gen-120.jpg"], [152, "gen-116.jpg"], [163, "gen-113.jpg"], [171, "gen-114.jpg"]],
 };
 /** The scripted still for a journey at time t (seconds), or null. */
