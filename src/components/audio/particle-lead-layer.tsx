@@ -74,6 +74,8 @@ import type { JourneyFrame } from "@/lib/journeys/types";
 import { journeyResponse } from "@/lib/journeys/kinetic";
 import { PARTICLE_PROFILES } from "@/lib/journeys/particle-profiles.generated";
 import { conductPhrases, createPhraseCursor, formHoldDue, takePhraseEvent, swellAt, phraseConductorEnabled, PHRASE_LOCKED_JOURNEYS, type PhraseTimeline } from "@/lib/particles/phrase-conductor";
+import { bridgeEnabled, createBridgeState, nextBridgeBoundary, onBridgeHint, stepBridge, BRIDGE_LOCKED_JOURNEYS, type BridgeHint } from "@/lib/particles/bridge";
+import { sampleBridgeStill, type BridgeStill } from "@/lib/particles/bridge-sampler";
 
 /** PHRASE CONDUCTOR (?phrase=1, off by default — phrase-conductor.ts): the deep
  *  analysis's section starts / crests / breaths time the form changes and the
@@ -898,6 +900,45 @@ export function ParticleLeadLayer({
     // the phrase conductor (null = flag off / locked journey: the old hold clock, unchanged)
     const phraseTl = phraseTimelineFor(cast, journeyId);
     const phraseCursor = phraseTl ? createPhraseCursor(phraseTl) : null;
+    // THE BRIDGE (?bridge=1, off by default — bridge.ts): at a phase boundary a
+    // sparse share of the field carries the outgoing still's colours across into
+    // the incoming one. The image layer publishes which stills meet (hint); the
+    // stills are sampled small in a worker; the scheduler below yields to every
+    // other mover. Never for the locked journeys. Off = the exact old behaviour.
+    let bridgeOn = false;
+    try { bridgeOn = bridgeEnabled(undefined, window.sessionStorage); } catch { bridgeOn = false; }
+    if (cast.mastered || BRIDGE_LOCKED_JOURNEYS.has(journeyId)) bridgeOn = false;
+    let bridgeSt = createBridgeState();
+    // hints per boundary (a running bridge keeps its own after the image layer
+    // has moved on to announcing the next boundary)
+    const bridgeHints: BridgeHint[] = [];
+    const bridgeStills = new Map<string, BridgeStill>();
+    let bridgeLoaded: [string | null, string | null] = [null, null];
+    let bridgeClipAt = -99; // track time a travel clip last started (the morph is the mover)
+    let bridgeLogged = "";
+    engine.setBridge(0, 0, 0, 0.2);
+    const offBridgeHint = bridgeOn
+      ? onBridgeHint((h) => {
+          if (h.journeyId !== journeyId || disposed) return;
+          const i = bridgeHints.findIndex((x) => Math.abs(x.boundarySec - h.boundarySec) < 0.5);
+          if (i >= 0) bridgeHints.splice(i, 1);
+          bridgeHints.push(h);
+          while (bridgeHints.length > 3) bridgeHints.shift();
+          for (const url of [h.outgoing, h.incoming]) {
+            if (!url || bridgeStills.has(url)) continue;
+            void sampleBridgeStill(url).then((st) => {
+              if (!st || disposed) return;
+              bridgeStills.set(url, st);
+              // keep only what the next boundary can use
+              const keep = new Set([...bridgeHints.flatMap((x) => [x.outgoing, x.incoming]), ...bridgeLoaded]);
+              for (const k of [...bridgeStills.keys()]) if (!keep.has(k)) bridgeStills.delete(k);
+            });
+          }
+        })
+      : () => {};
+    const offBridgeClip = bridgeOn
+      ? onClipStarted((e) => { if (e.travel) bridgeClipAt = useAudioStore.getState().currentTime || 0; })
+      : () => {};
     if (phraseTl) glitchRecord("particle-phrase", `on: ${phraseTl.events.length} events, phrase ${phraseTl.phraseSec}s`);
     let sizeBase = 1;
     let blossomShown = false;
@@ -1486,7 +1527,45 @@ export function ParticleLeadLayer({
         const sm = frameRef.current?.shaderMode;
         if (sm !== lastShaderMode) { lastShaderMode = sm; lastShaderAt = t; }
       }
-      const busyNow = t - lastShaderAt < 3 || (cast.phaseBounds ?? []).some((pb) => Math.abs(pb - t) < 4);
+      // THE BRIDGE: one scheduler step; while it carries, no new form lands on top
+      let bridgeBusy = false;
+      if (bridgeOn) {
+        const pbs = cast.phaseBounds ?? [];
+        const target = bridgeSt.pb ?? nextBridgeBoundary(t, pbs, bridgeSt.done);
+        const h = target === null ? null : bridgeHints.find((x) => Math.abs(x.boundarySec - target) < 3) ?? null;
+        // stills go up only while their slot is not on screen (the engine refuses otherwise)
+        const upload = (slot: 0 | 1, url: string | null) => {
+          if (!url || bridgeLoaded[slot] === url) return;
+          const st = bridgeStills.get(url);
+          if (st && engine.loadBridgeStill(slot, st.px, st.w, st.h, st.aspect)) bridgeLoaded = slot === 0 ? [url, bridgeLoaded[1]] : [bridgeLoaded[0], url];
+        };
+        if (h && bridgeSt.phase === "idle") upload(0, h.outgoing);
+        if (h && (bridgeSt.phase === "idle" || bridgeSt.phase === "rise")) upload(1, h.incoming);
+        const blockedNow = imgLoaded ? `image ${imgLoaded}` : dissolving ? "dissolve" : motifAt >= 0 ? "motif" : echoAt >= 0 ? "echo" : flashP > 0.05 ? "flash" : engine.imageLevel() > 0.02 ? "image" : null;
+        const r = stepBridge(bridgeSt, {
+          t,
+          duration: useAudioStore.getState().duration || 0,
+          phaseBounds: pbs,
+          journeyId,
+          mastered: !!cast.mastered,
+          // the incoming still must be known too (no prediction → no bridge)
+          aReady: !!h && !!h.outgoing && !!h.incoming && bridgeLoaded[0] === h.outgoing,
+          bReady: !!h && !!h.incoming && bridgeLoaded[1] === h.incoming,
+          morph: !!h?.morph || (target !== null && bridgeClipAt > target - 1 && bridgeClipAt < target + 8),
+          sinceShader: t - lastShaderAt,
+          formSoon: (from, to) => timedSoon(t, Math.max(0, to - t)) || cast.windows.some((w) => w.start >= from && w.start <= to),
+          blockedNow,
+        });
+        bridgeSt = r.state;
+        engine.setBridge(r.out.presence, r.out.mix, r.out.drift, r.out.fraction);
+        bridgeBusy = r.out.busy;
+        const logKey = `${bridgeSt.phase}|${bridgeSt.note}`;
+        if (logKey !== bridgeLogged) {
+          bridgeLogged = logKey;
+          glitchRecord("particle-bridge", `${bridgeSt.phase} ${bridgeSt.note}`);
+        }
+      }
+      const busyNow = t - lastShaderAt < 3 || (cast.phaseBounds ?? []).some((pb) => Math.abs(pb - t) < 4) || bridgeBusy;
       // FORM TIMING: the hold clock (flag off: exactly `held > formDur`), or the
       // phrase conductor's next section / phrase event once the form has held ≥ 10 s
       const phraseHold = phraseCursor ? formHoldDue(phraseCursor, t, performance.now() - formAt, formDur) : null;
@@ -1787,6 +1866,7 @@ export function ParticleLeadLayer({
         state: st.state,
         stamp: Date.now(),
         ...(phraseTl ? { phrase: { swell: phraseSw, next: phraseTl.events.find((e) => e.t > t)?.label ?? null } } : {}),
+        ...(bridgeOn ? { bridge: { ...engine.bridgeState(), phase: bridgeSt.phase, pb: bridgeSt.pb, note: bridgeSt.note, stills: [...bridgeLoaded] } } : {}),
       };
     };
     const iv = window.setInterval(tick, 100);
@@ -1800,6 +1880,9 @@ export function ParticleLeadLayer({
       sh.hooks.audio = null;
       offStart();
       offDisable();
+      offBridgeHint();
+      offBridgeClip();
+      engine.setBridge(0, 0, 0, 0.2);
       // keep the shared engine + context for the next journey; a VISIBLE field
       // fades out over 1.5 s (jump / skip) instead of vanishing in one frame
       disposed = true;

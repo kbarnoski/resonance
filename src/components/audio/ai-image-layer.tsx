@@ -138,6 +138,7 @@ const KEN_BURNS_DURATION = 22; // seconds — matches ~20s layer life
 // pre-baked images use the identical prompt assembly.
 import { CINEMATIC_PERSPECTIVES, PROMPT_INTERPRETATIONS, PROMPT_MOODS, tramokyoGradeForPhase } from "@/lib/journeys/prompt-decoration";
 import { packImageIndexForProgress, packPhaseSliceForProgress, nextSlotInSlice } from "@/lib/journeys/pack-image-allocation";
+import { bridgeEnabled, nextBoundaryStill, publishBridgeHint } from "@/lib/particles/bridge";
 
 // Figures removed — Ghost journey has its own figure prompts baked into aiPrompts.
 // All other journeys generate imagery from their aiPrompt only.
@@ -308,6 +309,8 @@ export function AiImageLayer({
   const canHevcRef = useRef<boolean | null>(null);
   const lastClipPhaseRef = useRef<number>(-1);
   const lastPackUrlRef = useRef<string | null>(null);
+  // THE BRIDGE flag (?bridge=1), read once per mount (null = not read yet)
+  const bridgeOnRef = useRef<boolean | null>(null);
   const heroPushedForRef = useRef<number>(-1);
   const activeVideoRef = useRef<HTMLVideoElement | null>(null);
   const pendingVideoRef = useRef<HTMLVideoElement | null>(null);
@@ -989,6 +992,29 @@ export function AiImageLayer({
             if (lastPackUrlRef.current === stillUrl) lastPackUrlRef.current = null;
             if (lastPackIndexRef.current === idx) lastPackIndexRef.current = -1;
           });
+      }
+
+      // THE BRIDGE (?bridge=1, particle layer — bridge.ts): tell the particles
+      // which stills meet at the next boundary (the one on screen now, and the
+      // next phase's opening still this layer will push there) and whether a
+      // travel morph is armed for it. Deduped; nothing at all when the flag is off.
+      if (bridgeOnRef.current === null) {
+        try { bridgeOnRef.current = bridgeEnabled(undefined, window.sessionStorage); } catch { bridgeOnRef.current = false; }
+      }
+      if (bridgeOnRef.current && !legacySlideshow && journeyIdRef.current) {
+        const nb = nextBoundaryStill(journeyPhases, urls, progress, duration, (p) => packPhaseSliceForProgress(journeyPhases, urls.length, p));
+        if (nb) {
+          const jc = clipsRef.current?.[journeyIdRef.current];
+          const bp = duration > 0 ? nb.boundarySec / duration : 1;
+          publishBridgeHint({
+            journeyId: journeyIdRef.current,
+            boundarySec: nb.boundarySec,
+            outgoing: lastPackUrlRef.current,
+            incoming: nb.incoming,
+            // the same gates the clip scheduler applies (tier, the ≤ 0.90 cutoff)
+            morph: !!jc?.["t" + (nb.phaseIdx - 1)] && bp <= 0.9 && getTierProfile().maxAiLayers >= 8,
+          });
+        }
       }
 
       // ── Living video (Wave 2, rebuilt after 2026-09-25 audits): travel
