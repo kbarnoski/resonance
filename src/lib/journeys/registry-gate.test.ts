@@ -15,7 +15,7 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { JOURNEYS, GLOBAL_SHADER_BLOCKLIST } from "./journeys";
+import { JOURNEYS, GLOBAL_SHADER_BLOCKLIST, RETIRED_POOL_SLOT_MODES } from "./journeys";
 import { MODE_META } from "@/lib/shaders";
 
 const registry = JSON.parse(
@@ -99,7 +99,8 @@ describe("journey content registry gate", () => {
     for (const j of JOURNEYS) {
       for (const p of j.phases ?? []) {
         for (const s of p.shaderModes ?? []) {
-          if (!KNOWN_MODES.has(s)) dead.push(`${j.id}/${p.id}: ${s}`);
+          // retired pool slots (snow, lightning) are placeholders the engine refuses at every pick
+          if (!KNOWN_MODES.has(s) && !RETIRED_POOL_SLOT_MODES.has(s)) dead.push(`${j.id}/${p.id}: ${s}`);
         }
       }
     }

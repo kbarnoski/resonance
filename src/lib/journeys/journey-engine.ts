@@ -3,13 +3,14 @@ import { isVideoActive } from "./video-activity";
 import { getRealm } from "./realms";
 import { glitchRecord } from "./glitch-recorder";
 import { isKineticJourneyName, isFullKineticJourney } from "./kinetic";
-import { TAKE_FINALE_SHADERS } from "./pinned-takes";
+import { TAKE_FINALE_SHADERS, PINNED_TAKES } from "./pinned-takes";
+import { isParticleShader, particleVoicesFor, GENTLE_PARTICLE_SET, PARTICLE_TARGET, PARTICLE_BAND_LO, PARTICLE_BAND_HI } from "./particle-shaders";
 import { RECAST_SAFELIST, regenerateJourneyShaders, castJourneyShaders, getJourneyCast, PICKTIME_SHADER_BLOCKLIST, PICKTIME_REALM_BLOCKLIST, GLOBAL_SHADER_BLOCKLIST, KAREL_BANNED_SHADERS, RETIRED_POOL_SLOT_MODES } from "./journeys";
 import type { TakeScriptEntry } from "./pinned-takes";
 import { createSeededRandom, seededShuffle } from "./seeded-random";
 import { MODES_3D, MODE_META, LAB_SHADERS } from "@/lib/shaders";
 import { SHADER_HUES } from "@/lib/shaders/shader-hues.generated";
-import { VETTED_POOL } from "@/lib/shaders/shader-brightness.generated";
+import { VETTED_POOL, SHADER_MEAN_LUMA } from "@/lib/shaders/shader-brightness.generated";
 import { KIN_BORROW_AVOID, isAmberShader, isShaderBannedFor } from "./shader-balance";
 import { isMasteredJourneyLike } from "./mastered";
 import { pickMorphShader, finaleSwitchRedundant, registerMorphArrivalFade, type MorphShaderPick } from "./morph-shader";
@@ -255,6 +256,32 @@ class JourneyEngine {
   /** Hysteresis state: whether the dual layer is currently permitted. */
   private dualAllowed = false;
 
+  /** PARTICLE VOICE (particle-shaders.ts; Karel 2026-10-13: particle shaders
+   *  "present 33% of the time for a journey", Snowflake + Ghost untouched).
+   *  The engine keeps the running share of live shader-layer time on
+   *  particle shaders inside PARTICLE_BAND_LO..HI by laying one of the
+   *  journey's particle voices on the companion layer. Hash/own-stream
+   *  picks only: the seeded journey stream (pinned takes) is not consumed. */
+  private particleVoices: string[] = [];
+  private particleOn = false;
+  /** Pinned takes keep their primaries: no restraint on the primary picker. */
+  private particlePinned = false;
+  private particleLayerSec = 0;
+  private particleSec = 0;
+  private particleLastP = -1;
+  private particleSlot: "dual" | "tertiary" | null = null;
+  private particleMode: string | null = null;
+  /** The held slot carries a non-particle companion (over the band), not a voice. */
+  private particleDilute = false;
+  private particleUntilMs = 0;
+  private particleShownSec = new Map<string, number>();
+  private particleRandom: () => number = Math.random;
+  private static readonly PARTICLE_WARMUP_SECS = 6;
+  /** A companion in the sparse interlude stays dark (the cast scripts' sparse pair budget). */
+  private static readonly SPARSE_DARK_LUMA = 12;
+  private static readonly PARTICLE_HOLD_MIN_SECS = 12;
+  private static readonly PARTICLE_HOLD_MAX_SECS = 20;
+
   /** Shaders that have already appeared (as primary or dual) in the current journey —
    *  used for journey-wide uniqueness: picks prefer unused modes first, fall back if exhausted. */
   private seenShaders = new Set<string>();
@@ -313,6 +340,7 @@ class JourneyEngine {
     // whatever a stored cast, DB row or procedural tail says (biofilm sat in
     // Expansion DB casts and Ghost's tail after it was banned)
     this.journey = withoutGlobalBlocked(this.journey);
+    this.initParticleVoice(journey, options?.seed);
     this.running = true;
     this.currentPhaseId = null;
     this.currentShaderIndex = 0;
@@ -439,6 +467,9 @@ class JourneyEngine {
     }
     this.journey = null;
     this.running = false;
+    this.particleOn = false;
+    this.particleSlot = null;
+    this.particleMode = null;
     this.currentPhaseId = null;
     this.dualShaderMode = null;
     this.tertiaryShaderMode = null;
@@ -780,6 +811,8 @@ class JourneyEngine {
           if (!this.isShaderAllowed(candidate)) continue;
           if (candidate === this.dualShaderMode || candidate === this.tertiaryShaderMode) continue;
           if (pass === 0 && this.seenShaders.has(candidate)) continue;
+          // particle voice over its band: the primary passes particle shaders by
+          if (pass === 0 && this.particleOver() && isParticleShader(candidate)) continue;
           this.currentShaderMode = candidate;
           this.seenShaders.add(candidate);
           picked = true;
@@ -816,6 +849,7 @@ class JourneyEngine {
           if (!this.isShaderAllowed(candidate)) continue;
           if (candidate === this.dualShaderMode || candidate === this.tertiaryShaderMode) continue;
           if (candidate === this.currentShaderMode) continue;
+          if (this.particleOver() && isParticleShader(candidate) && currentPhase.shaderModes.some((m) => !isParticleShader(m) && m !== this.currentShaderMode && this.isShaderAllowed(m))) continue;
           this.currentShaderMode = candidate;
           picked = true;
           break;
@@ -872,7 +906,8 @@ class JourneyEngine {
     const primaryBansDual = !this.takeScript && (this.kineticCast
       ? !kineticFree && (soloPrimary || !this.dualAllowed)
       : soloPrimary || (!kineticFree && !this.dualAllowed));
-    if (this.takeScript) { /* dual driven by the script */ } else if (primaryBansDual) {
+    const particleHoldsDual = this.particleSlot === "dual";
+    if (particleHoldsDual) { /* the particle voice holds the companion layer (particleVoiceTick) */ } else if (this.takeScript) { /* dual driven by the script */ } else if (primaryBansDual) {
       if (this.dualShaderMode !== null) {
         this.closeHistoryEntry("dual", now);
         this.dualShaderMode = null;
@@ -936,8 +971,9 @@ class JourneyEngine {
     }
 
     // ─── Tertiary shader (sprinkled in every ~60s) ───
-    let inTertiaryMoment = this.takeScript ? this.tertiaryActive : false;
-    for (let i = 0; !this.takeScript && i < this.tertiaryMoments.length; i++) {
+    const particleHoldsTert = this.particleSlot === "tertiary";
+    let inTertiaryMoment = this.takeScript || particleHoldsTert ? this.tertiaryActive : false;
+    for (let i = 0; !this.takeScript && !particleHoldsTert && i < this.tertiaryMoments.length; i++) {
       const m = this.tertiaryMoments[i];
       if (clamped >= m.startProgress && clamped <= m.endProgress) {
         inTertiaryMoment = true;
@@ -963,6 +999,7 @@ class JourneyEngine {
           // p0.55 then AGAIN as tertiary at p0.72 — "overused"): a
           // pick the journey has already shown re-resolves too.
           if (tertiaryCandidate && this.seenShaders.has(tertiaryCandidate)) tertiaryCandidate = null;
+          if (tertiaryCandidate && this.particleOver() && isParticleShader(tertiaryCandidate)) tertiaryCandidate = null;
           if (owned && tertiaryCandidate && !currentPhase.shaderModes.includes(tertiaryCandidate)) tertiaryCandidate = null;
           if (tertiaryCandidate == null || tertiaryCandidate === this.currentShaderMode || tertiaryCandidate === this.dualShaderMode) {
             const pool = currentPhase.shaderModes.filter(
@@ -972,16 +1009,25 @@ class JourneyEngine {
             const unseen = pool.filter((m2) => !this.seenShaders.has(m2));
             // spent: the tertiary SITS OUT rather than re-show a shader (it is
             // a sprinkle — a repeat only lengthens the loop; Grasshopper 2026-10-12)
-            const alternates = unseen;
+            const alternates = this.particleOver() && unseen.some((m2) => !isParticleShader(m2)) ? unseen.filter((m2) => !isParticleShader(m2)) : unseen;
             tertiaryCandidate = alternates.length > 0
               ? alternates[Math.floor(this.random() * alternates.length)]
               : null; // no collision-free option — sit this moment out
+          }
+          // a pinned take under its particle target: the moment carries a
+          // particle voice instead (resolved AFTER the take's own draw, so
+          // its seeded stream is untouched)
+          let voiceTert = false;
+          if (this.particleOn && this.particlePinned && this.particleShare() < PARTICLE_TARGET && clamped * this.trackDuration >= JourneyEngine.PARTICLE_WARMUP_SECS) {
+            const v = this.chooseParticleVoice(new Set([this.currentShaderMode, this.dualShaderMode]), currentPhase);
+            // the take's own pick still counts as shown (its later picks unchanged)
+            if (v) { if (tertiaryCandidate) this.seenShaders.add(tertiaryCandidate); tertiaryCandidate = v; this.particleMode = v; voiceTert = true; }
           }
           this.tertiaryShaderMode = tertiaryCandidate;
           this.tertiaryActive = true;
           if (tertiaryCandidate) { glitchRecord("shader-tertiary-on", `${tertiaryCandidate} @p${clamped.toFixed(3)}`); this.lastAnySwitchMs = now; this.nudgeForce = false; }
           if (this.tertiaryShaderMode) {
-            this.seenShaders.add(this.tertiaryShaderMode);
+            if (!voiceTert) this.seenShaders.add(this.tertiaryShaderMode);
             this.shaderHistory.push({
               mode: this.tertiaryShaderMode,
               role: "tertiary",
@@ -1000,6 +1046,8 @@ class JourneyEngine {
       this.tertiaryShaderMode = null;
       this.tertiaryActive = false;
     }
+
+    this.particleVoiceTick(clamped, now, currentPhase, owned, endFreeze || this.frozen || this.playbackPaused, morphOnScreen);
 
     const effectiveShader = this.currentShaderMode;
     const aiPrompt = this.graceActive
@@ -1262,6 +1310,10 @@ class JourneyEngine {
         this.lastAnySwitchMs = now; this.nudgeForce = false;
       }
     }
+    // the particle voice holds the free tertiary over a scripted take; the
+    // script's own tertiary always wins the layer back
+    if (this.particleSlot === "tertiary" && tert == null) tert = this.tertiaryShaderMode;
+    else if (this.particleSlot === "tertiary" && tert) { this.particleSlot = null; this.particleMode = null; }
     if (tert !== this.tertiaryShaderMode) {
       if (this.tertiaryShaderMode) glitchRecord("shader-tertiary-off", `${this.tertiaryShaderMode} @p${clamped.toFixed(3)} (scripted)`);
       this.closeHistoryEntry("tertiary", now);
@@ -1346,6 +1398,8 @@ class JourneyEngine {
       allowed: (m) => !MODES_3D.has(m) && !GLOBAL_BLOCKED.has(m) && this.isShaderAllowed(m),
       soloPrimaries: JourneyEngine.NEVER_DUAL_PRIMARIES,
       random: this.morphRandom,
+      // under its particle target, the arrival over the end frame is a particle shader when one fits
+      prefer: this.particleOn && !this.particlePinned && this.particleShare() < PARTICLE_TARGET ? (m) => isParticleShader(m) : undefined,
     });
     this.morphPlan = pick;
     if (pick) glitchRecord("morph-shader-stage", `${pick.mode} fade ${(pick.fadeMs / 1000).toFixed(1)}s @p${this.lastProgress.toFixed(3)}`);
@@ -1640,12 +1694,233 @@ class JourneyEngine {
       (m) => m !== this.currentShaderMode && m !== this.tertiaryShaderMode && !MODES_3D.has(m) && this.isShaderAllowed(m),
     );
     if (candidates.length === 0) return null;
+    // particle voice over its band and the phase offers only particle
+    // shaders: the dual rests (the primary carries the phase alone)
+    if (this.particleOver() && candidates.every((m) => isParticleShader(m))) return null;
     const unseen = candidates.filter((m) => !this.seenShaders.has(m));
     const pool = unseen.length > 0 ? unseen : candidates;
     if (pool.length === 1) return pool[0];
     // keep the current dual if it is still a valid member (no churn)
-    if (this.dualShaderMode && pool.includes(this.dualShaderMode) && unseen.length === 0) return this.dualShaderMode;
-    return pool[Math.floor(this.random() * pool.length)];
+    if (this.dualShaderMode && pool.includes(this.dualShaderMode) && unseen.length === 0 && !(this.particleOver() && isParticleShader(this.dualShaderMode))) return this.dualShaderMode;
+    return this.drawRestrained(pool);
+  }
+
+  // ─── PARTICLE VOICE (particle-shaders.ts) ───────────────────────────────
+  private initParticleVoice(journey: Journey, seed: number | undefined): void {
+    this.particleSlot = null;
+    this.particleMode = null;
+    this.particleDilute = false;
+    this.particleUntilMs = 0;
+    this.particleLayerSec = 0;
+    this.particleSec = 0;
+    this.particleLastP = -1;
+    this.particleShownSec = new Map();
+    this.particleRandom = seed != null ? createSeededRandom((seed ^ 0x2545f491) >>> 0) : Math.random;
+    // Snowflake + Ghost stay exactly as mastered
+    if (!this.journey || isMasteredJourneyLike(journey) || isMasteredJourneyLike(this.journey)) { this.particleOn = false; this.particleVoices = []; return; }
+    const blocked = new Set(this.journey.blockedShaders ?? []);
+    this.particleVoices = particleVoicesFor(this.journey).filter((m) => !MODES_3D.has(m) && !blocked.has(m) && !GLOBAL_BLOCKED.has(m) && this.isShaderAllowed(m));
+    this.particleOn = this.particleVoices.length > 0;
+    // pinned / scripted takes: the voice rides the TERTIARY layer and never
+    // restrains a picker — the take's primaries and dual play as recorded
+    this.particlePinned = this.scriptedTake || PINNED_TAKES[journey.id] != null;
+  }
+
+  /** Running share of live shader-layer time on particle shaders. */
+  private particleShare(): number {
+    return this.particleLayerSec > 0 ? this.particleSec / this.particleLayerSec : 0;
+  }
+
+  /** Above the band: the pickers pass particle shaders by. A pinned take only
+   *  in its count-preserving draws (`soft`): its seeded stream stays intact. */
+  private particleOver(soft = false): boolean {
+    return this.particleOn && (soft || !this.particlePinned) && this.particleLayerSec > 0 && this.particleShare() > PARTICLE_BAND_HI;
+  }
+
+  /** One seeded draw from `pool` (exactly as before: none for a single
+   *  option), landing on a non-particle member while the voice is over its band. */
+  private drawRestrained(pool: string[]): string {
+    const r = pool.length > 1 ? this.random() : 0;
+    const keep = this.particleOver() ? pool.filter((m) => !isParticleShader(m)) : pool;
+    const use = keep.length ? keep : pool;
+    return use[Math.floor(r * use.length) % use.length];
+  }
+
+  private particleVoiceTick(clamped: number, now: number, phase: JourneyPhase, owned: boolean, frozen: boolean, morphOnScreen: boolean): void {
+    if (!this.particleOn) return;
+    // accounting: the layers live since the last frame
+    const dt = this.particleLastP >= 0 ? (clamped - this.particleLastP) * this.trackDuration : 0;
+    this.particleLastP = clamped;
+    const live = [...new Set([this.currentShaderMode, this.dualShaderMode, this.tertiaryShaderMode].filter((m): m is string => !!m))];
+    if (dt > 0 && dt < 2) {
+      this.particleLayerSec += dt * live.length;
+      for (const m of live) if (isParticleShader(m)) { this.particleSec += dt; this.particleShownSec.set(m, (this.particleShownSec.get(m) ?? 0) + dt); }
+    }
+    const slotMode = this.particleSlot === "dual" ? this.dualShaderMode : this.particleSlot === "tertiary" ? this.tertiaryShaderMode : null;
+    if (this.particleSlot && slotMode !== this.particleMode) { this.particleSlot = null; this.particleMode = null; this.particleDilute = false; }
+    const share = this.particleShare();
+    // a particle primary already carries the motes: no voice stacks on it
+    const primaryP = isParticleShader(this.currentShaderMode);
+    const canSwitch = !frozen && !morphOnScreen && now - this.lastAnySwitchMs > JourneyEngine.SWITCH_SPACING_MS;
+    // a held cast voice that now belongs to a phase two back leaves (owned law)
+    if (this.particleSlot && this.particleMode && this.ownedForeign(phase).has(this.particleMode)) { this.releaseParticleVoice(clamped, now, true); return; }
+    if (this.particleSlot) {
+      if (now < this.particleUntilMs) return;
+      if (this.particleDilute) { this.releaseParticleVoice(clamped, now); return; }
+      if (share < PARTICLE_TARGET && !primaryP && canSwitch && this.layParticleVoice(this.particleSlot, clamped, now, phase)) return;
+      if (share < PARTICLE_TARGET && !primaryP && !canSwitch) return; // hold until the next voice may come in
+      this.releaseParticleVoice(clamped, now);
+      return;
+    }
+    // a particle shader alone on the primary while over: rotate it out soon
+    // when its phase offers a non-particle voice (never a take's primary)
+    if (this.particleOver() && !this.takeScript && isParticleShader(this.currentShaderMode) && live.every((m) => isParticleShader(m))
+      && phase.shaderModes.some((m) => !isParticleShader(m) && !live.includes(m) && this.isShaderAllowed(m))) {
+      this.shaderStartMs = Math.min(this.shaderStartMs, now - this.shaderDurationMs + 1500);
+    }
+    // OVER the band with nothing but particle shaders live (a phase cast all
+    // of motes): a non-particle companion from the neighbouring phases joins
+    // on the dual — in the sparse interlude only a DARK one (its dark +
+    // particle pair is the law, feedback_cosmic_sparse_interlude). A pinned /
+    // scripted take: on its free tertiary, a kindred shader from OUTSIDE its
+    // roster (the take's own picks never meet it), its layers untouched.
+    const takeSlot = this.particlePinned || !!this.takeScript;
+    if ((takeSlot ? this.particleOn && this.particleLayerSec > 0 && share > PARTICLE_TARGET : this.particleOver()) && canSwitch && live.every((m) => isParticleShader(m))
+      && (takeSlot ? this.tertiaryShaderMode == null : this.dualShaderMode == null || isParticleShader(this.dualShaderMode))) {
+      this.layDiluteCompanion(takeSlot ? "tertiary" : "dual", clamped, now, phase);
+      return;
+    }
+    // a take lays its voice as soon as it is under target (its tertiary is
+    // only free between the take's own moments)
+    if (clamped * this.trackDuration < JourneyEngine.PARTICLE_WARMUP_SECS || share >= (takeSlot ? PARTICLE_TARGET : PARTICLE_BAND_LO) || !canSwitch) return;
+    // a phase-owned journey's quiet opening stays one voice (the build earns the second layer)
+    if (owned && phase === this.journey?.phases[0] && (phase.intensityMultiplier ?? 1) < JourneyEngine.DUAL_ON_INTENSITY) return;
+    // a particle already on the companion layers counts — let it play
+    if (this.particleLayerSec > 0 && [this.currentShaderMode, this.dualShaderMode, this.tertiaryShaderMode].some((m) => isParticleShader(m))) return;
+    const slot: "dual" | "tertiary" = this.particlePinned || this.takeScript ? "tertiary" : "dual";
+    if (slot === "tertiary" && this.tertiaryShaderMode) return; // the take's own tertiary keeps its layer
+    this.layParticleVoice(slot, clamped, now, phase);
+  }
+
+  /** Phase-owned: cast shaders of OTHER phases than this one and the one
+   *  before — a voice never brings one in (the owned choreography law). */
+  private ownedForeign(phase: JourneyPhase): Set<string> {
+    if (phase.shaderOwned !== true || !this.journey) return new Set();
+    const phases = this.journey.phases;
+    const i = phases.findIndex((p) => p.id === phase.id);
+    const near = new Set([...phase.shaderModes, ...(phases[i - 1]?.shaderModes ?? [])]);
+    return new Set(phases.flatMap((p) => p.shaderModes).filter((m) => !near.has(m)));
+  }
+
+  /** The next voice: least shown first (never the one just shown), gentle
+   *  motes in a quiet or sparse phase; own stream, never this.random. */
+  private chooseParticleVoice(live: Set<string | null>, phase: JourneyPhase): string | null {
+    // a take: never a voice its own roster may pick (the take would have to
+    // skip it) — its own particle shaders play as the take plays them
+    const takePool = this.particlePinned ? new Set((this.journey?.phases ?? []).flatMap((p) => p.shaderModes)) : null;
+    if (takePool) live = new Set([...live, ...takePool]);
+    // phase-owned: another phase's own shader only from the phase just before
+    const foreign = this.ownedForeign(phase);
+    if (foreign.size) live = new Set([...live, ...foreign]);
+    let cands = this.particleVoices.filter((m) => !live.has(m) && m !== this.particleMode && this.isShaderAllowed(m));
+    if (!cands.length) cands = this.particleVoices.filter((m) => !live.has(m) && this.isShaderAllowed(m));
+    if (!cands.length) return null;
+    const quiet = phase.sparse === true || (phase.intensityMultiplier ?? 1) < JourneyEngine.DUAL_ON_INTENSITY;
+    // a quiet or sparse phase leans on the gentle motes (a weight, not a filter: one gentle voice must not carry every quiet stretch alone)
+    const lean = (m: string) => (quiet && !GENTLE_PARTICLE_SET.has(m) ? 10 : 0);
+    // the generated voices first (the cast's own particles already play as cast), then least shown
+    const castP = new Set((this.journey?.phases ?? []).flatMap((p) => p.shaderModes));
+    const shown = (m: string) => (this.particleShownSec.get(m) ?? 0) + (castP.has(m) ? 15 : 0) + lean(m);
+    cands.sort((a, b) => shown(a) - shown(b) || this.particleVoices.indexOf(a) - this.particleVoices.indexOf(b));
+    const top = cands.slice(0, 2);
+    return top[Math.floor(this.particleRandom() * top.length) % top.length];
+  }
+
+  /** Lay the next voice on `slot` (chooseParticleVoice). */
+  private layParticleVoice(slot: "dual" | "tertiary", clamped: number, now: number, phase: JourneyPhase): boolean {
+    const m = this.chooseParticleVoice(new Set([this.currentShaderMode, slot === "dual" ? this.tertiaryShaderMode : this.dualShaderMode]), phase);
+    if (!m) return false;
+    const hold = (JourneyEngine.PARTICLE_HOLD_MIN_SECS + this.particleRandom() * (JourneyEngine.PARTICLE_HOLD_MAX_SECS - JourneyEngine.PARTICLE_HOLD_MIN_SECS)) * 1000;
+    if (slot === "dual") {
+      this.closeHistoryEntry("dual", now);
+      this.dualShaderMode = m;
+      this.dualShaderStartMs = now;
+      this.dualShaderDurationMs = hold;
+      this.dualShaderInitialized = true;
+    } else {
+      this.closeHistoryEntry("tertiary", now);
+      this.tertiaryShaderMode = m;
+      this.tertiaryActive = true;
+    }
+    if (!this.particlePinned) this.seenShaders.add(m); // a take's picks never see the voice
+    this.shaderHistory.push({ mode: m, role: slot, phaseId: this.currentPhaseId ?? phase.id, startMs: now, endMs: 0 });
+    glitchRecord(slot === "dual" ? "shader-dual" : "shader-tertiary-on", `${m} @p${clamped.toFixed(3)} (particle voice)`);
+    if (!this.particlePinned) { this.lastAnySwitchMs = now; this.nudgeForce = false; } // a take keeps its own switch clock
+    this.particleSlot = slot;
+    this.particleMode = m;
+    this.particleDilute = false;
+    this.particleUntilMs = now + hold;
+    return true;
+  }
+
+  /** A non-particle companion for an all-particle stretch over the band:
+   *  the neighbouring phases' own non-particle shaders, unseen first. */
+  private layDiluteCompanion(slot: "dual" | "tertiary", clamped: number, now: number, phase: JourneyPhase): void {
+    if (!this.journey) return;
+    const phases = this.journey.phases;
+    const i = phases.findIndex((p) => p.id === phase.id);
+    const roster = phases.flatMap((p) => p.shaderModes);
+    const hues = new Set(roster.map((m) => SHADER_HUES[m] ?? "neutral"));
+    const near = this.particlePinned
+      ? VETTED_POOL.filter((m) => !roster.includes(m) && !KIN_BORROW_AVOID.has(m) && !isAmberShader(m) && hues.has(SHADER_HUES[m] ?? "neutral"))
+      // phase-owned: only what already played (the previous phases) — never a later phase's shader
+      : (phase.shaderOwned === true ? [phases[i - 1]] : [phases[i + 1], phases[i - 1], phases[i + 2], phases[i - 2]]).filter(Boolean).flatMap((p) => p.shaderModes);
+    const cands = near.filter((m, k) => near.indexOf(m) === k && !isParticleShader(m) && (phase.sparse !== true || (SHADER_MEAN_LUMA[m] ?? 99) <= JourneyEngine.SPARSE_DARK_LUMA) && !MODES_3D.has(m) && m !== this.currentShaderMode && m !== this.tertiaryShaderMode && this.isShaderAllowed(m));
+    if (!cands.length) return;
+    const unseen = cands.filter((m) => !this.seenShaders.has(m) && m !== this.particleMode);
+    const pool = unseen.length ? unseen : cands;
+    const m = this.particlePinned ? pool[Math.floor(this.particleRandom() * pool.length) % pool.length] : pool[0];
+    const hold = (JourneyEngine.PARTICLE_HOLD_MIN_SECS + this.particleRandom() * (JourneyEngine.PARTICLE_HOLD_MAX_SECS - JourneyEngine.PARTICLE_HOLD_MIN_SECS)) * 1000;
+    if (slot === "dual") {
+      this.closeHistoryEntry("dual", now);
+      this.dualShaderMode = m;
+      this.dualShaderStartMs = now;
+      this.dualShaderDurationMs = hold;
+      this.dualShaderInitialized = true;
+    } else {
+      this.closeHistoryEntry("tertiary", now);
+      this.tertiaryShaderMode = m;
+      this.tertiaryActive = true;
+    }
+    if (!this.particlePinned) this.seenShaders.add(m); // a take's picks never see the voice
+    this.shaderHistory.push({ mode: m, role: slot, phaseId: this.currentPhaseId ?? phase.id, startMs: now, endMs: 0 });
+    glitchRecord(slot === "dual" ? "shader-dual" : "shader-tertiary-on", `${m} @p${clamped.toFixed(3)} (particle balance)`);
+    if (!this.particlePinned) { this.lastAnySwitchMs = now; this.nudgeForce = false; }
+    this.particleSlot = slot;
+    this.particleMode = m;
+    this.particleDilute = true;
+    this.particleUntilMs = now + hold;
+  }
+
+  /** Hand the companion layer back: the dual is due at once (the normal
+   *  picker brings the next voice), a held tertiary breathes away. */
+  private releaseParticleVoice(clamped: number, now: number, drop = false): void {
+    if (this.particleSlot === "dual" && drop) {
+      // out at once (it would break the owned choreography); the dual returns on its own clock
+      this.closeHistoryEntry("dual", now);
+      this.dualShaderMode = null;
+      this.dualShaderStartMs = now - this.dualShaderDurationMs - 1;
+    } else if (this.particleSlot === "dual") {
+      this.dualShaderStartMs = now - this.dualShaderDurationMs - 1;
+    } else if (this.particleSlot === "tertiary" && this.tertiaryShaderMode) {
+      glitchRecord("shader-tertiary-off", `${this.tertiaryShaderMode} @p${clamped.toFixed(3)} (particle voice)`);
+      this.closeHistoryEntry("tertiary", now);
+      this.tertiaryShaderMode = null;
+      this.tertiaryActive = false;
+    }
+    this.particleSlot = null;
+    this.particleMode = null;
+    this.particleDilute = false;
   }
 
   /** KINDRED BORROW (Karel 2026-10-12, The First: "you used that web shader over
@@ -1714,7 +1989,7 @@ class JourneyEngine {
     if (geoCandidates.length > 0 && this.random() < 0.7) {
       return geoCandidates[Math.floor(this.random() * geoCandidates.length)];
     }
-    return pool[Math.floor(this.random() * pool.length)];
+    return this.drawRestrained(pool);
   }
 
   /**
