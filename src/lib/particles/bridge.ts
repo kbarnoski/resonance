@@ -129,6 +129,8 @@ export interface BridgeInput {
   phaseBounds: readonly number[];
   journeyId: string;
   mastered: boolean;
+  /** bridge a mastered journey anyway (mastered-features.ts, ?masters=1) */
+  allowLocked?: boolean;
   /** the outgoing still's colours are sampled for the next boundary */
   aReady: boolean;
   /** the incoming still's colours are sampled */
@@ -218,7 +220,7 @@ export function stepBridge(prev: BridgeState, inp: BridgeInput): { state: Bridge
 
   // MASTERED: never bridged (anything running lets go — it cannot, the flag
   // is per journey, but the scheduler is defensive)
-  if (inp.mastered || BRIDGE_LOCKED_JOURNEYS.has(inp.journeyId)) {
+  if (!inp.allowLocked && (inp.mastered || BRIDGE_LOCKED_JOURNEYS.has(inp.journeyId))) {
     if (s.phase !== "idle" && s.phase !== "fall") s = beginFall(s, t, L.ABORT_FALL_SEC, "mastered");
   }
 
@@ -249,7 +251,7 @@ export function stepBridge(prev: BridgeState, inp: BridgeInput): { state: Bridge
   }
 
   // ── idle: is a boundary coming? ─────────────────────────────────────────
-  if (inp.mastered || BRIDGE_LOCKED_JOURNEYS.has(inp.journeyId)) return { state: s, out: out(s, t) };
+  if (!inp.allowLocked && (inp.mastered || BRIDGE_LOCKED_JOURNEYS.has(inp.journeyId))) return { state: s, out: out(s, t) };
   const pb = nextBridgeBoundary(t, inp.phaseBounds, s.done);
   if (pb === null || pb - t > L.LEAD_SEC) return { state: s, out: out(s, t) };
   // (pb - t is now within [LATEST_START_SEC, LEAD_SEC])

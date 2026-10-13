@@ -12,6 +12,9 @@
 // COMP  : tonemap (1 - e^-x·exposure) + sRGB + 1/255 ordered dither → canvas.
 // ─────────────────────────────────────────────────────────────────────────────
 import { SCORE_TUNING } from "./living-score";
+import { BREATH_LAWS } from "./breath";
+import { HANDS_TUNING } from "./two-hands";
+import { trailsGlslConsts } from "./resonance-trails";
 
 export const QUAD_VS = /* glsl */ `#version 300 es
 const vec2 P[3] = vec2[3](vec2(-1.0,-1.0), vec2(3.0,-1.0), vec2(-1.0,3.0));
@@ -174,6 +177,18 @@ uniform float uScrAspect;
 uniform vec4 uCur;
 uniform vec3 uCurEye;
 uniform vec3 uCurRight;
+// BREATH (breath.ts, ?breath=1): x = amount × the soul's breath freedom (0 =
+// off — the branch is skipped), y = breath (−1 exhaled/contracted … +1
+// inhaled/expanded), z = settle 0..1 (extra drag as a phrase lands)
+uniform vec4 uBreath;
+// LIGHT GRAVITY (light-gravity.ts, ?gravity=1): the lights of the picture on
+// screen. A[i] = xyz world centre (on the focal plane), w = weight (0 = off);
+// B[i] = x well reach, y soft core radius (world). uGravG = gain × the soul's
+// freedom × strength (0 = off — the branch is skipped, the show build exactly).
+uniform vec4 uGravA[4];
+uniform vec4 uGravB[4];
+uniform float uGravG;
+uniform vec3 uGravE;
 layout(location = 0) out vec4 oPos;
 layout(location = 1) out vec4 oVel;
 ${NOISE}
@@ -1203,6 +1218,56 @@ void main(){
     f.xyz += fc * curG;
   }
 
+  // BREATH (inno-breath 2026-10-13): the free field inhales and exhales with the
+  // music's phrasing — the inhale gently expands it and loosens it in depth, the
+  // exhale at a phrase's end draws it in a little and settles it (more drag: it
+  // slows, comes to rest), so the form lands on the cadence. A FORCE only —
+  // never a position / velocity set, never light — so on / off is continuous;
+  // the timeline is phrase-long and slew-limited (never on the beat). Images
+  // and emblems are untouched: gated by the image form and presence.
+  float brG = uBreath.x * (1.0 - uImgForm) * (1.0 - uImgShow);
+  if (brG > 0.001) {
+    float bdc = dot(p, uCurEye);                 // depth along the view axis
+    float bpr = length(p);
+    // expand / contract about the centre, more along depth; fades out near the
+    // world's edge so an inhale never carries a mote out of the world
+    vec3 rad = (p + uCurEye * (bdc * ${BREATH_LAWS.DEPTH_BIAS.toFixed(3)})) * (1.0 - smoothstep(2.4, 3.2, bpr));
+    f.xyz += rad * (uBreath.y * ${BREATH_LAWS.EXPAND_FORCE.toFixed(3)} * brG);
+    f.w += uBreath.z * ${BREATH_LAWS.SETTLE_DRAG.toFixed(3)} * brG;
+  }
+  // LIGHT GRAVITY (2026-10-13): the free motes slowly drift toward where the
+  // light is in the picture (the sun, the glowing horizon, the bright water)
+  // and let go when it changes. A FORCE only, in the screen plane (depth is
+  // left alone), from a broad well with a soft repulsive core and a gentle
+  // orbit, so motes drift and circle NEAR the light — never collapse into a
+  // dot; ~30 % of motes never feel it (density stays spread). Images and
+  // emblems are untouched: gated by the image form and presence.
+  float gravG = uGravG * (1.0 - uImgForm) * (1.0 - uImgShow);
+  if (gravG > 0.001) {
+    float sus = smoothstep(0.3, 1.0, hash11(s.a * 47.13 + 2.9));
+    if (sus > 0.001) {
+      float orb = hash11(s.a * 91.7 + 1.3) > 0.5 ? 1.0 : -1.0;
+      vec3 fg = vec3(0.0);
+      for (int i = 0; i < 4; i++) {
+        float gw = uGravA[i].w;
+        if (gw < 0.001) continue;
+        vec3 gd = uGravA[i].xyz - p;
+        gd -= uGravE * dot(gd, uGravE);           // the screen plane only
+        float gr = length(gd) + 1e-4;
+        vec3 gn = gd / gr;
+        float well = uGravB[i].x, core = uGravB[i].y;
+        float q = gr / well;
+        float pull = q * exp(0.5 - 0.5 * q * q);   // 0 at the centre, 1 at the reach, fades beyond
+        float push = 1.0 - smoothstep(0.0, core, gr); // soft repulsive core
+        vec3 tang = cross(uGravE, gn) * orb;
+        fg += gw * (gn * (pull - 0.8 * push) + tang * 0.35 * pull);
+      }
+      float fgl = length(fg);
+      if (fgl > 1.0) fg /= fgl;                    // capped: never a lunge
+      f.xyz += fg * gravG * sus;
+    }
+  }
+
   // image dissolve / reform: spring onto the image plane; while released,
   // the particles swirl with their own band (mids curl, bass surges)
   vec3 imgT = vec3(0.0);
@@ -1408,6 +1473,14 @@ uniform vec3 uBridgeR;       // camera right × half-width (world units per NDC 
 uniform vec3 uBridgeU;       // camera up × half-height
 out vec3 vCol;
 out float vCoc;
+#ifdef TRAILS
+// RESONANCE TRAILS (resonance-trails.ts, ?trails=1): the trail gain (0 = none)
+// and the drawing buffer's size in device px
+uniform float uTrail;
+uniform vec2 uViewPx;
+out vec4 vTrail;   // xy = head direction in sprite coords (y down), z = length px (0 = no tail), w = half-width px
+out vec3 vTrailK;  // x = tail-end fade, y = cross-profile softening, z = sprite side px
+#endif
 // screen NDC → uv of a still shown cover-fit full screen (like the journey stills)
 vec2 bridgeUv(vec2 ndc, float imgAspect, float scrAspect){
   vec2 d = ndc;
@@ -1502,6 +1575,11 @@ void main(){
   }
   vec4 clip = uVP * vec4(p.xyz, 1.0);
   vCoc = 0.0;
+#ifdef TRAILS
+  vTrail = vec4(0.0);
+  vTrailK = vec3(0.0);
+  float trScale = 1.0;
+#endif
   if (clip.w <= 0.05) { gl_Position = vec4(2.0, 2.0, 2.0, 1.0); gl_PointSize = 0.0; vCol = vec3(0.0); return; }
   gl_Position = clip;
 
@@ -1537,6 +1615,40 @@ void main(){
   }
   if (size < 1.0) { a *= size * size; size = 1.0; }
   gl_PointSize = min(size, 24.0);
+#ifdef TRAILS
+  // RESONANCE TRAILS: while the sound is held, a share of the motes stretch
+  // along their SCREEN velocity (the sim's velocity texture — no previous-frame
+  // buffer, no feedback) into a soft capsule fading head → tail. The streak's
+  // integrated light is normalised to the untrailed mote's (trScale ≤ 1): the
+  // mote SPREADS, it never brightens. Bokeh discs don't streak; images don't.
+  if (uTrail > 0.001) {
+    float r0 = max(0.5, min(size, 24.0) * 0.5);
+    vec4 c1 = uVP * vec4(p.xyz + v.xyz * 0.05, 1.0);
+    vec2 vpx = c1.w > 0.05 ? (c1.xy / c1.w - clip.xy / clip.w) * (0.5 / 0.05) * uViewPx : vec2(0.0);
+    float sp = length(vpx);
+    float trH = fract(sin(dot(s, vec4(3.17, 91.31, 17.93, 5.27))) * 24634.6345);
+    float carrier = 1.0 - smoothstep(TR_SHARE - 0.08, TR_SHARE + 0.08, trH);
+    float cap = TR_MAX1080 * max(0.25, uViewPx.y / 1080.0);
+    float raw = sp * TR_EXPO * uTrail * (1.0 - uImgShow) * (1.0 - vCoc) * carrier;
+    float L = cap * (1.0 - exp(-raw / cap));
+    if (L > 0.02 && sp > 1e-3) {
+      float R = max(r0, mix(r0, TR_MIN_R, smoothstep(0.0, 2.0, L)));
+      L = min(L, max(0.0, TR_SPRITE_CAP - 2.0 * R));
+      float k = L / (L + R);
+      float fadeT = TR_TAIL_FADE * k, softT = min(1.0, TR_SOFTEN * k);
+      float g2u = mix(TR_G2C, TR_G2B, vCoc), g1u = mix(TR_G1C, TR_G1B, vCoc);
+      float g2t = mix(g2u, TR_G2S, softT), g1t = mix(g1u, TR_G1S, softT);
+      float e = (1.0 - 0.5 * fadeT) * (R * R * g2t + R * L * g1t);
+      trScale = min(1.0, r0 * r0 * g2u / max(e, 1e-6));
+      vec2 dir = vpx / sp;
+      // the sprite centres on the streak's middle: the head stays on the mote
+      gl_Position.xy -= dir * (0.5 * L) * (2.0 / uViewPx) * clip.w;
+      gl_PointSize = 2.0 * R + L;
+      vTrail = vec4(dir.x, -dir.y, L, R);
+      vTrailK = vec3(fadeT, softT, 2.0 * R + L);
+    }
+  }
+#endif
 
   vec3 col = band < 0.5 ? mix(uPalLow, uPalMid, band * 2.0) : mix(uPalMid, uPalHigh, band * 2.0 - 1.0);
   vec4 Id = instOf(s, uInst, uInstSeed);
@@ -1611,6 +1723,9 @@ void main(){
     img = mix(img, col * il * 2.2, uImgTint);
   }
   vCol = mix(world, img * uImgGain, uImgShow);
+#ifdef TRAILS
+  vCol *= trScale;
+#endif
 }
 `;
 
@@ -1618,8 +1733,31 @@ export const DRAW_FS = /* glsl */ `#version 300 es
 precision mediump float;
 in vec3 vCol;
 in float vCoc;
+#ifdef TRAILS
+in vec4 vTrail;
+in vec3 vTrailK;
+#endif
 out vec4 o;
 void main(){
+#ifdef TRAILS
+  // RESONANCE TRAILS: distance to the head→tail segment, light fading along it
+  // (resonance-trails.ts trailFragment is the CPU mirror the test integrates)
+  if (vTrail.z > 0.0) {
+    vec2 q = (gl_PointCoord - 0.5) * vTrailK.z;
+    float tl = vTrail.z, tr = vTrail.w;
+    float sa = clamp(dot(q, vTrail.xy), -0.5 * tl, 0.5 * tl);
+    vec2 dq = q - sa * vTrail.xy;
+    float t2 = dot(dq, dq) / (tr * tr);
+    if (t2 > 1.0) discard;
+    float gt = exp(-t2 * 7.0) + 0.3 * exp(-t2 * 1.8);
+    float bt = (1.0 - smoothstep(0.15, 1.0, t2)) * 0.62 + 0.12 * exp(-t2 * 2.0);
+    gt = mix(gt, bt, vCoc);
+    gt = mix(gt, 1.3 * exp(-t2 * 2.0) * (1.0 - smoothstep(0.5, 1.0, t2)), vTrailK.y);
+    gt *= 1.0 - vTrailK.x * (0.5 * tl - sa) / tl;
+    o = vec4(vCol * gt * 1.15, 1.0);
+    return;
+  }
+#endif
   vec2 d = gl_PointCoord * 2.0 - 1.0;
   float r2 = dot(d, d);
   if (r2 > 1.0) discard;
@@ -1632,6 +1770,20 @@ void main(){
   o = vec4(vCol * g * 1.15, 1.0);
 }
 `;
+
+/** RESONANCE TRAILS: the draw program's source with the trails compiled in
+ *  (`#define TRAILS` right after `#version`, the constants after the float
+ *  precision statement — a fragment shader has no default float precision).
+ *  Off = the untouched show source. */
+export function withTrails(src: string): string {
+  const nl = src.indexOf("\n");
+  let out = `${src.slice(0, nl + 1)}#define TRAILS 1\n${src.slice(nl + 1)}`;
+  const m = /^precision \w+ float;\n/m.exec(out);
+  if (!m) throw new Error("withTrails: no float precision statement");
+  const at = m.index + m[0].length;
+  out = `${out.slice(0, at)}${trailsGlslConsts()}\n${out.slice(at)}`;
+  return out;
+}
 
 export const FADE_FS = /* glsl */ `#version 300 es
 precision highp float;
@@ -1796,17 +1948,65 @@ export const SCORE_FORCE_GLSL = /* glsl */ `  // THE LIVING SCORE: each note a s
 
 `;
 
+// ── TWO HANDS (two-hands.ts) ─────────────────────────────────────────────────
+// Compiled in ONLY when the flag is on (`?hands=1`): off, the simulation source
+// is byte-for-byte the show build's. Every mote belongs (softly) to one of two
+// layers — a stable per-mote hash, leaned by its depth: the LEFT HAND's deep
+// layer (far, broad lazy swells rolling through on the hands' own steady clock)
+// or the RIGHT HAND's fine layer (near the camera, delicate quick-but-smooth
+// eddies). Each layer's force is scaled by its hand's eased activity, so when
+// the melody answers the bass the motion passes from far to near. FORCE ONLY —
+// no size, alpha or colour channel; never a position / velocity set; images
+// and emblems untouched (gated by the image form and presence); the
+// transition acceleration cap below still applies.
+const glf = (x: number) => (Number.isInteger(x) ? x.toFixed(1) : String(x));
+const H = HANDS_TUNING;
+export const HANDS_UNIFORMS_GLSL = /* glsl */ `// TWO HANDS (two-hands.ts): x left-hand drive · y right-hand drive (× soul freedom)
+// · z the hands' own steady clock (s) · w depth sorting (presence × freedom)
+uniform vec4 uHands;
+uniform vec3 uHandsEye;    // unit vector toward the camera
+uniform vec3 uHandsRight;  // camera right
+`;
+export const HANDS_FORCE_GLSL = /* glsl */ `  // TWO HANDS: the left hand swells the far layer, the right hand stirs the near one
+  float handsG = (1.0 - uImgForm) * (1.0 - uImgShow);
+  if (handsG > 0.001 && uHands.x + uHands.y + uHands.w > 0.001) {
+    vec3 hE = uHandsEye, hR = uHandsRight, hU = normalize(cross(hE, hR));
+    float hT = uHands.z;
+    float hdc = dot(p, hE);
+    float hNear = clamp(hdc * 0.3 + 0.5, 0.0, 1.0);
+    float hBias = (hash11(s.a * 251.7 + 3.1) - 0.5) * ${glf(2 * H.HASH_W)} + (hNear - 0.5) * ${glf(2 * H.DEPTH_W)};
+    float hHi = smoothstep(${glf(-H.MEMBER_SOFT)}, ${glf(H.MEMBER_SOFT)}, hBias);
+    float hLo = 1.0 - hHi;
+    // LEFT HAND — long, slow waves rolling through the deep layer
+    float hw1 = sin(dot(p, hR) * ${glf(H.LOW_K)} + hdc * 0.25 - hT * ${glf(H.LOW_W)} + 1.3);
+    float hw2 = sin(dot(p, hU) * ${glf(H.LOW_K * 0.8)} - hT * ${glf(H.LOW_W * 0.7)} + 0.4);
+    vec3 hLoF = hU * (0.6 * hw1) + hR * (0.35 * hw2) + curlNoise(p * 0.3 + vec3(0.0, hT * 0.025, 0.0)) * 0.3;
+    // RIGHT HAND — fine eddies near the camera; lighter motes answer more
+    vec3 hHiF = curlNoise(p * ${glf(H.HIGH_K)} + vec3(hT * ${glf(H.HIGH_DRIFT)}, -hT * ${glf(H.HIGH_DRIFT * 0.75)}, hT * ${glf(H.HIGH_DRIFT * 0.55)})) * (0.75 + 0.5 * hash11(s.a * 41.3));
+    vec3 fhd = hLoF * (uHands.x * hLo * ${glf(H.FORCE_LOW)}) + hHiF * (uHands.y * hHi * ${glf(H.FORCE_HIGH)});
+    // the two layers settle apart in depth (gently, with presence — never the beat)
+    fhd += hE * (mix(${glf(H.STRATA_FAR)}, ${glf(H.STRATA_NEAR)}, hHi) - hdc) * ${glf(H.STRATA_K)} * uHands.w;
+    float hpr = length(p);
+    if (hpr > 3.2) fhd -= (p / hpr) * (hpr - 3.2) * 1.2 * uHands.w;
+    f.xyz += fhd * handsG;
+  }
+
+`;
+
 /** SIM_FS with only the given souls' force laws (others fall to a gentle stop).
- *  `score`: compile the living score's force field in (off = the show source). */
-export function buildSimFS(souls: readonly number[], opts: { score?: boolean } = {}): string {
+ *  `score`: compile the living score's force field in; `hands`: the two
+ *  hands' layer forces (both off = the show source, byte for byte). */
+export function buildSimFS(souls: readonly number[], opts: { score?: boolean; hands?: boolean } = {}): string {
   split ??= splitSim();
   const uniq = [...new Set(souls)].sort((a, b) => a - b);
   const src = split.head + uniq.map((i) => split!.blocks.get(i) ?? "").join("") + split.tail;
-  if (!opts.score) return src;
+  if (!opts.score && !opts.hands) return src;
   if (!src.includes(SCORE_ANCHOR_UNIFORMS) || !src.includes(SCORE_ANCHOR_FORCE)) return src; // anchors moved: stay safe (test guards)
+  const uni = (opts.hands ? HANDS_UNIFORMS_GLSL : "") + (opts.score ? SCORE_UNIFORMS_GLSL : "");
+  const force = (opts.hands ? HANDS_FORCE_GLSL : "") + (opts.score ? SCORE_FORCE_GLSL : "");
   return src
-    .replace(SCORE_ANCHOR_UNIFORMS, SCORE_UNIFORMS_GLSL + SCORE_ANCHOR_UNIFORMS)
-    .replace(SCORE_ANCHOR_FORCE, SCORE_FORCE_GLSL + SCORE_ANCHOR_FORCE);
+    .replace(SCORE_ANCHOR_UNIFORMS, uni + SCORE_ANCHOR_UNIFORMS)
+    .replace(SCORE_ANCHOR_FORCE, force + SCORE_ANCHOR_FORCE);
 }
 
 /** How many soul blocks the full simulation carries (test hook). */

@@ -77,7 +77,12 @@ import { OnsetDetector, LivingScore, livingScoreEnabled, scoreGain, scoreSession
 import { conductPhrases, createPhraseCursor, formHoldDue, takePhraseEvent, swellAt, phraseConductorEnabled, PHRASE_LOCKED_JOURNEYS, type PhraseTimeline } from "@/lib/particles/phrase-conductor";
 import { bridgeEnabled, createBridgeState, nextBridgeBoundary, onBridgeHint, stepBridge, BRIDGE_LOCKED_JOURNEYS, type BridgeHint } from "@/lib/particles/bridge";
 import { sampleBridgeStill, type BridgeStill } from "@/lib/particles/bridge-sampler";
+import { mastersFeaturesEnabled } from "@/lib/particles/mastered-features";
+import { createGravityGlide, describeGravity, gravityActive, gravityEnabled, lightsOfStill, packGravity, retargetGravity, sampleGravity, gravityStrengthFor } from "@/lib/particles/light-gravity";
+import { TwoHands, handsAllowed, handsEnabled, handsGain, handsSessionStore, handsStrength, HANDS_TUNING, type HandsVoices } from "@/lib/particles/two-hands";
 import { conductCurrents, currentAt, createTide, tideStep, withTide, currentsEnabled, clearestRelease, CURRENTS_LOCKED_JOURNEYS, type CurrentTimeline } from "@/lib/particles/harmonic-currents";
+import { conductBreath, breathAt, breathEnabled, breathSummary, type BreathTimeline } from "@/lib/particles/breath";
+import { SustainMeter, trailsEnabled, trailsForJourney, trailsSessionStore } from "@/lib/particles/resonance-trails";
 
 /** PHRASE CONDUCTOR (?phrase=1, off by default — phrase-conductor.ts): the deep
  *  analysis's section starts / crests / breaths time the form changes and the
@@ -86,10 +91,11 @@ import { conductCurrents, currentAt, createTide, tideStep, withTide, currentsEna
 function phraseTimelineFor(cast: ParticleLeadCast, journeyId: string): PhraseTimeline | null {
   let on = false;
   try { on = phraseConductorEnabled(undefined, typeof window !== "undefined" ? window.sessionStorage : null); } catch { on = false; }
-  if (!on || cast.mastered || PHRASE_LOCKED_JOURNEYS.has(journeyId)) return null;
+  const masters = mastersFeaturesEnabled();
+  if (!on || (!masters && (cast.mastered || PHRASE_LOCKED_JOURNEYS.has(journeyId)))) return null;
   const p = PARTICLE_PROFILES[journeyId];
   if (!p) return null;
-  const tl = conductPhrases({ ...p, phaseBounds: cast.phaseBounds ?? p.phaseBounds }, { journeyId, formChanges: cast.windows.map((w) => w.start) });
+  const tl = conductPhrases({ ...p, phaseBounds: cast.phaseBounds ?? p.phaseBounds }, { journeyId, allowLocked: masters, formChanges: cast.windows.map((w) => w.start) });
   return tl.events.length ? tl : null;
 }
 
@@ -101,9 +107,24 @@ function phraseTimelineFor(cast: ParticleLeadCast, journeyId: string): PhraseTim
 function currentsTimelineFor(cast: ParticleLeadCast, journeyId: string): CurrentTimeline | null {
   let on = false;
   try { on = currentsEnabled(undefined, typeof window !== "undefined" ? window.sessionStorage : null); } catch { on = false; }
-  if (!on || cast.mastered || CURRENTS_LOCKED_JOURNEYS.has(journeyId)) return null;
+  const masters = mastersFeaturesEnabled();
+  if (!on || (!masters && (cast.mastered || CURRENTS_LOCKED_JOURNEYS.has(journeyId)))) return null;
   const p = PARTICLE_PROFILES[journeyId];
-  return p ? conductCurrents(p, journeyId) : null;
+  return p ? conductCurrents(p, journeyId, masters) : null;
+}
+
+/** BREATH (?breath=1, off by default — breath.ts): the free field inhales and
+ *  exhales with the music's phrasing (expands / loosens in depth on the inhale,
+ *  contracts a little and settles as each phrase lands). Runs on the mastered
+ *  takes too (Karel 2026-10-13), at their own strength knob; their image
+ *  moments stay untouched (shader image gate). Off = no change at all (the engine's breath rests at 0 and its
+ *  shader branch is skipped). */
+function breathTimelineFor(journeyId: string): BreathTimeline | null {
+  let on = false;
+  try { on = breathEnabled(undefined, typeof window !== "undefined" ? window.sessionStorage : null); } catch { on = false; }
+  if (!on) return null;
+  const p = PARTICLE_PROFILES[journeyId];
+  return p ? conductBreath(p, journeyId) : null;
 }
 
 export const budgetFor = () => TIER_BUDGET[getDeviceTier()] ?? TIER_BUDGET.medium;
@@ -721,12 +742,36 @@ export function ParticleLeadLayer({
     // Reads the RAW onsets (the calm frame keeps the field's own motion at rest
     // tempo; these ripples are local, eased in, and gated below). Never for the
     // mastered takes (Snowflake, Ghost); compiled out of the engine when off.
-    const scoreOn = engine.scoreCompiled() && livingScoreEnabled(undefined, scoreSessionStore()) && !cast.mastered && !SCORE_LOCKED_JOURNEYS.has(journeyId);
-    const onsetDet = scoreOn ? new OnsetDetector() : null;
+    const scoreOn = engine.scoreCompiled() && livingScoreEnabled(undefined, scoreSessionStore()) && (mastersFeaturesEnabled() || (!cast.mastered && !SCORE_LOCKED_JOURNEYS.has(journeyId)));
+    // TWO HANDS (?hands=1, off by default — two-hands.ts): the left hand (low
+    // register) swells the far layer of the free motes, the right hand (high
+    // register) stirs the near one — call and response. Every journey,
+    // Snowflake + Ghost too (Karel 2026-10-13), each at its own strength;
+    // images / emblems untouched (gated by the image form + presence and a
+    // zero gain while one is worn). Compiled out of the engine when off.
+    const handsOn = engine.handsCompiled() && handsAllowed(journeyId, handsEnabled(undefined, handsSessionStore()));
+    const handsK = handsStrength(journeyId);
+    const hands = handsOn ? new TwoHands() : null;
+    const handsOut: HandsVoices = { low: 0, high: 0, strata: 0 };
+    let handsGainTarget = 0; // set by the tick (presence × ladder × held / busy)
+    engine.setHands(null); // a fresh journey never inherits the last one's hands (glides out ~0.5 s)
+    if (hands) glitchRecord("particle-hands", `on: ${journeyId} strength ${handsK} split ${HANDS_TUNING.SPLIT}${cast.mastered ? " (mastered)" : ""}`);
+    // one onset detector feeds both the score and the hands
+    const onsetDet = scoreOn || hands ? new OnsetDetector() : null;
     const score = scoreOn ? new LivingScore(Array.from(journeyId).reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, 7)) : null;
     let scoreGainTarget = 0; // set by the tick (presence × ladder × held / busy)
     if (score) glitchRecord("particle-score", `on: ${journeyId}`);
     engine.setScore(null, 0);
+    // RESONANCE TRAILS (?trails=1, off by default — resonance-trails.ts): while
+    // the sound is held the moving motes draw faint tails that shorten as it
+    // dies away. Reads the RAW analyser bytes (sustain = level vs the track's
+    // peak × calm spectral flux, ≥ 1.5 s up / ≥ 3 s down). EVERY journey, the
+    // mastered takes too (Karel 2026-10-13), each with its strength knob;
+    // emblems / image forms are gated out in the engine.
+    const trailsK = engine.trailsCompiled() ? trailsForJourney(journeyId, trailsEnabled(undefined, trailsSessionStore())) : 0;
+    const sustainMeter = trailsK > 0 ? new SustainMeter() : null;
+    engine.setTrails(null, true); // a fresh journey never inherits the last one's tails
+    if (sustainMeter) glitchRecord("particle-trails", `on: ${journeyId} strength=${trailsK}`);
     sh.hooks.audio = (dt) => {
       const a = analyserRef.current;
       let fresh = false;
@@ -742,10 +787,16 @@ export function ParticleLeadLayer({
         }
       }
       proc.step(dt);
-      if (score && onsetDet) {
+      if (onsetDet) {
         const on = onsetDet.push(fresh ? bytes : null, dt);
-        engine.setScore(score.packed, score.step(dt, on, scoreGainTarget));
+        if (score) engine.setScore(score.packed, score.step(dt, on, scoreGainTarget));
+        if (hands) {
+          const v = hands.step(fresh ? bytes : null, on, dt, handsGainTarget);
+          handsOut.low = v.low * handsK; handsOut.high = v.high * handsK; handsOut.strata = v.strata * handsK;
+          engine.setHands(handsOut);
+        }
       }
+      if (sustainMeter) engine.setTrails(sustainMeter.push(fresh ? bytes : null, dt) * trailsK);
       return calmFrame(proc.frame(), dt);
     };
     // a fresh journey: no leftover image form / variant / field from the last one
@@ -760,7 +811,7 @@ export function ParticleLeadLayer({
     // integrate, not dominate (Karel 2026-10-07): a touch less energy
     engine.setGain((cast.gain ?? 1) * 1.45);
     // cinematic look (Karel's keep 2026-10-13) — never on the mastered takes
-    engine.setCine(!cast.mastered);
+    engine.setCine(!cast.mastered || mastersFeaturesEnabled());
     engineRef.current = engine;
     engine.setMotion(cast.motion * CALM_TEMPO);
     engine.setForm(cast.form);
@@ -939,7 +990,7 @@ export function ParticleLeadLayer({
     // other mover. Never for the locked journeys. Off = the exact old behaviour.
     let bridgeOn = false;
     try { bridgeOn = bridgeEnabled(undefined, window.sessionStorage); } catch { bridgeOn = false; }
-    if (cast.mastered || BRIDGE_LOCKED_JOURNEYS.has(journeyId)) bridgeOn = false;
+    if (!mastersFeaturesEnabled() && (cast.mastered || BRIDGE_LOCKED_JOURNEYS.has(journeyId))) bridgeOn = false;
     let bridgeSt = createBridgeState();
     // hints per boundary (a running bridge keeps its own after the image layer
     // has moved on to announcing the next boundary)
@@ -980,6 +1031,75 @@ export function ParticleLeadLayer({
       const rel = clearestRelease(currentsTl);
       glitchRecord("particle-currents", `on: ${currentsTl.marks.map((m) => m.label).join(" · ") || "no marks"}${rel ? ` · clearest release ${rel.from}s→${rel.to}s` : ""}`);
     }
+    // breath (null = flag off: the engine's breath rests at 0)
+    const breathTl = breathTimelineFor(journeyId);
+    engine.setBreath(null, true); // a fresh journey never inherits the last one's breath
+    if (breathTl) glitchRecord("particle-breath", breathSummary(breathTl));
+    // LIGHT GRAVITY (?gravity=1, off by default — light-gravity.ts): the free
+    // motes slowly drift toward where the light is in the picture on screen
+    // and let go when it changes. The still is sampled small in the bridge's
+    // worker (never a main-thread read-back); its lights are found on that
+    // tiny grid once per picture; every attractor glides >= 4 s. Runs on every
+    // journey, Snowflake + Ghost included (Karel 2026-10-13), at its own
+    // strength (GRAVITY_JOURNEY_STRENGTH, default 1); emblems / image forms are
+    // untouched (the shader's image gate). Off = gravity stays at 0.
+    let gravityOn = false;
+    try { gravityOn = gravityEnabled(undefined, window.sessionStorage); } catch { gravityOn = false; }
+    const gravStrength = gravityStrengthFor(journeyId);
+    if (gravStrength <= 0) gravityOn = false;
+    let gravGlide = createGravityGlide();
+    let gravUrl: string | null | undefined; // the picture the lights came from (undefined = none yet)
+    let gravSeq = 0;
+    const gravPacked = new Float32Array(16);
+    const gravHints: BridgeHint[] = [];
+    const gravNow = () => performance.now() / 1000;
+    engine.setGravity(null);
+    const gravityTo = (url: string | null, why: string) => {
+      if (!gravityOn || disposed || url === gravUrl) return;
+      gravUrl = url;
+      const seq = ++gravSeq;
+      if (!url) {
+        gravGlide = retargetGravity(gravGlide, [], gravNow());
+        glitchRecord("particle-gravity", `${why}: ${describeGravity([])}`);
+        return;
+      }
+      void sampleBridgeStill(url).then((st) => {
+        if (disposed || seq !== gravSeq) return;
+        // a picture that can't be sampled: let go (the lights never guess)
+        const pts = st ? lightsOfStill(st.px, st.w, st.h, st.aspect, window.innerWidth / Math.max(1, window.innerHeight)) : [];
+        gravGlide = retargetGravity(gravGlide, pts, gravNow());
+        glitchRecord("particle-gravity", `${why} ${url.split("/").pop()}: ${describeGravity(pts)}`);
+      });
+    };
+    // every still the collage SHOWED (the depth layer's own feed)
+    const onGravStill = (e: Event) => {
+      const src = (e as CustomEvent<{ src?: string }>).detail?.src;
+      if (typeof src === "string") gravityTo(src, "still");
+    };
+    if (gravityOn) window.addEventListener("resonance:pack-still", onGravStill);
+    // the boundary hints: the still already on screen when the field mounts,
+    // and the incoming still a travel morph ends on
+    const offGravHint = gravityOn
+      ? onBridgeHint((h) => {
+          if (h.journeyId !== journeyId || disposed) return;
+          const i = gravHints.findIndex((x) => Math.abs(x.boundarySec - h.boundarySec) < 0.5);
+          if (i >= 0) gravHints.splice(i, 1);
+          gravHints.push(h);
+          while (gravHints.length > 3) gravHints.shift();
+          if (gravUrl === undefined && h.outgoing) gravityTo(h.outgoing, "on screen");
+        })
+      : () => {};
+    // a travel morph: its end frame is the next phase's opening still — glide
+    // there with it; unknown → let go (the next shown still takes over)
+    const offGravClip = gravityOn
+      ? onClipStarted((e) => {
+          if (!e.travel) return;
+          const t = useAudioStore.getState().currentTime || 0;
+          let h: BridgeHint | null = null;
+          for (const x of gravHints) if (Math.abs(x.boundarySec - t) < 10 && (!h || Math.abs(x.boundarySec - t) < Math.abs(h.boundarySec - t))) h = x;
+          gravityTo(h?.incoming ?? null, "morph end");
+        })
+      : () => {};
     let sizeBase = 1;
     let blossomShown = false;
     // dolly + placement (Karel 2026-10-06: "they always land in a shape at
@@ -1258,6 +1378,10 @@ export function ParticleLeadLayer({
         ? withTide(currentAt(currentsTl, t), tideStep(currentsTide, (calmBandLv.bass + calmBandLv.mid + calmBandLv.treble) / 3, tickDt))
         : null;
       if (currentNow) engine.setCurrents(currentNow);
+      // breath: the phrase-long, slew-limited timeline (never per beat)
+      const breathNow = breathTl ? breathAt(breathTl, t) : null;
+      if (breathNow) engine.setBreath(breathNow);
+      if (gravityOn) engine.setGravity(packGravity(sampleGravity(gravGlide, gravNow()), gravPacked), gravStrength);
       // MORPH LAW (Karel 2026-10-06: "particle system always overlaps the
       // morph and is present when morph videos end in all cases ever"):
       // travel morphs ride the phase boundaries, which are known — arm the
@@ -1594,6 +1718,7 @@ export function ParticleLeadLayer({
           phaseBounds: pbs,
           journeyId,
           mastered: !!cast.mastered,
+          allowLocked: mastersFeaturesEnabled(),
           // the incoming still must be known too (no prediction → no bridge)
           aReady: !!h && !!h.outgoing && !!h.incoming && bridgeLoaded[0] === h.outgoing,
           bReady: !!h && !!h.incoming && bridgeLoaded[1] === h.incoming,
@@ -1615,6 +1740,7 @@ export function ParticleLeadLayer({
       // the living score: subtle on solo piano, fuller up the ladder; silent with
       // the field, held back while any image / emblem / motif form is worn and
       // inside the one-big-change busy zone (the score itself slews this ~0.6 s)
+      if (hands) handsGainTarget = handsGain({ respK, shown, held: imgLoaded || dissolving || motifAt >= 0 || flashP > 0.05 ? 1 : 0, busy: busyNow });
       if (score) scoreGainTarget = scoreGain({ respK, shown, held: imgLoaded || dissolving || motifAt >= 0 || flashP > 0.05 ? 1 : 0, busy: busyNow });
       // FORM TIMING: the hold clock (flag off: exactly `held > formDur`), or the
       // phrase conductor's next section / phrase event once the form has held ≥ 10 s
@@ -1918,7 +2044,10 @@ export function ParticleLeadLayer({
         ...(score && onsetDet ? { score: { onsets: onsetDet.count, spawned: score.spawned, dropped: score.dropped, live: score.count, gate: +score.gate.toFixed(3) } } : {}),
         ...(phraseTl ? { phrase: { swell: phraseSw, next: phraseTl.events.find((e) => e.t > t)?.label ?? null } } : {}),
         ...(bridgeOn ? { bridge: { ...engine.bridgeState(), phase: bridgeSt.phase, pb: bridgeSt.pb, note: bridgeSt.note, stills: [...bridgeLoaded] } } : {}),
+        ...(breathNow ? { breath: breathNow } : {}),
+        ...(gravityOn ? { gravity: { active: gravityActive(gravGlide, gravNow()), still: gravUrl ? gravUrl.split("/").pop() : null, ...engine.gravityState() } } : {}),
         ...(currentNow ? { currents: { ...currentNow, next: currentsTl?.marks.find((m) => m.t > t)?.label ?? null } } : {}),
+        ...(sustainMeter ? { trails: { strength: trailsK, sustain: +sustainMeter.sustain.toFixed(3), gain: +sustainMeter.gain.toFixed(3), shown: +engine.trailsShown().toFixed(3), presence: +sustainMeter.presence.toFixed(3), busy: +sustainMeter.busy.toFixed(3) } } : {}),
       };
     };
     const iv = window.setInterval(tick, 100);
@@ -1930,11 +2059,17 @@ export function ParticleLeadLayer({
       setParticlePresent(false);
       window.removeEventListener("resize", onResize);
       sh.hooks.audio = null;
+      engine.setHands(null); // glides out (a force only — never a jump)
       offStart();
       offDisable();
       offBridgeHint();
       offBridgeClip();
       engine.setBridge(0, 0, 0, 0.2);
+      window.removeEventListener("resonance:pack-still", onGravStill);
+      offGravHint();
+      offGravClip();
+      engine.setGravity(null);
+      engine.setTrails(null); // tails glide away with the fade (never snapped)
       // keep the shared engine + context for the next journey; a VISIBLE field
       // fades out over 1.5 s (jump / skip) instead of vanishing in one frame
       disposed = true;

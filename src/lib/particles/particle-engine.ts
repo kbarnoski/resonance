@@ -48,7 +48,9 @@ import {
   PAIR_ACDF_FS,
   PAIR_RCDF_FS,
   PAIR_ASSIGN_FS,
+  withTrails,
 } from "./shaders";
+import { trailsEnabled, trailsSessionStore, TRAILS_LAWS } from "./resonance-trails";
 import { pairingEnabled, PAIR_GROUPS } from "./spatial-pairing";
 import {
   SOULS,
@@ -65,6 +67,9 @@ import type { SpectrumFrame } from "./spectrum";
 import { critStep, springTau, stillPreloadAllowed, type Crit } from "./image-follow";
 import { livingScoreEnabled, scoreSessionStore, SCORE_STRIDE, SCORE_TUNING } from "./living-score";
 import { currentFreedom, type CurrentState } from "./harmonic-currents";
+import { breathFreedom, BREATH_LAWS, type BreathState } from "./breath";
+import { GRAVITY_LAWS } from "./light-gravity";
+import { handsEnabled, handsSessionStore, type HandsVoices } from "./two-hands";
 
 /** Cinematic look default: on (Karel's keep 2026-10-13); ?cine=0 turns it off. */
 export function cineEnabled(): boolean {
@@ -108,6 +113,14 @@ export interface ParticleEngineOptions {
    *  into the simulation. Default: ?score=1 (sessionStorage-kept), else off —
    *  off, the simulation source is exactly the show build's. */
   score?: boolean;
+  /** TWO HANDS (two-hands.ts): compile the two-layer (left hand far / right
+   *  hand near) force into the simulation. Default: ?hands=1 (sessionStorage-
+   *  kept), else off — off, the simulation source is exactly the show build's. */
+  hands?: boolean;
+  /** RESONANCE TRAILS (resonance-trails.ts): compile the velocity streaks into
+   *  the draw program. Default: ?trails=1 (sessionStorage-kept), else off —
+   *  off, the draw source is exactly the show build's. */
+  trails?: boolean;
   /** Frame-time watchdog: called (once) when a frame's CPU time or the rAF gap
    *  while running exceeds the budget, or a program fails. */
   watchdog?: { cpuMs: number; gapMs: number; onStall: (why: string) => void };
@@ -227,6 +240,37 @@ export interface ParticleEngine {
    *  layering. Glides ~2.5 s on top of the eased timeline; null = off (glides
    *  to 0, or at once with `snap` — a force only, so even a snap never jumps a mote). */
   setCurrents(c: CurrentState | null, snap?: boolean): void;
+  /** BREATH (breath.ts): the free field's phrase breath — amount, breath
+   *  (−1 exhaled … +1 inhaled), settle. Glides ~1.2 s on top of the eased
+   *  timeline; null = off (glides to 0, or at once with `snap` — a force only,
+   *  so even a snap never jumps a mote). */
+  setBreath(b: BreathState | null, snap?: boolean): void;
+  /** LIGHT GRAVITY (light-gravity.ts): the lights of the picture on screen,
+   *  packed [x, y, r, w] x 4 (NDC, radius in half-heights, weight 0..1 — already
+   *  glided >= 4 s by the layer; smoothed again per frame) and the gain 0..2
+   *  (the journey's strength, 1 = the law's)
+   *  (glides ~2.5 s). null = let go (weights glide to 0, positions held).
+   *  A force on the free souls only — never a position, velocity or light. */
+  setGravity(packed: Float32Array | null, gain?: number): void;
+  /** LIGHT GRAVITY as applied (glided values; diagnostics + tests). */
+  gravityState(): { gain: number; points: number[] };
+  /** TWO HANDS (two-hands.ts): this frame's voices — the left hand's deep-layer
+   *  swell, the right hand's near-layer eddies, the depth sorting. Glides
+   *  ~0.5 s on top of the eased voices; scaled by the soul's freedom; null =
+   *  off (glides to 0, or at once with `snap` — a force only, never a jump).
+   *  No-op when compiled out. */
+  setHands(v: HandsVoices | null, snap?: boolean): void;
+  /** Is TWO HANDS compiled into this engine? */
+  handsCompiled(): boolean;
+  /** RESONANCE TRAILS: the trail gain 0..1 (resonance-trails.ts SustainMeter ×
+   *  the journey's strength). Glides ~0.6 s and is gated by (1 − image form /
+   *  show) — emblems and image forms never streak. null = off (glides to 0, or
+   *  at once with `snap`). No-op when compiled out. */
+  setTrails(gain: number | null, snap?: boolean): void;
+  /** Are the trails compiled into this engine's draw program? */
+  trailsCompiled(): boolean;
+  /** The trail gain on screen now (after the glide + image gate). */
+  trailsShown(): number;
   /** Off-centre placement: screen fractions of half-width / half-height. */
   setOffset(x: number, y: number): void;
   /** Image-form plane size (1 = full frame). */
@@ -509,7 +553,9 @@ export function createParticleEngine(
 
   const par = gl.getExtension("KHR_parallel_shader_compile") as { COMPLETION_STATUS_KHR: number } | null;
   const probe = !!opts.probe;
-  const draw = startProgram(gl, DRAW_VS, DRAW_FS);
+  // RESONANCE TRAILS: decided once per engine (its draw program carries it or not)
+  const trailsOn = opts.trails ?? trailsEnabled(undefined, trailsSessionStore());
+  const draw = trailsOn ? startProgram(gl, withTrails(DRAW_VS), withTrails(DRAW_FS)) : startProgram(gl, DRAW_VS, DRAW_FS);
   const fade = startProgram(gl, QUAD_VS, FADE_FS);
   const lum = startProgram(gl, QUAD_VS, LUM_FS);
   const expo = startProgram(gl, QUAD_VS, EXPO_FS);
@@ -528,6 +574,10 @@ export function createParticleEngine(
   const scoreIn = new Float32Array(SCORE_MAX * SCORE_STRIDE);
   const scoreA = new Float32Array(SCORE_MAX * 4), scoreB = new Float32Array(SCORE_MAX * 4);
   let scoreN = 0, scoreStale = 1e9, scoreLive = 0;
+  // TWO HANDS: decided once per engine too (its programs carry it or not)
+  const handsOn = opts.hands ?? handsEnabled(undefined, handsSessionStore());
+  const handsT = { low: 0, high: 0, strata: 0 }, handsS = { low: 0, high: 0, strata: 0 };
+  let handsClock = 0;
   const pairProgs = pairingOn
     ? {
         stats: startProgram(gl, QUAD_VS, PAIR_STATS_FS),
@@ -553,7 +603,7 @@ export function createParticleEngine(
     const k = `s:${b}`;
     let pr = simProgs.get(k);
     if (!pr) {
-      pr = startProgram(gl!, QUAD_VS, buildSimFS([b], { score: scoreOn }));
+      pr = startProgram(gl!, QUAD_VS, buildSimFS([b], { score: scoreOn, hands: handsOn }));
       simProgs.set(k, pr);
     }
     return pr;
@@ -785,6 +835,7 @@ export function createParticleEngine(
   let imgTintS = 0, imgTintT = 0;
   // living fire on a worn photograph (statement piano only; 0 everywhere else)
   let fireS = 0, fireT = 0, fireLine = 0.6;
+  let trailS = 0, trailT = 0; // resonance trails: shown / target gain
   let snapPending = false; // snapToImage: place every mote on the image next frame
   const fireR = new Float32Array(3), fireU = new Float32Array(3);
   const speedCap = opts.maxSpeed ?? 3.5;
@@ -839,6 +890,13 @@ export function createParticleEngine(
   // harmonic currents: targets / glided, the soul freedom (glided), the steady clock
   const curT = { amount: 0, tension: 0, layering: 0 }, curS = { amount: 0, tension: 0, layering: 0 };
   let curFree = 0, curClock = 0;
+  // breath: targets / glided, the soul's breath freedom (glided)
+  const brT = { amount: 0, breath: 0, settle: 0 }, brS = { amount: 0, breath: 0, settle: 0 };
+  let brFree = 0;
+  // light gravity: targets / per-frame smoothed attractors, gain target / glided
+  const gravT = new Float32Array(16), gravS = new Float32Array(16);
+  let gravGainT = 0, gravGainS = 0;
+  const gravA = new Float32Array(16), gravB = new Float32Array(16);
   let imgAspect: [number, number] = [16 / 9, 16 / 9];
   let haveB = false;
   // image pull + presence followers (image-follow.ts critStep)
@@ -1209,6 +1267,63 @@ export function createParticleEngine(
         g.uniform3f(sim.u.uCurRight, right[0], right[1], right[2]);
       }
     }
+    // BREATH: glided on top of the eased (phrase-long, slew-limited) timeline;
+    // figures breathe only as a slight scale (breathFreedom). Off = at rest.
+    {
+      const kb = 1 - Math.exp(-dt / BREATH_LAWS.GLIDE_SEC);
+      brS.amount += (brT.amount - brS.amount) * kb;
+      brS.breath += (brT.breath - brS.breath) * kb;
+      brS.settle += (brT.settle - brS.settle) * kb;
+      brFree += (lerpS((x) => breathFreedom(x.id)) - brFree) * (1 - Math.exp(-dt / 3));
+      if (sim.u.uBreath) {
+        const amt = brS.amount * brFree;
+        g.uniform4f(sim.u.uBreath, amt > 1e-3 ? amt : 0, brS.breath, brS.settle, 0);
+      }
+    }
+    // LIGHT GRAVITY: the attractors arrive already glided (>= 4 s) at the
+    // layer's 10 Hz — smoothed again per frame so nothing steps at 10 Hz; the
+    // gain glides ~2.5 s and is scaled by the soul's freedom (figures stay
+    // legible). Screen NDC -> world on the focal plane (the camera's own plane).
+    {
+      const kp = 1 - Math.exp(-dt / 0.3);
+      for (let i = 0; i < 16; i++) gravS[i] += (gravT[i] - gravS[i]) * kp;
+      gravGainS += (gravGainT - gravGainS) * (1 - Math.exp(-dt / GRAVITY_LAWS.GAIN_TAU_SEC));
+      if (gravGainS < 1e-4 && gravGainT === 0) gravGainS = 0;
+      if (sim.u.uGravG) {
+        const gG = gravGainS * curFree * GRAVITY_LAWS.STRENGTH * halfH;
+        g.uniform1f(sim.u.uGravG, gG > 1e-3 ? gG : 0);
+        if (gG > 1e-3) {
+          for (let i = 0; i < 4; i++) {
+            const o = i * 4, x = gravS[o] * halfW, y = gravS[o + 1] * halfH, r = gravS[o + 2];
+            for (let j = 0; j < 3; j++) gravA[o + j] = o3[j] + right[j] * x + up[j] * y;
+            gravA[o + 3] = gravS[o + 3];
+            gravB[o] = Math.max(GRAVITY_LAWS.WELL_K * r, GRAVITY_LAWS.WELL_MIN) * halfH;
+            gravB[o + 1] = Math.max(GRAVITY_LAWS.CORE_K * r, GRAVITY_LAWS.CORE_MIN) * halfH;
+          }
+          if (sim.u["uGravA[0]"]) g.uniform4fv(sim.u["uGravA[0]"], gravA);
+          if (sim.u["uGravB[0]"]) g.uniform4fv(sim.u["uGravB[0]"], gravB);
+          if (sim.u.uGravE) {
+            const el = Math.hypot(eye[0], eye[1], eye[2]) || 1;
+            g.uniform3f(sim.u.uGravE, eye[0] / el, eye[1] / el, eye[2] / el);
+          }
+        }
+      }
+    }
+    // TWO HANDS: the eased voices glide once more (~0.5 s), scaled by the same
+    // soul freedom as the currents (figures stay legible); the clock is the
+    // hands' own (steady, real time — never the music's)
+    if (handsOn && sim.u.uHands) {
+      const kh = 1 - Math.exp(-dt / 0.5);
+      handsS.low += (handsT.low - handsS.low) * kh;
+      handsS.high += (handsT.high - handsS.high) * kh;
+      handsS.strata += (handsT.strata - handsS.strata) * kh;
+      const lo = handsS.low * curFree, hi = handsS.high * curFree, st = handsS.strata * curFree;
+      if (lo + hi + st > 1e-3) handsClock += dt;
+      g.uniform4f(sim.u.uHands, lo > 1e-4 ? lo : 0, hi > 1e-4 ? hi : 0, handsClock, st > 1e-4 ? st : 0);
+      const el = Math.hypot(eye[0], eye[1], eye[2]) || 1;
+      if (sim.u.uHandsEye) g.uniform3f(sim.u.uHandsEye, eye[0] / el, eye[1] / el, eye[2] / el);
+      if (sim.u.uHandsRight) g.uniform3f(sim.u.uHandsRight, right[0], right[1], right[2]);
+    }
     if (sim.u.uPull) { const pk = Math.min(1, pullT / 2); g.uniform1f(sim.u.uPull, 0.5 + 0.5 * pk * pk * (3 - 2 * pk)); }
     if (sim.u.uAccCap) {
       // since the latest re-aim (shape step or glide event): 1.0 u/s² at first,
@@ -1406,6 +1521,17 @@ export function createParticleEngine(
         g.uniform2f(draw.u.uBridgeAsp, bridgeAsp[0], bridgeAsp[1]);
         g.uniform3f(draw.u.uBridgeR, right[0] * halfW, right[1] * halfW, right[2] * halfW);
         g.uniform3f(draw.u.uBridgeU, up[0] * halfH, up[1] * halfH, up[2] * halfH);
+      }
+    }
+    // RESONANCE TRAILS: glide (~0.6 s) toward the meter's gain, gated by the
+    // image form / show (emblems + image forms never streak)
+    if (trailsOn) {
+      const gate = 1 - Math.min(1, Math.max(env.imgForm, env.imgShow));
+      trailS += (trailT * gate - trailS) * (1 - Math.exp(-dt / TRAILS_LAWS.ENGINE_GLIDE_SEC));
+      if (trailS < 1e-4 && trailT === 0) trailS = 0;
+      if (draw.u.uTrail) {
+        g.uniform1f(draw.u.uTrail, trailS);
+        g.uniform2f(draw.u.uViewPx, W, H);
       }
     }
     g.drawArrays(g.POINTS, 0, count);
@@ -1750,6 +1876,43 @@ export function createParticleEngine(
       curT.layering = c ? fin(c.layering) : curT.layering;
       if (snap) { curS.amount = curT.amount; curS.tension = curT.tension; curS.layering = curT.layering; }
     },
+    setBreath(b, snap = false) {
+      const fin = (x: number, lo: number) => (Number.isFinite(x) ? Math.max(lo, Math.min(1, x)) : 0);
+      brT.amount = b ? fin(b.amount, 0) : 0;
+      brT.breath = b ? fin(b.breath, -1) : brT.breath;
+      brT.settle = b ? fin(b.settle, 0) : brT.settle;
+      if (snap) { brS.amount = brT.amount; brS.breath = brT.breath; brS.settle = brT.settle; }
+    },
+    setGravity(packed, gain = 1) {
+      const fin = (x: number, a: number, b: number) => (Number.isFinite(x) ? Math.max(a, Math.min(b, x)) : 0);
+      if (!packed) { for (let i = 0; i < 4; i++) gravT[i * 4 + 3] = 0; gravGainT = 0; return; }
+      for (let i = 0; i < 4; i++) {
+        const o = i * 4;
+        if (o + 3 >= packed.length) { gravT[o + 3] = 0; continue; }
+        gravT[o] = fin(packed[o], -1.5, 1.5); gravT[o + 1] = fin(packed[o + 1], -1.5, 1.5);
+        gravT[o + 2] = fin(packed[o + 2], 0, 2); gravT[o + 3] = fin(packed[o + 3], 0, 1);
+        // an idle slot (no weight yet) takes its new place at once — it pulls nothing there
+        if (gravS[o + 3] < 1e-3) { gravS[o] = gravT[o]; gravS[o + 1] = gravT[o + 1]; gravS[o + 2] = gravT[o + 2]; }
+      }
+      gravGainT = fin(gain, 0, 2);
+    },
+    gravityState() { return { gain: gravGainS, points: Array.from(gravS) }; },
+    setHands(v, snap = false) {
+      if (!handsOn) return;
+      const fin = (x: number) => (Number.isFinite(x) ? Math.max(0, Math.min(1, x)) : 0);
+      handsT.low = v ? fin(v.low) : 0;
+      handsT.high = v ? fin(v.high) : 0;
+      handsT.strata = v ? fin(v.strata) : 0;
+      if (snap) { handsS.low = handsT.low; handsS.high = handsT.high; handsS.strata = handsT.strata; }
+    },
+    handsCompiled() { return handsOn; },
+    setTrails(gain, snap = false) {
+      if (!trailsOn) return;
+      trailT = gain !== null && Number.isFinite(gain) ? Math.max(0, Math.min(1, gain)) : 0;
+      if (snap) trailS = trailT;
+    },
+    trailsCompiled() { return trailsOn; },
+    trailsShown() { return trailS; },
     setCamScale(k) { camScaleTarget = camScaleBase * Math.max(0.3, Math.min(2.6, k)); },
     setOffset(x, y) { offTX = Math.max(-0.7, Math.min(0.7, x)); offTY = Math.max(-0.5, Math.min(0.5, y)); },
     setImageScale(k) { imgScaleT = Math.max(0.2, Math.min(1.2, k)); },
