@@ -11,6 +11,7 @@
 // LUM   : 16×16 downsample of the tonemapped frame for the WCAG governor.
 // COMP  : tonemap (1 - e^-x·exposure) + sRGB + 1/255 ordered dither → canvas.
 // ─────────────────────────────────────────────────────────────────────────────
+import { SCORE_TUNING } from "./living-score";
 
 export const QUAD_VS = /* glsl */ `#version 300 es
 const vec2 P[3] = vec2[3](vec2(-1.0,-1.0), vec2(3.0,-1.0), vec2(-1.0,3.0));
@@ -1632,11 +1633,52 @@ function splitSim(): { head: string; blocks: Map<number, string>; tail: string }
 }
 let split: ReturnType<typeof splitSim> | null = null;
 
-/** SIM_FS with only the given souls' force laws (others fall to a gentle stop). */
-export function buildSimFS(souls: readonly number[]): string {
+// ── THE LIVING SCORE (living-score.ts) ───────────────────────────────────────
+// Compiled in ONLY when the flag is on (`?score=1`): off, the simulation source
+// is byte-for-byte the show build's. Each live ripple is a soft gaussian swirl
+// about the camera axis that opens and spreads over its life, a gentle outward
+// breath early on, and a per-mote random heading so no ring is ever printed.
+// The motes of the note's own register (seed .r ≈ the band each mote hears)
+// answer most. FORCE ONLY — no size, alpha or colour channel (motion, not
+// brightness); the transition acceleration cap below still applies.
+export const SCORE_ANCHOR_UNIFORMS = "layout(location = 0) out vec4 oPos;";
+export const SCORE_ANCHOR_FORCE = "  // TRANSITIONS ARE ACCELERATION-LIMITED";
+export const SCORE_UNIFORMS_GLSL = /* glsl */ `// THE LIVING SCORE (living-score.ts): up to ${SCORE_TUNING.MAX_RIPPLES} note ripples
+uniform int uScoreN;
+uniform vec4 uScoreA[${SCORE_TUNING.MAX_RIPPLES}];   // xyz world centre · w signed amplitude (spin × envelope × gate)
+uniform vec4 uScoreB[${SCORE_TUNING.MAX_RIPPLES}];   // x world radius · y pitch 0..1 · z life phase 0..1 · w seed
+uniform vec3 uScoreAxis;  // camera forward (the swirl axis)
+`;
+export const SCORE_FORCE_GLSL = /* glsl */ `  // THE LIVING SCORE: each note a soft local swirl where it is written
+  for (int i = 0; i < ${SCORE_TUNING.MAX_RIPPLES}; i++) {
+    if (i >= uScoreN) break;
+    vec4 A = uScoreA[i];
+    vec4 B = uScoreB[i];
+    float R = B.x * (0.55 + 0.45 * B.z);
+    vec3 d = p - A.xyz;
+    float q = dot(d, d) / (R * R);
+    if (q > 6.0) continue;
+    float g = exp(-q);
+    float reg = 0.35 + 0.65 * exp(-(s.r - B.y) * (s.r - B.y) * 11.0);
+    vec3 hd = hash31(s.a * 37.1 + B.w * 91.7) - 0.5;
+    vec3 sw = cross(uScoreAxis, d) / R;
+    float m = abs(A.w);
+    f.xyz += (sw * 2.3 * A.w + (d / R * 0.5 * (1.0 - B.z) + hd * 0.9) * m) * g * reg * ${SCORE_TUNING.FORCE.toFixed(3)};
+  }
+
+`;
+
+/** SIM_FS with only the given souls' force laws (others fall to a gentle stop).
+ *  `score`: compile the living score's force field in (off = the show source). */
+export function buildSimFS(souls: readonly number[], opts: { score?: boolean } = {}): string {
   split ??= splitSim();
   const uniq = [...new Set(souls)].sort((a, b) => a - b);
-  return split.head + uniq.map((i) => split!.blocks.get(i) ?? "").join("") + split.tail;
+  const src = split.head + uniq.map((i) => split!.blocks.get(i) ?? "").join("") + split.tail;
+  if (!opts.score) return src;
+  if (!src.includes(SCORE_ANCHOR_UNIFORMS) || !src.includes(SCORE_ANCHOR_FORCE)) return src; // anchors moved: stay safe (test guards)
+  return src
+    .replace(SCORE_ANCHOR_UNIFORMS, SCORE_UNIFORMS_GLSL + SCORE_ANCHOR_UNIFORMS)
+    .replace(SCORE_ANCHOR_FORCE, SCORE_FORCE_GLSL + SCORE_ANCHOR_FORCE);
 }
 
 /** How many soul blocks the full simulation carries (test hook). */

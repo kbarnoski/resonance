@@ -73,6 +73,7 @@ import { emblemEnvelope, imageSlotStep, underlayDue, EMBLEM_HANDOFF, type ImageS
 import type { JourneyFrame } from "@/lib/journeys/types";
 import { journeyResponse } from "@/lib/journeys/kinetic";
 import { PARTICLE_PROFILES } from "@/lib/journeys/particle-profiles.generated";
+import { OnsetDetector, LivingScore, livingScoreEnabled, scoreGain, scoreSessionStore, SCORE_LOCKED_JOURNEYS } from "@/lib/particles/living-score";
 import { conductPhrases, createPhraseCursor, formHoldDue, takePhraseEvent, swellAt, phraseConductorEnabled, PHRASE_LOCKED_JOURNEYS, type PhraseTimeline } from "@/lib/particles/phrase-conductor";
 
 /** PHRASE CONDUCTOR (?phrase=1, off by default — phrase-conductor.ts): the deep
@@ -699,19 +700,36 @@ export function ParticleLeadLayer({
       return { ...f, levels: calmLevels, drive: calmDrive!, bands: { bass: 0, mid: 0, treble: 0 }, bandLevels: { ...calmBandLv }, swell: 0, rates: { bass: 1, mid: 1, treble: 1 } };
     };
     let bytes = new Uint8Array(128);
+    // THE LIVING SCORE (?score=1, off by default — living-score.ts): each note
+    // onset writes a soft local swirl into the field at its register's place.
+    // Reads the RAW onsets (the calm frame keeps the field's own motion at rest
+    // tempo; these ripples are local, eased in, and gated below). Never for the
+    // mastered takes (Snowflake, Ghost); compiled out of the engine when off.
+    const scoreOn = engine.scoreCompiled() && livingScoreEnabled(undefined, scoreSessionStore()) && !cast.mastered && !SCORE_LOCKED_JOURNEYS.has(journeyId);
+    const onsetDet = scoreOn ? new OnsetDetector() : null;
+    const score = scoreOn ? new LivingScore(Array.from(journeyId).reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, 7)) : null;
+    let scoreGainTarget = 0; // set by the tick (presence × ladder × held / busy)
+    if (score) glitchRecord("particle-score", `on: ${journeyId}`);
+    engine.setScore(null, 0);
     sh.hooks.audio = (dt) => {
       const a = analyserRef.current;
+      let fresh = false;
       if (!a || pausedRef.current) proc.ingestBytes(null);
       else {
         if (bytes.length !== a.frequencyBinCount) bytes = new Uint8Array(a.frequencyBinCount);
         try {
           a.getByteFrequencyData(bytes as Uint8Array<ArrayBuffer>);
           proc.ingestBytes(bytes);
+          fresh = true;
         } catch {
           proc.ingestBytes(null);
         }
       }
       proc.step(dt);
+      if (score && onsetDet) {
+        const on = onsetDet.push(fresh ? bytes : null, dt);
+        engine.setScore(score.packed, score.step(dt, on, scoreGainTarget));
+      }
       return calmFrame(proc.frame(), dt);
     };
     // a fresh journey: no leftover image form / variant / field from the last one
@@ -1487,6 +1505,10 @@ export function ParticleLeadLayer({
         if (sm !== lastShaderMode) { lastShaderMode = sm; lastShaderAt = t; }
       }
       const busyNow = t - lastShaderAt < 3 || (cast.phaseBounds ?? []).some((pb) => Math.abs(pb - t) < 4);
+      // the living score: subtle on solo piano, fuller up the ladder; silent with
+      // the field, held back while any image / emblem / motif form is worn and
+      // inside the one-big-change busy zone (the score itself slews this ~0.6 s)
+      if (score) scoreGainTarget = scoreGain({ respK, shown, held: imgLoaded || dissolving || motifAt >= 0 || flashP > 0.05 ? 1 : 0, busy: busyNow });
       // FORM TIMING: the hold clock (flag off: exactly `held > formDur`), or the
       // phrase conductor's next section / phrase event once the form has held ≥ 10 s
       const phraseHold = phraseCursor ? formHoldDue(phraseCursor, t, performance.now() - formAt, formDur) : null;
@@ -1786,6 +1808,7 @@ export function ParticleLeadLayer({
         maxLumStep: st.maxLumStep,
         state: st.state,
         stamp: Date.now(),
+        ...(score && onsetDet ? { score: { onsets: onsetDet.count, spawned: score.spawned, dropped: score.dropped, live: score.count, gate: +score.gate.toFixed(3) } } : {}),
         ...(phraseTl ? { phrase: { swell: phraseSw, next: phraseTl.events.find((e) => e.t > t)?.label ?? null } } : {}),
       };
     };
