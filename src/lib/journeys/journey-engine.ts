@@ -1278,6 +1278,9 @@ class JourneyEngine {
     // Pinned finale (Karel 2026-10-01): a mastered take names its
     // ending shader — no random draw at the most-watched moment.
     const pinnedFinale = TAKE_FINALE_SHADERS[this.journey.id];
+    // the pinned finale is ALREADY on screen: it stays (Snowflake's silk lines
+    // carry through the last morph to the end — Karel 2026-10-13)
+    if (pinnedFinale && pinnedFinale === this.currentShaderMode) return;
     const pick = pinnedFinale && this.isShaderAllowed(pinnedFinale) && pinnedFinale !== this.currentShaderMode
       ? pinnedFinale
       : (() => {

@@ -46,7 +46,11 @@ export const SCRIPTED_TAKES: Record<string, TakeScriptEntry[]> = {
     // drift out (Karel 2026-10-09: Snowflake → Ghost → First Light open Rise Above in
     // sequence — "only use that in ghost"); cirrus, already in this take
     // (p0.292) and the winter safelist, holds the same slot.
-    {"p":0.82,"role":"primary","mode":"cirrus"},
+    // the coloured lines (r2-photon, the loved finale) arrive BEFORE the last morph
+    // and carry through to the end (Karel 2026-10-13: "on that ending frame of the
+    // last morph in snowflake the shader with the colored lines i love should
+    // already be there") — they came at 157 s as the finale, mid-melt; cirrus out
+    {"p":0.82,"role":"primary","mode":"r2-photon"},
   ],
   // Ghost — session p4jv6o ("ghost take you should keep"); lightrivers
   // filtered here too per the same ban (dharma holds through p0.637).
