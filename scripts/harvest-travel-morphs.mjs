@@ -192,6 +192,7 @@ for (const jid of ids) {
       }
     } catch (e) {
       console.error(`  ✗ ${jid} t${pi}: ${e.message ?? e}`);
+      if (e.body) console.error(`    ${JSON.stringify(e.body).slice(0, 600)}`); // fal's reason (422s)
       if (e.stderr) console.error(String(e.stderr).slice(-2000)); // real ffmpeg cause (audit #21)
     }
   }
