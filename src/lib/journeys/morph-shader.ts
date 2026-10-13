@@ -120,6 +120,11 @@ export interface MorphShaderPickInput {
   random: () => number;
   luma?: Readonly<Record<string, number>>;
   fadeMs?: (from: string, to: string) => number;
+  /** PARTICLE VOICE (particle-shaders.ts, Karel 2026-10-13): while a journey
+   *  is under its particle target, a particle shader that passes the same
+   *  gate and tier is preferred. Resolved with the SAME single draw (none for
+   *  a single option), so the stream is unchanged. */
+  prefer?: (mode: string) => boolean;
 }
 
 export interface MorphShaderPick {
@@ -161,7 +166,10 @@ export function pickMorphShader(input: MorphShaderPickInput): MorphShaderPick | 
       if (c.length === 0) continue;
       const gentle = c.filter((m) => fade(input.current, m) <= MORPH_SHADER_LAWS.PREFERRED_FADE_MS);
       const pool = gentle.length ? gentle : c;
-      const mode = pool.length === 1 ? pool[0] : pool[Math.floor(input.random() * pool.length) % pool.length];
+      const r = pool.length === 1 ? 0 : input.random();
+      const fav = input.prefer ? pool.filter(input.prefer) : [];
+      const from = fav.length ? fav : pool;
+      const mode = from[Math.floor(r * from.length) % from.length];
       return { mode, fadeMs: fade(input.current, mode) };
     }
   }
