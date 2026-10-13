@@ -5,6 +5,8 @@
  * Falls back to REST via /api/ai-image/generate if WS fails.
  */
 
+import { liveImageryOpen } from "@/lib/journeys/live-imagery-valve";
+
 interface RealtimeImageOptions {
   prompt: string;
   denoisingStrength: number;
@@ -95,6 +97,7 @@ class RealtimeImageService {
 
   /** Check if AI image generation is available (5s timeout) */
   async checkAvailability(): Promise<boolean> {
+    if (!liveImageryOpen()) return false; // the valve (live-imagery-valve.ts)
     try {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 5000);
@@ -115,6 +118,7 @@ class RealtimeImageService {
 
   /** Connect via WebSocket for real-time generation */
   async connect(): Promise<boolean> {
+    if (!liveImageryOpen()) return false;
     if (this.connected) return true;
     if (this.connecting) return false;
 
@@ -197,6 +201,7 @@ class RealtimeImageService {
 
   /** Send frame via WebSocket */
   sendFrame(options: RealtimeImageOptions): boolean {
+    if (!liveImageryOpen()) return false;
     if (!this.connection || !this.connected) return false;
     if (this.sessionCost >= this.costCap) return false;
     if (this.pendingFrames >= this.maxPendingFrames) return false;
@@ -236,6 +241,7 @@ class RealtimeImageService {
 
   /** Generate frame via REST API (server-side proxy) — allows concurrent requests */
   async generateFrameREST(options: RealtimeImageOptions): Promise<string | null> {
+    if (!liveImageryOpen()) return null;
     if (this.sessionCost >= this.costCap) return null;
     if (this.restInFlight >= this.maxRestConcurrent) return null;
     this.restInFlight++;

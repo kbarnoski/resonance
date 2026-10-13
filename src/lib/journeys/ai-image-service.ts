@@ -1,4 +1,5 @@
 /** Client-side service for AI image generation via fal.ai proxy */
+import { liveImageryOpen } from "@/lib/journeys/live-imagery-valve";
 
 interface GenerateFrameOptions {
   prompt: string;
@@ -31,6 +32,7 @@ class AiImageService {
 
   /** Check if the AI image service is available (retries on failure after 10s) */
   async checkAvailability(): Promise<boolean> {
+    if (!liveImageryOpen()) return false; // the valve (live-imagery-valve.ts)
     // Cache success permanently, but retry failures after 10s
     if (this.available === true) return true;
     if (this.available === false && Date.now() - this.lastCheckTime < 10000) return false;
@@ -59,6 +61,7 @@ class AiImageService {
 
   /** Generate a single frame */
   async generateFrame(options: GenerateFrameOptions): Promise<GenerateResult | null> {
+    if (!liveImageryOpen()) return null;
     if (this.available === false) return null;
     if (this.sessionCost >= this.costCap) return null;
     if (this.generating) return null;

@@ -52,9 +52,9 @@ export function checkOrigin(req: Request): Response | null {
 }
 
 /** The kiosk (local Tramokyo server, RESONANCE_KIOSK=1) never generates
- *  imagery live — Karel 2026-10-13: "shut down the feature of live images when
+ *  imagery live (server half of the valve, src/lib/journeys/live-imagery-valve.ts) — Karel 2026-10-13: "shut down the feature of live images when
  *  connected to internet on kiosk. thats not what i want this local app to be." */
 export function kioskNoLive(): Response | null {
-  if (process.env.RESONANCE_KIOSK !== "1") return null;
+  if (process.env.RESONANCE_KIOSK !== "1" || process.env.RESONANCE_LIVE_IMAGERY === "on") return null;
   return new Response(JSON.stringify({ error: "live imagery is off on the kiosk" }), { status: 503, headers: { "Content-Type": "application/json" } });
 }
