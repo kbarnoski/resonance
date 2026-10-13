@@ -2,9 +2,9 @@ import { describe, expect, it } from "vitest";
 import { PARTICLE_PROFILES } from "@/lib/journeys/particle-profiles.generated";
 import { emblemEnvelope } from "./image-follow";
 import {
-  FLIGHT, REST_POSE, SIGNATURE_FLIGHTS, birdFlightEnabled, closingFlightStart, flightHold, flightPose,
+  FLIGHT, REST_POSE, REST_WINGS, SIGNATURE_FLIGHTS, birdFlightEnabled, closingFlightStart, flightHold, flightPose, flightReleased,
   offFrame, openingFlightStart, signatureFlightFor, travel, strokeHz, strokePhase, flapAngle, wingRootAngle,
-  wingPose, wingFrame, wingDisplacement, toQ,
+  wingPose, wingFrame, wingDisplacement, toQ, wingState, undulation, pitchAt, tailSpread,
 } from "./signature-flight";
 
 const YB = "c80a89bc-2c88-4bde-bec8-4be6916acb62";
@@ -86,11 +86,34 @@ describe("signature flight — timing from the music", () => {
     // …before the emblem's own release (11 s) would have begun dissolving it
     expect(o + 1).toBeLessThan(11);
     expect(o + FLIGHT.OPEN_SEC + FLIGHT.HOLD_FADE_SEC).toBeLessThanOrEqual(16 + 1e-9);
+    // worn while it flies, then released at once when off-frame (no stream back)
     expect(flightHold(-1)).toBe(0);
-    expect(flightHold(FLIGHT.OPEN_SEC + FLIGHT.HOLD_FADE_SEC + 0.1)).toBe(0);
     expect(flightHold(2)).toBe(1);
-    // the hold lets go smoothly (no step)
-    for (let e = 0.01; e < 10; e += 0.01) expect(Math.abs(flightHold(e + 0.01) - flightHold(e))).toBeLessThan(0.02);
+    expect(flightHold(FLIGHT.OPEN_SEC + 0.01)).toBe(0);
+  });
+});
+
+describe.each([["closing", FLIGHT.SEC], ["opening", FLIGHT.OPEN_SEC]] as const)("signature flight — the %s let-go (no return morph)", (_which, SEC) => {
+  // the Yellow Bird rests centred; its bird spans ~±0.6 of a ≤ 0.6-scale plane
+  const HALF = { x: 0.6 * 0.6, y: 0.6 * 0.6 };
+  it("lets go only once the bird is off-frame", () => {
+    for (let e = 0; e < SEC; e += 0.05) expect(flightReleased(e, SEC)).toBe(false);
+    expect(flightReleased(SEC, SEC)).toBe(true);
+    expect(offFrame(flightPose(SEC, yb, SEC), HALF)).toBe(true);
+    expect(flightHold(SEC, SEC)).toBe(0);
+  });
+  it("the flown bird's pose holds where it left (the plane never flies back while motes are bound)", () => {
+    const end = flightPose(SEC, yb, SEC);
+    for (let e = SEC; e < SEC + 10; e += 0.25) {
+      const p = flightPose(e, yb, SEC);
+      expect(p.x).toBeCloseTo(end.x, 9);
+      expect(p.y).toBeCloseTo(end.y, 9);
+    }
+  });
+  it("the let-go window is inside the piece (opening: before 16 s; closing: before the end)", () => {
+    const D = prof.duration;
+    const st = _which === "opening" ? openingFlightStart(D)! : closingFlightStart(D, prof)!;
+    expect(st + SEC + FLIGHT.HOLD_FADE_SEC).toBeLessThanOrEqual(_which === "opening" ? 16 : D);
   });
 });
 
@@ -149,42 +172,53 @@ describe.each([["closing", FLIGHT.SEC], ["opening", FLIGHT.OPEN_SEC]] as const)(
     expect(offFrame(flightPose(SEC, yb, SEC), { x: 0.5, y: 0.5 })).toBe(true);
   });
 
-  // ── the wings ──
+  // ── the wings (small-passerine flap-bounding) ──
   const bpm = prof.tempo.bpm;
-  const wings = Array.from({ length: Math.round((SEC + 2) / dt) }, (_, i) => ({ e: i * dt - 1, ...wingRootAngle(i * dt - 1, SEC, bpm), pose: wingPose(i * dt - 1, SEC, bpm) }));
+  const wings = Array.from({ length: Math.round((SEC + 2) / dt) }, (_, i) => ({ e: i * dt - 1, st: wingState(i * dt - 1, SEC, bpm), pose: wingPose(i * dt - 1, SEC, bpm) }));
 
-  it("wings: continuous — at rest before liftoff, no jumps anywhere, settle into the glide and hold", () => {
-    expect(wingPose(0, SEC, bpm)).toEqual({ root: 0, tip: 0, bob: 0 });
+  it("wings: continuous — at rest before liftoff, no jumps anywhere, fold into a last bound and hold", () => {
+    expect(wingPose(0, SEC, bpm)).toEqual(REST_WINGS);
     const early = wingPose(dt, SEC, bpm);
-    expect(Math.abs(early.root) + Math.abs(early.tip) + Math.abs(early.bob)).toBeLessThan(0.03); // (zero slope at liftoff: 0.02 rad after one 1/120 s step)
-    let maxStep = 0, maxBobStep = 0;
-    for (let i = 1; i < wings.length; i++) {
-      maxStep = Math.max(maxStep, Math.abs(wings[i].pose.root - wings[i - 1].pose.root), Math.abs(wings[i].pose.tip - wings[i - 1].pose.tip));
-      maxBobStep = Math.max(maxBobStep, Math.abs(wings[i].pose.bob - wings[i - 1].pose.bob));
-    }
-    // a 2.2 rad downstroke at ≤ 3 Hz × 40 % (~0.13 s): ≤ 0.2 rad per 1/120 s step — smooth, never a jump
-    expect(maxStep).toBeLessThan(0.2);
-    expect(maxBobStep).toBeLessThan(0.003);
-    const end = wingPose(SEC, SEC, bpm), after = wingPose(SEC + 2, SEC, bpm);
-    expect(end.root).toBeCloseTo(FLIGHT.GLIDE_ANGLE, 6);
-    expect(after.root).toBeCloseTo(FLIGHT.GLIDE_ANGLE, 6);
-    expect(after.tip).toBeCloseTo(FLIGHT.GLIDE_ANGLE, 6);
-    expect(wingRootAngle(SEC + 1, SEC, bpm).kind).toBe("glide");
+    expect(Math.abs(early.root) + Math.abs(early.tip) + Math.abs(early.bob)).toBeLessThan(0.03);
+    const keys = ["root", "tip", "bob", "flex", "fold", "sweep", "tail"] as const;
+    const lim = { root: 0.2, tip: 0.2, bob: 0.003, flex: 0.16, fold: 0.16, sweep: 0.16, tail: 0.05 }; // (sin² over a 0.2 s downstroke peaks ~16/s)
+    for (let i = 1; i < wings.length; i++) for (const k of keys) expect(Math.abs(wings[i].pose[k] - wings[i - 1].pose[k])).toBeLessThan(lim[k]);
+    const after = wingPose(SEC + 2, SEC, bpm);
+    expect(after.root).toBeCloseTo(FLIGHT.BOUND_ANGLE, 6);
+    expect(after.tip).toBeCloseTo(FLIGHT.BOUND_ANGLE, 6);
+    expect(after.fold).toBeCloseTo(1, 6);
+    expect(after.flex).toBeCloseTo(0, 6);
+    expect(wingState(SEC + 1, SEC, bpm).kind).toBe("bound");
   });
 
-  it("wings: flap-flap-flap-GLIDE — glides held 0.6-1 s after the takeoff strokes", () => {
-    const runs: Array<{ kind: string; from: number; to: number }> = [];
+  it("flap-bounding: a takeoff burst, then bursts of flaps and FOLDED bounds (wings against the body)", () => {
+    const runs: Array<{ kind: string; from: number; to: number; maxFold: number }> = [];
     for (const w of wings) {
-      if (w.e <= 0 || w.e > SEC - FLIGHT.FINAL_GLIDE_SEC) continue;
+      if (w.e <= 0 || w.e > SEC - FLIGHT.FINAL_BOUND_SEC) continue;
       const last = runs[runs.length - 1];
-      if (last && last.kind === w.kind) last.to = w.e; else runs.push({ kind: w.kind, from: w.e, to: w.e });
+      if (last && last.kind === w.st.kind) { last.to = w.e; last.maxFold = Math.max(last.maxFold, w.st.fold); } else runs.push({ kind: w.st.kind, from: w.e, to: w.e, maxFold: w.st.fold });
     }
-    const glides = runs.filter((r) => r.kind === "glide" && r.to < SEC - FLIGHT.FINAL_GLIDE_SEC - 0.05);
-    expect(glides.length).toBeGreaterThanOrEqual(1);
-    for (const g of glides) { expect(g.to - g.from).toBeGreaterThan(0.6); expect(g.to - g.from).toBeLessThan(1.05); }
-    // the takeoff: continuous strokes first (≥ 1 s of flapping before the first glide)
     expect(runs[0].kind).toBe("flap");
-    expect(runs[0].to - runs[0].from).toBeGreaterThan(1);
+    expect(runs[0].to - runs[0].from).toBeGreaterThan(1); // the takeoff burst
+    const bounds = runs.filter((r) => r.kind === "bound" && r.to < SEC - FLIGHT.FINAL_BOUND_SEC - 0.05);
+    expect(bounds.length).toBeGreaterThanOrEqual(1);
+    for (const b of bounds) { expect(b.maxFold).toBeGreaterThan(0.99); expect(b.to - b.from).toBeGreaterThan(0.5); expect(b.to - b.from).toBeLessThan(1.1); }
+    // in a bound the wing is folded and barely raised — no bright wing sweep
+    for (const w of wings) if (w.st.kind === "bound" && w.e < SEC - FLIGHT.FINAL_BOUND_SEC) expect(w.st.angle).toBeLessThanOrEqual(FLIGHT.BOUND_ANGLE + 1e-9);
+  });
+
+  it("the path undulates: rising through each burst, sinking through the bound", () => {
+    let sawRise = false, sawSink = false;
+    for (let i = 1; i < wings.length; i++) {
+      const e = wings[i].e;
+      if (e <= 0 || e > SEC - FLIGHT.FINAL_BOUND_SEC) continue;
+      const du = undulation(e, SEC, bpm) - undulation(wings[i - 1].e, SEC, bpm);
+      if (wings[i].st.kind === "bound" && wings[i].st.fold > 0.5) { expect(du).toBeLessThanOrEqual(1e-12); if (du < -1e-6) sawSink = true; }
+      if (wings[i].st.kind === "flap" && undulation(e, SEC, bpm) > 0 && du > 1e-6) sawRise = true;
+    }
+    expect(sawRise).toBe(true);
+    expect(sawSink).toBe(true);
+    for (let e = 0; e < SEC + 1; e += 0.01) { const u = undulation(e, SEC, bpm); expect(u).toBeGreaterThanOrEqual(0); expect(u).toBeLessThanOrEqual(FLIGHT.UNDULATE + 1e-9); }
   });
 });
 
@@ -201,6 +235,8 @@ describe("signature flight — the stroke", () => {
     const r1 = (strokePhase(5.01, 6, bpm) - strokePhase(5, 6, bpm)) / 0.01;
     expect(r0).toBeCloseTo(takeoff, 1);
     expect(r1).toBeCloseTo(cruise, 1);
+    // never above 2.2 strokes/s anywhere, any tempo
+    for (const b of [60, 111, 200, 400]) for (let e = 0; e < 6; e += 0.05) expect((strokePhase(e + 0.01, 6, b) - strokePhase(e, 6, b)) / 0.01).toBeLessThanOrEqual(2.2 + 1e-6);
   });
   it("asymmetric: the downstroke (power) takes 40 %, the upstroke 60 % — zero velocity at the turns", () => {
     const N = 1000;
@@ -210,14 +246,28 @@ describe("signature flight — the stroke", () => {
     expect(peak).toBeCloseTo(2, 6);
     const dDown = (flapAngle(0.2 + 1e-4, 2) - flapAngle(0.2, 2)) / 1e-4;
     const dUp = (flapAngle(0.7, 2) - flapAngle(0.7 + 1e-4, 2)) / 1e-4;
-    expect(dDown).toBeGreaterThan(dUp * 1.3); // the power stroke is faster
+    expect(dDown).toBeGreaterThan(dUp * 1.3);
     expect(Math.abs(flapAngle(1e-4, 2))).toBeLessThan(1e-5);
     expect(Math.abs(flapAngle(0.4 + 1e-4, 2) - 2)).toBeLessThan(1e-5);
     expect(Math.abs(flapAngle(1 - 1e-4, 2))).toBeLessThan(1e-5);
   });
+  it("downstroke: extended + swept forward (no flex); upstroke: flexed at the wrist (no sweep)", () => {
+    let downFlex = 0, upSweep = 0, maxSweep = 0, maxFlex = 0;
+    for (let e = 0.001; e < 1.5; e += 0.002) {
+      const w = wingState(e, 6, bpm);
+      if (w.kind !== "flap") continue;
+      const phi = strokePhase(e, 6, bpm), x = phi - Math.floor(phi);
+      if (x < FLIGHT.DOWN_SHARE) { downFlex = Math.max(downFlex, w.flex); maxSweep = Math.max(maxSweep, w.sweep); }
+      else { upSweep = Math.max(upSweep, w.sweep); maxFlex = Math.max(maxFlex, w.flex); }
+    }
+    expect(downFlex).toBe(0);
+    expect(upSweep).toBe(0);
+    expect(maxSweep).toBeGreaterThan(0.95);
+    expect(maxFlex).toBeGreaterThan(0.95);
+  });
   it("the tip trails the root (the wing flexes)", () => {
     let rootPeak = 0, tipPeak = 0, rp = -1, tp = -1;
-    for (let e = 0; e < 0.4; e += 0.001) {
+    for (let e = 0; e < 0.45; e += 0.001) {
       const w = wingPose(e, 6, bpm);
       if (w.root > rootPeak) { rootPeak = w.root; rp = e; }
       if (w.tip > tipPeak) { tipPeak = w.tip; tp = e; }
@@ -226,11 +276,22 @@ describe("signature flight — the stroke", () => {
     const mid = wingPose(0.08, 6, bpm);
     expect(mid.tip).toBeLessThan(mid.root);
   });
-  it("the body lifts on the downstroke (opposite the wings), never sinks", () => {
-    const down = wingPose(0.15, 6, bpm), up0 = wingPose(0.001, 6, bpm);
+  it("the body lifts on the downstroke (opposite the wings), never sinks below rest", () => {
+    const down = wingPose(0.2, 6, bpm), up0 = wingPose(0.001, 6, bpm);
     expect(down.root).toBeGreaterThan(1);
     expect(down.bob).toBeGreaterThan(up0.bob);
     for (let e = 0; e < 7; e += 0.01) expect(wingPose(e, 6, bpm).bob).toBeGreaterThanOrEqual(0);
+  });
+  it("takeoff: nose-up pitch levelling into cruise; tail spread at takeoff, closed in cruise", () => {
+    expect(pitchAt(0)).toBe(0);
+    expect(pitchAt(0.5)).toBeGreaterThan(0.3);
+    expect(pitchAt(4)).toBeCloseTo(FLIGHT.PITCH_CRUISE, 6);
+    for (let e = 0; e < 6; e += 0.01) expect(Math.abs(pitchAt(e + 0.01) - pitchAt(e))).toBeLessThan(0.02);
+    // facing left: nose-up is a clockwise (negative) turn
+    expect(flightPose(0.5, yb, 6).pitch).toBeLessThan(0);
+    expect(tailSpread(0.4)).toBeCloseTo(1, 6);
+    expect(tailSpread(4)).toBe(0);
+    expect(wingPose(0.4, 6, bpm).tail).toBeCloseTo(1, 6);
   });
 });
 
@@ -240,7 +301,8 @@ describe("signature flight — the Yellow Bird's anatomy", () => {
   // landmarks in the emblem picture (x right, y down)
   const BODY: Array<[string, [number, number]]> = [["beak", [0.32, 0.43]], ["eye", [0.4, 0.44]], ["head top", [0.41, 0.41]], ["chest", [0.45, 0.53]], ["belly", [0.52, 0.58]], ["feet", [0.58, 0.62]], ["tail base", [0.65, 0.62]], ["tail tip", [0.78, 0.7]]];
   const WING: Array<[string, [number, number]]> = [["near wing tip", [0.79, 0.21]], ["far wing tip", [0.66, 0.22]], ["near wing mid", [0.66, 0.33]], ["far wing mid", [0.58, 0.3]]];
-  const full = { root: FLIGHT.DOWN_TAKEOFF, tip: FLIGHT.DOWN_TAKEOFF, bob: 0 };
+  const full = { ...REST_WINGS, root: FLIGHT.DOWN_TAKEOFF, tip: FLIGHT.DOWN_TAKEOFF };
+  const sq = (d: number[]) => Math.hypot(...d);
 
   it("a side view: hinge along the back, wing normal pointing up (toward the raised wings)", () => {
     expect(yb.wing.view).toBe("side");
@@ -248,38 +310,70 @@ describe("signature flight — the Yellow Bird's anatomy", () => {
     expect(Math.hypot(...fr.axis)).toBeCloseTo(1, 6);
     expect(fr.rMax).toBeGreaterThan(0.25);
   });
-  it.each(BODY)("body mote (%s) never flaps (displacement ≈ 0 without the body lift)", (_n, p) => {
-    const d = wingDisplacement(toQ(p), fr, full, false);
-    expect(Math.hypot(d[0], d[1], d[2])).toBeLessThan(1e-3);
+  it.each(BODY)("body mote (%s) never flaps — through every wing state (no body lift, no tail fan)", (_n, p) => {
+    for (let e = 0; e < 7; e += 0.05) {
+      const w = { ...wingPose(e, 6, bpm), tail: 0 };
+      expect(sq(wingDisplacement(toQ(p), fr, w, false))).toBeLessThan(1e-3);
+    }
   });
-  it("wing motes swing about the shoulder: down past the body and out of the plane, more toward the tip", () => {
+  it("wing motes swing about the shoulder: down past the back and out of the plane, more toward the tip", () => {
     const tip = wingDisplacement(toQ(WING[0][1]), fr, full, false);
     const mid = wingDisplacement(toQ(WING[2][1]), fr, full, false);
     expect(Math.hypot(tip[0], tip[1])).toBeGreaterThan(Math.hypot(mid[0], mid[1]));
-    expect(tip[1]).toBeLessThan(-0.25); // the tip drops well below where it was (1.8 rad takeoff stroke — photosensitive-safe)
-    // at the bottom of the stroke the tip is BELOW the shoulder line (wing under the back)
+    expect(tip[1]).toBeLessThan(-0.25);
     const tq = toQ(WING[0][1]);
     const after = [tq[0] + tip[0], tq[1] + tip[1]];
-    const r = (after[0] - fr.hinge[0]) * fr.normal[0] + (after[1] - fr.hinge[1]) * fr.normal[1];
-    expect(r).toBeLessThan(0);
-    // halfway (toward the viewer): foreshortened in the plane, out of it in depth
-    const side = wingDisplacement(tq, fr, { root: Math.PI / 2, tip: Math.PI / 2, bob: 0 }, false);
+    expect((after[0] - fr.hinge[0]) * fr.normal[0] + (after[1] - fr.hinge[1]) * fr.normal[1]).toBeLessThan(0);
+    const side = wingDisplacement(tq, fr, { ...full, root: Math.PI / 2, tip: Math.PI / 2 }, false);
     expect(side[2]).toBeGreaterThan(0.25);
-    for (const [, p] of WING) expect(Math.hypot(...wingDisplacement(toQ(p), fr, full, false))).toBeGreaterThan(0.1);
+    for (const [, p] of WING) expect(sq(wingDisplacement(toQ(p), fr, full, false))).toBeGreaterThan(0.1);
   });
-  it("the wings stay attached: the displacement is continuous across the root band", () => {
+  it("upstroke flex: the hand folds in (span shrinks) and back; the arm barely moves", () => {
+    const flexed = { ...REST_WINGS, flex: 1 };
+    const tq = toQ(WING[0][1]);
+    const d = wingDisplacement(tq, fr, flexed, false);
+    const r0 = (tq[0] - fr.hinge[0]) * fr.normal[0] + (tq[1] - fr.hinge[1]) * fr.normal[1];
+    const r1 = (tq[0] + d[0] - fr.hinge[0]) * fr.normal[0] + (tq[1] + d[1] - fr.hinge[1]) * fr.normal[1];
+    expect(r1).toBeLessThan(r0 * 0.85); // span reduced
+    expect(d[0] * fr.axis[0] + d[1] * fr.axis[1]).toBeGreaterThan(0); // tip swept back toward the tail
+    // a point inside the arm (below the wrist) does not flex
+    const arm: [number, number] = [fr.hinge[0] + fr.normal[0] * 0.1, fr.hinge[1] + fr.normal[1] * 0.1];
+    expect(sq(wingDisplacement(arm, fr, flexed, false))).toBeLessThan(1e-9);
+  });
+  it("bound: the wing folds onto the back, lying toward the tail", () => {
+    const folded = { ...REST_WINGS, fold: 1, root: FLIGHT.BOUND_ANGLE, tip: FLIGHT.BOUND_ANGLE };
+    const tq = toQ(WING[0][1]);
+    const d = wingDisplacement(tq, fr, folded, false);
+    const r1 = (tq[0] + d[0] - fr.hinge[0]) * fr.normal[0] + (tq[1] + d[1] - fr.hinge[1]) * fr.normal[1];
+    expect(r1).toBeLessThan(0.06); // on the back
+    expect(r1).toBeGreaterThan(-0.02);
+    const a1 = (tq[0] + d[0] - fr.hinge[0]) * fr.axis[0] + (tq[1] + d[1] - fr.hinge[1]) * fr.axis[1];
+    expect(a1).toBeGreaterThan(0.15); // reaching back toward the tail
+  });
+  it("tail fan: the tail widens at takeoff; the body and wings do not", () => {
+    const fan = { ...REST_WINGS, tail: 1 };
+    const tb = toQ(yb.wing.tail), tt = toQ(yb.wing.tailTip);
+    const off: [number, number] = [tt[0] - fr.tailDir[1] * 0.05, tt[1] + fr.tailDir[0] * 0.05];
+    const d = wingDisplacement(off, fr, fan, false);
+    expect(sq(d)).toBeGreaterThan(0.01);
+    expect(sq(wingDisplacement(tb, fr, fan, false))).toBeLessThan(1e-6);
+    for (const [, p] of WING) expect(sq(wingDisplacement(toQ(p), fr, fan, false))).toBeLessThan(1e-9);
+    for (const [n, p] of BODY) if (!n.startsWith("tail")) expect(sq(wingDisplacement(toQ(p), fr, fan, false))).toBeLessThan(1e-9);
+  });
+  it("the wings stay attached: continuous across the root band in every shape", () => {
     const sh = toQ(yb.wing.shoulder);
-    let prev = wingDisplacement(sh, fr, full, false);
-    for (let k = 1; k <= 200; k++) {
-      const r = (k / 200) * 0.1;
-      const q: [number, number] = [sh[0] + fr.normal[0] * r, sh[1] + fr.normal[1] * r];
-      const d = wingDisplacement(q, fr, full, false);
-      expect(Math.hypot(d[0] - prev[0], d[1] - prev[1], d[2] - prev[2])).toBeLessThan(0.006);
-      prev = d;
+    for (const w of [full, { ...full, flex: 1 }, { ...REST_WINGS, fold: 1, root: 0.25, tip: 0.25 }, { ...full, sweep: 1 }]) {
+      let prev = wingDisplacement(sh, fr, w, false);
+      for (let k = 1; k <= 200; k++) {
+        const r = (k / 200) * 0.1;
+        const d = wingDisplacement([sh[0] + fr.normal[0] * r, sh[1] + fr.normal[1] * r], fr, w, false);
+        expect(Math.hypot(d[0] - prev[0], d[1] - prev[1], d[2] - prev[2])).toBeLessThan(0.006);
+        prev = d;
+      }
     }
   });
   it("the body lift moves every mote together", () => {
-    const w = { root: 0, tip: 0, bob: 0.02 };
+    const w = { ...REST_WINGS, bob: 0.02 };
     for (const [, p] of [...BODY, ...WING]) {
       const d = wingDisplacement(toQ(p), fr, w);
       expect(d[0]).toBeCloseTo(0, 9);
@@ -288,8 +382,8 @@ describe("signature flight — the Yellow Bird's anatomy", () => {
     }
   });
   it("motion only — no luminance / alpha terms anywhere in the flight", () => {
-    expect(Object.keys(flightPose(2, yb, 6)).sort()).toEqual(["scale", "shed", "u", "x", "y"]);
-    expect(Object.keys(wingPose(1, 6, bpm)).sort()).toEqual(["bob", "root", "tip"]);
+    expect(Object.keys(flightPose(2, yb, 6)).sort()).toEqual(["pitch", "scale", "shed", "u", "x", "y"]);
+    expect(Object.keys(wingPose(1, 6, bpm)).sort()).toEqual(["bob", "flex", "fold", "root", "sweep", "tail", "tip"]);
     expect(wingDisplacement([0, 0], fr, wingPose(1, 6, bpm))).toHaveLength(3);
   });
 });

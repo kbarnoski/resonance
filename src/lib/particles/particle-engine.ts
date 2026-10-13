@@ -80,7 +80,7 @@ import { currentFreedom, type CurrentState } from "./harmonic-currents";
 import { breathFreedom, BREATH_LAWS, type BreathState } from "./breath";
 import { figureRigidTarget, glideRigid, rigidMatrix, REST_RIGID, type FigureRigid } from "./figure-motion";
 import { GRAVITY_LAWS } from "./light-gravity";
-import { flightPose, wingFrame, wingPose, REST_WINGS, type SignatureFlight, type WingPose } from "./signature-flight";
+import { flightPose, wingFrame, wingPose, REST_WINGS, WING_K, WING_K2, type SignatureFlight, type WingPose } from "./signature-flight";
 import { handsEnabled, handsSessionStore, type HandsVoices } from "./two-hands";
 
 /** Cinematic look default: on (Karel's keep 2026-10-13); ?cine=0 turns it off. */
@@ -305,6 +305,11 @@ export interface ParticleEngine {
    *  beat at 2-3 Hz). `flight.dir` = the screen direction (mirror applied).
    *  null = at rest (call once the image has cleared). */
   setImageFlight(f: { e: number; flight: Pick<SignatureFlight, "dir" | "wing">; sec: number; bpm?: number } | null): void;
+  /** The flown bird is off-frame: its motes let go UNSEEN — every mote outside
+   *  the frame is respawned softly near the centre (fading in by age) and freed
+   *  from the flown image (Karel: "that morph of it coming back in frame was
+   *  weird"). Runs ≥ 1.5 s, until the image has cleared (≤ 4 s). */
+  releaseFlight(): void;
   /** Particle sprite size multiplier. */
   setSizeScale(k: number): void;
   /** Sound reactivity multiplier (motion only — never luminance). */
@@ -921,6 +926,8 @@ export function createParticleEngine(
   let flSpec: Pick<SignatureFlight, "dir" | "wing"> | null = null;
   let flE = 0, flSec = 6, flBpm: number | undefined, flResync = false;
   let wingCur: WingPose = REST_WINGS, wingPrev: WingPose = REST_WINGS;
+  let flP = 0, flTP = 0; // body pitch (glided)
+  let flownT = -1; // releaseFlight: seconds since the flown motes let go (-1 = off)
   let flSpeed = 0; // the plane centre's world speed this frame (u/s)
   const flVel = [0, 0, 0];
   let sizeScaleS = 1, sizeScaleT = 1;
@@ -1266,7 +1273,7 @@ export function createParticleEngine(
     if (flSpec) {
       if (!flResync) flE += dt;
       const fp = flightPose(flE, flSpec, flSec);
-      flTX = fp.x; flTY = fp.y; flTS = fp.scale; flTShed = fp.shed;
+      flTX = fp.x; flTY = fp.y; flTS = fp.scale; flTShed = fp.shed; flTP = fp.pitch;
       flDirX = flSpec.dir.x; flDirY = flSpec.dir.y;
       wingPrev = wingCur;
       wingCur = wingPose(flE, flSec, flBpm);
@@ -1275,10 +1282,13 @@ export function createParticleEngine(
     }
     flX = sp(18, flX, flTX, 0.15, dt); flY = sp(19, flY, flTY, 0.15, dt);
     flS = sp(20, flS, flTS, 0.15, dt); flShed = sp(23, flShed, flTShed, 0.3, dt);
+    flP = sp(21, flP, flTP, 0.15, dt);
+    if (flownT >= 0) { flownT += dt; if ((flownT > 1.5 && Math.max(imgF.x, imgS.x) < 0.01) || flownT > 4) flownT = -1; }
     for (let i = 0; i < 3; i++) flVel[i] = right[i] * sv[18] * halfW + up[i] * sv[19] * halfH;
     flSpeed = Math.hypot(flVel[0], flVel[1], flVel[2]);
     const flying = Math.abs(flX) + Math.abs(flY) + Math.abs(flS - 1) > 1e-4;
-    const ca = Math.cos(imgTiltS), sa = Math.sin(imgTiltS);
+    const frameO = o3, frameR = right.map((x) => x / halfW), frameU = up.map((x) => x / halfH);
+    const ca = Math.cos(imgTiltS + flP), sa = Math.sin(imgTiltS + flP); // (+ the flying body's pitch)
     const R = [0, 1, 2].map((i) => (ca * right[i] + sa * up[i]) * halfW * imgScaleS * flS * imgMirror);
     const U = [0, 1, 2].map((i) => (-sa * right[i] + ca * up[i]) * halfH * imgScaleS * flS);
     const C = [0, 1, 2].map((i) => flying ? right[i] * flX * halfW + up[i] * flY * halfH : 0);
@@ -1538,13 +1548,26 @@ export function createParticleEngine(
       const dl = Math.hypot(flDirX, flDirY) || 1;
       g.uniform2f(sim.u.uShedDir, (flDirX / dl) * Math.sign(imgMirror || 1), flDirY / dl);
     }
+    if (sim.u.uFlown) {
+      g.uniform2f(sim.u.uFlown, flownT >= 0 ? 1 : 0, 1.12);
+      if (flownT >= 0) {
+        g.uniform3f(sim.u.uFrameR, frameR[0], frameR[1], frameR[2]);
+        g.uniform3f(sim.u.uFrameU, frameU[0], frameU[1], frameU[2]);
+        g.uniform3f(sim.u.uFrameO, frameO[0], frameO[1], frameO[2]);
+      }
+    }
     if (sim.u.uWingOn) {
       g.uniform1f(sim.u.uWingOn, flSpec ? 1 : 0);
       if (flSpec) {
         const fr = wingFrame(flSpec.wing, imgAspect[1]);
         g.uniform4f(sim.u.uWingH, fr.hinge[0], fr.hinge[1], fr.axis[0], fr.axis[1]);
         g.uniform4f(sim.u.uWingN, fr.normal[0], fr.normal[1], fr.rMax, fr.soft);
-        g.uniform2f(sim.u.uWingR, fr.aMin, fr.aMax);
+        g.uniform3f(sim.u.uWingR, fr.aMin, fr.aMax, fr.tailLen);
+        if (sim.u.uTailA) g.uniform4f(sim.u.uTailA, fr.tailBase[0], fr.tailBase[1], fr.tailDir[0], fr.tailDir[1]);
+        if (sim.u.uWingS) g.uniform4f(sim.u.uWingS, wingCur.flex, wingCur.fold, wingCur.sweep, wingCur.tail);
+        if (sim.u.uWingQ) g.uniform4f(sim.u.uWingQ, wingPrev.flex, wingPrev.fold, wingPrev.sweep, wingPrev.tail);
+        if (sim.u.uWingK) g.uniform4f(sim.u.uWingK, WING_K[0], WING_K[1], WING_K[2], WING_K[3]);
+        if (sim.u.uWingK2) g.uniform4f(sim.u.uWingK2, WING_K2[0], WING_K2[1], WING_K2[2], WING_K2[3]);
         g.uniform3f(sim.u.uWingT, wingCur.root, wingCur.tip, wingCur.bob);
         g.uniform3f(sim.u.uWingP, wingPrev.root, wingPrev.tip, wingPrev.bob);
       }
@@ -2146,8 +2169,9 @@ export function createParticleEngine(
     setCamScale(k) { camScaleTarget = camScaleBase * Math.max(0.3, Math.min(2.6, k)); },
     setOffset(x, y) { offTX = Math.max(-0.7, Math.min(0.7, x)); offTY = Math.max(-0.5, Math.min(0.5, y)); },
     setImageScale(k) { imgScaleT = Math.max(0.2, Math.min(1.2, k)); },
+    releaseFlight() { flownT = 0; },
     setImageFlight(fl) {
-      if (!fl || !Number.isFinite(fl.e)) { flSpec = null; flTX = flTY = flTShed = 0; flTS = 1; wingCur = wingPrev = REST_WINGS; return; }
+      if (!fl || !Number.isFinite(fl.e)) { flSpec = null; flTX = flTY = flTShed = flTP = 0; flTS = 1; wingCur = wingPrev = REST_WINGS; return; }
       if (!flSpec || Math.abs(fl.e - flE) > 0.3) { flE = fl.e; flResync = true; }
       else flE += (fl.e - flE) * 0.2; // (a slow frame rate — dt is capped — drifts; eased back, never stepped)
       flSpec = fl.flight; flSec = fl.sec > 0 ? fl.sec : 6; flBpm = fl.bpm;
@@ -2196,7 +2220,7 @@ export function createParticleEngine(
         offX = offTX; offY = offTY; imgScaleS = imgScaleT; imgMirror = imgMirrorT; imgTiltS = imgTiltT;
         for (const i of [10, 11, 12, 14, 16]) sv[i] = 0;
       }
-      if (clear) { imgFormTgt = imgShowTgt = 0; imgF.x = imgF.v = imgS.x = imgS.v = 0; fireT = fireS = 0; flX = flTX = 0; flY = flTY = 0; flS = flTS = 1; flShed = flTShed = 0; flSpec = null; wingCur = wingPrev = REST_WINGS; for (const i of [18, 19, 20, 21, 22, 23]) sv[i] = 0; }
+      if (clear) { imgFormTgt = imgShowTgt = 0; imgF.x = imgF.v = imgS.x = imgS.v = 0; fireT = fireS = 0; flX = flTX = 0; flY = flTY = 0; flS = flTS = 1; flShed = flTShed = 0; flSpec = null; wingCur = wingPrev = REST_WINGS; flP = flTP = 0; flownT = -1; for (const i of [18, 19, 20, 21, 22, 23]) sv[i] = 0; }
     },
     // (also lands the session's first-run brightness ramp — invisible field only:
     // the boot card's piano must appear at full brightness on the text's curve)
@@ -2291,7 +2315,7 @@ export function createParticleEngine(
       camScale = camScaleTarget = camScaleBase;
       offX = offTX = 0; offY = offTY = 0;
       // a signature flight never carries into the next journey
-      flX = flTX = 0; flY = flTY = 0; flS = flTS = 1; flShed = flTShed = 0; flSpec = null; wingCur = wingPrev = REST_WINGS;
+      flX = flTX = 0; flY = flTY = 0; flS = flTS = 1; flShed = flTShed = 0; flSpec = null; wingCur = wingPrev = REST_WINGS; flP = flTP = 0; flownT = -1;
       for (const i of [18, 19, 20, 21, 22, 23]) sv[i] = 0;
       if (lost || !posInit.warm || !particlesInitialised) return;
       const g = gl;
