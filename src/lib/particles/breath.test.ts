@@ -5,7 +5,7 @@
 import { describe, it, expect } from "vitest";
 import {
   conductBreath, breathAt, breathPhrases, breathEnabled, breathFreedom, breathSummary,
-  BREATH_DEFAULT, BREATH_LAWS, BREATH_LOCKED_JOURNEYS, BREATH_SESSION_KEY, NEUTRAL_BREATH,
+  BREATH_DEFAULT, BREATH_LAWS, BREATH_JOURNEY_STRENGTH, BREATH_SESSION_KEY, NEUTRAL_BREATH, breathStrength,
   type BreathInput,
 } from "./breath";
 import { phraseSeconds } from "./phrase-conductor";
@@ -69,12 +69,24 @@ describe("breath — timeline laws", () => {
     expect(conductBreath(synthetic(), "x")).toEqual(conductBreath(synthetic(), "x"));
   });
 
-  it("the mastered journeys never breathe (null timeline → neutral state)", () => {
+  it("the mastered journeys breathe too, each with its own strength knob (default 1)", () => {
     for (const id of ["first-snow", "ghost"]) {
-      expect(BREATH_LOCKED_JOURNEYS.has(id)).toBe(true);
-      expect(conductBreath(PARTICLE_PROFILES[id], id)).toBeNull();
-      expect(breathAt(conductBreath(PARTICLE_PROFILES[id], id), 100)).toEqual(NEUTRAL_BREATH);
+      expect(BREATH_JOURNEY_STRENGTH[id]).toBe(1);
+      expect(breathStrength(id)).toBe(1);
+      const tl = conductBreath(PARTICLE_PROFILES[id], id);
+      expect(tl).not.toBeNull();
+      expect(Math.max(...tl!.amount)).toBe(1);
     }
+    expect(breathStrength("any-other-journey")).toBe(1);
+  });
+
+  it("the strength knob scales the amount only (shape unchanged); 0 = off", () => {
+    const full = conductBreath(synthetic(), "s")!, half = conductBreath(synthetic(), "s", 0.5)!;
+    expect(half.breath).toEqual(full.breath);
+    expect(half.settle).toEqual(full.settle);
+    for (let i = 0; i < full.amount.length; i++) expect(half.amount[i]).toBeCloseTo(full.amount[i] * 0.5, 2);
+    expect(conductBreath(synthetic(), "s", 0)).toBeNull();
+    expect(breathAt(conductBreath(synthetic(), "s", 0), 100)).toEqual(NEUTRAL_BREATH);
   });
 
   it("degenerate input → null / neutral, never NaN", () => {
@@ -86,7 +98,6 @@ describe("breath — timeline laws", () => {
   });
 
   for (const [id, p] of ALL) {
-    if (BREATH_LOCKED_JOURNEYS.has(id)) continue;
     it(`laws hold on ${p.name} (${id.slice(0, 13)})`, () => {
       const tl = conductBreath(p, id);
       if (!tl) { expect(p.duration < 60 || !p.sections.length).toBe(true); return; }
@@ -131,10 +142,11 @@ describe("breath — timeline laws", () => {
       // EMBLEMS UNTOUCHED: no breath through the opening emblem, none at the close
       for (let i = 0; i * G <= L.OPENING_END_SEC; i++) expect(A[i]).toBe(0);
       for (let i = Math.ceil((p.duration - L.END_CLEAR_SEC) / G); i < A.length; i++) expect(A[i]).toBe(0);
-      // the amount eases (fade-in / fade-out ≥ 18 s)
+      // the amount eases (fade-in / fade-out ≥ 18 s), never above the journey's knob
+      for (const a of A) expect(a).toBeLessThanOrEqual(breathStrength(id) + 1e-9);
       for (let i = 1; i < A.length; i++) expect(Math.abs(A[i] - A[i - 1])).toBeLessThanOrEqual((1.5 / L.FADE_IN_SEC) * G + 0.002);
       // it really breathes: a clear inhale and a clear landing while on
-      const on = B.filter((_, i) => A[i] > 0.9);
+      const on = B.filter((_, i) => A[i] > 0.9 * breathStrength(id));
       expect(Math.max(...on)).toBeGreaterThan(0.4);
       expect(Math.min(...on)).toBeLessThan(-0.2);
       expect(breathSummary(tl)).toMatch(/^on: \d+ breaths/);

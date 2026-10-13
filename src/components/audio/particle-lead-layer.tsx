@@ -78,7 +78,7 @@ import { conductPhrases, createPhraseCursor, formHoldDue, takePhraseEvent, swell
 import { bridgeEnabled, createBridgeState, nextBridgeBoundary, onBridgeHint, stepBridge, BRIDGE_LOCKED_JOURNEYS, type BridgeHint } from "@/lib/particles/bridge";
 import { sampleBridgeStill, type BridgeStill } from "@/lib/particles/bridge-sampler";
 import { conductCurrents, currentAt, createTide, tideStep, withTide, currentsEnabled, clearestRelease, CURRENTS_LOCKED_JOURNEYS, type CurrentTimeline } from "@/lib/particles/harmonic-currents";
-import { conductBreath, breathAt, breathEnabled, breathSummary, BREATH_LOCKED_JOURNEYS, type BreathTimeline } from "@/lib/particles/breath";
+import { conductBreath, breathAt, breathEnabled, breathSummary, type BreathTimeline } from "@/lib/particles/breath";
 
 /** PHRASE CONDUCTOR (?phrase=1, off by default — phrase-conductor.ts): the deep
  *  analysis's section starts / crests / breaths time the form changes and the
@@ -109,13 +109,14 @@ function currentsTimelineFor(cast: ParticleLeadCast, journeyId: string): Current
 
 /** BREATH (?breath=1, off by default — breath.ts): the free field inhales and
  *  exhales with the music's phrasing (expands / loosens in depth on the inhale,
- *  contracts a little and settles as each phrase lands). Never for the mastered
- *  takes. Off = no change at all (the engine's breath rests at 0 and its
+ *  contracts a little and settles as each phrase lands). Runs on the mastered
+ *  takes too (Karel 2026-10-13), at their own strength knob; their image
+ *  moments stay untouched (shader image gate). Off = no change at all (the engine's breath rests at 0 and its
  *  shader branch is skipped). */
-function breathTimelineFor(cast: ParticleLeadCast, journeyId: string): BreathTimeline | null {
+function breathTimelineFor(journeyId: string): BreathTimeline | null {
   let on = false;
   try { on = breathEnabled(undefined, typeof window !== "undefined" ? window.sessionStorage : null); } catch { on = false; }
-  if (!on || cast.mastered || BREATH_LOCKED_JOURNEYS.has(journeyId)) return null;
+  if (!on) return null;
   const p = PARTICLE_PROFILES[journeyId];
   return p ? conductBreath(p, journeyId) : null;
 }
@@ -994,8 +995,8 @@ export function ParticleLeadLayer({
       const rel = clearestRelease(currentsTl);
       glitchRecord("particle-currents", `on: ${currentsTl.marks.map((m) => m.label).join(" · ") || "no marks"}${rel ? ` · clearest release ${rel.from}s→${rel.to}s` : ""}`);
     }
-    // breath (null = flag off / mastered: the engine's breath rests at 0)
-    const breathTl = breathTimelineFor(cast, journeyId);
+    // breath (null = flag off: the engine's breath rests at 0)
+    const breathTl = breathTimelineFor(journeyId);
     engine.setBreath(null, true); // a fresh journey never inherits the last one's breath
     if (breathTl) glitchRecord("particle-breath", breathSummary(breathTl));
     let sizeBase = 1;

@@ -26,7 +26,10 @@
  *    before the closing one.
  *  - FIGURES STAY LEGIBLE: geometric figures breathe only as a slight scale
  *    (their springs hold the shape); free-flowing souls breathe fully.
- *  - MASTERED (Snowflake "first-snow", Ghost "ghost"): never — null timeline.
+ *  - MASTERED (Snowflake "first-snow", Ghost "ghost"): they breathe too
+ *    (Karel 2026-10-13), each with its own strength knob (BREATH_JOURNEY_STRENGTH,
+ *    default 1); their image moments (Ghost's angel + blossom, every emblem)
+ *    stay untouched by the shader's image form / show gate.
  *
  * Off by default (BREATH_DEFAULT): `?breath=1` turns it on for the tab
  * (remembered in sessionStorage), `?breath=0` turns it off.
@@ -38,8 +41,17 @@ import type { SoulId } from "./souls";
 
 export const BREATH_DEFAULT = false;
 export const BREATH_SESSION_KEY = "resonance-breath";
-/** Locked, mastered journeys — never breathed. */
-export const BREATH_LOCKED_JOURNEYS: ReadonlySet<string> = new Set(["first-snow", "ghost"]);
+/** Per-journey strength knob (0 = off … 1 = full; unlisted = 1). The mastered
+ *  takes are listed so they can be tuned on their own (Karel 2026-10-13: breath
+ *  runs on Snowflake + Ghost too). */
+export const BREATH_JOURNEY_STRENGTH: Readonly<Record<string, number>> = {
+  "first-snow": 1,
+  ghost: 1,
+};
+export const breathStrength = (journeyId: string): number => {
+  const k = BREATH_JOURNEY_STRENGTH[journeyId];
+  return k == null || !Number.isFinite(k) ? 1 : Math.max(0, Math.min(1, k));
+};
 
 export const BREATH_LAWS = {
   /** timeline grid (s) */
@@ -205,11 +217,14 @@ export function breathPhrases(input: BreathInput): { phraseSec: number; phrases:
   return { phraseSec: P, phrases };
 }
 
-/** The breath timeline for one journey. null for the locked journeys / no analysis. */
-export function conductBreath(input: BreathInput, journeyId = ""): BreathTimeline | null {
+/** The breath timeline for one journey (amount scaled by its strength knob —
+ *  `strength` overrides BREATH_JOURNEY_STRENGTH). null for no analysis or a
+ *  strength of 0. */
+export function conductBreath(input: BreathInput, journeyId = "", strength = breathStrength(journeyId)): BreathTimeline | null {
   const L = BREATH_LAWS;
   const D = Math.max(0, input.duration || 0);
-  if (BREATH_LOCKED_JOURNEYS.has(journeyId) || D < 60 || !input.sections?.length) return null;
+  const K = Number.isFinite(strength) ? Math.max(0, Math.min(1, strength)) : 1;
+  if (K <= 0 || D < 60 || !input.sections?.length) return null;
   const { phraseSec, phrases } = breathPhrases(input);
   if (!phrases.length) return null;
   const G = L.GRID_SEC;
@@ -242,7 +257,7 @@ export function conductBreath(input: BreathInput, journeyId = ""): BreathTimelin
   const settle = slew(gaussian(rawS, sig), L.SETTLE_RATE_PER_SEC * G).map((x) => r3(clamp(x, 0, 1)));
   const amount = breath.map((_, i) => {
     const t = i * G;
-    return r3(ss(L.OPENING_END_SEC, L.OPENING_END_SEC + L.FADE_IN_SEC, t) * (1 - ss(D - L.END_CLEAR_SEC - L.FADE_OUT_SEC, D - L.END_CLEAR_SEC, t)));
+    return r3(K * ss(L.OPENING_END_SEC, L.OPENING_END_SEC + L.FADE_IN_SEC, t) * (1 - ss(D - L.END_CLEAR_SEC - L.FADE_OUT_SEC, D - L.END_CLEAR_SEC, t)));
   });
   return { journeyId, duration: D, phraseSec, phrases, breath, settle, amount };
 }
