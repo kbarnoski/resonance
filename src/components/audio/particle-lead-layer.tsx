@@ -1084,6 +1084,7 @@ export function ParticleLeadLayer({
     const respK = journeyResponse({ id: journeyId, name: cast.name });
     let emblemFormAt = -1;
     let emblemSettledLogged = false;
+    let emblemFrames = 0;
     let angelPairWarm = false;
     let echoAt = -1, echoN = 0;
     let echoUsed: HTMLCanvasElement | null = null;
@@ -1341,7 +1342,7 @@ export function ParticleLeadLayer({
           // (no setInstances here: re-laying a visible FIELD at once was a jump;
           // the image force dominates the instanced form while it is worn)
           appearN++;
-          if (want === "emblem") { emblemFormAt = performance.now(); emblemSettledLogged = false; }
+          if (want === "emblem") { emblemFormAt = performance.now(); emblemSettledLogged = false; emblemFrames = 0; }
           glitchRecord("particle-flash", want === "angel" ? (flashing ? "gather" : "angel signature") : want === "motif" ? "motif" : want === "moment" ? "blossom moment" : want === "echo" ? "echo" : `emblem ${emOcc}`);
         }
       }
@@ -1556,9 +1557,14 @@ export function ParticleLeadLayer({
 
       // MEASURE (Karel 2026-10-13, "use measurement"): seconds from an emblem load to
       // the field settling into it — compare the first journey after boot with later ones
-      if (emblemFormAt > 0 && !emblemSettledLogged && imgLoaded === "emblem" && engine.settledFor() > 0.3) {
-        emblemSettledLogged = true;
-        glitchRecord("emblem-settled", `${((performance.now() - emblemFormAt) / 1000 - engine.settledFor()).toFixed(2)}s`);
+      if (emblemFormAt > 0 && !emblemSettledLogged && imgLoaded === "emblem") {
+        const el = (performance.now() - emblemFormAt) / 1000;
+        emblemFrames++;
+        // settled AFTER the load (a field already settled before it doesn't count)
+        if (engine.settledFor() > 0.3 && engine.settledFor() < el - 0.2) {
+          emblemSettledLogged = true;
+          glitchRecord("emblem-settled", `${(el - engine.settledFor()).toFixed(2)}s at ${Math.round(emblemFrames / el)} ticks/s shown=${shown.toFixed(2)}`);
+        } else if (el > 12) { emblemSettledLogged = true; glitchRecord("emblem-settled", `>12s (never settled) at ${Math.round(emblemFrames / el)} ticks/s`); }
       }
       // a held still: start the dissolve once the guard clears (same window)
       if (pr.window?.kind === "transition" && heldInWindow.current === pr.window.start && dissolvedWindow.current !== pr.window.start) {
