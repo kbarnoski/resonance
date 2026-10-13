@@ -64,6 +64,7 @@ import {
 import type { SpectrumFrame } from "./spectrum";
 import { critStep, springTau, stillPreloadAllowed, type Crit } from "./image-follow";
 import { livingScoreEnabled, scoreSessionStore, SCORE_STRIDE, SCORE_TUNING } from "./living-score";
+import { currentFreedom, type CurrentState } from "./harmonic-currents";
 
 /** Cinematic look default: on (Karel's keep 2026-10-13); ?cine=0 turns it off. */
 export function cineEnabled(): boolean {
@@ -221,6 +222,11 @@ export interface ParticleEngine {
   setScore(packed: Float32Array | null, n: number): void;
   /** Is the living score compiled into this engine? */
   scoreCompiled(): boolean;
+  /** HARMONIC CURRENTS (harmonic-currents.ts): the free-flowing field's current
+   *  character — amount, tension (laminar drift ↔ gathering vortices), depth
+   *  layering. Glides ~2.5 s on top of the eased timeline; null = off (glides
+   *  to 0, or at once with `snap` — a force only, so even a snap never jumps a mote). */
+  setCurrents(c: CurrentState | null, snap?: boolean): void;
   /** Off-centre placement: screen fractions of half-width / half-height. */
   setOffset(x: number, y: number): void;
   /** Image-form plane size (1 = full frame). */
@@ -830,6 +836,9 @@ export function createParticleEngine(
   let pairUse = false;     // the worn image uses the paired uvs
   let pairLit = 1;         // the image's literal level (setImageLiteral)
   let hoverT = 0, hoverS = 0; // setHover target / glided
+  // harmonic currents: targets / glided, the soul freedom (glided), the steady clock
+  const curT = { amount: 0, tension: 0, layering: 0 }, curS = { amount: 0, tension: 0, layering: 0 };
+  let curFree = 0, curClock = 0;
   let imgAspect: [number, number] = [16 / 9, 16 / 9];
   let haveB = false;
   // image pull + presence followers (image-follow.ts critStep)
@@ -1180,6 +1189,26 @@ export function createParticleEngine(
     }
     hoverS += (hoverT - hoverS) * (1 - Math.exp(-dt / 0.35));
     if (sim.u.uHover) g.uniform1f(sim.u.uHover, hoverS);
+    // HARMONIC CURRENTS: everything glides (the timeline is already eased over
+    // 8-20 s); the soul's freedom follows the soul blend; a mote released by an
+    // image (hover) drifts on the current too. The clock is steady (real time,
+    // never the music's dilated clocks). Off (amount 0) = uniforms at rest.
+    {
+      const kc = 1 - Math.exp(-dt / 2.5);
+      curS.amount += (curT.amount - curS.amount) * kc;
+      curS.tension += (curT.tension - curS.tension) * kc;
+      curS.layering += (curT.layering - curS.layering) * kc;
+      const freeT = Math.max(lerpS((x) => currentFreedom(x.id)), 0.5 * hoverT);
+      curFree += (freeT - curFree) * (1 - Math.exp(-dt / 3));
+      if (curS.amount > 1e-3) curClock += dt;
+      if (sim.u.uCur) {
+        const amt = curS.amount * curFree;
+        g.uniform4f(sim.u.uCur, amt > 1e-3 ? amt : 0, curS.tension, curS.layering, curClock);
+        const el = Math.hypot(eye[0], eye[1], eye[2]) || 1;
+        g.uniform3f(sim.u.uCurEye, eye[0] / el, eye[1] / el, eye[2] / el);
+        g.uniform3f(sim.u.uCurRight, right[0], right[1], right[2]);
+      }
+    }
     if (sim.u.uPull) { const pk = Math.min(1, pullT / 2); g.uniform1f(sim.u.uPull, 0.5 + 0.5 * pk * pk * (3 - 2 * pk)); }
     if (sim.u.uAccCap) {
       // since the latest re-aim (shape step or glide event): 1.0 u/s² at first,
@@ -1709,6 +1738,13 @@ export function createParticleEngine(
       scoreStale = 0;
     },
     scoreCompiled() { return scoreOn; },
+    setCurrents(c, snap = false) {
+      const fin = (x: number) => (Number.isFinite(x) ? Math.max(0, Math.min(1, x)) : 0);
+      curT.amount = c ? fin(c.amount) : 0;
+      curT.tension = c ? fin(c.tension) : curT.tension;
+      curT.layering = c ? fin(c.layering) : curT.layering;
+      if (snap) { curS.amount = curT.amount; curS.tension = curT.tension; curS.layering = curT.layering; }
+    },
     setCamScale(k) { camScaleTarget = camScaleBase * Math.max(0.3, Math.min(2.6, k)); },
     setOffset(x, y) { offTX = Math.max(-0.7, Math.min(0.7, x)); offTY = Math.max(-0.5, Math.min(0.5, y)); },
     setImageScale(k) { imgScaleT = Math.max(0.2, Math.min(1.2, k)); },
