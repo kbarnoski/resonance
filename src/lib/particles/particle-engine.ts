@@ -65,6 +65,7 @@ import type { SpectrumFrame } from "./spectrum";
 import { critStep, springTau, stillPreloadAllowed, type Crit } from "./image-follow";
 import { livingScoreEnabled, scoreSessionStore, SCORE_STRIDE, SCORE_TUNING } from "./living-score";
 import { currentFreedom, type CurrentState } from "./harmonic-currents";
+import { GRAVITY_LAWS } from "./light-gravity";
 
 /** Cinematic look default: on (Karel's keep 2026-10-13); ?cine=0 turns it off. */
 export function cineEnabled(): boolean {
@@ -227,6 +228,15 @@ export interface ParticleEngine {
    *  layering. Glides ~2.5 s on top of the eased timeline; null = off (glides
    *  to 0, or at once with `snap` — a force only, so even a snap never jumps a mote). */
   setCurrents(c: CurrentState | null, snap?: boolean): void;
+  /** LIGHT GRAVITY (light-gravity.ts): the lights of the picture on screen,
+   *  packed [x, y, r, w] x 4 (NDC, radius in half-heights, weight 0..1 — already
+   *  glided >= 4 s by the layer; smoothed again per frame) and the gain 0..2
+   *  (the journey's strength, 1 = the law's)
+   *  (glides ~2.5 s). null = let go (weights glide to 0, positions held).
+   *  A force on the free souls only — never a position, velocity or light. */
+  setGravity(packed: Float32Array | null, gain?: number): void;
+  /** LIGHT GRAVITY as applied (glided values; diagnostics + tests). */
+  gravityState(): { gain: number; points: number[] };
   /** Off-centre placement: screen fractions of half-width / half-height. */
   setOffset(x: number, y: number): void;
   /** Image-form plane size (1 = full frame). */
@@ -839,6 +849,10 @@ export function createParticleEngine(
   // harmonic currents: targets / glided, the soul freedom (glided), the steady clock
   const curT = { amount: 0, tension: 0, layering: 0 }, curS = { amount: 0, tension: 0, layering: 0 };
   let curFree = 0, curClock = 0;
+  // light gravity: targets / per-frame smoothed attractors, gain target / glided
+  const gravT = new Float32Array(16), gravS = new Float32Array(16);
+  let gravGainT = 0, gravGainS = 0;
+  const gravA = new Float32Array(16), gravB = new Float32Array(16);
   let imgAspect: [number, number] = [16 / 9, 16 / 9];
   let haveB = false;
   // image pull + presence followers (image-follow.ts critStep)
@@ -1207,6 +1221,35 @@ export function createParticleEngine(
         const el = Math.hypot(eye[0], eye[1], eye[2]) || 1;
         g.uniform3f(sim.u.uCurEye, eye[0] / el, eye[1] / el, eye[2] / el);
         g.uniform3f(sim.u.uCurRight, right[0], right[1], right[2]);
+      }
+    }
+    // LIGHT GRAVITY: the attractors arrive already glided (>= 4 s) at the
+    // layer's 10 Hz — smoothed again per frame so nothing steps at 10 Hz; the
+    // gain glides ~2.5 s and is scaled by the soul's freedom (figures stay
+    // legible). Screen NDC -> world on the focal plane (the camera's own plane).
+    {
+      const kp = 1 - Math.exp(-dt / 0.3);
+      for (let i = 0; i < 16; i++) gravS[i] += (gravT[i] - gravS[i]) * kp;
+      gravGainS += (gravGainT - gravGainS) * (1 - Math.exp(-dt / GRAVITY_LAWS.GAIN_TAU_SEC));
+      if (gravGainS < 1e-4 && gravGainT === 0) gravGainS = 0;
+      if (sim.u.uGravG) {
+        const gG = gravGainS * curFree * GRAVITY_LAWS.STRENGTH * halfH;
+        g.uniform1f(sim.u.uGravG, gG > 1e-3 ? gG : 0);
+        if (gG > 1e-3) {
+          for (let i = 0; i < 4; i++) {
+            const o = i * 4, x = gravS[o] * halfW, y = gravS[o + 1] * halfH, r = gravS[o + 2];
+            for (let j = 0; j < 3; j++) gravA[o + j] = o3[j] + right[j] * x + up[j] * y;
+            gravA[o + 3] = gravS[o + 3];
+            gravB[o] = Math.max(GRAVITY_LAWS.WELL_K * r, GRAVITY_LAWS.WELL_MIN) * halfH;
+            gravB[o + 1] = Math.max(GRAVITY_LAWS.CORE_K * r, GRAVITY_LAWS.CORE_MIN) * halfH;
+          }
+          if (sim.u["uGravA[0]"]) g.uniform4fv(sim.u["uGravA[0]"], gravA);
+          if (sim.u["uGravB[0]"]) g.uniform4fv(sim.u["uGravB[0]"], gravB);
+          if (sim.u.uGravE) {
+            const el = Math.hypot(eye[0], eye[1], eye[2]) || 1;
+            g.uniform3f(sim.u.uGravE, eye[0] / el, eye[1] / el, eye[2] / el);
+          }
+        }
       }
     }
     if (sim.u.uPull) { const pk = Math.min(1, pullT / 2); g.uniform1f(sim.u.uPull, 0.5 + 0.5 * pk * pk * (3 - 2 * pk)); }
@@ -1750,6 +1793,20 @@ export function createParticleEngine(
       curT.layering = c ? fin(c.layering) : curT.layering;
       if (snap) { curS.amount = curT.amount; curS.tension = curT.tension; curS.layering = curT.layering; }
     },
+    setGravity(packed, gain = 1) {
+      const fin = (x: number, a: number, b: number) => (Number.isFinite(x) ? Math.max(a, Math.min(b, x)) : 0);
+      if (!packed) { for (let i = 0; i < 4; i++) gravT[i * 4 + 3] = 0; gravGainT = 0; return; }
+      for (let i = 0; i < 4; i++) {
+        const o = i * 4;
+        if (o + 3 >= packed.length) { gravT[o + 3] = 0; continue; }
+        gravT[o] = fin(packed[o], -1.5, 1.5); gravT[o + 1] = fin(packed[o + 1], -1.5, 1.5);
+        gravT[o + 2] = fin(packed[o + 2], 0, 2); gravT[o + 3] = fin(packed[o + 3], 0, 1);
+        // an idle slot (no weight yet) takes its new place at once — it pulls nothing there
+        if (gravS[o + 3] < 1e-3) { gravS[o] = gravT[o]; gravS[o + 1] = gravT[o + 1]; gravS[o + 2] = gravT[o + 2]; }
+      }
+      gravGainT = fin(gain, 0, 2);
+    },
+    gravityState() { return { gain: gravGainS, points: Array.from(gravS) }; },
     setCamScale(k) { camScaleTarget = camScaleBase * Math.max(0.3, Math.min(2.6, k)); },
     setOffset(x, y) { offTX = Math.max(-0.7, Math.min(0.7, x)); offTY = Math.max(-0.5, Math.min(0.5, y)); },
     setImageScale(k) { imgScaleT = Math.max(0.2, Math.min(1.2, k)); },
