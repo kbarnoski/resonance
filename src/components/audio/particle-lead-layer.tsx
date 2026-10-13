@@ -74,6 +74,7 @@ import type { JourneyFrame } from "@/lib/journeys/types";
 import { journeyResponse } from "@/lib/journeys/kinetic";
 import { PARTICLE_PROFILES } from "@/lib/journeys/particle-profiles.generated";
 import { conductPhrases, createPhraseCursor, formHoldDue, takePhraseEvent, swellAt, phraseConductorEnabled, PHRASE_LOCKED_JOURNEYS, type PhraseTimeline } from "@/lib/particles/phrase-conductor";
+import { conductCurrents, currentAt, createTide, tideStep, withTide, currentsEnabled, clearestRelease, CURRENTS_LOCKED_JOURNEYS, type CurrentTimeline } from "@/lib/particles/harmonic-currents";
 
 /** PHRASE CONDUCTOR (?phrase=1, off by default — phrase-conductor.ts): the deep
  *  analysis's section starts / crests / breaths time the form changes and the
@@ -87,6 +88,19 @@ function phraseTimelineFor(cast: ParticleLeadCast, journeyId: string): PhraseTim
   if (!p) return null;
   const tl = conductPhrases({ ...p, phaseBounds: cast.phaseBounds ?? p.phaseBounds }, { journeyId, formChanges: cast.windows.map((w) => w.start) });
   return tl.events.length ? tl : null;
+}
+
+/** HARMONIC CURRENTS (?currents=1, off by default — harmonic-currents.ts): the
+ *  free-flowing field rides a volumetric current whose character follows the
+ *  deep analysis (tension → deep converging vortices + layered depth; release
+ *  → wide laminar drift). Never for the mastered takes. Off = no change at all
+ *  (the engine's current stays at 0 and its shader branch is skipped). */
+function currentsTimelineFor(cast: ParticleLeadCast, journeyId: string): CurrentTimeline | null {
+  let on = false;
+  try { on = currentsEnabled(undefined, typeof window !== "undefined" ? window.sessionStorage : null); } catch { on = false; }
+  if (!on || cast.mastered || CURRENTS_LOCKED_JOURNEYS.has(journeyId)) return null;
+  const p = PARTICLE_PROFILES[journeyId];
+  return p ? conductCurrents(p, journeyId) : null;
 }
 
 export const budgetFor = () => TIER_BUDGET[getDeviceTier()] ?? TIER_BUDGET.medium;
@@ -899,6 +913,14 @@ export function ParticleLeadLayer({
     const phraseTl = phraseTimelineFor(cast, journeyId);
     const phraseCursor = phraseTl ? createPhraseCursor(phraseTl) : null;
     if (phraseTl) glitchRecord("particle-phrase", `on: ${phraseTl.events.length} events, phrase ${phraseTl.phraseSec}s`);
+    // harmonic currents (null = flag off / mastered: the engine's current rests at 0)
+    const currentsTl = currentsTimelineFor(cast, journeyId);
+    const currentsTide = createTide();
+    engine.setCurrents(null, true); // a fresh journey never inherits the last one's current
+    if (currentsTl) {
+      const rel = clearestRelease(currentsTl);
+      glitchRecord("particle-currents", `on: ${currentsTl.marks.map((m) => m.label).join(" · ") || "no marks"}${rel ? ` · clearest release ${rel.from}s→${rel.to}s` : ""}`);
+    }
     let sizeBase = 1;
     let blossomShown = false;
     // dolly + placement (Karel 2026-10-06: "they always land in a shape at
@@ -1171,6 +1193,12 @@ export function ParticleLeadLayer({
       signatureAt(t);
       // phrase swell (motion only: density / size / response) — null when off
       const phraseSw = phraseTl ? swellAt(phraseTl, t) : null;
+      // harmonic currents: the eased timeline + a very slow tide from the calm
+      // frame's levels (20 s vs 90 s averages) — never per beat
+      const currentNow = currentsTl
+        ? withTide(currentAt(currentsTl, t), tideStep(currentsTide, (calmBandLv.bass + calmBandLv.mid + calmBandLv.treble) / 3, tickDt))
+        : null;
+      if (currentNow) engine.setCurrents(currentNow);
       // MORPH LAW (Karel 2026-10-06: "particle system always overlaps the
       // morph and is present when morph videos end in all cases ever"):
       // travel morphs ride the phase boundaries, which are known — arm the
@@ -1787,6 +1815,7 @@ export function ParticleLeadLayer({
         state: st.state,
         stamp: Date.now(),
         ...(phraseTl ? { phrase: { swell: phraseSw, next: phraseTl.events.find((e) => e.t > t)?.label ?? null } } : {}),
+        ...(currentNow ? { currents: { ...currentNow, next: currentsTl?.marks.find((m) => m.t > t)?.label ?? null } } : {}),
       };
     };
     const iv = window.setInterval(tick, 100);

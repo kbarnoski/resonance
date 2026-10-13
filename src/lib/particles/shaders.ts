@@ -166,6 +166,13 @@ uniform vec3 uPlaneR;     // plane right × half-width
 uniform vec3 uPlaneU;     // plane up × half-height
 uniform float uImgAspect;
 uniform float uScrAspect;
+// HARMONIC CURRENTS (harmonic-currents.ts, ?currents=1): x = amount × the
+// soul's freedom (0 = off — the branch is skipped, the show build exactly),
+// y = tension (0 laminar drift … 1 gathering vortices), z = depth layering,
+// w = the currents' own steady clock (s) · eye = unit vector toward the camera
+uniform vec4 uCur;
+uniform vec3 uCurEye;
+uniform vec3 uCurRight;
 layout(location = 0) out vec4 oPos;
 layout(location = 1) out vec4 oVel;
 ${NOISE}
@@ -1144,6 +1151,55 @@ void main(){
   if (uHover > 0.001) {
     f.xyz = f.xyz * (1.0 - uHover) + (curlNoise(p * 0.9 + vec3(0.0, uTime * 0.07, 0.0)) * 0.35 + vec3(0.0, -0.12, 0.0)) * uHover;
     f.w = mix(f.w, 1.6, uHover);
+  }
+
+  // HARMONIC CURRENTS (inno-currents 2026-10-13): the free-flowing field rides a
+  // volumetric current whose CHARACTER follows the music's harmony + structure
+  // (tension → deep converging vortices + layered depth; release → wide laminar
+  // drift, wind over water). A FORCE only — never a position / velocity set —
+  // so on, off and every change of character are continuous; the eased
+  // timeline (≥ 8 s swings) and the steady clock keep it off the beat. Images
+  // and emblems are untouched: gated by the image form and presence.
+  float curG = uCur.x * (1.0 - uImgForm) * (1.0 - uImgShow);
+  if (curG > 0.001) {
+    vec3 E = uCurEye, R = uCurRight, U = normalize(cross(E, R));
+    float T = uCur.w, ten = uCur.y;
+    // depth strata: every mote belongs to the far, mid or near layer
+    float layer = floor(hash11(s.a * 173.31 + 5.7) * 2.999);
+    float dc = dot(p, E);                         // + toward the camera
+    // PARALLAX: a mote's current speed grows with its nearness — near motes
+    // slide past far ones (real volume, the cinematic part)
+    float par = mix(0.4, 1.6, clamp(dc * 0.3 + 0.5, 0.0, 1.0));
+    vec3 deep = curlNoise(p * 0.45 + vec3(T * 0.017, 0.0, -T * 0.011));
+    // RELEASE — laminar sheets sliding sideways (the wind slowly turns about
+    // on its own clock, ~5 min), each layer at its own speed, a long swell
+    // rolling through them like wind over water
+    float ph = T * 0.021 + 0.7;
+    float swell = sin(dot(p, R) * 1.3 + dc * 0.6 - T * 0.32 + layer * 1.7);
+    vec3 lam = R * cos(ph) * 0.26 * (0.55 + 0.25 * layer) + U * (0.09 * swell + 0.05 * sin(ph * 1.3)) + deep * 0.12;
+    // TENSION — two slow counter-turning vortices about the camera's UP axis
+    // (tilted in depth: seen side-on, a spiral, never a circle on screen),
+    // drawing the motes in; their cores wander on the steady clock
+    vec3 vx = deep * 0.14;
+    for (int i = 0; i < 2; i++) {
+      float fi = float(i), sg = fi > 0.5 ? -1.0 : 1.0;
+      vec3 cc = R * (1.05 * sin(T * 0.017 + fi * 3.1)) + U * (0.35 * sin(T * 0.013 + fi * 1.7)) + E * (0.6 * cos(T * 0.015 + fi * 2.3));
+      vec3 ax = normalize(U + E * (0.3 * sg) + R * (0.15 * sin(T * 0.011 + fi)));
+      vec3 d = p - cc;
+      vec3 rr = d - ax * dot(d, ax);
+      float r = length(rr) + 1e-4;
+      float reach = exp(-r * r / 1.1);
+      vec3 tang = cross(ax, rr / r) * sg;
+      vx += (tang * (0.3 * r / (r * r + 0.12)) - (rr / r) * 0.2 * smoothstep(0.15, 0.7, r) + ax * (0.05 * sg)) * reach;
+    }
+    vec3 vT = mix(lam, vx, ten) * par;
+    // the motes follow the current (a velocity match, eased by curG) and, with
+    // tension, settle into their depth strata
+    vec3 fc = (vT - v) * 0.7 + E * ((layer - 1.0) * 0.85 - dc) * 0.22 * uCur.z;
+    // never carried out of the world: a soft wall past radius 3.2
+    float pr = length(p);
+    if (pr > 3.2) fc -= (p / pr) * (pr - 3.2) * 1.2;
+    f.xyz += fc * curG;
   }
 
   // image dissolve / reform: spring onto the image plane; while released,
