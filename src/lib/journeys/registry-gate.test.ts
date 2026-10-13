@@ -15,7 +15,7 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { JOURNEYS } from "./journeys";
+import { JOURNEYS, GLOBAL_SHADER_BLOCKLIST } from "./journeys";
 import { MODE_META } from "@/lib/shaders";
 
 const registry = JSON.parse(
@@ -46,6 +46,20 @@ const KNOWN_DEAD_SHADER_REFS: Record<string, string[]> = {
   "1895014a-ce59-4640-aa23-b9421b588d70": ["nebula"], // Snowflake (April 14) — caught by this gate's first run
 };
 
+// The banned shaders deleted from the codebase 2026-10-13 (Karel reviewed on
+// film: "reviewed and marked all banned. might as well remove from the code
+// too"). ~38 stored DB rows still name some of them; every one stays in
+// GLOBAL_SHADER_BLOCKLIST, which the journey engine strips from every phase
+// before anything plays (withoutGlobalBlocked), so those refs are inert.
+// Regenerating a row's casts drops them; never add a NEW deleted name here.
+const DELETED_2026_10_13 = new Set([
+  "credo", "dharma", "biofilm", "r3-monsoonveil", "interference", "doppler", "quasar", "neon", "roulette",
+  "r3-moltenglass", "agape", "cascade", "empyrean", "r2-kelvin", "r2-marble", "r3-heatshimmer",
+  "r3-peelingbark", "r3-shadowflow", "thermal", "whirlpool", "lightning", "snow", "rain", "night-rain",
+  "abyss-light", "terminus", "onyx", "estuary", "hollow", "dark-bloom", "fog",
+  "swell", "revelation", "portal", "numinous", "biolume",
+]);
+
 describe("journey content registry gate", () => {
   it("every journey that ships clips has a material-audit verdict", () => {
     const missing = Object.entries(registry.journeys)
@@ -61,9 +75,16 @@ describe("journey content registry gate", () => {
       const refs = (j.shaders ?? []).flat();
       const dead = [...new Set(refs.filter((s) => !KNOWN_MODES.has(s)))];
       const allowed = new Set(KNOWN_DEAD_SHADER_REFS[id] ?? []);
-      for (const s of dead) if (!allowed.has(s)) unexpected.push(`${j.name} (${id}): ${s}`);
+      for (const s of dead) if (!allowed.has(s) && !DELETED_2026_10_13.has(s)) unexpected.push(`${j.name} (${id}): ${s}`);
     }
     expect(unexpected, "new dead shader reference — fix the journey or the registry").toEqual([]);
+  });
+
+  it("the 2026-10-13 deletions are gone from the registry and guarded at runtime", () => {
+    for (const s of DELETED_2026_10_13) {
+      expect(KNOWN_MODES.has(s), `${s} is back in MODE_META`).toBe(false);
+      expect(GLOBAL_SHADER_BLOCKLIST, s).toContain(s);
+    }
   });
 
   it("no journey's stored phase lists repeat a shader (data-level variety law)", () => {

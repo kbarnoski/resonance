@@ -4,7 +4,7 @@ import { getRealm } from "./realms";
 import { glitchRecord } from "./glitch-recorder";
 import { isKineticJourneyName, isFullKineticJourney } from "./kinetic";
 import { TAKE_FINALE_SHADERS } from "./pinned-takes";
-import { RECAST_SAFELIST, regenerateJourneyShaders, castJourneyShaders, getJourneyCast, PICKTIME_SHADER_BLOCKLIST, PICKTIME_REALM_BLOCKLIST, GLOBAL_SHADER_BLOCKLIST, KAREL_BANNED_SHADERS } from "./journeys";
+import { RECAST_SAFELIST, regenerateJourneyShaders, castJourneyShaders, getJourneyCast, PICKTIME_SHADER_BLOCKLIST, PICKTIME_REALM_BLOCKLIST, GLOBAL_SHADER_BLOCKLIST, KAREL_BANNED_SHADERS, RETIRED_POOL_SLOT_MODES } from "./journeys";
 import type { TakeScriptEntry } from "./pinned-takes";
 import { createSeededRandom, seededShuffle } from "./seeded-random";
 import { MODES_3D, MODE_META, LAB_SHADERS } from "@/lib/shaders";
@@ -176,7 +176,7 @@ class JourneyEngine {
   /** Primary shaders that must run solo — never paired with a dual layer.
    *  These tend to be GPU-expensive enough that stacking a second shader on top
    *  drops framerate into the teens. The shader still runs happily as primary. */
-  private static readonly NEVER_DUAL_PRIMARIES = new Set<string>(["thermal"]);
+  private static readonly NEVER_DUAL_PRIMARIES = new Set<string>([]); // "thermal" deleted from the codebase 2026-10-13 (Karel reviewed on film)
 
   /** ─── Composition conductor (2026-09-27, Karel/Johnny/Joseph review) ───
    *  The authored per-phase intensity arc (0.4 → 1.0 → 0.3) must shape HOW
@@ -1580,6 +1580,9 @@ class JourneyEngine {
     // Karel's personal bans (credo, dharma, biofilm, monsoon veil) — every
     // picker AND scripted takes (which recast them; see applyTakeScript).
     if (KAREL_BANNED_SHADERS.has(mode)) return false;
+    // Retired pool slots (snow / lightning — deleted 2026-10-13, kept only as
+    // seeded-pool placeholders): nothing to render, never picked.
+    if (RETIRED_POOL_SLOT_MODES.has(mode)) return false;
     // LAB shaders (audition only) — never picked (empty since 2026-10-13).
     if (LAB_SHADERS.has(mode)) return false;
     // Shader balance (Karel 2026-10-13): dharma never; per-journey bans

@@ -46,20 +46,19 @@ export const BANNED_LINES = ["r-silk", "r3-dreamtendrils", "r3-spirittrails", "r
   // line-family survivors the first pass let through (thin colored lines)
   "r3-underwatervines", "r3-seaweedsway", "synapse", "soma", "r3-arcdischarge"];
 export const MASTERED_LEADS = ["sparkler", "comet-swarm", "helix-stream", "ember-fountain", "galaxy-seed"];
-const OTHER = ["r-petals", "snow", "rain", "night-rain", "deluge", // rain-family
+const OTHER = ["r-petals", "deluge", // rain-family (snow / rain / night-rain deleted from the codebase 2026-10-13)
   "aurora-borealis", "aurora-wave", "r3-auroradream"]; // aurora = Snowflake material only
 // Karel's general verdicts recorded in memory/journeys.ts comments (not
 // realm-scoped): moon shaders banned globally; "colored dots full
 // screen" spore; full-screen rainbow ring washes; web-like shaders;
 // concentric shockwave rings; full-color closers.
-export const CONVICTED = ["selene", "blood-moon", "eclipse-ring", "spore", "r3-pulseringssoft", "r3-coralpulse", "umbra", "lichen", "nova", "halo", "catacomb-torch", "flux", "credo", "enzyme", "maelstrom", "vortex", "whorl", "r2-coral", "r2-sunsetcascade", "r-molten"];
+export const CONVICTED = ["selene", "blood-moon", "eclipse-ring", "spore", "r3-pulseringssoft", "r3-coralpulse", "umbra", "lichen", "nova", "halo", "catacomb-torch", "flux", "enzyme", "maelstrom", "vortex", "whorl", "r2-coral", "r2-sunsetcascade", "r-molten"];
 
 // Rejected by Karel IN PERSON (2026-10-04) — overrides any metric pass.
 export const KAREL_REJECTED = {
   chakra: "banded/lightened the screen in Ghost",
   redshift: "the concentric rings — \"that oval one\"",
   gnosis: "glowing oval sun in the tunnel",
-  biolume: "built-in bass flash (bassFlash strobe)",
   coral: "bright white sparkle (\"dont use that bright white sparkle shader\")",
   "r3-balllightning": "bright white sparkle (\"dont use that bright white sparkle shader\")",
 };

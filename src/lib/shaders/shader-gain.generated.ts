@@ -10,7 +10,6 @@ export const SHADER_SUPPORT_GAIN: Readonly<Record<string, number>> = {
   "chrysalis": 0.71,
   "cirrus": 0.667,
   "covenant": 0.503,
-  "dharma": 0.796,
   "dusk": 0.749,
   "jubilee": 0.573,
   "kairos": 0.767,

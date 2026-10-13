@@ -17,20 +17,19 @@ const PERIODIC = "periodic: alt-cut render identical";
 const NO_SEAM = "measured: jump at the cut < ~1 grey level / not from the angle";
 const VERIFIED: Record<string, string> = {
   // 2π-periodic uses only (integer angular frequency, fract(a/2π * n), cos/sin of a)
-  astral: PERIODIC, dusk: PERIODIC, neon: PERIODIC, redshift: PERIODIC, singularity: PERIODIC,
-  stigmata: PERIODIC, flagella: PERIODIC, gnosis: PERIODIC, doppler: PERIODIC, merkaba: PERIODIC,
-  estuary: PERIODIC, quatrefoil: PERIODIC, involute: PERIODIC, hubble: PERIODIC, "dark-crystal": PERIODIC,
+  astral: PERIODIC, dusk: PERIODIC, redshift: PERIODIC, singularity: PERIODIC,
+  stigmata: PERIODIC, flagella: PERIODIC, gnosis: PERIODIC, merkaba: PERIODIC,
+  quatrefoil: PERIODIC, involute: PERIODIC, hubble: PERIODIC, "dark-crystal": PERIODIC,
   pelagic: PERIODIC, zooid: PERIODIC, meristem: PERIODIC, rime: PERIODIC, kenosis: PERIODIC,
   jubilee: PERIODIC, "fibonacci-spiral": PERIODIC, kairos: PERIODIC, "r3-sleepingbloom": PERIODIC,
   "r2-spiralgal": PERIODIC, "r2-magnetic": PERIODIC, "r3-magneticwisps": PERIODIC, "r3-fernunfurl": PERIODIC,
-  kepler: PERIODIC, "r-kaleido": PERIODIC, credo: PERIODIC, pilgrimage: PERIODIC,
+  kepler: PERIODIC, "r-kaleido": PERIODIC, pilgrimage: PERIODIC,
   // LOCKED (Snowflake / Ghost takes) — never edited here
   yantra: "LOCKED Ghost roster; periodic",
   "eclipse-ring": "LOCKED Snowflake roster; tiny non-periodic term, centre seam ratio <= 0.4 (invisible)",
   // non-periodic angle somewhere, but no visible seam
   halo: NO_SEAM, satori: NO_SEAM, nadir: NO_SEAM, chakra: NO_SEAM, vestige: NO_SEAM, seraph: NO_SEAM,
   whorl: NO_SEAM, "shadow-fire": NO_SEAM, trefoil: NO_SEAM, "event-horizon": NO_SEAM,
-  empyrean: "cut centre sits above the frame (atan(uv.y - 0.6, ..)) — never on screen",
   pollen: "per-grain spike angles; cut falls between spikes (seam ratio <= 0.6)",
   covenant: "arc angle-range tests (intentional arc ends); seam blend would break the arcs",
   "resonant-rings": "cell index floor(a * n / 2π): the cut is already a cell border",

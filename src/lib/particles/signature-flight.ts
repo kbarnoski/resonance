@@ -174,7 +174,7 @@ export const FLIGHT = {
 } as const;
 
 export const FLIGHT_SESSION_KEY = "resonance-birdflight";
-export const FLIGHT_DEFAULT = false;
+export const FLIGHT_DEFAULT = true; // shipped 2026-10-13 (Karel asked for it; songbird flight; WCAG flash test 0/s)
 
 export interface FlightFlag { closing: boolean; opening: boolean }
 
@@ -189,7 +189,7 @@ export function birdFlightEnabled(search?: string, store?: Pick<Storage, "getIte
   try { if (q) store?.setItem(FLIGHT_SESSION_KEY, q); } catch { /* storage blocked */ }
   let v = q;
   if (!v) { try { const k = store?.getItem(FLIGHT_SESSION_KEY); if (k === "0" || k === "1") v = k; } catch { /* blocked */ } }
-  if (!v) return { closing: FLIGHT_DEFAULT, opening: false };
+  if (!v) return { closing: FLIGHT_DEFAULT, opening: FLIGHT_DEFAULT };
   return { closing: v === "1", opening: v === "1" };
 }
 
