@@ -69,9 +69,16 @@ export function journeyLayerGain(journey?: { id?: string | null; name?: string |
   if (!mode || !journey) return 1;
   if (isExpansionKineticName(journey.name)) return expansionLayerGain(journey.name, mode);
   if (isKineticJourneyName(journey.name)) return 1; // Kinetic Lab
+  if (journey.id && JOURNEY_SHADER_DIM[journey.id]?.[mode] != null) return JOURNEY_SHADER_DIM[journey.id][mode];
   if (isMasteredJourneyLike(journey)) return 1;
   return SHADER_SUPPORT_GAIN[mode] ?? 1;
 }
+
+/** Hand dims for single shaders in a journey (Karel's notes, mastered ones included). */
+export const JOURNEY_SHADER_DIM: Readonly<Record<string, Readonly<Record<string, number>>>> = {
+  // Karel 2026-10-13: "the triangles shader in ghost is a bit too bright. should be a bit more transparent"
+  ghost: { yantra: 0.65 },
+};
 
 /** Band-split reactive shaders (bass/mid/treble per layer). */
 export function isKineticJourneyName(name?: string | null): boolean {
