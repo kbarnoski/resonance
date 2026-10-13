@@ -160,6 +160,41 @@ describe("particle activation never blocks the main thread", () => {
     e2.dispose();
   });
 
+  it("SHIMMER-FREE (?stable / ?glow): compiled in only when on, warm before use, no new context, no synchronous GPU call", async () => {
+    const { createParticleEngine } = await import("./particle-engine");
+    const { gl, calls } = fakeGL({ compilePolls: 2 });
+    const canvas = fakeCanvas(gl);
+    const engine = createParticleEngine(canvas as unknown as HTMLCanvasElement, { count: 4096, soul: "rings", stable: true, glow: true, cine: true, trails: true });
+    engine.prepare(["rings"]);
+    for (let i = 0; i < 80 && !engine.isWarm(); i++) { now += 400; engine.prewarm(); }
+    expect(engine.isWarm()).toBe(true);
+    const warmed = engine.stats().warmLog.map((w) => w[0]);
+    expect(warmed).toContain("taa");
+    expect(warmed).toContain("glow");
+    engine.start();
+    step(16.7, 40);
+    engine.setCine(false); // the glow glides out, never steps
+    step(16.7, 10);
+    expect(engine.stats().stability.bloom).toBeGreaterThan(0);
+    step(16.7, 400);
+    expect(engine.stats().stability.bloom).toBe(0);
+    engine.resize();
+    step(16.7, 5);
+    const srcs = calls.filter((c) => c.name === "shaderSource").map((c) => String(c.args[1]));
+    expect(srcs.filter((s) => s.includes("#define STABLE 1")).length).toBe(2);
+    expect(srcs.some((s) => s.includes("uBloomTex"))).toBe(true);
+    expect(calls.filter((c) => FORBIDDEN.includes(c.name)).map((c) => c.name)).toEqual([]);
+    expect(canvas.getContextCalls).toBe(1); // one context, no extra for the new passes
+    engine.dispose();
+    // off (?stable=0 — stable is the show default since 2026-10-13): no stable / glow source, no extra passes
+    const off = fakeGL({ compilePolls: 1 });
+    const e2 = createParticleEngine(fakeCanvas(off.gl) as unknown as HTMLCanvasElement, { count: 4096, soul: "rings", stable: false, glow: false });
+    const offSrc = off.calls.filter((c) => c.name === "shaderSource").map((c) => String(c.args[1]));
+    expect(offSrc.some((s) => s.includes("#define STABLE") || s.includes("uBloomTex") || s.includes("ST_SLACK"))).toBe(false);
+    expect(e2.stats().stability).toEqual({ stable: false, glow: false, bloom: 0 });
+    e2.dispose();
+  });
+
   it("THE BRIDGE: still colours upload as plain bytes, glide, and a worn slot never swaps", async () => {
     const { createParticleEngine } = await import("./particle-engine");
     const { gl, calls } = fakeGL({ compilePolls: 0 });

@@ -286,6 +286,9 @@ export function useKioskRemote(context: KioskRemoteContext): void {
               currentTime: Math.round(s.currentTime),
               duration: Math.round(s.duration),
               volume: s.volume,
+              // Live Theatre: "MIDI: Nord Stage 3 connected · 12 notes/min" (midi-input.ts)
+              midi:
+                ((window as unknown as Record<string, unknown>).__resonanceMidiStatus as string | null | undefined) ?? null,
               programs:
                 (window as unknown as Record<string, unknown>)
                   .__resonanceKioskPrograms ?? null,

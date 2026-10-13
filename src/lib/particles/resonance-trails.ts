@@ -158,8 +158,11 @@ export class SustainMeter {
   busy = 0;
 
   /** Feed one analyser frame (byte spectrum, or null for silence / paused).
-   *  Stale frames (the feed has not updated) keep the last reading. Returns the gain. */
-  push(bytes: ArrayLike<number> | null, dt: number): number {
+   *  Stale frames (the feed has not updated) keep the last reading. Returns the gain.
+   *  `ext` (MIDI, midi-drive.ts): a raw sustain reading from the pedal / held
+   *  notes mixed over the audio reading by ext.weight — the EMA, dead zone and
+   *  gain slew below apply to the mix unchanged (absent / weight 0 = audio only). */
+  push(bytes: ArrayLike<number> | null, dt: number, ext?: { raw: number; weight: number } | null): number {
     const h = clamp(Number.isFinite(dt) ? dt : 0, 0, 0.25);
     this.pendingDt += h;
     if (!bytes) {
@@ -200,13 +203,15 @@ export class SustainMeter {
         this.raw = this.presence * (1 - this.busy);
       }
     }
-    return this.step(h);
+    return this.step(h, ext);
   }
 
-  /** Advance the smoothing by dt with the current raw reading. */
-  private step(h: number): number {
-    const tau = this.raw > this.sustain ? L.UP_TAU_SEC : L.DOWN_TAU_SEC;
-    this.sustain += (this.raw - this.sustain) * (1 - Math.exp(-h / tau));
+  /** Advance the smoothing by dt with the current raw reading (MIDI-mixed). */
+  private step(h: number, ext?: { raw: number; weight: number } | null): number {
+    const w = ext && Number.isFinite(ext.weight) ? clamp(ext.weight, 0, 1) : 0;
+    const raw = w > 0 ? mix(this.raw, clamp(Number.isFinite(ext!.raw) ? ext!.raw : 0, 0, 1), w) : this.raw;
+    const tau = raw > this.sustain ? L.UP_TAU_SEC : L.DOWN_TAU_SEC;
+    this.sustain += (raw - this.sustain) * (1 - Math.exp(-h / tau));
     const target = trailGain(this.sustain);
     const maxStep = L.MAX_GAIN_RATE * h;
     this.gain = clamp(target, this.gain - maxStep, this.gain + maxStep);

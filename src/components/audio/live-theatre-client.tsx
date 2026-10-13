@@ -21,6 +21,7 @@ import { getAudioEngine, ensureResumed, attachMicDrive, getAnalyserNode } from "
 import { getJourney } from "@/lib/journeys/journeys";
 import { getCulminationJourney } from "@/lib/journeys/culmination-journeys";
 import { useKioskRemote } from "@/lib/audio/use-kiosk-remote";
+import { startMidiInput } from "@/lib/audio/midi-input";
 import type { Journey } from "@/lib/journeys/types";
 import type { InstallationProgram, SequenceEntry } from "./installation-loop-client";
 import { pickLiveWorld, liveWorldPool, LIVE_SCENE_MS, LIVE_VEIL_MS, LIVE_DARK_HOLD_MS } from "@/lib/journeys/live-theatre";
@@ -123,6 +124,11 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
         }, 30_000);
       }
     });
+    // THE NORD OVER USB (midi-input.ts): ask for Web MIDI once; while he
+    // plays it the particle features read his exact notes, velocities and
+    // pedal instead of guessing from the mic (midi-drive.ts). Denied or no
+    // keyboard → silently stay on the mic.
+    void startMidiInput(postEvent).then((ok) => postEvent(ok ? "live-midi ready" : "live-midi unavailable (mic only)"));
     postEvent(`live-start (${poolRef.current.length} worlds)`);
     void nextWorld("start");
     return () => {

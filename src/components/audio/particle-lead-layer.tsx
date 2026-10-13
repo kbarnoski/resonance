@@ -83,6 +83,8 @@ import { TwoHands, handsAllowed, handsEnabled, handsGain, handsSessionStore, han
 import { conductCurrents, currentAt, createTide, tideStep, withTide, currentsEnabled, clearestRelease, CURRENTS_LOCKED_JOURNEYS, type CurrentTimeline } from "@/lib/particles/harmonic-currents";
 import { conductBreath, breathAt, breathEnabled, breathSummary, type BreathTimeline } from "@/lib/particles/breath";
 import { SustainMeter, trailsEnabled, trailsForJourney, trailsSessionStore } from "@/lib/particles/resonance-trails";
+import { liveMidiDrive } from "@/lib/particles/midi-drive";
+import { midiRequestedByUrl, startMidiInput } from "@/lib/audio/midi-input";
 
 /** PHRASE CONDUCTOR (?phrase=1, off by default — phrase-conductor.ts): the deep
  *  analysis's section starts / crests / breaths time the form changes and the
@@ -772,6 +774,9 @@ export function ParticleLeadLayer({
     const sustainMeter = trailsK > 0 ? new SustainMeter() : null;
     engine.setTrails(null, true); // a fresh journey never inherits the last one's tails
     if (sustainMeter) glitchRecord("particle-trails", `on: ${journeyId} strength=${trailsK}`);
+    const midiFeeds = !!(score || hands || sustainMeter);
+    // the lab opt-in (Live Theatre starts MIDI itself); asks once per page
+    if (midiFeeds && midiRequestedByUrl()) void startMidiInput();
     sh.hooks.audio = (dt) => {
       const a = analyserRef.current;
       let fresh = false;
@@ -787,16 +792,21 @@ export function ParticleLeadLayer({
         }
       }
       proc.step(dt);
+      // MIDI (Live Theatre / ?midi=1 — midi-drive.ts): the Nord's exact notes,
+      // velocities and pedal replace the audio guesses while it is played,
+      // cross-faded ≥ 2 s both ways; null elsewhere (behaviour unchanged)
+      const md = midiFeeds ? liveMidiDrive() : null;
+      if (md) md.step(performance.now());
       if (onsetDet) {
-        const on = onsetDet.push(fresh ? bytes : null, dt);
-        if (score) engine.setScore(score.packed, score.step(dt, on, scoreGainTarget));
+        const heard = onsetDet.push(fresh ? bytes : null, dt);
+        if (score) engine.setScore(score.packed, score.step(dt, md ? md.scoreOnset(heard) : heard, scoreGainTarget));
         if (hands) {
-          const v = hands.step(fresh ? bytes : null, on, dt, handsGainTarget);
+          const v = hands.step(fresh ? bytes : null, heard, dt, handsGainTarget, md ? md.hands : null);
           handsOut.low = v.low * handsK; handsOut.high = v.high * handsK; handsOut.strata = v.strata * handsK;
           engine.setHands(handsOut);
         }
       }
-      if (sustainMeter) engine.setTrails(sustainMeter.push(fresh ? bytes : null, dt) * trailsK);
+      if (sustainMeter) engine.setTrails(sustainMeter.push(fresh ? bytes : null, dt, md ? md.trails : null) * trailsK);
       return calmFrame(proc.frame(), dt);
     };
     // a fresh journey: no leftover image form / variant / field from the last one
@@ -2008,6 +2018,7 @@ export function ParticleLeadLayer({
       // — the shaders carry the beat; the particles move at their own calm pace
       engine.setMelody(null);
 
+      const midiProbe = midiFeeds ? liveMidiDrive() : null;
       (window as unknown as Record<string, unknown>).__resonanceParticleLead = {
         journeyId,
         name: cast.name,
@@ -2048,6 +2059,7 @@ export function ParticleLeadLayer({
         ...(gravityOn ? { gravity: { active: gravityActive(gravGlide, gravNow()), still: gravUrl ? gravUrl.split("/").pop() : null, ...engine.gravityState() } } : {}),
         ...(currentNow ? { currents: { ...currentNow, next: currentsTl?.marks.find((m) => m.t > t)?.label ?? null } } : {}),
         ...(sustainMeter ? { trails: { strength: trailsK, sustain: +sustainMeter.sustain.toFixed(3), gain: +sustainMeter.gain.toFixed(3), shown: +engine.trailsShown().toFixed(3), presence: +sustainMeter.presence.toFixed(3), busy: +sustainMeter.busy.toFixed(3) } } : {}),
+        ...(midiProbe ? { midi: { mix: +midiProbe.mix.toFixed(3), active: midiProbe.active, emitted: midiProbe.emitted, pending: midiProbe.pending(), hands: { low: +midiProbe.hands.low.toFixed(3), high: +midiProbe.hands.high.toFixed(3) }, sustain: +midiProbe.trails.raw.toFixed(3) } } : {}),
       };
     };
     const iv = window.setInterval(tick, 100);

@@ -21,6 +21,11 @@
 //              luminance → the exposure governor (governExposure): global
 //              brightness may only drift ≤2%/update. WCAG 2.3.1: the music
 //              never drives brightness; this is the backstop for density.
+//   3b. TAA  — (?stable=1) the HDR layer blended with its 3×3-clamped history
+//              (stable-motes.ts); the motes themselves are drawn with analytic
+//              pixel coverage so they never shimmer as they drift sub-pixel.
+//   3c. GLOW — (?glow=1, cine only) quarter-res bloom from the resolved
+//              layer's mips, low-passed in time before the knee.
 //   4. COMP  — tonemap 1-e^(-x·exposure), sRGB, black-gated dither → canvas.
 //
 // The audio contract is SpectrumFrame (spectrum.ts). Pass a getter in
@@ -49,7 +54,12 @@ import {
   PAIR_RCDF_FS,
   PAIR_ASSIGN_FS,
   withTrails,
+  withStable,
+  withGlow,
+  TAA_FS,
+  BLOOM_FS,
 } from "./shaders";
+import { stableEnabled, glowEnabled, particleSessionStore, taaKeep, bloomKeep, STABLE_LAWS } from "./stable-motes";
 import { trailsEnabled, trailsSessionStore, TRAILS_LAWS } from "./resonance-trails";
 import { pairingEnabled, PAIR_GROUPS } from "./spatial-pairing";
 import {
@@ -121,6 +131,14 @@ export interface ParticleEngineOptions {
    *  the draw program. Default: ?trails=1 (sessionStorage-kept), else off —
    *  off, the draw source is exactly the show build's. */
   trails?: boolean;
+  /** SHIMMER-FREE PARTICLES (stable-motes.ts): analytic-coverage mote sprites
+   *  + a temporal resolve of the HDR layer. Default: ?stable=1 (sessionStorage-
+   *  kept), else off — off, the draw source and passes are the show build's. */
+  stable?: boolean;
+  /** STABLE GLOW (stable-motes.ts): the cinematic bloom back, temporally
+   *  filtered, on cine journeys only. Default: ?glow=1 (sessionStorage-kept),
+   *  else off — the show keeps bloom OFF until Karel sees film. */
+  glow?: boolean;
   /** Frame-time watchdog: called (once) when a frame's CPU time or the rAF gap
    *  while running exceeds the budget, or a program fails. */
   watchdog?: { cpuMs: number; gapMs: number; onStall: (why: string) => void };
@@ -171,6 +189,9 @@ export interface ParticleStats {
   scatter: number;
   bounce: number;
   programs: { compiling: number; ready: number; warm: number; failed: number };
+  /** Shimmer-free particles: stable motes + temporal resolve compiled in;
+   *  glow compiled in, and the bloom gain on screen now. */
+  stability: { stable: boolean; glow: boolean; bloom: number };
   /** [program, t (ms), call ms] for each warm draw */
   warmLog: [string, number, number][];
 }
@@ -555,11 +576,17 @@ export function createParticleEngine(
   const probe = !!opts.probe;
   // RESONANCE TRAILS: decided once per engine (its draw program carries it or not)
   const trailsOn = opts.trails ?? trailsEnabled(undefined, trailsSessionStore());
-  const draw = trailsOn ? startProgram(gl, withTrails(DRAW_VS), withTrails(DRAW_FS)) : startProgram(gl, DRAW_VS, DRAW_FS);
+  // SHIMMER-FREE PARTICLES: decided once per engine too (programs + targets)
+  const stableOn = opts.stable ?? stableEnabled(undefined, particleSessionStore());
+  const glowOn = opts.glow ?? glowEnabled(undefined, particleSessionStore());
+  const drawSrc = (src: string) => { const x = trailsOn ? withTrails(src) : src; return stableOn ? withStable(x) : x; };
+  const draw = startProgram(gl, drawSrc(DRAW_VS), drawSrc(DRAW_FS));
   const fade = startProgram(gl, QUAD_VS, FADE_FS);
   const lum = startProgram(gl, QUAD_VS, LUM_FS);
   const expo = startProgram(gl, QUAD_VS, EXPO_FS);
-  const comp = startProgram(gl, QUAD_VS, COMP_FS);
+  const comp = startProgram(gl, QUAD_VS, glowOn ? withGlow(COMP_FS) : COMP_FS);
+  const taa = stableOn ? startProgram(gl, QUAD_VS, TAA_FS) : null;
+  const bloomP = glowOn ? startProgram(gl, QUAD_VS, BLOOM_FS) : null;
   const seedInit = startProgram(gl, QUAD_VS, SEED_INIT_FS);
   const posInit = startProgram(gl, QUAD_VS, POS_INIT_FS);
   // spatial pairing (step 1 of the particle upgrade): its two passes only exist
@@ -587,7 +614,7 @@ export function createParticleEngine(
         asg: startProgram(gl, QUAD_VS, PAIR_ASSIGN_FS),
       }
     : null;
-  const fixedProgs = [seedInit, posInit, draw, fade, lum, expo, comp, ...(pairProgs ? Object.values(pairProgs) : [])];
+  const fixedProgs = [seedInit, posInit, draw, fade, lum, expo, comp, ...(taa ? [taa] : []), ...(bloomP ? [bloomP] : []), ...(pairProgs ? Object.values(pairProgs) : [])];
   let particlesInitialised = false;
   // which program warmed when, and how long the call took (diagnostics)
   const warmLog: [string, number, number][] = [];
@@ -735,6 +762,18 @@ export function createParticleEngine(
   let hdrTex: WebGLTexture[] = [];
   let hdrFbo: WebGLFramebuffer[] = [];
   let hcur = 0;
+  // SHIMMER-FREE: the resolved (temporally stable) layer, ping-ponged — with
+  // mips only when the glow reads it; and the quarter-res bloom history
+  let taaTex: WebGLTexture[] = [];
+  let taaFbo: WebGLFramebuffer[] = [];
+  let tcur = 0;
+  let taaFresh = true;
+  let BW = 1, BH = 1;
+  let bloomTex: WebGLTexture[] = [];
+  let bloomFbo: WebGLFramebuffer[] = [];
+  let bcur = 0;
+  let bloomGain = 0;
+  let bloomLive = false;
   const lumTex = floatTex(gl, 16, 16, null);
   const lumFbo = gl.createFramebuffer()!;
   gl.bindFramebuffer(gl.FRAMEBUFFER, lumFbo);
@@ -785,7 +824,48 @@ export function createParticleEngine(
       gl!.clear(gl!.COLOR_BUFFER_BIT);
       return f;
     });
+    if (stableOn) {
+      for (const t of taaTex) gl!.deleteTexture(t);
+      for (const f of taaFbo) gl!.deleteFramebuffer(f);
+      const tl = glowOn ? levels : 1;
+      const pair = hdrPair(W, H, tl, tl > 1 ? gl!.LINEAR_MIPMAP_LINEAR : gl!.NEAREST);
+      taaTex = pair.tex;
+      taaFbo = pair.fbo;
+      taaFresh = true;
+    }
+    if (glowOn) {
+      for (const t of bloomTex) gl!.deleteTexture(t);
+      for (const f of bloomFbo) gl!.deleteFramebuffer(f);
+      BW = Math.max(1, Math.ceil(W / 4));
+      BH = Math.max(1, Math.ceil(H / 4));
+      const pair = hdrPair(BW, BH, 1, gl!.LINEAR);
+      bloomTex = pair.tex;
+      bloomFbo = pair.fbo;
+    }
     gl!.bindFramebuffer(gl!.FRAMEBUFFER, null);
+  }
+
+  /** Two cleared RGBA16F render targets (the HDR pattern above). */
+  function hdrPair(w: number, h: number, lv: number, minF: number): { tex: WebGLTexture[]; fbo: WebGLFramebuffer[] } {
+    const tex = [0, 1].map(() => {
+      const t = gl!.createTexture()!;
+      gl!.bindTexture(gl!.TEXTURE_2D, t);
+      gl!.texStorage2D(gl!.TEXTURE_2D, lv, gl!.RGBA16F, w, h);
+      gl!.texParameteri(gl!.TEXTURE_2D, gl!.TEXTURE_MIN_FILTER, minF);
+      gl!.texParameteri(gl!.TEXTURE_2D, gl!.TEXTURE_MAG_FILTER, minF === gl!.NEAREST ? gl!.NEAREST : gl!.LINEAR);
+      gl!.texParameteri(gl!.TEXTURE_2D, gl!.TEXTURE_WRAP_S, gl!.CLAMP_TO_EDGE);
+      gl!.texParameteri(gl!.TEXTURE_2D, gl!.TEXTURE_WRAP_T, gl!.CLAMP_TO_EDGE);
+      return t;
+    });
+    const fbo = tex.map((t) => {
+      const f = gl!.createFramebuffer()!;
+      gl!.bindFramebuffer(gl!.FRAMEBUFFER, f);
+      gl!.framebufferTexture2D(gl!.FRAMEBUFFER, gl!.COLOR_ATTACHMENT0, gl!.TEXTURE_2D, t, 0);
+      gl!.clearColor(0, 0, 0, 1);
+      gl!.clear(gl!.COLOR_BUFFER_BIT);
+      return f;
+    });
+    return { tex, fbo };
   }
 
   // ── soul + camera state ─────────────────────────────────────────────────
@@ -1451,6 +1531,7 @@ export function createParticleEngine(
     g.uniformMatrix4fv(draw.u.uVP, false, vp);
     g.uniform1i(draw.u.uTexW, side);
     g.uniform1f(draw.u.uPointPx, pointCss * dpr);
+    if (draw.u.uStVp) g.uniform2f(draw.u.uStVp, W, H); // stable motes: window px of the centre
     g.uniform1f(draw.u.uFocal, dist);
     // energy normalised to count so density presets stay in the same budget;
     // trails accumulate ~1/(1-trail), compensate so souls sit at equal energy
@@ -1538,6 +1619,22 @@ export function createParticleEngine(
     g.disable(g.BLEND);
     hcur = hn;
 
+    // ── 2b. TEMPORAL RESOLVE (?stable=1): HDR + its clamped history ─────────
+    if (taa) {
+      const tn = 1 - tcur;
+      g.bindFramebuffer(g.FRAMEBUFFER, taaFbo[tn]);
+      g.viewport(0, 0, W, H);
+      g.useProgram(taa.p);
+      bindTex(0, hdrTex[hcur], taa.u.uCur);
+      bindTex(1, taaTex[tcur], taa.u.uHist);
+      g.uniform1f(taa.u.uKeep, taaFresh ? 0 : taaKeep(dt));
+      g.drawArrays(g.TRIANGLES, 0, 3);
+      taaFresh = false;
+      tcur = tn;
+    }
+    // what the composite (and the glow) show: the resolved layer when stable
+    const shownTex = taa ? taaTex[tcur] : hdrTex[hcur];
+
     // ── 3. LUM governor — entirely on the GPU, no read-back ────────────────
     if (frames % 4 === 0) {
       g.bindTexture(g.TEXTURE_2D, hdrTex[hcur]);
@@ -1583,25 +1680,52 @@ export function createParticleEngine(
       }
     }
 
-    // ── 4. COMPOSITE ──────────────────────────────────────────────────────
-    // (the cinematic bloom reads the HDR mip chain — fresh every frame when on;
-    // the governor above rebuilds it every 4th)
-    if (false && cineOn && frames % 4 !== 0) { // bloom off: no per-frame mip rebuild
-      g.bindTexture(g.TEXTURE_2D, hdrTex[hcur]);
-      g.generateMipmap(g.TEXTURE_2D);
+    // ── 3c. STABLE GLOW (?glow=1, cine journeys only) ─────────────────────
+    // The gain glides (~0.6 s) so a cine on/off between journeys never steps;
+    // the history starts black each time the glow wakes (it swells in, τ).
+    if (bloomP) {
+      bloomGain += ((cineOn ? STABLE_LAWS.BLOOM_GAIN : 0) - bloomGain) * (1 - Math.exp(-dt / 0.6));
+      if (!cineOn && bloomGain < 1e-3) bloomGain = 0;
+      if (bloomGain > 0) {
+        if (!bloomLive) {
+          for (const f of bloomFbo) { g.bindFramebuffer(g.FRAMEBUFFER, f); g.clearColor(0, 0, 0, 1); g.clear(g.COLOR_BUFFER_BIT); }
+          bloomLive = true;
+        }
+        // the resolved layer needs its chain every frame; the raw HDR's was
+        // rebuilt by the governor on every 4th
+        if (taa || frames % 4 !== 0) {
+          g.bindTexture(g.TEXTURE_2D, shownTex);
+          g.generateMipmap(g.TEXTURE_2D);
+        }
+        const bn = 1 - bcur;
+        g.bindFramebuffer(g.FRAMEBUFFER, bloomFbo[bn]);
+        g.viewport(0, 0, BW, BH);
+        g.useProgram(bloomP.p);
+        bindTex(0, shownTex, bloomP.u.uSrc);
+        bindTex(1, bloomTex[bcur], bloomP.u.uPrev);
+        g.uniform1f(bloomP.u.uKeep, bloomKeep(dt));
+        g.drawArrays(g.TRIANGLES, 0, 3);
+        bcur = bn;
+      } else {
+        bloomLive = false;
+      }
     }
+
+    // ── 4. COMPOSITE ──────────────────────────────────────────────────────
     g.bindFramebuffer(g.FRAMEBUFFER, null);
     g.viewport(0, 0, W, H);
     g.useProgram(comp.p);
-    bindTex(0, hdrTex[hcur], comp.u.uHdr);
+    bindTex(0, shownTex, comp.u.uHdr);
     bindTex(1, expTex[ecur], comp.u.uExp);
+    if (bloomP) bindTex(2, bloomTex[bcur], comp.u.uBloomTex);
     g.uniform1f(comp.u.uTransparent, transparent ? 1 : 0);
     // BLOOM OFF in the show (Karel 2026-10-13: "i see flickering in the glowing
     // particles when in floral shape … dont have it flicker in brightness like
     // that cause it is seizure"): the glow is read from the HDR mip chain, and a
     // mote drifting across mip cells steps its glow — dense forms shimmer. Back
-    // only as a temporally smoothed bloom, after Karel sees it on film.
-    if (comp.u.uBloom) g.uniform1f(comp.u.uBloom, 0);
+    // only as a temporally smoothed bloom, after Karel sees it on film:
+    // ?glow=1 (stable-motes.ts) is exactly that, and stays off by default.
+    if (comp.u.uBloom) g.uniform1f(comp.u.uBloom, bloomP ? bloomGain : 0);
     g.drawArrays(g.TRIANGLES, 0, 3);
     g.bindVertexArray(null);
     const cpu = performance.now() - frameT0;
@@ -1709,6 +1833,23 @@ export function createParticleEngine(
       bindTex(0, posTex[cur], cold.u.uPos);
       g.uniform1i(cold.u.uTexW, side);
       if (cold === pairProgs.hist) g.drawArrays(g.POINTS, 0, 1); else g.drawArrays(g.TRIANGLES, 0, 3);
+    } else if (taa && cold === taa) {
+      g.bindFramebuffer(g.FRAMEBUFFER, taaFbo[1 - tcur]); // rewritten (keep 0) before any use
+      g.viewport(0, 0, W, H);
+      g.useProgram(taa.p);
+      bindTex(0, hdrTex[hcur], taa.u.uCur);
+      bindTex(1, taaTex[tcur], taa.u.uHist);
+      g.uniform1f(taa.u.uKeep, 0);
+      g.drawArrays(g.TRIANGLES, 0, 3);
+      taaFresh = true;
+    } else if (bloomP && cold === bloomP) {
+      g.bindFramebuffer(g.FRAMEBUFFER, bloomFbo[1 - bcur]); // cleared when the glow wakes
+      g.viewport(0, 0, BW, BH);
+      g.useProgram(bloomP.p);
+      bindTex(0, taa ? taaTex[tcur] : hdrTex[hcur], bloomP.u.uSrc);
+      bindTex(1, bloomTex[bcur], bloomP.u.uPrev);
+      g.drawArrays(g.TRIANGLES, 0, 3);
+      bloomLive = false;
     } else if (cold === comp) {
       g.bindFramebuffer(g.FRAMEBUFFER, null);
       g.viewport(0, 0, W, H);
@@ -1734,7 +1875,7 @@ export function createParticleEngine(
     g.bindVertexArray(null);
     cold.warm = true;
     lastWarmAt = performance.now();
-    warmLog.push([cold === seedInit ? "seedInit" : cold === posInit ? "posInit" : cold === draw ? "draw" : cold === fade ? "fade" : cold === lum ? "lum" : cold === expo ? "expo" : cold === comp ? "comp" : pairProgs && Object.values(pairProgs).includes(cold) ? "pair" : "sim", Math.round(tw), Math.round((performance.now() - tw) * 10) / 10]);
+    warmLog.push([cold === seedInit ? "seedInit" : cold === posInit ? "posInit" : cold === draw ? "draw" : cold === fade ? "fade" : cold === lum ? "lum" : cold === expo ? "expo" : cold === comp ? "comp" : cold === taa ? "taa" : cold === bloomP ? "glow" : pairProgs && Object.values(pairProgs).includes(cold) ? "pair" : "sim", Math.round(tw), Math.round((performance.now() - tw) * 10) / 10]);
     if (warmLog.length > 40) warmLog.shift();
     const cpu = performance.now() - t0;
     // a warm draw is a pipeline build by design (invisible, once per program) — logged, never fatal
@@ -1768,6 +1909,8 @@ export function createParticleEngine(
       if (running || lost || stalled) return;
       running = true;
       framesSinceStart = 0;
+      taaFresh = true; // the history is stale after a stop
+      bloomLive = false;
       lastT = 0;
       raf = requestAnimationFrame(frame);
     },
@@ -1784,12 +1927,12 @@ export function createParticleEngine(
       velRead?.dispose();
       jumpRead?.dispose();
       lumRead?.dispose();
-      for (const t of [...posTex, ...velTex, ...hdrTex, lumTex, specTex, ...imgTex, ...bridgeTex, ...expTex]) gl.deleteTexture(t);
+      for (const t of [...posTex, ...velTex, ...hdrTex, ...taaTex, ...bloomTex, lumTex, specTex, ...imgTex, ...bridgeTex, ...expTex]) gl.deleteTexture(t);
       if (pairT) for (const t of [pairT.sorted, pairT.stats.tex, pairT.hist.tex, pairT.acdf.tex, pairT.rcdf.tex]) gl.deleteTexture(t);
       if (pairUv) gl.deleteTexture(pairUv.tex);
       if (seedTex) gl.deleteTexture(seedTex);
       if (seedFbo) gl.deleteFramebuffer(seedFbo);
-      for (const fb of [...simFbo, ...hdrFbo, lumFbo, ...expFbo]) gl.deleteFramebuffer(fb);
+      for (const fb of [...simFbo, ...hdrFbo, ...taaFbo, ...bloomFbo, lumFbo, ...expFbo]) gl.deleteFramebuffer(fb);
       for (const p of [...fixedProgs, ...simProgs.values()]) gl.deleteProgram(p.p);
       gl.deleteVertexArray(vao);
     },
@@ -2102,6 +2245,7 @@ export function createParticleEngine(
         scatter: scatterEnv,
         bounce: bounceEnv,
         warmLog: warmLog.slice(),
+        stability: { stable: stableOn, glow: glowOn, bloom: bloomGain },
         programs: (() => {
           const all = [...fixedProgs, ...simProgs.values()];
           return {

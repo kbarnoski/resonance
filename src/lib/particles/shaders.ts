@@ -15,6 +15,7 @@ import { SCORE_TUNING } from "./living-score";
 import { BREATH_LAWS } from "./breath";
 import { HANDS_TUNING } from "./two-hands";
 import { trailsGlslConsts } from "./resonance-trails";
+import { stableGlslConsts, STABLE_LAWS } from "./stable-motes";
 
 export const QUAD_VS = /* glsl */ `#version 300 es
 const vec2 P[3] = vec2[3](vec2(-1.0,-1.0), vec2(3.0,-1.0), vec2(-1.0,3.0));
@@ -1473,6 +1474,14 @@ uniform vec3 uBridgeR;       // camera right × half-width (world units per NDC 
 uniform vec3 uBridgeU;       // camera up × half-height
 out vec3 vCol;
 out float vCoc;
+#ifdef STABLE
+// SHIMMER-FREE MOTES (stable-motes.ts, ?stable=1): the mote's centre in window
+// px, and its two prefiltered, rim-shifted gaussians (exact energy)
+uniform vec2 uStVp;          // drawing buffer size, device px
+flat out highp vec2 vStC;    // centre (window px)
+flat out vec4 vStA;          // amplitude 1, amplitude 2, 1/(2σ1²), 1/(2σ2²)
+flat out vec4 vStB;          // rim value 1, rim value 2, rim radius², 1/Rn² (bokeh)
+#endif
 #ifdef TRAILS
 // RESONANCE TRAILS (resonance-trails.ts, ?trails=1): the trail gain (0 = none)
 // and the drawing buffer's size in device px
@@ -1613,8 +1622,31 @@ void main(){
     a /= k * k;
     vCoc = coc;
   }
+#ifdef STABLE
+  // SHIMMER-FREE (stable-motes.ts stableMote is the CPU mirror the test
+  // measures): each gaussian of the sprite is convolved with a pixel prefilter
+  // (σ² + ST_SP2 — never narrower than ~0.65 px, so its sum over pixel centres
+  // no longer depends on where the mote sits inside its pixel), shifted to 0 at
+  // a soft rim, and renormalised in closed form to the legacy nominal light
+  // (∝ Rn²; this replaces the size<1 rule — enlarge-and-dim, exactly).
+  {
+    float rn = 0.5 * min(size, 24.0);
+    float s1q = rn * rn / (2.0 * ST_C1) + ST_SP2;
+    float s2q = rn * rn / (2.0 * ST_C2) + ST_SP2;
+    float rs = min(ST_MAXR, max(rn, ST_RIM * sqrt(s1q)));
+    float rs2 = rs * rs;
+    float o1 = exp(-0.5 * rs2 / s1q), o2 = exp(-0.5 * rs2 / s2q);
+    float i1 = 6.2831853 * s1q * (1.0 - o1) - 3.1415927 * rs2 * o1;
+    float i2 = 6.2831853 * s2q * (1.0 - o2) - 3.1415927 * rs2 * o2;
+    vStA = vec4(ST_E1 * rn * rn / i1, ST_E2 * rn * rn / i2, 0.5 / s1q, 0.5 / s2q);
+    vStB = vec4(o1, o2, rs2, 1.0 / max(rn * rn, 1e-6));
+    vStC = (clip.xy / clip.w * 0.5 + 0.5) * uStVp;
+    gl_PointSize = 2.0 * rs;
+  }
+#else
   if (size < 1.0) { a *= size * size; size = 1.0; }
   gl_PointSize = min(size, 24.0);
+#endif
 #ifdef TRAILS
   // RESONANCE TRAILS: while the sound is held, a share of the motes stretch
   // along their SCREEN velocity (the sim's velocity texture — no previous-frame
@@ -1639,7 +1671,9 @@ void main(){
       float g2u = mix(TR_G2C, TR_G2B, vCoc), g1u = mix(TR_G1C, TR_G1B, vCoc);
       float g2t = mix(g2u, TR_G2S, softT), g1t = mix(g1u, TR_G1S, softT);
       float e = (1.0 - 0.5 * fadeT) * (R * R * g2t + R * L * g1t);
-      trScale = min(1.0, r0 * r0 * g2u / max(e, 1e-6));
+      // (× the sub-pixel rule: 1 in the show build, where size is already ≥ 1;
+      // the stable build leaves size unclamped and a streak keeps the old rule)
+      trScale = min(1.0, r0 * r0 * g2u / max(e, 1e-6)) * (size < 1.0 ? size * size : 1.0);
       vec2 dir = vpx / sp;
       // the sprite centres on the streak's middle: the head stays on the mote
       gl_Position.xy -= dir * (0.5 * L) * (2.0 / uViewPx) * clip.w;
@@ -1737,6 +1771,11 @@ in float vCoc;
 in vec4 vTrail;
 in vec3 vTrailK;
 #endif
+#ifdef STABLE
+flat in highp vec2 vStC;
+flat in vec4 vStA;
+flat in vec4 vStB;
+#endif
 out vec4 o;
 void main(){
 #ifdef TRAILS
@@ -1755,6 +1794,23 @@ void main(){
     gt = mix(gt, 1.3 * exp(-t2 * 2.0) * (1.0 - smoothstep(0.5, 1.0, t2)), vTrailK.y);
     gt *= 1.0 - vTrailK.x * (0.5 * tl - sa) / tl;
     o = vec4(vCol * gt * 1.15, 1.0);
+    return;
+  }
+#endif
+#ifdef STABLE
+  {
+    // pixel-space offset from the TRUE centre (exact even if the driver rounds
+    // the point size); highp — window coords exceed mediump's precision
+    highp vec2 q = gl_FragCoord.xy - vStC;
+    highp float q2 = dot(q, q);
+    if (q2 >= vStB.z) discard;
+    float gs = vStA.x * max(exp(-q2 * vStA.z) - vStB.x, 0.0) + vStA.y * max(exp(-q2 * vStA.w) - vStB.y, 0.0);
+    if (vCoc > 0.0) {
+      float rb = q2 * vStB.w;
+      float bk = rb < 1.0 ? (1.0 - smoothstep(0.15, 1.0, rb)) * 0.62 + 0.12 * exp(-rb * 2.0) : 0.0;
+      gs = mix(gs, bk, vCoc);
+    }
+    o = vec4(vCol * gs * 1.15, 1.0);
     return;
   }
 #endif
@@ -1783,6 +1839,88 @@ export function withTrails(src: string): string {
   const at = m.index + m[0].length;
   out = `${out.slice(0, at)}${trailsGlslConsts()}\n${out.slice(at)}`;
   return out;
+}
+
+/** SHIMMER-FREE MOTES (?stable=1): the draw program's source with the stable
+ *  sprite compiled in (same insertion rules as withTrails). Off = untouched. */
+export function withStable(src: string): string {
+  const nl = src.indexOf("\n");
+  let out = `${src.slice(0, nl + 1)}#define STABLE 1\n${src.slice(nl + 1)}`;
+  const m = /^precision \w+ float;\n/m.exec(out);
+  if (!m) throw new Error("withStable: no float precision statement");
+  const at = m.index + m[0].length;
+  out = `${out.slice(0, at)}${stableGlslConsts()}\n${out.slice(at)}`;
+  return out;
+}
+
+/** TEMPORAL RESOLVE (?stable=1, stable-motes.ts taaResolve is the CPU mirror):
+ *  the HDR particle layer blended with its own history; the history is first
+ *  clamped into the current frame's 3×3 min/max (widened by ST_SLACK) so light
+ *  that has LEFT a neighbourhood can never linger as a ghost. */
+export const TAA_FS = /* glsl */ `#version 300 es
+precision highp float;
+uniform sampler2D uCur;
+uniform sampler2D uHist;
+uniform float uKeep;   // history weight this frame (0 = fresh: show the current frame)
+out vec4 o;
+const float ST_SLACK = ${STABLE_LAWS.TAA_CLAMP_SLACK.toFixed(4)};
+void main(){
+  ivec2 c = ivec2(gl_FragCoord.xy);
+  ivec2 lim = textureSize(uCur, 0) - 1;
+  vec3 cur = texelFetch(uCur, c, 0).rgb;
+  vec3 mn = cur, mx = cur;
+  for (int y = -1; y <= 1; y++) for (int x = -1; x <= 1; x++) {
+    if (x == 0 && y == 0) continue;
+    vec3 v = texelFetch(uCur, clamp(c + ivec2(x, y), ivec2(0), lim), 0).rgb;
+    mn = min(mn, v);
+    mx = max(mx, v);
+  }
+  vec3 h = clamp(texelFetch(uHist, c, 0).rgb, mn * (1.0 - ST_SLACK), mx * (1.0 + ST_SLACK));
+  o = vec4(mix(cur, h, uKeep), 1.0);
+}
+`;
+
+/** STABLE GLOW (?glow=1): the cinematic bloom, computed ONCE at quarter
+ *  resolution from the resolved layer's mip chain (the same three fine levels
+ *  and tents as before) and low-passed in time (uKeep = e^(−dt/τ)) BEFORE the
+ *  composite's soft knee — the knee only ever sees a settled signal. */
+export const BLOOM_FS = /* glsl */ `#version 300 es
+precision highp float;
+uniform sampler2D uSrc;   // resolved HDR layer (with mips)
+uniform sampler2D uPrev;  // last frame's bloom (this target's size)
+uniform float uKeep;
+out vec4 o;
+void main(){
+  ivec2 c = ivec2(gl_FragCoord.xy);
+  vec2 res = vec2(textureSize(uSrc, 0));
+  vec2 uv = gl_FragCoord.xy / vec2(textureSize(uPrev, 0));
+  vec3 b = vec3(0.0);
+  for (int i = 0; i < 3; i++) {
+    float lod = 2.0 + float(i);
+    vec2 tx = exp2(lod) / res;
+    vec3 t = vec3(0.0);
+    for (int y = -1; y <= 1; y++) for (int x = -1; x <= 1; x++) {
+      float w = (2.0 - abs(float(x))) * (2.0 - abs(float(y)));
+      t += textureLod(uSrc, uv + vec2(float(x), float(y)) * tx, lod).rgb * w;
+    }
+    b += (t / 16.0) * (i == 0 ? 0.5 : i == 1 ? 0.32 : 0.18);
+  }
+  o = vec4(mix(b, texelFetch(uPrev, c, 0).rgb, uKeep), 1.0);
+}
+`;
+
+/** The composite with the STABLE GLOW (?glow=1): the bloom block reads the
+ *  temporally filtered quarter-res bloom (bilinear) instead of sampling the
+ *  mip chain itself; the soft knee is unchanged. Off = the show source. */
+export function withGlow(src: string): string {
+  const start = src.indexOf("  if (uBloom > 0.0) {");
+  const kneeAt = src.indexOf("    float bl = max(max(b.r, b.g), b.b);");
+  if (start < 0 || kneeAt < start) throw new Error("withGlow: bloom block not found");
+  const decl = /^uniform float uBloom;[^\n]*\n/m;
+  if (!decl.test(src)) throw new Error("withGlow: no uBloom uniform");
+  const head = src.slice(0, start).replace(decl, (line) => `${line}uniform sampler2D uBloomTex; // stable glow: quarter-res, temporally filtered\n`);
+  const read = "  if (uBloom > 0.0) {\n    vec3 b = texture(uBloomTex, (vec2(c) + 0.5) / vec2(textureSize(uHdr, 0))).rgb;\n";
+  return head + read + src.slice(kneeAt);
 }
 
 export const FADE_FS = /* glsl */ `#version 300 es
