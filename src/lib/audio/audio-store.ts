@@ -11,7 +11,7 @@ import { glitchRecord } from "@/lib/journeys/glitch-recorder";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
 import { applyBuiltInEnrichment } from "@/lib/journeys/built-in-enrichments";
 import { getRealtimeImageService } from "@/lib/journeys/realtime-image-service";
-import { MODE_META, MODES_3D } from "@/lib/shaders";
+import { MODE_META, MODES_3D, LAB_SHADERS } from "@/lib/shaders";
 
 /** Pick a random 3D World shader for the welcome screen ambient viz */
 const AMBIENT_3D_MODES = Array.from(MODES_3D);
@@ -387,7 +387,7 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
         vizModeSequenceIndex: nextIdx,
       });
     } else {
-      const allModes = MODE_META.map((m) => m.mode as string);
+      const allModes = MODE_META.map((m) => m.mode as string).filter((m) => !LAB_SHADERS.has(m));
       const currentIdx = allModes.indexOf(get().vizMode);
       const nextIdx = (currentIdx + 1) % allModes.length;
       set({ vizMode: allModes[nextIdx] });
@@ -403,7 +403,7 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
         vizModeSequenceIndex: prevIdx,
       });
     } else {
-      const allModes = MODE_META.map((m) => m.mode as string);
+      const allModes = MODE_META.map((m) => m.mode as string).filter((m) => !LAB_SHADERS.has(m));
       const currentIdx = allModes.indexOf(get().vizMode);
       const prevIdx = (currentIdx - 1 + allModes.length) % allModes.length;
       set({ vizMode: allModes[prevIdx] });
