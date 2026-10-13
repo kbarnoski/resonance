@@ -86,3 +86,49 @@ each gated by `particle-diversity` shares and the tour. Sample 2–3 per batch.
 - Before freeze (Mon 2026-10-12 night): step 1 only, if pass 6 is clean and the
   sample is approved by Monday afternoon. Otherwise ship the pass-6 build.
 - After Tramokyo: steps 2–5.
+
+---
+
+## Status 2026-10-12 (evening) and the v2 architecture
+
+**Shipped in the release (`tramokyo-release-2026-10-12`):** step 1 (spatial
+pairing) for every journey incl. Snowflake + Ghost; hover hand-offs between
+images; recycled motes fade in by age; the neighbour diversity rule; batch 1
+forms (aurora, attractor, starburst, smoke rings); sun theme for the light
+journeys; +20 % music response.
+
+**Karel's direction (2026-10-12):** "go for it all … I really want to blow
+people away and right now we have a screensaver experience but has potential
+for a whole nother level." Rollback = `scripts/kiosk-rollback.sh`.
+
+### v2 — effects built from parts (the shader-pool model for particles)
+Every effect = **birth × motion × look × music**, each a small GPU building
+block, so diversity is combinatorial (hundreds of distinct effects) instead of
+one hand-written force law per form:
+- **Birth (emitters):** the image's bright structure (importance samples), a
+  point / ring / line, the frame edges, the previous form (continuity), a
+  depth surface of the still.
+- **Motion (force stacks, blended):** curl-noise flow, flocking (boids on a
+  spatial hash), strange attractors, orbits / vortices, target forms (the
+  current 29), image-follow, gravity / wind, music impulses (bursts on onsets).
+- **Look (renderers):** soft glow points (today), depth of field + bloom
+  (cinematic look — written, parked in `git stash` "cinematic look"), light
+  streaks (velocity-stretched quads), sparkle, smoke sprites, colour drift.
+- **Music:** band → attribute map (kinetic EQ laws: motion, never luminance);
+  phrase-level hooks from the deep analysis (section starts, crests, breaths)
+  drive form changes and density swells.
+- **Vibe tiers (Rise Above):** solo piano / far out / ambient & voices / lounge
+  & groove / big & intense — each tier weights the building blocks.
+
+### Particles that live in the imagery
+The pack has depth maps for the stills: particles drift through the light
+beams of a scene, settle on surfaces, flow around the figure, rise from the
+brightest structures. (Depth texture + still-space projection in the sim.)
+
+### Order of work (each: sample film → Karel → tour → deploy)
+1. Cinematic look (DoF, bloom, colour drift) — sample on 3 journeys.
+2. Building-block engine: emitters + force stacks + renderers, behind a flag,
+   reproducing today's forms first (no visual change), then new combinations.
+3. Imagery-aware particles (depth maps).
+4. Phrase-level music + vibe tiers.
+5. Recast long phase-owned shader phases (Grasshopper's 67 s / 4 shaders).
