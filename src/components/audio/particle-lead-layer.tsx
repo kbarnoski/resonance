@@ -1431,7 +1431,14 @@ export function ParticleLeadLayer({
       // glitch Karel saw (the whole shape vanished in one frame)
       const visibleSoon = pr.presence > 0 || !!next || flashP > 0;
       if (visibleSoon && !wasVisible) {
-        if (shown < 0.02) { engine.enter(); counters.current.entries++; }
+        // …but an EMBLEM never scatter-enters (Karel 2026-10-13: "the first journey
+        // after the title … forms the emblem quicker than all journeys after" —
+        // filmed: after boot the field still carries the statement card's piano, so
+        // enter() never fires; after any other journey the field is absent, enter()
+        // scattered it screen-wide and the emblem drew in over ~3.5 s). The emblem
+        // now forms straight from the regathered centre cloud, like the first one.
+        const emblemEntrance = imgLoaded === "emblem" || t < 6;
+        if (shown < 0.02 && !emblemEntrance) { engine.enter(); counters.current.entries++; }
       }
       wasVisible = visibleSoon;
 
