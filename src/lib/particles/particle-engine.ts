@@ -65,6 +65,7 @@ import type { SpectrumFrame } from "./spectrum";
 import { critStep, springTau, stillPreloadAllowed, type Crit } from "./image-follow";
 import { livingScoreEnabled, scoreSessionStore, SCORE_STRIDE, SCORE_TUNING } from "./living-score";
 import { currentFreedom, type CurrentState } from "./harmonic-currents";
+import { handsEnabled, handsSessionStore, type HandsVoices } from "./two-hands";
 
 /** Cinematic look default: on (Karel's keep 2026-10-13); ?cine=0 turns it off. */
 export function cineEnabled(): boolean {
@@ -108,6 +109,10 @@ export interface ParticleEngineOptions {
    *  into the simulation. Default: ?score=1 (sessionStorage-kept), else off —
    *  off, the simulation source is exactly the show build's. */
   score?: boolean;
+  /** TWO HANDS (two-hands.ts): compile the two-layer (left hand far / right
+   *  hand near) force into the simulation. Default: ?hands=1 (sessionStorage-
+   *  kept), else off — off, the simulation source is exactly the show build's. */
+  hands?: boolean;
   /** Frame-time watchdog: called (once) when a frame's CPU time or the rAF gap
    *  while running exceeds the budget, or a program fails. */
   watchdog?: { cpuMs: number; gapMs: number; onStall: (why: string) => void };
@@ -227,6 +232,14 @@ export interface ParticleEngine {
    *  layering. Glides ~2.5 s on top of the eased timeline; null = off (glides
    *  to 0, or at once with `snap` — a force only, so even a snap never jumps a mote). */
   setCurrents(c: CurrentState | null, snap?: boolean): void;
+  /** TWO HANDS (two-hands.ts): this frame's voices — the left hand's deep-layer
+   *  swell, the right hand's near-layer eddies, the depth sorting. Glides
+   *  ~0.5 s on top of the eased voices; scaled by the soul's freedom; null =
+   *  off (glides to 0, or at once with `snap` — a force only, never a jump).
+   *  No-op when compiled out. */
+  setHands(v: HandsVoices | null, snap?: boolean): void;
+  /** Is TWO HANDS compiled into this engine? */
+  handsCompiled(): boolean;
   /** Off-centre placement: screen fractions of half-width / half-height. */
   setOffset(x: number, y: number): void;
   /** Image-form plane size (1 = full frame). */
@@ -528,6 +541,10 @@ export function createParticleEngine(
   const scoreIn = new Float32Array(SCORE_MAX * SCORE_STRIDE);
   const scoreA = new Float32Array(SCORE_MAX * 4), scoreB = new Float32Array(SCORE_MAX * 4);
   let scoreN = 0, scoreStale = 1e9, scoreLive = 0;
+  // TWO HANDS: decided once per engine too (its programs carry it or not)
+  const handsOn = opts.hands ?? handsEnabled(undefined, handsSessionStore());
+  const handsT = { low: 0, high: 0, strata: 0 }, handsS = { low: 0, high: 0, strata: 0 };
+  let handsClock = 0;
   const pairProgs = pairingOn
     ? {
         stats: startProgram(gl, QUAD_VS, PAIR_STATS_FS),
@@ -553,7 +570,7 @@ export function createParticleEngine(
     const k = `s:${b}`;
     let pr = simProgs.get(k);
     if (!pr) {
-      pr = startProgram(gl!, QUAD_VS, buildSimFS([b], { score: scoreOn }));
+      pr = startProgram(gl!, QUAD_VS, buildSimFS([b], { score: scoreOn, hands: handsOn }));
       simProgs.set(k, pr);
     }
     return pr;
@@ -1209,6 +1226,21 @@ export function createParticleEngine(
         g.uniform3f(sim.u.uCurRight, right[0], right[1], right[2]);
       }
     }
+    // TWO HANDS: the eased voices glide once more (~0.5 s), scaled by the same
+    // soul freedom as the currents (figures stay legible); the clock is the
+    // hands' own (steady, real time — never the music's)
+    if (handsOn && sim.u.uHands) {
+      const kh = 1 - Math.exp(-dt / 0.5);
+      handsS.low += (handsT.low - handsS.low) * kh;
+      handsS.high += (handsT.high - handsS.high) * kh;
+      handsS.strata += (handsT.strata - handsS.strata) * kh;
+      const lo = handsS.low * curFree, hi = handsS.high * curFree, st = handsS.strata * curFree;
+      if (lo + hi + st > 1e-3) handsClock += dt;
+      g.uniform4f(sim.u.uHands, lo > 1e-4 ? lo : 0, hi > 1e-4 ? hi : 0, handsClock, st > 1e-4 ? st : 0);
+      const el = Math.hypot(eye[0], eye[1], eye[2]) || 1;
+      if (sim.u.uHandsEye) g.uniform3f(sim.u.uHandsEye, eye[0] / el, eye[1] / el, eye[2] / el);
+      if (sim.u.uHandsRight) g.uniform3f(sim.u.uHandsRight, right[0], right[1], right[2]);
+    }
     if (sim.u.uPull) { const pk = Math.min(1, pullT / 2); g.uniform1f(sim.u.uPull, 0.5 + 0.5 * pk * pk * (3 - 2 * pk)); }
     if (sim.u.uAccCap) {
       // since the latest re-aim (shape step or glide event): 1.0 u/s² at first,
@@ -1750,6 +1782,15 @@ export function createParticleEngine(
       curT.layering = c ? fin(c.layering) : curT.layering;
       if (snap) { curS.amount = curT.amount; curS.tension = curT.tension; curS.layering = curT.layering; }
     },
+    setHands(v, snap = false) {
+      if (!handsOn) return;
+      const fin = (x: number) => (Number.isFinite(x) ? Math.max(0, Math.min(1, x)) : 0);
+      handsT.low = v ? fin(v.low) : 0;
+      handsT.high = v ? fin(v.high) : 0;
+      handsT.strata = v ? fin(v.strata) : 0;
+      if (snap) { handsS.low = handsT.low; handsS.high = handsT.high; handsS.strata = handsT.strata; }
+    },
+    handsCompiled() { return handsOn; },
     setCamScale(k) { camScaleTarget = camScaleBase * Math.max(0.3, Math.min(2.6, k)); },
     setOffset(x, y) { offTX = Math.max(-0.7, Math.min(0.7, x)); offTY = Math.max(-0.5, Math.min(0.5, y)); },
     setImageScale(k) { imgScaleT = Math.max(0.2, Math.min(1.2, k)); },
