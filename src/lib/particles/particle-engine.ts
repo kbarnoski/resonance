@@ -1347,7 +1347,7 @@ export function createParticleEngine(
     // ── 4. COMPOSITE ──────────────────────────────────────────────────────
     // (the cinematic bloom reads the HDR mip chain — fresh every frame when on;
     // the governor above rebuilds it every 4th)
-    if (cineOn && frames % 4 !== 0) {
+    if (false && cineOn && frames % 4 !== 0) { // bloom off: no per-frame mip rebuild
       g.bindTexture(g.TEXTURE_2D, hdrTex[hcur]);
       g.generateMipmap(g.TEXTURE_2D);
     }
@@ -1357,7 +1357,12 @@ export function createParticleEngine(
     bindTex(0, hdrTex[hcur], comp.u.uHdr);
     bindTex(1, expTex[ecur], comp.u.uExp);
     g.uniform1f(comp.u.uTransparent, transparent ? 1 : 0);
-    if (comp.u.uBloom) g.uniform1f(comp.u.uBloom, cineOn ? 0.4 : 0); // 0.55 → 0.4 (Karel: flicker)
+    // BLOOM OFF in the show (Karel 2026-10-13: "i see flickering in the glowing
+    // particles when in floral shape … dont have it flicker in brightness like
+    // that cause it is seizure"): the glow is read from the HDR mip chain, and a
+    // mote drifting across mip cells steps its glow — dense forms shimmer. Back
+    // only as a temporally smoothed bloom, after Karel sees it on film.
+    if (comp.u.uBloom) g.uniform1f(comp.u.uBloom, 0);
     g.drawArrays(g.TRIANGLES, 0, 3);
     g.bindVertexArray(null);
     const cpu = performance.now() - frameT0;
