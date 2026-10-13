@@ -49,12 +49,12 @@ import { isFullKineticJourney, isAudioReactiveJourney, driveOnlyRate, BAND_PROFI
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { SHADERS, MODE_META, MODE_CATEGORIES, MODES_3D, MODES_AI } from "@/lib/shaders";
 import { fadeMsFor } from "@/lib/shaders/shader-fade";
-import { morphShaderOn } from "@/lib/journeys/morph-shader";
+import { morphShaderOn, takeMorphArrivalFade } from "@/lib/journeys/morph-shader";
 import { getDeviceTier } from "@/lib/audio/device-tier";
 import {
   frameAlpha, isSilentLevel, driveTarget, readSharedDriveEnvelope, shouldRelatchDriveFlags,
   crossfadeRetarget, dequeueAfterFade, tertiaryStep, slewVisibleDrive, type DriveFlags, type TertiaryPhase,
-  type VisibleDrive,
+  type VisibleDrive, shaderDriveGain, rateSmoothK, calmToward,
 } from "@/lib/journeys/shader-drive";
 // Performance monitor is now FPS-based, started/stopped by JourneyFeedback component
 export type { VisualizerMode } from "@/lib/audio/vibe-detection";
@@ -525,6 +525,10 @@ export function ShaderVisualizer({
     // the layer's scale breath; rate, tempo flow and the audio uniforms stay
     // steady.
     const steadyClock = isSteadyClockShader(syncTag);
+    // Per-shader drive gain (SHADER_DRIVE_GAIN — Karel 2026-10-13, magma
+    // "responds too much to sound and over jiggles"): < 1 calms every audio
+    // path of this layer — drive, clock swing, uniforms, scale, slews.
+    const driveGain = shaderDriveGain(syncTag);
     const mixTargets = (f: DriveFlags) => steadyClock ? { band: f.bandFocus ? 1 : 0, driveOnly: 0, fft: 0, kin: 0, pres: 0, tempo: 0 } : ({
       band: f.bandFocus ? 1 : 0,
       driveOnly: f.bandDriveOnly ? 1 : 0,
@@ -578,16 +582,16 @@ export function ShaderVisualizer({
       if (mix.tempo > 0.001) {
         // Parked layers reuse the shared value without reading (#17).
         const energy = pausedRef.current ? 0.3 : readTempoEnergy(analyser, dataArray, now, dt);
-        baseRate = 1 + (0.65 + Math.min(1, energy * 2.2) * 0.7 - 1) * mix.tempo;
+        baseRate = 1 + (0.65 + Math.min(1, energy * 2.2) * 0.7 - 1) * mix.tempo * driveGain;
       }
       let rateTarget = baseRate;
       if (lastBand && mix.band > 0.001 && !steadyClock) {
         const prof0 = boostedProfile(BAND_PROFILES[lastBand], journeyResponse(useAudioStore.getState().activeJourney));
         const kinRate = prof0.rateLo + eqLv * (prof0.rateHi - prof0.rateLo);
         const bandRate = kinRate + (driveOnlyRate(prof0, eqLv) - kinRate) * mix.driveOnly;
-        rateTarget = baseRate + (bandRate - baseRate) * mix.band;
+        rateTarget = baseRate + (calmToward(1, bandRate, driveGain) - baseRate) * mix.band;
       }
-      rateSm += (rateTarget - rateSm) * frameAlpha(0.045, dt);
+      rateSm += (rateTarget - rateSm) * frameAlpha(rateSmoothK(driveGain), dt);
       cumTime += dt * rateSm;
       const time = cumTime;
 
@@ -757,22 +761,22 @@ export function ShaderVisualizer({
           // (~3 s) after — 2.5 s into a handoff, not after the whole 10.5 s
           // settle (Karel 2026-10-13: the shaders felt dead, then started).
           const env = readSharedDriveEnvelope(now, useAudioStore.getState().isPlaying && !inBoundaryDriveHold() && !silent);
-          const target = driveTarget(raw, slowEma, prof.gain, env, silent);
+          const target = driveTarget(raw, slowEma, prof.gain * driveGain, env, silent);
           // fast attack up, banded release down (keeps flashes snappy)
           eqLv += (target - eqLv) * frameAlpha(target > eqLv ? 0.6 : 1 - prof.decay, dt);
         }
       }
-      s.bass = synBass + (fftSm.bass - synBass) * mix.fft;
-      s.mid = synMid + (fftSm.mid - synMid) * mix.fft;
-      s.treble = synTreble + (fftSm.treble - synTreble) * mix.fft;
-      s.amplitude = synAmp + (fftSm.amplitude - synAmp) * mix.fft;
+      s.bass = synBass + (fftSm.bass - synBass) * mix.fft * driveGain;
+      s.mid = synMid + (fftSm.mid - synMid) * mix.fft * driveGain;
+      s.treble = synTreble + (fftSm.treble - synTreble) * mix.fft * driveGain;
+      s.amplitude = synAmp + (fftSm.amplitude - synAmp) * mix.fft * driveGain;
       // Kinetic (not drive-only) layers: u_amplitude carries the layer's
       // own band voice. NO damping of the true bands (Karel 2026-09-30:
       // a shader must respond the same way whatever its layer role).
-      if (mix.kin > 0.001) s.amplitude += (eqLv - s.amplitude) * mix.kin;
+      if (mix.kin > 0.001) s.amplitude += (calmToward(0.5, eqLv, driveGain) - s.amplitude) * mix.kin;
       const bandActive = !!lastBand && mix.band > 0.0005;
-      const scaleTarget = bandActive ? 1 + mix.band * eqLv * boostedProfile(BAND_PROFILES[lastBand!], journeyResponse(useAudioStore.getState().activeJourney)).scale : 1;
-      shown = slewVisibleDrive(shown, { bass: s.bass, mid: s.mid, treble: s.treble, amplitude: s.amplitude, scale: scaleTarget }, dt);
+      const scaleTarget = bandActive ? 1 + mix.band * calmToward(0.5, eqLv, driveGain) * boostedProfile(BAND_PROFILES[lastBand!], journeyResponse(useAudioStore.getState().activeJourney)).scale : 1;
+      shown = slewVisibleDrive(shown, { bass: s.bass, mid: s.mid, treble: s.treble, amplitude: s.amplitude, scale: scaleTarget }, dt, driveGain);
 
       gl.useProgram(program!);
       gl.uniform1f(uTime, time);
@@ -1253,8 +1257,12 @@ export function VisualizerCore({
     // waiting on it would stall until the 3s safety timeout.
     const inactiveResidentMode = inactive === 'a' ? layerAMode : layerBMode;
     const alreadyResident = inactiveResidentMode === target;
-    // the fade stretches when the incoming shader is much brighter
-    const primaryFadeMs = fadeMsFor(inactive === 'a' ? layerBMode : layerAMode, target);
+    // the fade stretches when the incoming shader is much brighter — except a
+    // morph arrival, which runs the (possibly shortened) fade its landing
+    // time was computed for, so it is fully in before the morph's end frame
+    const naturalFadeMs = fadeMsFor(inactive === 'a' ? layerBMode : layerAMode, target);
+    const arrivalFadeMs = takeMorphArrivalFade(target);
+    const primaryFadeMs = arrivalFadeMs != null ? Math.min(naturalFadeMs, arrivalFadeMs) : naturalFadeMs;
 
     // Set new shader on the inactive layer (compiles in background at opacity 0)
     if (inactive === 'a') setLayerAMode(target);
@@ -1309,8 +1317,8 @@ export function VisualizerCore({
   };
 
   // MORPH SHADER STAGING (Karel 2026-10-13, flag ?morphshader=1): the engine
-  // names the primary it will land over a playing travel morph ~3-4 s before
-  // the clip's end. Load it NOW onto the parked inactive layer — compile, the
+  // names the primary it will land over a playing travel morph early (≤ ~7 s before
+  // the clip's end, fully in ≥ 1.5 s before its end frame). Load it NOW onto the parked inactive layer — compile, the
   // one sync frame and one warm draw (warmDraw) all happen at opacity 0 while
   // the clip is still loading — so when the switch lands, beginPrimaryTransition
   // finds it resident (L15) and the crossfade starts with no compile under the
