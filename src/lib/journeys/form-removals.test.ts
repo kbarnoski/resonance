@@ -38,13 +38,12 @@ describe("form removals — empty list changes nothing", () => {
   it("normalizes a malformed removals file to empty lists", () => {
     expect(normalizeRemovals(null)).toEqual(EMPTY_REMOVALS);
     expect(normalizeRemovals({ souls: ["wisp", 3] })).toEqual({ ...EMPTY_REMOVALS, souls: ["wisp"] });
-    expect(normalizeRemovals({ soulsUnlocked: ["ribbons", 1] }).soulsUnlocked).toEqual(["ribbons"]);
   });
 });
 
 describe("form removals — a removed soul is never cast", () => {
   const check = (removed: SoulId[]) => {
-    const leads = buildParticleLeads({ ...EMPTY_REMOVALS, souls: removed, soulsUnlocked: FORM_REMOVALS.soulsUnlocked });
+    const leads = buildParticleLeads({ ...EMPTY_REMOVALS, souls: removed });
     for (const c of Object.values(leads)) {
       const all = castSoulsOf(c);
       for (const r of removed) expect(all, `${c.name} still casts ${r}`).not.toContain(r);

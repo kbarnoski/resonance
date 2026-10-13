@@ -22,18 +22,15 @@ export interface FormRemovals {
   emblems: readonly string[];
   motifs: readonly string[];
   moments: readonly string[];
-  /** Removed everywhere EXCEPT the mastered (locked) journeys — forms Karel
-   *  dropped after their lock (ribbons, 2026-10-13). */
-  soulsUnlocked?: readonly string[];
 }
 
 const list = (x: unknown): string[] => (Array.isArray(x) ? x.filter((v): v is string => typeof v === "string") : []);
 export function normalizeRemovals(x: unknown): FormRemovals {
   const o = (x && typeof x === "object" ? x : {}) as Record<string, unknown>;
-  return { souls: list(o.souls), emblems: list(o.emblems), motifs: list(o.motifs), moments: list(o.moments), soulsUnlocked: list(o.soulsUnlocked) };
+  return { souls: list(o.souls), emblems: list(o.emblems), motifs: list(o.motifs), moments: list(o.moments) };
 }
 
-export const EMPTY_REMOVALS: FormRemovals = { souls: [], emblems: [], motifs: [], moments: [], soulsUnlocked: [] };
+export const EMPTY_REMOVALS: FormRemovals = { souls: [], emblems: [], motifs: [], moments: [] };
 /** The committed removal list (empty = today's behaviour). */
 export const FORM_REMOVALS: FormRemovals = normalizeRemovals(raw);
 
