@@ -42,7 +42,7 @@ rm -rf .next-staging
 [ -d .next/cache ] && mkdir -p .next-staging && cp -R .next/cache .next-staging/cache 2>/dev/null
 cp tsconfig.json /tmp/kiosk-tsconfig.bak
 # the LIVE IMAGERY VALVE is closed in the kiosk build (src/lib/journeys/live-imagery-valve.ts)
-NEXT_PUBLIC_LIVE_IMAGERY=off NEXT_DIST_DIR=.next-staging npm run build > /tmp/kiosk-deploy-build.log 2>&1 || { cp /tmp/kiosk-tsconfig.bak tsconfig.json; echo "BUILD FAILED — see /tmp/kiosk-deploy-build.log (kiosk untouched, still playing)"; tail -5 /tmp/kiosk-deploy-build.log; exit 1; }
+KIOSK_BUILD_COMMIT=$HEAD NEXT_PUBLIC_LIVE_IMAGERY=off NEXT_DIST_DIR=.next-staging npm run build > /tmp/kiosk-deploy-build.log 2>&1 || { cp /tmp/kiosk-tsconfig.bak tsconfig.json; echo "BUILD FAILED — see /tmp/kiosk-deploy-build.log (kiosk untouched, still playing)"; tail -5 /tmp/kiosk-deploy-build.log; exit 1; }
 # next adds the staging types dir to tsconfig — never let a deploy dirty it
 cp /tmp/kiosk-tsconfig.bak tsconfig.json
 # bootout returns BEFORE the job is unloaded: an immediate bootstrap then
@@ -78,11 +78,16 @@ for attempt in 1 2 3; do
     sleep 1
   done
   [ "$C" = "$HEAD" ] && break
+  # a server that ANSWERS is never booted out (2026-10-13: a commit sha mismatch
+  # bounced a healthy server three times mid-show — Ghost's stills froze)
+  [ -n "$C" ] && { echo "server up on $C (expected $HEAD) — leaving it running"; break; }
   echo "restart attempt $attempt failed — booting out and retrying"
   launchctl bootout "$SVC" 2>/dev/null
   wait_unloaded
 done
-[ "${C:-}" = "$HEAD" ] || { echo "SERVER NOT ON $HEAD (got '${C:-none}') AFTER 3 ATTEMPTS"; exit 1; }
+# never leave the venue dark: whatever happened, a server must be up
+if [ -z "${C:-}" ]; then launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/com.resonance.tramokyo.plist" 2>/dev/null || launchctl kickstart -k "$SVC" 2>/dev/null; fi
+[ "${C:-}" = "$HEAD" ] || { echo "SERVER NOT ON $HEAD (got '${C:-none}') AFTER 3 ATTEMPTS — server left running"; exit 1; }
 echo "server OK ($C)"
 # WARM-UP (2026-10-08): the first page load after a swap reads the pack
 # cold from disk — probe-open measured 117–150 ms hitches at ~10–16 s on

@@ -14,7 +14,9 @@ function gitShortSha(): string {
   }
 }
 
-const BUILD_COMMIT = gitShortSha();
+// the deploy script pins the commit it started from (a commit landing mid-build
+// made the stamped sha differ from the script's HEAD — 2026-10-13 outage)
+const BUILD_COMMIT = process.env.KIOSK_BUILD_COMMIT || gitShortSha();
 const BUILD_TIME = new Date().toISOString();
 
 // ─── Dream-lab project split (2026-09-27) ───
