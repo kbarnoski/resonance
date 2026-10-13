@@ -9,6 +9,7 @@ import { PAIRED_TRACKS } from "@/lib/journeys/paired-tracks";
 import { INSTALLATION_PROGRAMS, TRAMOKYO_SETLIST, TRAMOKYO_SETLISTS, TRAMOKYO_EXCLUDED_JOURNEYS } from "@/lib/journeys/installation-sequence";
 import type { Track } from "@/lib/audio/audio-store";
 import type { Journey } from "@/lib/journeys/types";
+import { KIOSK_NO_LIVE_IMAGERY_ATTR } from "@/lib/journeys/live-imagery-valve";
 import {
   isOfflinePack,
   listRecordings,
@@ -541,10 +542,16 @@ export default async function InstallationPage({ searchParams }: Props) {
       }
     }
 
-    if (isLive) return <LiveTheatreClient programs={programsWithCues} />;
+    // the local app never asks for live imagery (live-imagery-valve.ts):
+    // this marker closes the client valve before any client code runs
+    const noLive = offline && process.env.RESONANCE_LIVE_IMAGERY !== "on"
+      ? <div hidden {...{ [KIOSK_NO_LIVE_IMAGERY_ATTR]: "" }} />
+      : null;
+    if (isLive) return <>{noLive}<LiveTheatreClient programs={programsWithCues} /></>;
 
     return (
       <div className="h-screen w-screen overflow-hidden bg-void">
+        {noLive}
         {/* Preload Cormorant Garamond (self-hosted) — used by both the
             cycle intro ("Resonance") and every journey title. Without
             this preload the cycle title initially painted in Georgia

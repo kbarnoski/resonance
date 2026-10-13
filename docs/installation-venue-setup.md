@@ -408,6 +408,30 @@ Shows now-playing and offers:
 Commands flow through an in-memory bus at `/api/pack/remote`; the kiosk
 polls every 2s, so allow a beat.
 
+### Presenter: auto-play vs song by song (2026-10-13)
+
+The remote opens on the **presenter** screen (the old controls sit behind
+the **Live** pill). Choose the set to **play from** (Rise Above by default,
+or any album/set), then pick one:
+
+- **Auto-play**: the loop as it has always run, inside the chosen set.
+- **Song by song**: when a track ends the kiosk **holds on its ending**.
+  The last moment stays alive (closing emblem, breathing particles, shaders),
+  never black and never a frozen frame. **Play/Next** moves on through the
+  normal journey boundary. Tap a track in **Pick a track** to make it next
+  (shown as "Ready"). Mid-song, **Next** fades the song out (~2.5 s) and then
+  plays the next one. **Fade out now** fades out over ~7 s and then holds.
+  **Replay this one** plays the held track again. "A held song shows" switches
+  the hold between the ending and the title card.
+
+Mode, chosen set and cue are kept in the kiosk's localStorage
+(`resonance-presenter-v1`). After a reload in song-by-song mode the kiosk
+comes back holding on the title card, and Play carries on from there. On the
+laptop, → is Next in song-by-song mode.
+Bus commands: `playback:auto|manual`, `holdon:ending|title`, `set:<set id>`,
+`cue:<journey>@<set>`, `cue:clear`, `next`, `playnow:<journey>@<set>`,
+`replay`, `fadeout`.
+
 ### Trust model — read this once
 
 `/api/pack/remote` is **deliberately unauthenticated**. It only exists

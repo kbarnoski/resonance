@@ -16,6 +16,7 @@ import { BREATH_LAWS } from "./breath";
 import { HANDS_TUNING } from "./two-hands";
 import { trailsGlslConsts } from "./resonance-trails";
 import { stableGlslConsts, STABLE_LAWS } from "./stable-motes";
+import { figureMotionGlsl } from "./figure-motion";
 
 export const QUAD_VS = /* glsl */ `#version 300 es
 const vec2 P[3] = vec2[3](vec2(-1.0,-1.0), vec2(3.0,-1.0), vec2(-1.0,3.0));
@@ -169,6 +170,68 @@ uniform float uSnap;      // 1 for one frame: teleport onto the image plane
 uniform vec3 uPlaneC;     // image plane centre (world)
 uniform vec3 uPlaneR;     // plane right × half-width
 uniform vec3 uPlaneU;     // plane up × half-height
+// SIGNATURE FLIGHT (signature-flight.ts, ?birdflight=1): the tail sheds a few
+// loose motes that trail the flying form. xyz = the plane's world velocity ×
+// the shed amount (zero = off, the branch is skipped); uShedDir = the flight
+// direction in plane ndc (the tail is the opposite side)
+uniform vec3 uShedV;
+uniform vec2 uShedDir;
+// …and its WINGS articulate (signature-flight.ts wingDisplacement — mirrored
+// exactly): in q-space (x × image aspect, centred, y up) the hinge + body axis
+// (uWingH), the wing normal + length + root band (uWingN), the along-axis band
+// (uWingR.xy); the tail base + direction (uTailA) and length (uWingR.z);
+// angles root / tip + body lift (uWingT) and flex / fold / sweep / tail fan
+// (uWingS) this frame, and last frame (uWingP, uWingQ); the shape constants
+// (uWingK = flex, flex sweep, forward sweep, fold height; uWingK2 = fold
+// along, tail spread, wrist). uWingOn 0 = off (the branch is skipped).
+uniform float uWingOn;
+uniform vec4 uWingH;
+uniform vec4 uWingN;
+uniform vec3 uWingR;
+uniform vec4 uTailA;
+uniform vec3 uWingT;
+uniform vec3 uWingP;
+uniform vec4 uWingS;
+uniform vec4 uWingQ;
+uniform vec4 uWingK;
+uniform vec4 uWingK2;
+vec3 wingDisp(vec2 q, vec3 W, vec4 S){
+  vec2 rel = q - uWingH.xy;
+  float a = dot(rel, uWingH.zw), r = dot(rel, uWingN.xy);
+  float inW = smoothstep(0.0, uWingN.w, r) * smoothstep(uWingR.x - 0.04, uWingR.x, a) * (1.0 - smoothstep(uWingR.y, uWingR.y + 0.04, a));
+  vec3 d = vec3(0.0);
+  if (inW > 0.0) {
+    float hand = max(0.0, r - uWingK2.z * uWingN.z);
+    float rr = r - hand * uWingK.x * S.x;
+    float aa = a + hand * uWingK.y * S.x - uWingK.z * r * S.z;
+    rr += (uWingK.w * r - rr) * S.y;
+    aa += uWingK2.x * r * S.y;
+    float th = mix(W.x, W.y, smoothstep(0.0, 1.0, r / uWingN.z));
+    float da = (aa - a) * inW, dr = (rr * cos(th) - r) * inW;
+    d = vec3(uWingH.zw * da + uWingN.xy * dr, rr * sin(th) * inW);
+  }
+  if (S.w > 0.0) {
+    vec2 tq = q - uTailA.xy;
+    float t = dot(tq, uTailA.zw) / uWingR.z;
+    float pp = -tq.x * uTailA.w + tq.y * uTailA.z;
+    float wt = smoothstep(-0.05, 0.15, t) * (1.0 - smoothstep(1.0, 1.15, t)) * (1.0 - smoothstep(0.08, 0.14, abs(pp)));
+    float k = pp * uWingK2.y * S.w * max(0.0, t) * wt;
+    d.xy += vec2(-uTailA.w, uTailA.z) * k;
+  }
+  d.y += W.z;
+  return d;
+}
+// THE FLOWN BIRD LETS GO UNSEEN (Karel 2026-10-13: "that morph of it coming
+// back in frame was weird after it flew"): once the bird is off-frame, every
+// mote outside the frame (x = on, y = margin in screen half-extents) is
+// respawned softly near the centre, marked reborn (the draw fades it in by its
+// age) and freed from the flown image's pull — none streams back across the
+// screen. uFrameR / uFrameU = camera right / up ÷ half-extent; uFrameO = the
+// screen centre in the world.
+uniform vec2 uFlown;
+uniform vec3 uFrameR;
+uniform vec3 uFrameU;
+uniform vec3 uFrameO;
 uniform float uImgAspect;
 uniform float uScrAspect;
 // HARMONIC CURRENTS (harmonic-currents.ts, ?currents=1): x = amount × the
@@ -190,6 +253,12 @@ uniform vec4 uGravA[4];
 uniform vec4 uGravB[4];
 uniform float uGravG;
 uniform vec3 uGravE;
+// FIGURE FRAME (figure-motion.ts): the rigid part of every figure's frame — the
+// features' slow body response (currents wander, breath scale, hands tilt, the
+// light's pull). uFigRot = tilt × turn; uFigOff = xyz offset (world), w = scale
+// (0 = never set → identity). Free souls never use it.
+uniform mat3 uFigRot;
+uniform vec4 uFigOff;
 layout(location = 0) out vec4 oPos;
 layout(location = 1) out vec4 oVel;
 ${NOISE}
@@ -257,6 +326,19 @@ vec4 instOf(vec4 s, float n, float seed){
   vec3 c = vec3(cos(ang) * rad * 1.35, sin(ang) * rad * 0.8, (hk - 0.5) * 1.8);
   float sc = mix(0.3, 0.5, hk) * (n <= 3.5 ? 1.35 : 1.0);
   return vec4(c, sc);
+}
+
+// THE MOTION FLOOR (figure-motion.ts, Karel 2026-10-13: "the starburst …
+// sat there and it doesnt move"): every FIGURE soul's force law runs inside a
+// frame that turns about the figure's own axis on the steady clock (uTime, never
+// the beat) and rocks gently — the whole figure moves as one body, so it stays
+// crisp. Free souls: identity (spin = sway = 0). Motion only — no light term.
+${figureMotionGlsl()}
+bool figureSoul(int soul){ return FIG_SPIN[soul] != 0.0 || FIG_SWAY[soul] != 0.0; }
+mat3 figureFrame(int soul){
+  float ph = float(soul) * 1.7;
+  mat3 own = rotY(FIG_SPIN[soul] * uTime + ph) * rotX(FIG_SWAY[soul] * sin(uTime * 6.2831853 / FIG_PERIOD[soul] + ph));
+  return (uFigOff.w > 0.0 ? uFigRot : mat3(1.0)) * own;
 }
 
 // Returns xyz = acceleration, w = linear drag.
@@ -422,6 +504,15 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
                             u * tdH,
                             cos(u * 2.5 + k * 1.7 + uClock.y * 0.25) * tdSw * u);
     if (uVarOn > 0.5) home.xz += vec2(cos(u * 9.0 + k + uClock.y * 0.2), sin(u * 9.0 + k + uClock.y * 0.2)) * uVarB.w * u;
+    // (2026-10-13, Karel: "you use this pattern too much … dont get lazy with
+    // particle patterns" — a row of upright strands every time) uVarC: sheaf
+    // (strands lean out from the centre) · arc (roots on a smile / arch) ·
+    // stagger (uneven heights). All zero = the old upright row / ring.
+    if (uVarOn > 0.5) {
+      home.y -= u * tdH * uVarC.z * fract(k * 0.618034 + 0.17);
+      home.xz += root.xz * uVarC.x * u;
+      home.y += uVarC.y * root.x * root.x / max(0.5, (tdN - 1.0) * 0.5 * tdSp);
+    }
     home += curlNoise(vec3(k * 3.1, u * 2.0, uClock.y * 0.12)) * 0.12 * u * (1.0 + 2.0 * up * midW);
     home += (hash31(s.a * 77.0) - 0.5) * 0.05 * (1.0 + 4.0 * up * trebW);
     return vec4((home - p) * 8.0, 4.0);
@@ -1097,14 +1188,24 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
   if (soul == 44) {
     // ── STARBURST: rays of light from a bright heart; every bass hit throws
     // them outward and they ease back — a burst on the beat, never a jump ──
-    vec3 dir = normalize(hash31(s.a * 211.0) - 0.5 + 1e-4);
+    float g = floor(s.b * 48.0);
+    // NEVER STATIC (Karel 2026-10-13, Grasshopper: "the starburst … sat there
+    // and it doesnt move"): the rays live in three shells that counter-turn
+    // about their own tilted axes on the steady clock, and each ray group
+    // breathes in LENGTH on its own phase — a slow coherent ripple, never the
+    // beat (the old per-mote random-phase swell averaged out to a still
+    // silhouette, and an isotropic burst shows no camera orbit)
+    float shell = floor(mod(g + 0.5, 3.0));
+    float sDir = shell == 1.0 ? -1.0 : 1.0;
+    mat3 tiltS = rotX(0.45 * (shell - 1.0));
+    vec3 dir = tiltS * (rotY(uTime * sDir * (0.05 + 0.015 * shell)) * (transpose(tiltS) * normalize(hash31(s.a * 211.0) - 0.5 + 1e-4)));
     float len = pow(s.g, 0.8);                      // along the ray: dense at the heart
     // CALM (Karel 2026-10-13, Grasshopper: "the particle cloud seems indecisive
     // and contracts and expands and isnt sure of what to do"): the bass threw the
     // whole form out by up to 1.1x and a hard pull snapped it back on every hit —
-    // now the rays breathe (slow per-ray swell, a soft lift on the beat)
-    float reach = 0.72 + 0.12 * sin(uClock.x * 0.18 + hash11(s.a * 5.0) * 6.2831853) + 0.28 * up * bassW + 0.12 * lvl;
-    vec3 home = dir * len * reach * (0.7 + 0.6 * hash11(floor(s.b * 48.0) * 3.7));
+    // now the rays breathe (slow per-group swell, a soft lift on the beat)
+    float reach = 0.72 + 0.1 * sin(uTime * 0.21 + g * 0.83) + 0.28 * up * bassW + 0.12 * lvl;
+    vec3 home = dir * len * reach * (0.7 + 0.6 * hash11(g * 3.7));
     home.y *= 0.8;
     return vec4((home - p) * 3.6, 3.4);
   }
@@ -1153,7 +1254,19 @@ void main(){
   vec4 f = vec4(0.0);
   for (int k = 0; k < uPasses; k++) {
     float wgt = k == 0 ? (uPasses > 1 ? 1.0 - uMix : 1.0) : uMix;
-    f += wgt * soulForce(k == 0 ? uSoulA : uSoulB, pl, vl, s, fid, lvl, drv);
+    int sk = k == 0 ? uSoulA : uSoulB;
+    // a FIGURE's force law runs in its moving frame (rigid: the motion floor's
+    // turn + rock, the features' slow body response); the force comes back to
+    // the world frame — the figure moves as one body, never smeared per mote.
+    // Free souls: identity (exact). Still ONE soulForce call site (see above).
+    bool fg = figureSoul(sk);
+    bool fr = fg && uFigOff.w > 0.0;
+    mat3 FM = fg ? figureFrame(sk) : mat3(1.0);
+    mat3 FT = transpose(FM);
+    float fsc = fr ? uFigOff.w : 1.0;
+    vec3 fo = fr ? uFigOff.xyz : vec3(0.0);
+    vec4 fk = soulForce(sk, FT * (pl - fo) / fsc, FT * vl / fsc, s, fid, lvl, drv);
+    f += wgt * vec4(FM * fk.xyz * fsc, fk.w);
   }
   f.xyz *= I.w; // local → world
   // a NEW FIGURE (shape step) is approached with a pull that eases in, so every
@@ -1272,9 +1385,29 @@ void main(){
   // image dissolve / reform: spring onto the image plane; while released,
   // the particles swirl with their own band (mids curl, bass surges)
   vec3 imgT = vec3(0.0);
+  vec3 wingStep = vec3(0.0); // this frame's wing motion (world), carried kinematically
+  // a mote respawned off the flown bird (fading in) no longer feels its image
+  float imgK = (uFlown.x > 0.5 && P4.w < 0.0) ? 0.0 : uImgForm;
   if (uImgForm > 0.001 || uImgShow > 0.001 || uSnap > 0.5) {
     vec2 ndc = coverNdc(imgUv(c, s, uTexW), uImgAspect, uScrAspect);
     imgT = uPlaneC + uPlaneR * ndc.x + uPlaneU * ndc.y;
+    // THE WINGS: the target turns with the wing, and the mote is carried by
+    // the wing's own motion this frame (a 2-3 Hz stroke is far above the image
+    // spring's reach — followed by force alone the wing would not move). The
+    // spring still holds the mote to its (moving) point. Motion only.
+    if (uWingOn > 0.5) {
+      vec2 uv0 = imgUv(c, s, uTexW);
+      vec2 q = vec2((uv0.x - 0.5) * uImgAspect, uv0.y - 0.5);
+      float qW = length(uPlaneR) * 2.12 * max(1.0, uImgAspect / uScrAspect) / uImgAspect;
+      vec3 N = normalize(cross(uPlaneR, uPlaneU));
+      vec3 dA = wingDisp(q, uWingT, uWingS), dB = wingDisp(q, uWingP, uWingQ);
+      vec2 nA = coverNdc(uv0 + vec2(dA.x / uImgAspect, dA.y), uImgAspect, uScrAspect) - ndc;
+      vec2 nB = coverNdc(uv0 + vec2(dB.x / uImgAspect, dB.y), uImgAspect, uScrAspect) - ndc;
+      vec3 wA = uPlaneR * nA.x + uPlaneU * nA.y + N * dA.z * qW;
+      vec3 wB = uPlaneR * nB.x + uPlaneU * nB.y + N * dB.z * qW;
+      imgT += wA;
+      wingStep = (wA - wB) * imgK;
+    }
     // SPATIAL PAIRING: the form's own pull is not left in (paired to a point on
     // its own side, it printed the previous form into the image — sample 1,
     // The Bloom from a lissajous); the softness it gave returns as a slow drift
@@ -1285,7 +1418,16 @@ void main(){
       float ph = hash11(s.a * 61.7) * 6.2831853 + uTime * (0.08 + 0.12 * hash11(s.a * 13.1));
       imgT += (uPlaneR * cos(ph) + uPlaneU * sin(ph)) * uPairSoft * hash11(s.a * 29.3);
     }
-    f = mix(f, vec4((imgT - p) * 9.0, 4.6), uImgForm);
+    // the flying form's TRAIL: ~30 % of the tail-side motes aim at a point
+    // behind their own (0.5-1.7 s of the flight back along its path) and drift
+    // a little — they stream after the bird. Motion only.
+    float shedW = 0.0;
+    if (dot(uShedV, uShedV) > 1e-6) {
+      shedW = smoothstep(0.2, 0.5, dot(ndc, -uShedDir)) * step(hash11(s.a * 173.7), 0.3);
+      imgT -= uShedV * (0.5 + 1.2 * hash11(s.a * 41.9)) * shedW;
+    }
+    f = mix(f, vec4((imgT - p) * 9.0, 4.6), imgK);
+    if (shedW > 0.0) f.xyz += curlNoise(p * 1.5 + vec3(uClock.x * 0.1, 0.0, 0.0)) * 0.8 * shedW * min(length(uShedV), 3.0);
     float rel = uImgShow * (1.0 - uImgForm);
     f.xyz += curlNoise(p * 1.2 + vec3(0.0, uClock.y * 0.18, uClock.x * 0.05)) * (0.5 + 2.2 * max(drv, 0.0)) * rel * 0.9;
   }
@@ -1306,6 +1448,7 @@ void main(){
   float sp2 = length(v);
   if (sp2 > uMaxSpeed) v *= uMaxSpeed / sp2;
   p += v * dt;
+  p += wingStep;
 
   if (uSnap > 0.5) { p = imgT; v = vec3(0.0); }
   if (uDisperse > 0.5) {
@@ -1321,6 +1464,15 @@ void main(){
   // in. Every recycled mote is now marked (age < 0) and the draw fades it in
   // over ~1.6 s wherever the camera is.
   bool reborn = false;
+  if (uFlown.x > 0.5) {
+    vec2 sc = vec2(dot(p - uFrameO, uFrameR), dot(p - uFrameO, uFrameU));
+    if (max(abs(sc.x), abs(sc.y)) > uFlown.y) {
+      vec3 r = hash31(s.a * 3307.0 + 1.7);
+      p = uFrameO + (r - 0.5) * vec3(2.4, 1.4, 2.0);
+      v = vec3(0.0);
+      reborn = true;
+    }
+  }
   // rise souls: climbers return to the hearth (fallers to the top) — the draw
   // fades both ends, so the return is never seen
   if (uRiseW > 0.5 && uImgShow < 0.01) {
