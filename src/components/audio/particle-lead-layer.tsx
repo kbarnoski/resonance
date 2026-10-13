@@ -827,6 +827,8 @@ export function ParticleLeadLayer({
       return next - t < horizon;
     };
     let formDur = 14_000;
+    let lastShaderMode: string | undefined;
+    let lastShaderAt = -99;
     let cycleIdx = 0;
     let densK = 0.7;
     let densKS = 0.7;
@@ -1402,9 +1404,19 @@ export function ParticleLeadLayer({
         lastShape = [lastShape[0], lastShape[1], zOk ? z : lastShape[2], Math.max(0, Math.min(0.999, lastShape[3] + j(2)))];
         engine.setShape(lastShape, false);
       }
-      if (shown > 0.6 && !dissolving && !imgLoaded && echoAt < 0 && flashP < 0.05 && motifAt < 0 && performance.now() - formAt > formDur && !timedSoon(t, motifDur + 2) && (engine.settledFor() > 7 || performance.now() - formAt > formDur * 2.2) && rand01(61 + cycleIdx) < pMotif && startMotif(t)) {
+      // ONE BIG CHANGE AT A TIME (Karel 2026-10-13, First Light's harmonics: "it did
+      // struggle and glitch in forming it for a sec" — the form refigured in the same
+      // frame as a shader switch, 2 s before a travel morph): no form change or
+      // refigure within 3 s after a shader switch or 4 s either side of a phase
+      // boundary (where the morphs and clips land)
+      {
+        const sm = frameRef.current?.shaderMode;
+        if (sm !== lastShaderMode) { lastShaderMode = sm; lastShaderAt = t; }
+      }
+      const busyNow = t - lastShaderAt < 3 || (cast.phaseBounds ?? []).some((pb) => Math.abs(pb - t) < 4);
+      if (!busyNow && shown > 0.6 && !dissolving && !imgLoaded && echoAt < 0 && flashP < 0.05 && motifAt < 0 && performance.now() - formAt > formDur && !timedSoon(t, motifDur + 2) && (engine.settledFor() > 7 || performance.now() - formAt > formDur * 2.2) && rand01(61 + cycleIdx) < pMotif && startMotif(t)) {
         cycleIdx++;
-      } else if (shown > 0.6 && !dissolving && !imgLoaded && echoAt < 0 && flashP < 0.05 && motifAt < 0 && performance.now() - formAt > formDur && !timedSoon(t, 15) && (engine.settledFor() > 7 || performance.now() - formAt > formDur * 2.2) && cast.formCycle?.length) {
+      } else if (!busyNow && shown > 0.6 && !dissolving && !imgLoaded && echoAt < 0 && flashP < 0.05 && motifAt < 0 && performance.now() - formAt > formDur && !timedSoon(t, 15) && (engine.settledFor() > 7 || performance.now() - formAt > formDur * 2.2) && cast.formCycle?.length) {
         cycleIdx++;
         if (cycleIdx % 3 === 0 && currentSoul) {
           if (diverse) {
