@@ -1075,10 +1075,14 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
     // them outward and they ease back — a burst on the beat, never a jump ──
     vec3 dir = normalize(hash31(s.a * 211.0) - 0.5 + 1e-4);
     float len = pow(s.g, 0.8);                      // along the ray: dense at the heart
-    float reach = 0.55 + 0.25 * sin(uClock.x * 0.3 + hash11(s.a * 5.0) * 6.2831853) + 1.1 * up * bassW + 0.35 * lvl;
+    // CALM (Karel 2026-10-13, Grasshopper: "the particle cloud seems indecisive
+    // and contracts and expands and isnt sure of what to do"): the bass threw the
+    // whole form out by up to 1.1x and a hard pull snapped it back on every hit —
+    // now the rays breathe (slow per-ray swell, a soft lift on the beat)
+    float reach = 0.72 + 0.12 * sin(uClock.x * 0.18 + hash11(s.a * 5.0) * 6.2831853) + 0.28 * up * bassW + 0.12 * lvl;
     vec3 home = dir * len * reach * (0.7 + 0.6 * hash11(floor(s.b * 48.0) * 3.7));
     home.y *= 0.8;
-    return vec4((home - p) * 7.0, 3.4);
+    return vec4((home - p) * 3.6, 3.4);
   }
   if (soul == 45) {
     // ── SMOKE RINGS: two rings of light stacked in the air, each rolling about
