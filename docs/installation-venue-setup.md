@@ -541,3 +541,13 @@ reads it) and `tramokyo-server.log`.
 4. Relaunch Tramokyo.app (2min)
 5. Reboot laptop, Tramokyo.app auto-path (5min)
 6. Backup laptop + restored pack (15min)
+
+## Optional: TouchDesigner / VJ bridge (2026-10-13)
+
+The bridge sends OSC to TouchDesigner, Resolume, Notch or Max for extra
+surfaces, LED walls or lighting. It is **off unless you ask for it**. Run
+`node scripts/osc-relay.mjs` on the kiosk (OSC goes to 127.0.0.1:7000 by
+default; use `--osc-host <TD machine>` for a LAN desk). Then open the kiosk
+URL once with `&osc=1`, or use `&osc=always` to keep it on. You can start and
+stop the relay at any time without touching the show. Address map, TD recipes
+and the safety rules: `docs/touchdesigner-bridge.md`.

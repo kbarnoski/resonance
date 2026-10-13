@@ -10,6 +10,7 @@ import { getParticlePresent } from "@/lib/journeys/particle-presence";
 import { disableParticlesForSession } from "@/lib/particles/shared-engine";
 import { glitchRecord } from "@/lib/journeys/glitch-recorder";
 import { PARTICLES_SESSION_KEY } from "@/lib/journeys/particle-lead";
+import { useVjBridge } from "@/lib/vj-bridge/use-vj-bridge";
 
 // Rolling frame-rate meter (2026-10-05: a steady slowdown never trips the
 // >50ms gap recorder — Karel saw journeys crawl while the log stayed clean).
@@ -238,6 +239,10 @@ function useBuildWatchdog(enabled: boolean): void {
 
 export function useKioskRemote(context: KioskRemoteContext): void {
   useBuildWatchdog(!!context);
+  // VJ bridge (TouchDesigner / Resolume via scripts/osc-relay.mjs): every
+  // kiosk context mounts this hook, so the bridge runs wherever the show
+  // does. Off unless ?osc=1 / the kiosk setting — then a no-op (ref-counted).
+  useVjBridge();
   useEffect(() => {
     if (!context) return;
     let stopped = false;
