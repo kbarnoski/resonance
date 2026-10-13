@@ -59,7 +59,9 @@ const SET_META: Record<string, { name: string; kind: string; order: string }> = 
 const SET_IDS = TRAMOKYO_MAIN.sets.map((s) => s.id);
 const DEFAULT_SET = SET_IDS[0];
 
-const serif = { fontFamily: "'Cormorant Garamond', Georgia, serif" } as const;
+// /remote is operator chrome: Geist Sans titles (medium, tighter tracking),
+// Geist Mono uppercase labels (docs/design-system.md: Cormorant is for heroes only)
+const title = "font-sans font-medium tracking-tight";
 const label = "font-mono text-[11px] uppercase tracking-widest text-ink-faint";
 
 function fmt(sec: number | null | undefined): string {
@@ -178,7 +180,7 @@ export function PresenterView({
           <ArrowLeft className="size-4" /> Back
         </button>
         <div className={`${label} mt-4 mb-1`}>Play from</div>
-        <h1 className="text-3xl text-ink mb-2" style={{ ...serif, fontWeight: 400 }}>Choose a set</h1>
+        <h1 className={`${title} text-3xl text-ink mb-2`}>Choose a set</h1>
         <p className="text-sm text-ink-mute mb-5">Auto-play and Next both move through the set you choose.</p>
         <div className="grid gap-2">
           {sets.map((s) => {
@@ -194,7 +196,7 @@ export function PresenterView({
                   setView("main");
                 }}
               >
-                <div className="text-xl text-ink" style={{ ...serif, fontWeight: 400 }}>{setName(s.id, programs)}</div>
+                <div className={`${title} text-xl text-ink`}>{setName(s.id, programs)}</div>
                 <div className="text-xs text-ink-faint mt-0.5">
                   {s.n} tracks · {SET_META[s.id]?.kind ?? "set"}
                 </div>
@@ -220,7 +222,7 @@ export function PresenterView({
           </button>
         </div>
         <div className={`${label} mt-4 mb-1`}>Pick the next track</div>
-        <h1 className="text-3xl text-ink mb-2" style={{ ...serif, fontWeight: 400 }}>{setName(p?.id, programs)}</h1>
+        <h1 className={`${title} text-3xl text-ink mb-2`}>{setName(p?.id, programs)}</h1>
         <p className="text-sm text-ink-mute mb-5">
           {p?.journeys.length ?? 0} tracks, {SET_META[p?.id ?? ""]?.order ?? "in order"}. Tap one to make it next.
         </p>
@@ -240,7 +242,7 @@ export function PresenterView({
                 }}
               >
                 <span className="w-6 shrink-0 text-right font-mono text-[11px] text-ink-faint">{i + 1}</span>
-                <span className="min-w-0 flex-1 truncate text-lg text-ink" style={{ ...serif, fontWeight: 400 }}>{j.name}</span>
+                <span className={`${title} min-w-0 flex-1 truncate text-base text-ink`}>{j.name}</span>
                 {isCurrent ? (
                   <span className="font-mono text-[11px] uppercase tracking-widest text-emerald-400">{holding ? "Held" : "Playing"}</span>
                 ) : isNext ? (
@@ -277,7 +279,7 @@ export function PresenterView({
             className="flex min-h-11 max-w-full items-center gap-1.5 text-left"
             onClick={() => setView("sets")}
           >
-            <span className="truncate text-2xl text-ink" style={{ ...serif, fontWeight: 400 }}>{setName(setId, programs)}</span>
+            <span className={`${title} truncate text-2xl text-ink`}>{setName(setId, programs)}</span>
             <ChevronDown className="size-5 shrink-0 text-ink-mute" />
           </button>
         </div>
@@ -311,7 +313,7 @@ export function PresenterView({
         <div className={`font-mono text-[11px] uppercase tracking-widest ${holding ? "text-primary" : "text-emerald-400"}`}>
           {statusLine}
         </div>
-        <div className="mt-1 text-[40px] leading-[1.05] text-ink" style={{ ...serif, fontWeight: 400 }}>{trackName}</div>
+        <div className={`${title} mt-1 text-[34px] leading-[1.1] text-ink`}>{trackName}</div>
         <div className="mt-1 text-sm text-ink-faint">{position(current, programs) ?? ""}</div>
         {holding ? (
           <p className="mt-3 text-sm text-ink-mute">
@@ -333,7 +335,7 @@ export function PresenterView({
       {holding ? (
         <div className="rounded-xl border border-primary bg-primary/10 p-4 mb-4">
           <div className={`${label} text-primary`}>Ready</div>
-          <div className="mt-1 text-2xl text-ink" style={{ ...serif, fontWeight: 400 }}>{next?.name ?? "—"}</div>
+          <div className={`${title} mt-1 text-2xl text-ink`}>{next?.name ?? "—"}</div>
           <div className="mt-0.5 text-sm text-ink-faint">{position(next, programs, true) ?? ""}</div>
           <button type="button" className={`${linkBtn} text-primary`} onClick={() => setView("pick")}>
             Choose a different track
@@ -343,7 +345,7 @@ export function PresenterView({
         <div className="flex items-center justify-between gap-3 rounded-xl border border-border px-4 py-3 mb-4">
           <div className="min-w-0">
             <div className={label}>{cued ? "Ready" : "Up next"}</div>
-            <div className="truncate text-xl text-ink" style={{ ...serif, fontWeight: 400 }}>{next?.name ?? "—"}</div>
+            <div className={`${title} truncate text-xl text-ink`}>{next?.name ?? "—"}</div>
           </div>
           <button type="button" className={`${linkBtn} shrink-0 text-primary`} onClick={() => setView("pick")}>
             Change
@@ -354,15 +356,15 @@ export function PresenterView({
       {/* NEXT / PLAY */}
       {holding ? (
         <Button
-          className="h-[104px] w-full flex-col gap-1 rounded-xl text-lg text-white"
+          className="h-[104px] w-full flex-col gap-1 rounded-lg text-lg text-primary-foreground"
           onClick={() => choose("next", { cued: null })}
         >
           <span className="inline-flex items-center gap-2 text-xl"><Play className="size-6" /> Play</span>
-          <span className="max-w-full truncate text-sm text-white/80" style={serif}>{next?.name ?? ""}</span>
+          <span className="max-w-full truncate text-sm text-primary-foreground/80">{next?.name ?? ""}</span>
         </Button>
       ) : (
         <Button
-          className="h-[88px] w-full gap-3 rounded-xl text-xl text-white"
+          className="h-[88px] w-full gap-3 rounded-lg text-xl text-primary-foreground"
           onClick={() => choose("next", { cued: null })}
         >
           Next <ArrowRight className="size-6" />

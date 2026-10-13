@@ -343,6 +343,11 @@ export function useKioskRemote(context: KioskRemoteContext): void {
         if (!res.ok || stopped) return;
         const { commands } = (await res.json()) as { commands?: string[] };
         for (const cmd of commands ?? []) runCommand(cmd, context);
+        // ECHO at once (lab 2026-10-13: playback:auto still read "manual" on
+        // the phone 3 s later): this POST's status was snapshotted BEFORE the
+        // commands ran, so the phone only saw the result one full poll later
+        // (up to ~6 s with its own poll). Post the fresh status right away.
+        if ((commands?.length ?? 0) > 0 && !stopped) setTimeout(() => { if (!stopped) void tick(); }, 150);
       } catch { /* hotspot-local fetch; transient failures are fine */ }
     };
 

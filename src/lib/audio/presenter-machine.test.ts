@@ -132,6 +132,18 @@ describe("presenter — song by song", () => {
     const c = run(manual, { type: "cue", ref: { journeyId: "spectre", programId: "ml" } }, { type: "track-ended" }, { type: "set-playback", playback: "auto" });
     expect(c.last).toEqual({ kind: "go", target: { journeyId: "spectre", programId: "ml" }, fadeCurrent: false });
   });
+  it("switching to auto-play mid-track applies at once and the track then advances", () => {
+    // lab 2026-10-13: playback:auto sent while playing
+    const r = run(manual, { type: "set-playback", playback: "auto" });
+    expect(r.last).toEqual({ kind: "none" });
+    expect(r.state.playback).toBe("auto");
+    expect(r.state.status).toBe("playing");
+    expect(JSON.parse(serializePresenter(r.state)).playback).toBe("auto");
+    expect(run(r.state, { type: "track-ended" }).last).toEqual({ kind: "advance" });
+    // and via the phone command
+    const cmd = parsePresenterCommand("playback:auto")!;
+    expect(presenterReduce(manual, cmd, SETS).state.playback).toBe("auto");
+  });
   it("switching to song by song mid-track changes nothing until it ends", () => {
     const r = run(INITIAL_PRESENTER, started("ghost"), { type: "set-playback", playback: "manual" });
     expect(r.last).toEqual({ kind: "none" });

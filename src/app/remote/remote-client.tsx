@@ -138,7 +138,7 @@ export function RemoteClient() {
 
   return (
     <div
-      className="min-h-screen bg-background text-white px-5 py-8 max-w-md mx-auto"
+      className="min-h-screen bg-background text-ink px-5 py-8 max-w-md mx-auto"
       style={{ paddingBottom: "calc(2rem + env(safe-area-inset-bottom, 0px))" }}
     >
       {inLoop && controlsOpen ? (
@@ -151,10 +151,7 @@ export function RemoteClient() {
         </button>
       ) : null}
       <div className="flex items-center justify-between mb-6">
-        <h1
-          className="text-xl text-white/90"
-          style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 300 }}
-        >
+        <h1 className="font-sans text-xl font-medium tracking-tight text-ink">
           Resonance Remote
         </h1>
         <span
@@ -163,17 +160,14 @@ export function RemoteClient() {
         />
       </div>
 
-      <div className="rounded-xl p-4 mb-6 bg-white/[0.04] border border-white/10">
-        <div className="text-[11px] uppercase tracking-widest text-ink-faint mb-1.5">
+      <div className="rounded-xl p-4 mb-6 bg-card border border-border">
+        <div className="font-mono text-[11px] uppercase tracking-widest text-ink-faint mb-1.5">
           {stale ? "waiting for kiosk…" : inLive ? "live theatre — listening" : inLoop ? "attract loop" : "dj mode"}
         </div>
-        <div
-          className="text-2xl text-white/95 mb-0.5"
-          style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 400 }}
-        >
+        <div className="font-sans text-2xl font-medium tracking-tight text-ink mb-0.5">
           {status?.journey ?? "—"}
         </div>
-        <div className="text-sm text-white/50">
+        <div className="text-sm text-ink-mute">
           {status?.track ?? "no track"}
           {status?.duration ? (
             <span className="text-ink-faint">
@@ -280,7 +274,7 @@ export function RemoteClient() {
           Names only, numbered; a tap jumps the loop to that journey. */}
       {(status?.programs ?? []).map((prog) => (
         <div key={prog.id}>
-          <div className="mb-2 text-[11px] uppercase tracking-widest text-ink-faint">
+          <div className="mb-2 font-mono text-[11px] uppercase tracking-widest text-ink-faint">
             {prog.label}
           </div>
           <div className="grid grid-cols-2 gap-2 mb-6">
@@ -301,7 +295,7 @@ export function RemoteClient() {
         </div>
       ))}
 
-      <div className="mb-2 text-[11px] uppercase tracking-widest text-ink-faint">
+      <div className="mb-2 font-mono text-[11px] uppercase tracking-widest text-ink-faint">
         Extras — DJ mode {inLoop ? "(plays one journey, then Resume the loop)" : ""}
       </div>
       <div className="grid grid-cols-2 gap-2 mb-8">
@@ -341,7 +335,7 @@ export function RemoteClient() {
         ))}
       </div>
 
-      <div className="mb-2 text-[11px] uppercase tracking-widest text-ink-faint">Volume</div>
+      <div className="mb-2 font-mono text-[11px] uppercase tracking-widest text-ink-faint">Volume</div>
       <div className="grid grid-cols-5 gap-2 mb-8">
         {[0.2, 0.4, 0.6, 0.8, 1.0].map((v) => (
           <Button
@@ -355,7 +349,7 @@ export function RemoteClient() {
         ))}
       </div>
 
-      <div className="mb-2 text-[11px] uppercase tracking-widest text-ink-faint">Start from</div>
+      <div className="mb-2 font-mono text-[11px] uppercase tracking-widest text-ink-faint">Start from</div>
       <div className="mb-8 grid gap-2">
         {START_POINTS.map((sp) => (
           <Button
@@ -374,7 +368,7 @@ export function RemoteClient() {
         ))}
       </div>
 
-      <div className="mb-2 text-[11px] uppercase tracking-widest text-ink-faint">Recovery</div>
+      <div className="mb-2 font-mono text-[11px] uppercase tracking-widest text-ink-faint">Recovery</div>
       <Button
         variant="glass"
         className={`${btn} w-full ${sending === "reload" ? "bg-white/[0.18]" : ""}`}
