@@ -5,6 +5,7 @@
   "aureole",
   "binary-stars",
   "cascade-veil",
+  "chinook",
   "chrysalis",
   "cirrus",
   "covenant",
@@ -169,15 +170,12 @@
   "r-mercury": 9,
   "chrysalis": 8,
   "dark-tide": 8,
-  "kelp": 8,
-  "obsidian-flow": 8,
   "pulsar": 8,
   "r-droplets": 8,
   "r2-portalrim": 8,
   "r2-spiralgal": 8,
+  "r2-spore": 8,
   "r3-fernunfurl": 8,
-  "r3-sleepingbloom": 8,
-  "stigmata": 8,
   "torrent": 8,
   "will-o-wisp": 8,
   "binary-stars": 7,
@@ -188,21 +186,21 @@
   "drift": 7,
   "dusk": 7,
   "firefly-field": 7,
-  "flagella": 7,
   "fracture-light": 7,
+  "kelp": 7,
   "kepler": 7,
   "mandorla": 7,
   "meteor-rain": 7,
   "monsoon": 7,
   "nadir": 7,
+  "obsidian-flow": 7,
   "ocean": 7,
   "orbit-weaver": 7,
   "plankton": 7,
   "protostar": 7,
-  "r2-curlswarm": 7,
   "r2-photon": 7,
-  "r2-spore": 7,
   "r3-plasmastorm": 7,
+  "r3-sleepingbloom": 7,
   "r3-waveveil": 7,
   "resonant-rings": 7,
   "ribbon-of-light": 7,
@@ -210,6 +208,7 @@
   "rose-window": 7,
   "satori": 7,
   "starfield": 7,
+  "stigmata": 7,
   "supernova": 7,
   "symbiosis": 7,
   "tide": 7,
@@ -217,6 +216,7 @@
   "astral": 6,
   "cirrus": 6,
   "event-horizon": 6,
+  "flagella": 6,
   "furnace": 6,
   "lightyear": 6,
   "mycelium": 6,
@@ -226,11 +226,13 @@
   "r-embers": 6,
   "r-smokerings": 6,
   "r-stardust": 6,
+  "r2-curlswarm": 6,
   "r2-thermal": 6,
   "rapture": 6,
   "singularity": 6,
   "threshold": 6,
   "zenith": 6,
+  "chinook": 5,
   "flame": 5,
   "lectio": 5,
   "maelstrom-dark": 5,
@@ -530,21 +532,22 @@
    "shaders": [
     "lightyear",
     "event-horizon",
+    "chinook",
     "r2-portalrim",
     "firefly-field",
     "dusk",
     "r-smokerings",
     "r2-spiralgal",
     "jubilee",
-    "murmuration",
-    "stigmata"
+    "murmuration"
    ],
    "cast": {
     "threshold": [
      "lightyear"
     ],
     "expansion": [
-     "event-horizon"
+     "event-horizon",
+     "chinook"
     ],
     "transcendence": [
      "r2-portalrim"
@@ -559,8 +562,7 @@
      "jubilee"
     ],
     "integration": [
-     "murmuration",
-     "stigmata"
+     "murmuration"
     ]
    },
    "owned": true,
@@ -741,7 +743,7 @@
     "threshold",
     "r-smokerings",
     "stigmata",
-    "kelp",
+    "r2-spore",
     "r3-fernunfurl",
     "photon"
    ],
@@ -762,7 +764,7 @@
      "stigmata"
     ],
     "illumination": [
-     "kelp"
+     "r2-spore"
     ],
     "return": [
      "r3-fernunfurl"
@@ -772,7 +774,7 @@
     ]
    },
    "owned": true,
-   "lead": "kelp"
+   "lead": "r2-spore"
   },
   {
    "id": "cosmic-drift",
@@ -992,7 +994,7 @@
    "pathLen": 14,
    "dur": 293,
    "shaders": [
-    "flagella",
+    "chinook",
     "merkaba",
     "r3-fairyglow",
     "flame",
@@ -1007,7 +1009,7 @@
    ],
    "cast": {
     "threshold": [
-     "flagella"
+     "chinook"
     ],
     "expansion": [
      "merkaba"
@@ -1776,7 +1778,7 @@
     "kenosis",
     "satori",
     "r3-waveveil",
-    "r3-sleepingbloom",
+    "fracture-light",
     "chrysalis",
     "cascade-veil",
     "pendulum-dust"
@@ -1799,7 +1801,7 @@
     "return": [
      "satori",
      "r3-waveveil",
-     "r3-sleepingbloom",
+     "fracture-light",
      "chrysalis"
     ],
     "integration": [
@@ -1821,7 +1823,7 @@
    "dur": 229,
    "shaders": [
     "dark-nebula",
-    "r2-curlswarm",
+    "chinook",
     "diatom",
     "meteor-rain",
     "covenant",
@@ -1836,7 +1838,7 @@
    "cast": {
     "threshold": [
      "dark-nebula",
-     "r2-curlswarm"
+     "chinook"
     ],
     "expansion": [
      "diatom",
@@ -2344,11 +2346,11 @@
    "dur": 137,
    "shaders": [
     "iron-forge",
+    "chinook",
     "dusk",
     "covenant",
     "rapture",
     "pelagic",
-    "fracture-light",
     "diatom",
     "dark-nebula",
     "ocean",
@@ -2358,7 +2360,8 @@
    ],
    "cast": {
     "threshold": [
-     "iron-forge"
+     "iron-forge",
+     "chinook"
     ],
     "expansion": [
      "dusk",
@@ -2366,8 +2369,7 @@
     ],
     "transcendence": [
      "rapture",
-     "pelagic",
-     "fracture-light"
+     "pelagic"
     ],
     "illumination": [
      "diatom",
@@ -2664,7 +2666,7 @@
     "covenant",
     "rapture",
     "astral",
-    "obsidian-flow",
+    "chinook",
     "nadir",
     "r2-portalrim",
     "pulsar",
@@ -2683,7 +2685,7 @@
     "transcendence": [
      "rapture",
      "astral",
-     "obsidian-flow",
+     "chinook",
      "nadir",
      "r2-portalrim",
      "pulsar"

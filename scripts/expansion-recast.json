@@ -79,17 +79,16 @@
   "cascade-veil": 8,
   "cirrus": 8,
   "fracture-light": 8,
+  "kelp": 8,
   "kepler": 8,
   "lightyear": 8,
   "meteor-rain": 8,
-  "monsoon": 8,
   "murmuration": 8,
   "mycelium": 8,
   "pelagic": 8,
   "photon": 8,
   "plankton": 8,
   "protostar": 8,
-  "r2-spore": 8,
   "r2-thermal": 8,
   "r3-plasmastorm": 8,
   "ribbon-of-light": 8,
@@ -101,8 +100,8 @@
   "dusk": 7,
   "firefly-field": 7,
   "flagella": 7,
-  "kelp": 7,
   "mandorla": 7,
+  "monsoon": 7,
   "nadir": 7,
   "obsidian-flow": 7,
   "orbit-weaver": 7,
@@ -110,6 +109,7 @@
   "r-stardust": 7,
   "r2-photon": 7,
   "r2-portalrim": 7,
+  "r2-spore": 7,
   "r3-fernunfurl": 7,
   "r3-heartwarmth": 7,
   "r3-lightningveil": 7,
@@ -130,15 +130,12 @@
   "r2-curlswarm": 6,
   "r2-pixie": 6,
   "r2-spiralgal": 6,
-  "stigmata": 6,
   "symbiosis": 6,
   "threshold": 6,
-  "torrent": 6,
   "typhoon": 6,
   "volcanic": 6,
   "aureole": 5,
   "chrysalis": 5,
-  "event-horizon": 5,
   "iron-forge": 5,
   "kairos": 5,
   "kenosis": 5,
@@ -147,8 +144,12 @@
   "r-blackhole": 5,
   "r-smokerings": 5,
   "seraph": 5,
+  "stigmata": 5,
+  "torrent": 5,
   "vestige": 5,
   "yantra": 5,
+  "chinook": 4,
+  "event-horizon": 4,
   "hubble": 4,
   "molten-vein": 4,
   "r-droplets": 4,
@@ -806,7 +807,7 @@
     "kenosis",
     "vestige",
     "plankton",
-    "ripple",
+    "chinook",
     "mandorla",
     "r2-thermal",
     "flagella",
@@ -822,7 +823,7 @@
      "kenosis",
      "vestige",
      "plankton",
-     "ripple",
+     "chinook",
      "mandorla"
     ],
     "transcendence": [
@@ -1475,7 +1476,7 @@
    "crests": false,
    "peakPhase": "illumination",
    "supports": [
-    "monsoon",
+    "chinook",
     "vestige",
     "lectio",
     "aureole",
@@ -1489,7 +1490,7 @@
    ],
    "cast": {
     "threshold": [
-     "monsoon"
+     "chinook"
     ],
     "expansion": [
      "threshold",
@@ -1609,7 +1610,7 @@
    "peakPhase": "transcendence",
    "supports": [
     "shadow-fire",
-    "r2-spore",
+    "chinook",
     "pollen",
     "iron-forge",
     "monsoon",
@@ -1623,7 +1624,7 @@
    "cast": {
     "threshold": [
      "shadow-fire",
-     "r2-spore"
+     "chinook"
     ],
     "expansion": [
      "pulsar",
@@ -2016,7 +2017,7 @@
     "protostar",
     "r3-fernunfurl",
     "kepler",
-    "event-horizon",
+    "kelp",
     "r3-heartwarmth",
     "starfield",
     "mycelium",
@@ -2037,7 +2038,7 @@
      "r-smokerings"
     ],
     "illumination": [
-     "event-horizon",
+     "kelp",
      "r3-heartwarmth",
      "starfield",
      "mycelium"
@@ -2349,7 +2350,7 @@
     "pulsar",
     "zenith",
     "tide",
-    "stigmata",
+    "r3-sleepingbloom",
     "obsidian-flow",
     "torrent",
     "threshold",
@@ -2366,7 +2367,7 @@
      "pulsar",
      "zenith",
      "tide",
-     "stigmata"
+     "r3-sleepingbloom"
     ],
     "transcendence": [
      "obsidian-flow",
@@ -2826,7 +2827,7 @@
     "rapture",
     "singularity",
     "satori",
-    "torrent",
+    "ripple",
     "r3-waveveil",
     "iron-forge",
     "shadow-fire",
@@ -2845,7 +2846,7 @@
     ],
     "transcendence": [
      "lightyear",
-     "torrent",
+     "ripple",
      "r3-waveveil"
     ],
     "illumination": [
@@ -3323,7 +3324,7 @@
   {
    "id": "061528d4-e9a3-49c3-ad3c-f23cf9cf2251",
    "title": "Rolling 2",
-   "lead": "event-horizon",
+   "lead": "chinook",
    "supports": [
     "pendulum-dust",
     "aureole",
@@ -3340,7 +3341,7 @@
    ],
    "cast": {
     "threshold": [
-     "event-horizon",
+     "chinook",
      "pendulum-dust"
     ],
     "expansion": [
@@ -3355,7 +3356,7 @@
     "illumination": [
      "r3-sleepingbloom",
      "r3-waveveil",
-     "event-horizon"
+     "chinook"
     ],
     "return": [
      "ripple",
@@ -3375,10 +3376,7 @@
     0.3
    ],
    "mvStandard": "2026-10-12T00-11-27",
-   "leadCoverage": 0.38,
-   "leadHue": "gold",
-   "leadFit": 3,
-   "shaderBalance": "2026-10-13"
+   "leadCoverage": 0.38
   },
   {
    "id": "b5247327-b1fd-45ce-a249-0a58a8a3c57e",
@@ -3386,7 +3384,7 @@
    "lead": "nadir",
    "supports": [
     "fracture-light",
-    "r3-sleepingbloom",
+    "chinook",
     "r-smokerings",
     "zenith",
     "covenant",
@@ -3403,7 +3401,7 @@
      "nadir"
     ],
     "expansion": [
-     "r3-sleepingbloom",
+     "chinook",
      "r-smokerings"
     ],
     "transcendence": [

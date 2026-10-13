@@ -283,15 +283,11 @@ export const GLOBAL_SHADER_BLOCKLIST: string[] = [
   // Karel 2026-10-13: "i cant stand dharma in resonance" (the big solid
   // spinning wheel) — banned everywhere (src/lib/journeys/shader-balance.ts).
   "dharma",
-  // Karel 2026-10-13, watching Snowflake: "remove the shader that has diagonal
-  // white lines go across the screen from resonance" — Spirit Trails (six
-  // glowing lines rotated across the frame). Banned everywhere.
-  "r3-spirittrails",
-  // Karel 2026-10-13: "i saw it in yellow bird too. ban it" — Chinook (warm
-  // wind streams flowing diagonally downslope; Yellow Bird's opener).
-  "chinook",
   // Karel 2026-10-13 (The First, Expanded): "dont use that shader where the
   // diaganol light keeps passing over" — Monsoon Veil, out of every cast.
+  // Confirmed on film 2026-10-13: THE diagonal-lines shader he wanted out
+  // (Spirit Trails — "the rainbow lines i love" — and Chinook — "that swirl
+  // is fine" — were briefly banned with it and are back).
   "r3-monsoonveil",
   // Measured full-screen washes / flicker (scripts/shader-vetting.json,
   // 2026-10-05): they lift the black floor or brighten the frame even

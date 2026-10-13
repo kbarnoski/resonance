@@ -39,7 +39,7 @@ export const SCRIPTED_TAKES: Record<string, TakeScriptEntry[]> = {
   "first-snow": [
     {"p":0,"role":"primary","mode":"plasma"},{"p":0.112,"role":"primary","mode":"swell"},
     {"p":0.183,"role":"primary","mode":"r2-photon"},{"p":0.292,"role":"primary","mode":"cirrus"},
-    // Spirit Trails (p0.354) out — "diagonal white lines" banned (Karel 2026-10-13); cirrus holds
+    {"p":0.354,"role":"primary","mode":"r3-spirittrails"},
     {"p":0.429,"role":"primary","mode":"murmuration"},{"p":0.498,"role":"primary","mode":"firefly-field"},
     {"p":0.616,"role":"primary","mode":"eclipse-ring"},{"p":0.676,"role":"primary","mode":"r-droplets"},
     {"p":0.704,"role":"dual","mode":"pendulum-dust"},{"p":0.753,"role":"primary","mode":"r-silk"},

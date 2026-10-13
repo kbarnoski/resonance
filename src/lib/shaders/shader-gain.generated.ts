@@ -72,7 +72,7 @@ export const SHADER_LEAD_GAIN: Readonly<Record<string, number>> = {
 export const EXPANSION_LEADS: Readonly<Record<string, string>> = {
   "stand 10": "ember", // the former Kinetic Lab, joined 2026-10-11
   "cabin soul 8": "volcanic", // the former Kinetic Lab, joined 2026-10-11
-  "rolling 2": "event-horizon", // the former Kinetic Lab, joined 2026-10-11
+  "rolling 2": "chinook", // the former Kinetic Lab, joined 2026-10-11
   "cabin soul 5": "nadir", // the former Kinetic Lab, joined 2026-10-11
   "chemiluminescence 1": "pelagic", // the former Kinetic Lab, joined 2026-10-11
   "surrounded by light 6": "kenosis",
