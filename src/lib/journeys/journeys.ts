@@ -287,6 +287,12 @@ export const GLOBAL_SHADER_BLOCKLIST: string[] = [
   // white lines go across the screen from resonance" — Spirit Trails (six
   // glowing lines rotated across the frame). Banned everywhere.
   "r3-spirittrails",
+  // Karel 2026-10-13: "i saw it in yellow bird too. ban it" — Chinook (warm
+  // wind streams flowing diagonally downslope; Yellow Bird's opener).
+  "chinook",
+  // Karel 2026-10-13 (The First, Expanded): "dont use that shader where the
+  // diaganol light keeps passing over" — Monsoon Veil, out of every cast.
+  "r3-monsoonveil",
   // Measured full-screen washes / flicker (scripts/shader-vetting.json,
   // 2026-10-05): they lift the black floor or brighten the frame even
   // when dimmed — "full screen ones that brighten the screen and makes

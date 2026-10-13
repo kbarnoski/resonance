@@ -1,0 +1,165 @@
+{
+ "by": "scripts/rebalance-shader-casts.mjs",
+ "note": "Expansion casts live in the pack (data/journeys.json phases[].shaderModes) + DB rows; apply with scripts/apply-shader-recast-2026-10-13.mjs --input=scripts/shader-recast-2026-10-13c.expansion-casts.json",
+ "journeys": {},
+ "ensure": {
+  "21448504-ec00-48c3-8b0a-c92da2cf216a": {
+   "name": "Surrounded by Light 19",
+   "musts": [
+    "seraph",
+    "sun-dawn",
+    "sun-corona"
+   ],
+   "bans": [
+    "dharma"
+   ],
+   "before": {
+    "threshold": [
+     "firefly-field",
+     "protostar",
+     "chrysalis"
+    ],
+    "expansion": [
+     "murmuration",
+     "protostar",
+     "chrysalis"
+    ],
+    "transcendence": [
+     "murmuration",
+     "protostar",
+     "chrysalis"
+    ],
+    "illumination": [
+     "murmuration",
+     "protostar",
+     "diatom"
+    ],
+    "return": [
+     "r2-spore",
+     "pulsar",
+     "diatom"
+    ],
+    "integration": [
+     "r2-spore",
+     "pulsar",
+     "diatom"
+    ]
+   },
+   "handEdited": {
+    "threshold": [
+     "firefly-field",
+     "protostar",
+     "chrysalis"
+    ],
+    "expansion": [
+     "murmuration",
+     "protostar",
+     "chrysalis",
+     "seraph"
+    ],
+    "transcendence": [
+     "murmuration",
+     "protostar",
+     "chrysalis",
+     "sun-dawn"
+    ],
+    "illumination": [
+     "murmuration",
+     "protostar",
+     "diatom",
+     "seraph"
+    ],
+    "return": [
+     "r2-spore",
+     "pulsar",
+     "diatom"
+    ],
+    "integration": [
+     "r2-spore",
+     "pulsar",
+     "diatom",
+     "sun-corona"
+    ]
+   }
+  },
+  "06b07942-bf94-4513-8e71-ef00508ced3e": {
+   "name": "Surrounded by Light 3",
+   "musts": [
+    "seraph",
+    "sun-aster",
+    "sun-veil"
+   ],
+   "bans": [
+    "dharma"
+   ],
+   "before": {
+    "threshold": [
+     "yantra",
+     "ocean",
+     "r-smokerings"
+    ],
+    "expansion": [
+     "yantra",
+     "ocean",
+     "r-smokerings"
+    ],
+    "transcendence": [
+     "yantra",
+     "ocean",
+     "r-smokerings"
+    ],
+    "illumination": [
+     "yantra",
+     "ocean",
+     "r-droplets"
+    ],
+    "return": [
+     "starfield",
+     "obsidian-flow",
+     "r-droplets"
+    ],
+    "integration": [
+     "starfield",
+     "obsidian-flow",
+     "r-droplets"
+    ]
+   },
+   "handEdited": {
+    "threshold": [
+     "yantra",
+     "ocean",
+     "r-smokerings"
+    ],
+    "expansion": [
+     "yantra",
+     "ocean",
+     "r-smokerings",
+     "seraph"
+    ],
+    "transcendence": [
+     "yantra",
+     "ocean",
+     "r-smokerings",
+     "sun-aster"
+    ],
+    "illumination": [
+     "yantra",
+     "ocean",
+     "r-droplets",
+     "seraph",
+     "sun-veil"
+    ],
+    "return": [
+     "starfield",
+     "obsidian-flow",
+     "r-droplets"
+    ],
+    "integration": [
+     "starfield",
+     "obsidian-flow",
+     "r-droplets"
+    ]
+   }
+  }
+ }
+}

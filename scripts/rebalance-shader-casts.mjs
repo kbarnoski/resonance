@@ -486,9 +486,9 @@ if (!DRY && changed.length) {
   if (leadSwaps.length) {
     let g = readFileSync(GAIN_PATH, "utf8");
     for (const s of leadSwaps) {
-      const re = new RegExp(`^  ${JSON.stringify(s.name.toLowerCase()).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}: "[^"]*",$`, "m");
+      const re = new RegExp(`^  ${JSON.stringify(s.name.toLowerCase()).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}: "[^"]*",( //.*)?$`, "m");
       if (!re.test(g)) throw new Error(`EXPANSION_LEADS line not found for ${s.name}`);
-      g = g.replace(re, `  ${JSON.stringify(s.name.toLowerCase())}: ${JSON.stringify(s.to)},`);
+      g = g.replace(re, (_, note) => `  ${JSON.stringify(s.name.toLowerCase())}: ${JSON.stringify(s.to)},${note ?? ""}`);
     }
     writeFileSync(GAIN_PATH, g);
   }
