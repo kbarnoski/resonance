@@ -33,7 +33,7 @@ const OWNED_PATH_DIST: number | null = (featured.constraints.owned as { pathMinD
 const expansion = read("scripts/expansion-recast.json") as { journeys: { id: string; lead: string; cast: Record<string, (string | null)[]> }[] };
 const vet = read("scripts/shader-vetting.json") as { pool: string[] };
 
-const KAREL_REJECTED = ["chakra", "redshift", "gnosis", "biolume", "coral", "r3-balllightning", "sparkler"];
+const KAREL_REJECTED = ["chakra", "redshift", "gnosis", "biolume", "coral", "r3-balllightning", "sparkler", "dharma"]; // dharma: "i cant stand dharma in resonance" (Karel 2026-10-13)
 // the former Kinetic Lab five joined the Expansion (2026-10-11) — no lab left
 const KINETIC_LAB: string[] = [];
 const KINETIC_LAB_LEADS = ["sparkler", "comet-swarm", "helix-stream", "ember-fountain", "galaxy-seed"];

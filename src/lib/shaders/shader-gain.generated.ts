@@ -105,7 +105,7 @@ export const EXPANSION_LEADS: Readonly<Record<string, string>> = {
   "tranquility 17": "r2-pixie",
   "redwoods sway 2": "r-embers",
   "horses 1": "r2-spiralgal",
-  "northern plane 3": "dharma",
+  "northern plane 3": "r-smokerings",
   "chemiluminescence": "jubilee",
   "tranquility 33": "drift",
   "amboise 2": "furnace",

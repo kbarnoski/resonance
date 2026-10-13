@@ -280,6 +280,9 @@ export const GLOBAL_SHADER_BLOCKLIST: string[] = [
   // Karel 2026-10-06: "that bright green cellular shader should never be
   // used. it doesnt work" (seen in Ghost) — banned everywhere.
   "biofilm",
+  // Karel 2026-10-13: "i cant stand dharma in resonance" (the big solid
+  // spinning wheel) — banned everywhere (src/lib/journeys/shader-balance.ts).
+  "dharma",
   // Measured full-screen washes / flicker (scripts/shader-vetting.json,
   // 2026-10-05): they lift the black floor or brighten the frame even
   // when dimmed — "full screen ones that brighten the screen and makes

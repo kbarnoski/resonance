@@ -10,7 +10,7 @@ import { createSeededRandom, seededShuffle } from "./seeded-random";
 import { MODES_3D, MODE_META } from "@/lib/shaders";
 import { SHADER_HUES } from "@/lib/shaders/shader-hues.generated";
 import { VETTED_POOL } from "@/lib/shaders/shader-brightness.generated";
-import { KIN_BORROW_AVOID, isAmberShader } from "./shader-balance";
+import { KIN_BORROW_AVOID, isAmberShader, isShaderBannedFor } from "./shader-balance";
 import { isMasteredJourneyLike } from "./mastered";
 import { getUserBlockedShaders, getUserDeletedShaders } from "@/lib/shader-preferences";
 import {
@@ -1470,6 +1470,9 @@ class JourneyEngine {
    *  browser's context limit and triggers context-loss bursts). */
   private isShaderAllowed(mode: string): boolean {
     if (PICKTIME_SHADER_BLOCKLIST.has(mode)) return false;
+    // Shader balance (Karel 2026-10-13): dharma never; per-journey bans
+    // (Bath: no ember / parsec) hold for EVERY picker, finale-forced included.
+    if (isShaderBannedFor(this.journey?.id, mode)) return false;
     const realmBans = this.journey ? PICKTIME_REALM_BLOCKLIST[this.journey.realmId] : undefined;
     if (realmBans?.has(mode)) return false;
     // Karel 2026-09-29: "full screen web of colored lines... like an

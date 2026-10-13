@@ -61,6 +61,7 @@ const { STD } = await import("./lib/snowflake-standard.mjs");
 const FEAT_PATH = ROOT + "scripts/featured-recast.json";
 const EXP_PATH = ROOT + "scripts/expansion-recast.json";
 const TS_PATH = ROOT + "src/lib/journeys/journey-casts.generated.ts";
+const GAIN_PATH = ROOT + "src/lib/shaders/shader-gain.generated.ts";
 const featured = JSON.parse(readFileSync(FEAT_PATH, "utf8"));
 const expansion = JSON.parse(readFileSync(EXP_PATH, "utf8"));
 const vet = JSON.parse(readFileSync(ROOT + "scripts/shader-vetting.json", "utf8"));
@@ -243,22 +244,60 @@ function replaceShader(w, m, why, opts = {}) {
 const before = { counts: new Map(C.all), amber: amberStats(), dharmaIn: W.filter((w) => modesOf(w).has("dharma")).map((w) => w.name) };
 const log = [];
 
-// 1. First Light: dharma -> aureole (Karel), Grasshopper: parsec out.
+// PINNED shaders (SHADER_JOURNEY_MUSTS — Karel's explicit picks) and the
+// light-ray favourites are never removed by any later step.
+const protectedSlots = new Set(); // `${id}:${mode}`
+for (const [id, musts] of Object.entries(BAL.SHADER_JOURNEY_MUSTS)) for (const m of musts) protectedSlots.add(`${id}:${m}`);
+/** Put `want` into w in place of its most expendable single-phase shader
+ *  (banned first, then amber, then most-used; never the lead or a pinned
+ *  one; slot brightness budget honoured). Journeys it would now sit too
+ *  close to give theirs up; a clash with a FIXED roster (mastered take,
+ *  another Expansion lead) blocks it unless `force` (Karel's pins). */
+function placePinned(w, want, why, { force = false } = {}) {
+  const viol = spacingViolators(w, want, EXP_DISTS.at(-1));
+  const resolvable = (vid) => { const v = byId.get(vid); return v && !protectedSlots.has(`${vid}:${want}`) && !(v.kind === "exp" && v.lead === want); };
+  if (!force && !viol.every(resolvable)) return false;
+  const banned = (m) => w.bans.has(m) || !poolOf(w).includes(m);
+  const opts = [...modesOf(w)].filter((m) => m !== w.lead && !protectedSlots.has(`${w.id}:${m}`) && slotsOf(w, m).length === 1)
+    .sort((a, b) => (banned(b) - banned(a)) || (BAL.isAmberShader(b) - BAL.isAmberShader(a)) || ((C.all.get(b) ?? 0) - (C.all.get(a) ?? 0)) || a.localeCompare(b));
+  const m = opts.find((x) => { const [pi, si] = slotsOf(w, x)[0]; return eff(want) <= slotBudget(w, pi, si); });
+  if (!m) { log.push(`${force ? "FAIL" : "WARN"} ${w.name}: no slot can hold ${want}`); return false; }
+  const [pi, si] = slotsOf(w, m)[0];
+  setSlot(w, pi, si, want, why);
+  protectedSlots.add(`${w.id}:${want}`);
+  for (const vid of viol) {
+    if (!resolvable(vid)) { log.push(`WARN pinned ${want} in ${w.name} sits close to ${byId.get(vid)?.name ?? vid} (fixed roster / lead)`); continue; }
+    if (!replaceShader(byId.get(vid), want, `make room: ${want} in ${w.name}`)) log.push(`FAIL ${want} in ${w.name} clashes with ${byId.get(vid).name}`);
+  }
+  return true;
+}
+
+// 0. Expansion leads that are now banned everywhere (dharma: Northern Plane 3)
+//    get a NEW exclusive lead: in the pool, nobody's lead, palette-fit, bright
+//    enough to carry the peak, cosmic/cool preferred, all placement rules.
+const expLeads = () => new Set(W.filter((w) => w.kind === "exp").map((w) => w.lead));
+const leadSwaps = [];
+for (const w of W) {
+  if (w.kind !== "exp" || !(J.GLOBAL_SHADER_BLOCKLIST.includes(w.lead) || BAL.SHADER_BANNED_EVERYWHERE.has(w.lead))) continue;
+  const old = w.lead, slots = slotsOf(w, old), taken = expLeads();
+  const per = slots.map(([pi, si]) => new Set(candidates(w, pi, si, null, { allowAmber: true }).map((c) => c.r)));
+  const ranked = candidates(w, slots[0][0], slots[0][1], null, { allowAmber: true })
+    .filter((c) => !LOW.has(c.r) && !taken.has(c.r) && per.every((s) => s.has(c.r)) && expansion.journeys.every((x) => x.lead !== c.r)
+      && W.every((v) => v.kind !== "exp" || v === w || Math.abs(v.expIdx - w.expIdx) >= EXP_LEAD_DIST || !modesOf(v).has(c.r)))
+    .map((c) => ({ ...c, s: c.s + fit(c.r, w.pf) + Math.min(eff(c.r), 30) / 10 - (BAL.isAmberShader(c.r) ? 1 : 0) }))
+    .sort((a, b) => b.s - a.s || a.r.localeCompare(b.r));
+  if (!ranked.length) { log.push(`FAIL ${w.name}: no new lead for banned ${old}`); continue; }
+  w.lead = ranked[0].r; // lead first so spacing/caps count it as the lead
+  for (const [pi, si] of slots) setSlot(w, pi, si, ranked[0].r, `${old} is banned everywhere — new lead`);
+  leadSwaps.push({ name: w.name, from: old, to: w.lead });
+}
+
+// 1. Karel's pins (seraph in First Light + every Surrounded by Light, Aureole
+//    in First Light), then the journey bans (Grasshopper / Bath).
 for (const [id, musts] of Object.entries(BAL.SHADER_JOURNEY_MUSTS)) {
   const w = byId.get(id);
-  for (const want of musts) {
-    if (modesOf(w).has(want)) continue;
-    const ban = (BAL.SHADER_JOURNEY_BANS[id] ?? []).find((b) => modesOf(w).has(b));
-    const [pi, si] = ban ? slotsOf(w, ban)[0] : [0, 0];
-    // Karel's explicit pick: may exceed the general loop cap (trimmed elsewhere
-    // below); journeys it now sits too close to give it up instead.
-    const clash = spacingViolators(w, want, EXP_DISTS.at(-1));
-    setSlot(w, pi, si, want, `Karel: ${want} in ${w.name}`);
-    for (const vid of clash) {
-      const v = byId.get(vid);
-      if (!v || !replaceShader(v, want, `make room: ${want} in ${w.name}`)) log.push(`FAIL ${want} in ${w.name} clashes with ${v?.name ?? vid} (fixed)`);
-    }
-  }
+  if (!w) continue; // parked takes: pack-only (the apply step ensures it)
+  for (const want of musts) if (!modesOf(w).has(want)) placePinned(w, want, `Karel: ${want} pinned in ${w.name}`, { force: true });
 }
 for (const [id, bans] of Object.entries(BAL.SHADER_JOURNEY_BANS)) {
   const w = byId.get(id);
@@ -283,8 +322,6 @@ for (const [id, bans] of Object.entries(BAL.SHADER_JOURNEY_BANS)) {
 }
 
 // 3. Light journeys: a light-ray shader (zenith first, then seraph).
-const protectedSlots = new Set(); // `${id}:${mode}` never removed below
-for (const [id, musts] of Object.entries(BAL.SHADER_JOURNEY_MUSTS)) for (const m of musts) protectedSlots.add(`${id}:${m}`);
 // most-constrained first: a journey whose options are blocked by FIXED
 // rosters (mastered takes) picks before its light-themed neighbours.
 const lightOptions = (id) => { const w = byId.get(id); return BAL.LIGHT_FAVOURED.filter((f) => !w.bans.has(f) && poolOf(w).includes(f) && spacingViolators(w, f, EXP_DISTS.at(-1)).every((v) => byId.has(v))).length; };
@@ -293,28 +330,10 @@ for (const id of [...BAL.LIGHT_JOURNEY_IDS].sort((a, b) => lightOptions(a) - lig
   const has = BAL.LIGHT_FAVOURED.filter((f) => modesOf(w).has(f));
   for (const f of has) protectedSlots.add(`${id}:${f}`);
   if (has.length) continue;
-  // trade the journey's most over-used non-lead amber (or else most-used)
-  // single-phase shader for zenith (else seraph); nearby journeys that would
-  // now sit too close give theirs up (Karel favours them HERE most). The
-  // loop cap is restored in step 4 by trimming non-light journeys.
-  const resolvable = (vid, fav) => { const v = byId.get(vid); return v && !protectedSlots.has(`${vid}:${fav}`) && !(v.kind === "exp" && v.lead === fav); };
-  let done = false;
-  for (const fav of BAL.LIGHT_FAVOURED) {
-    if (w.bans.has(fav) || !poolOf(w).includes(fav)) continue;
-    const viol = spacingViolators(w, fav, EXP_DISTS.at(-1));
-    if (process.env.DEBUG) console.log("light", w.name, fav, viol.map((v) => byId.get(v)?.name ?? v), viol.map((v) => resolvable(v, fav)));
-    if (!viol.every((vid) => resolvable(vid, fav))) continue;
-    const opts = [...modesOf(w)].filter((m) => m !== w.lead && !protectedSlots.has(`${id}:${m}`) && slotsOf(w, m).length === 1)
-      .sort((a, b) => (BAL.isAmberShader(b) - BAL.isAmberShader(a)) || (C.all.get(b) - C.all.get(a)) || a.localeCompare(b));
-    const m = opts.find((x) => { const [pi, si] = slotsOf(w, x)[0]; return eff(fav) <= slotBudget(w, pi, si); });
-    if (!m) continue;
-    const [pi, si] = slotsOf(w, m)[0];
-    setSlot(w, pi, si, fav, `light journey: ${fav}`);
-    protectedSlots.add(`${id}:${fav}`);
-    for (const vid of viol) if (!replaceShader(byId.get(vid), fav, `make room: ${fav} in ${w.name}`)) log.push(`FAIL ${fav} in ${w.name} clashes with ${byId.get(vid).name}`);
-    done = true;
-    break;
-  }
+  // trade the journey's most expendable shader for zenith (else seraph);
+  // nearby journeys that would now sit too close give theirs up (Karel
+  // favours them HERE most). Step 4 restores the loop cap elsewhere.
+  const done = BAL.LIGHT_FAVOURED.some((fav) => !w.bans.has(fav) && poolOf(w).includes(fav) && placePinned(w, fav, `light journey: ${fav}`));
   if (!done) log.push(`FAIL light journey ${w.name}: no zenith/seraph placement`);
 }
 
@@ -428,21 +447,63 @@ if (!DRY && changed.length) {
   featured.constraints.balance = { by: "scripts/rebalance-shader-casts.mjs", laws: "src/lib/journeys/shader-balance.ts", loopCap: BAL.SHADER_LOOP_CAP, namedCaps: BAL.SHADER_NAMED_CAPS, amberShareMax: BAL.AMBER_SHARE_MAX, applied: "2026-10-13" };
   writeFileSync(FEAT_PATH, JSON.stringify(featured, null, 1));
   writeFileSync(TS_PATH, ts);
-  // Expansion casts -> expansion-recast.json + the pack/DB apply input
-  const apply = {};
+  // Expansion casts -> expansion-recast.json
   for (const w of changed.filter((x) => x.kind === "exp")) {
     const e = w.rec;
-    apply[w.id] = { name: w.name, before: w.before, after: w.cast };
     e.cast = w.cast;
-    e.supports = [...modesOf(w)].filter((m) => m !== e.lead);
+    e.supports = [...modesOf(w)].filter((m) => m !== w.lead);
+    if (e.lead !== w.lead) { e.lead = w.lead; e.leadHue = V[w.lead].hue; e.leadFit = fit(w.lead, w.pf); }
     e.shaderBalance = "2026-10-13";
   }
   const sup = {};
   for (const x of expansion.journeys) for (const m of new Set(Object.values(x.cast).flat().filter((m) => m && m !== x.lead))) sup[m] = (sup[m] ?? 0) + 1;
   expansion.supportUses = Object.fromEntries(Object.entries(sup).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])));
   writeFileSync(EXP_PATH, JSON.stringify(expansion, null, 1));
-  if (Object.keys(apply).length) writeFileSync(ROOT + "scripts/shader-recast-2026-10-13.expansion-casts.json", JSON.stringify({ generated: new Date().toISOString(), by: "scripts/rebalance-shader-casts.mjs", note: "Expansion casts live in the pack (data/journeys.json phases[].shaderModes) + DB rows; apply with scripts/apply-shader-recast-2026-10-13.mjs", journeys: apply }, null, 1) + "\n");
-  console.log(`wrote featured-recast.json, journey-casts.generated.ts, expansion-recast.json${Object.keys(apply).length ? ", shader-recast-2026-10-13.expansion-casts.json" : ""}`);
+  // a new Expansion lead (dharma banned) -> EXPANSION_LEADS (lead gain lookup)
+  if (leadSwaps.length) {
+    let g = readFileSync(GAIN_PATH, "utf8");
+    for (const s of leadSwaps) {
+      const re = new RegExp(`^  ${JSON.stringify(s.name.toLowerCase()).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}: "[^"]*",$`, "m");
+      if (!re.test(g)) throw new Error(`EXPANSION_LEADS line not found for ${s.name}`);
+      g = g.replace(re, `  ${JSON.stringify(s.name.toLowerCase())}: ${JSON.stringify(s.to)},`);
+    }
+    writeFileSync(GAIN_PATH, g);
+  }
+  console.log(`wrote featured-recast.json, journey-casts.generated.ts, expansion-recast.json${leadSwaps.length ? ", shader-gain.generated.ts (EXPANSION_LEADS)" : ""}`);
+}
+// globally banned shaders leave the generated vetted pool (uncast journeys regenerate from it)
+if (!DRY) {
+  let ts = readFileSync(TS_PATH, "utf8");
+  ts = ts.replace(/^export const VETTED_SHADER_POOL: ReadonlySet<string> = new Set\((\[.*\])\);$/m, (_, arr) => `export const VETTED_SHADER_POOL: ReadonlySet<string> = new Set(${JSON.stringify(JSON.parse(arr).filter((m) => !J.GLOBAL_SHADER_BLOCKLIST.includes(m)))});`);
+  writeFileSync(TS_PATH, ts);
+  featured.pool = featured.pool.filter((m) => !J.GLOBAL_SHADER_BLOCKLIST.includes(m));
+  writeFileSync(FEAT_PATH, JSON.stringify(featured, null, 1));
+}
+
+// ── pack apply input: every Expansion journey whose pack phases differ from
+//    its final cast, plus the parked Surrounded by Light takes (pins, pack
+//    only). `before` = the pack before tonight's hand edit (backup), when it
+//    exists; `handEdited` = the pack as it is now. The apply script writes a
+//    phase only when it still holds one of those (or already the final cast).
+if (!DRY) {
+  const BACKUP = arg("backup", `${process.env.HOME}/Documents/Resonance/pack-journeys.backup-2026-10-13-dharma.json`);
+  const backup = existsSync(BACKUP) ? new Map(JSON.parse(readFileSync(BACKUP, "utf8")).map((r) => [r.id, r])) : new Map();
+  const phaseMap = (row) => (row ? Object.fromEntries(row.phases.map((p) => [p.id, p.shaderModes ?? null])) : null);
+  const apply = {};
+  for (const w of W.filter((x) => x.kind === "exp")) {
+    const now = phaseMap(packById.get(w.id));
+    if (now && JSON.stringify(Object.keys(w.cast).map((k) => now[k])) === JSON.stringify(Object.values(w.cast))) continue;
+    apply[w.id] = { name: w.name, before: phaseMap(backup.get(w.id)) ?? w.before, handEdited: now, after: w.cast };
+  }
+  const ensure = {};
+  for (const [id, musts] of Object.entries(BAL.SHADER_JOURNEY_MUSTS)) {
+    if (byId.has(id)) continue;
+    const row = packById.get(id);
+    if (!row) { log.push(`WARN pinned journey ${id} not in the pack`); continue; }
+    ensure[id] = { name: row.name, musts, bans: [...BAL.SHADER_BANNED_EVERYWHERE, ...(BAL.SHADER_JOURNEY_BANS[id] ?? [])], before: phaseMap(backup.get(id)), handEdited: phaseMap(row) };
+  }
+  writeFileSync(ROOT + "scripts/shader-recast-2026-10-13.expansion-casts.json", JSON.stringify({ by: "scripts/rebalance-shader-casts.mjs", note: "Expansion casts live in the pack (data/journeys.json phases[].shaderModes) + DB rows; apply with scripts/apply-shader-recast-2026-10-13.mjs", journeys: apply, ensure }, null, 1) + "\n");
+  console.log(`apply input: ${Object.keys(apply).length} Expansion journeys + ${Object.keys(ensure).length} parked pins → scripts/shader-recast-2026-10-13.expansion-casts.json`);
 }
 
 if (REPORT) {
@@ -454,7 +515,7 @@ if (REPORT) {
   const byWhy = {}; for (const c of changes) { const k = c.why.replace(/ <= \d+$/, "").replace(/^cap .*/, "loop caps"); byWhy[k] = (byWhy[k] ?? 0) + 1; }
   const md = `# Shader recast — 2026-10-13
 
-Loop-wide recast for diversity, from Karel's 2026-10-12 notes (magma / parsec "a lot", dharma "once in a great while", zenith/seraph "dope", "never mind seeing cosmos and infinite space", Grasshopper's moving plane "on repeat").
+Loop-wide recast for diversity, from Karel's notes of 2026-10-12/13 (magma / parsec "a lot", "i cant stand dharma in resonance", seraph ALWAYS in First Light + every Surrounded by Light, "no ember 3d plane moving shader in bath", zenith/seraph "dope", "never mind seeing cosmos and infinite space", Grasshopper's moving plane "on repeat"). Built on main f731e4a1.
 Laws: \`src/lib/journeys/shader-balance.ts\` · generator: \`scripts/rebalance-shader-casts.mjs\` · guard: \`src/lib/journeys/shader-balance.test.ts\`.
 
 Counts are **loop journeys a shader appears in** (kiosk setlist, ${NL} journeys; mastered Snowflake / Realized / Ghost takes count but never change). Amber = SHADER_HUES gold + ember, plus parsec (its GLSL reads violet; on screen it is "that amber 3d moving plane").
@@ -484,6 +545,20 @@ ${rows}
 - before: ${fmtCast(fl.before)}
 - after: ${fmtCast(fl.cast)}
 
+## Bath (no ember, no parsec)
+
+- before: ${fmtCast(byId.get(BAL.BATH_ID).before)}
+- after: ${fmtCast(byId.get(BAL.BATH_ID).cast)}
+- The engine also refuses journey-banned shaders at pick time (\`isShaderAllowed\` → \`isShaderBannedFor\`), so the finale-forced switch (\`forceShaderSwitch\`, which logged "ember (finale-forced)" at p0.887) can no longer land on ember in Bath.
+
+## Seraph pins (First Light + every Surrounded by Light)
+
+${Object.keys(BAL.SHADER_JOURNEY_MUSTS).map((id) => { const w = byId.get(id); return w ? `- ${w.name}: ${BAL.SHADER_JOURNEY_MUSTS[id].join(" + ")} in ${Object.entries(w.cast).filter(([, l]) => BAL.SHADER_JOURNEY_MUSTS[id].some((m) => l.includes(m))).map(([p]) => p).join(", ")}` : `- ${packById.get(id)?.name ?? id} (parked, pack only): ensured by the apply step`; }).join("\n")}
+
+## Expansion lead swaps
+
+${leadSwaps.length ? leadSwaps.map((s) => `- ${s.name}: ${s.from} → ${s.to} (EXPANSION_LEADS updated)`).join("\n") : "none"}
+
 ## Grasshopper
 
 - before: ${fmtCast(gh.before)}
@@ -501,7 +576,7 @@ ${hReport.filter((r) => r.after.fails.length).map((r) => `- ${r.name}: before [$
 
 ## Notes
 
-- **Per-shader cap.** The brief asked for ≈5 journeys per shader. The loop holds ${W.length} cast journeys × ~12 shaders (${after.amber.tot} appearances) over a ${BASE_POOL.length}-shader vetted pool — an average of ${(after.amber.tot / BASE_POOL.length).toFixed(1)} journeys per shader, so a uniform cap of 5 would need a ~2.5× larger vetted pool (new shaders must go through the GPU vetting rig, scripts/vet-shaders.mjs). What ships: the named over-seen shaders capped at 5 (dharma 2), every other shader at ${BAL.SHADER_LOOP_CAP} (was up to 16), and the amber share under ${BAL.AMBER_SHARE_MAX * 100} % — which needs the cool shaders to carry ~${BAL.SHADER_LOOP_CAP} each (62 cool shaders × 14 < the ~870 cool appearances a 25 % amber share requires).
+- **Per-shader cap.** The brief asked for ≈5 journeys per shader. The loop holds ${W.length} cast journeys × ~12 shaders (${after.amber.tot} appearances) over a ${BASE_POOL.length}-shader vetted pool — an average of ${(after.amber.tot / BASE_POOL.length).toFixed(1)} journeys per shader, so a uniform cap of 5 would need a ~2.5× larger vetted pool (new shaders must go through the GPU vetting rig, scripts/vet-shaders.mjs). What ships: magma / parsec / ember capped at 5, dharma at 0 (globally blocked), every other shader at ${BAL.SHADER_LOOP_CAP} (was up to 16), and the amber share under ${BAL.AMBER_SHARE_MAX * 100} % — which needs the cool shaders to carry ~${BAL.SHADER_LOOP_CAP} each (62 cool shaders × 14 < the ~870 cool appearances a 25 % amber share requires).
 - **Engine borrowing.** \`journey-engine.ts\` kinBorrow (unseen kindred shaders once a roster is spent) drew uniformly from every vetted shader in the roster's hue families — with 23 gold + 8 ember shaders in the pool it pulled amber whenever a roster held one amber member. It now never borrows dharma / magma / parsec / ember and takes cool kin first unless the roster itself is mostly amber. Scripted (mastered) takes are exempt, so Snowflake / Ghost / Realized play exactly as mastered.
 - **Future casts.** \`scripts/mv-rollout/cast-shaders.mjs\`, \`cast-owned-featured.mjs\` and \`recast-featured.mjs\` read the same laws (caps, journey bans, amber penalty / cosmic lean); re-run this rebalancer after any recast.
 - **Runtime path.** Featured / album casts ship in the bundle (\`journey-casts.generated.ts\`) — a deploy is enough. Expansion casts are read from the Tramokyo pack (\`data/journeys.json\` phases[].shaderModes) and the DB rows, so they need \`node scripts/apply-shader-recast-2026-10-13.mjs --pack\` on the kiosk Mac (and \`--db\` with \`.env.local\` for the web). \`shader-balance.test.ts\` fails on a pack that has not been applied.

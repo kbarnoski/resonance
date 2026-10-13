@@ -17,7 +17,7 @@ const recast = read("scripts/expansion-recast.json") as { journeys: J[]; parked?
 const vet = read("scripts/shader-vetting.json") as { pool: string[]; verdicts: Record<string, { gain: number; leadGain: number }> };
 const POOL = new Set(vet.pool);
 const MASTERED_LEADS = new Set(["sparkler", "comet-swarm", "helix-stream", "ember-fountain", "galaxy-seed"]);
-const KAREL_REJECTED = ["chakra", "redshift", "gnosis", "biolume", "coral", "r3-balllightning", "sparkler"];
+const KAREL_REJECTED = ["chakra", "redshift", "gnosis", "biolume", "coral", "r3-balllightning", "sparkler", "dharma"]; // dharma: "i cant stand dharma in resonance" (Karel 2026-10-13)
 
 // Raised 5 -> 8 for the Journey Archetype rollout (Karel 2026-10-09 approved
 // raising the per-shader cap so every Expansion journey can carry 11-13

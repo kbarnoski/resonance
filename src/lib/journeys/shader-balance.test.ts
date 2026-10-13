@@ -1,14 +1,16 @@
-import { describe, it, expect, afterEach } from "vitest";
+import { describe, it, expect, afterEach, vi } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { JOURNEY_CASTS } from "./journey-casts.generated";
 import { TRAMOKYO_SETLIST } from "./installation-sequence";
 import { SCRIPTED_TAKES } from "./pinned-takes";
-import { getJourney } from "./journeys";
+import { getJourney, GLOBAL_SHADER_BLOCKLIST } from "./journeys";
+import { VETTED_SHADER_POOL } from "./journey-casts.generated";
+import { EXPANSION_LEADS } from "@/lib/shaders/shader-gain.generated";
 import { getJourneyEngine } from "./journey-engine";
 import {
-  SHADER_LOOP_CAP, SHADER_NAMED_CAPS, shaderLoopCap, AMBER_SHARE_MAX, isAmberShader,
-  FIRST_LIGHT_ID, GRASSHOPPER_ID, SHADER_JOURNEY_BANS, SHADER_JOURNEY_MUSTS,
+  SHADER_LOOP_CAP, SHADER_NAMED_CAPS, shaderLoopCap, AMBER_SHARE_MAX, isAmberShader, SHADER_BANNED_EVERYWHERE,
+  FIRST_LIGHT_ID, GRASSHOPPER_ID, BATH_ID, SURROUNDED_BY_LIGHT_IDS, SHADER_JOURNEY_BANS, SHADER_JOURNEY_MUSTS,
   LIGHT_FAVOURED, LIGHT_JOURNEY_IDS, KIN_BORROW_AVOID, SECONDS_PER_VOICE,
 } from "./shader-balance";
 import type { Journey } from "./types";
@@ -54,11 +56,36 @@ describe("shader balance across the kiosk loop", () => {
     expect(isAmberShader("zenith")).toBe(false);
   });
 
-  it("dharma (the spinning wheel): at most 2 journeys, never First Light — Aureole there", () => {
-    expect(holders("dharma").length).toBeLessThanOrEqual(2);
-    const fl = loop.find((j) => j.id === FIRST_LIGHT_ID)!;
-    expect(fl.modes.has("dharma")).toBe(false);
-    expect(fl.modes.has("aureole")).toBe(true);
+  it("dharma (the spinning wheel) is gone: \"i cant stand dharma in resonance\" (Karel 2026-10-13)", () => {
+    expect(holders("dharma")).toEqual([]);
+    expect(SHADER_NAMED_CAPS.dharma).toBe(0);
+    expect(SHADER_BANNED_EVERYWHERE.has("dharma")).toBe(true);
+    expect(GLOBAL_SHADER_BLOCKLIST).toContain("dharma");
+    expect(VETTED_SHADER_POOL.has("dharma")).toBe(false);
+    for (const j of featured.journeys) expect(Object.values(j.cast).flat(), j.name).not.toContain("dharma");
+    for (const j of expansion.journeys) { expect(j.lead, j.title).not.toBe("dharma"); expect(Object.values(j.cast).flat(), j.title).not.toContain("dharma"); }
+    expect(Object.values(EXPANSION_LEADS)).not.toContain("dharma");
+    expect(loop.find((j) => j.id === FIRST_LIGHT_ID)!.modes.has("aureole")).toBe(true);
+  });
+
+  it("SERAPH is pinned in First Light and every Surrounded by Light journey (Karel 2026-10-13)", () => {
+    for (const id of [FIRST_LIGHT_ID, ...SURROUNDED_BY_LIGHT_IDS]) expect(SHADER_JOURNEY_MUSTS[id], id).toContain("seraph");
+    const inLoop = [FIRST_LIGHT_ID, ...SURROUNDED_BY_LIGHT_IDS].filter((id) => TRAMOKYO_SETLIST.includes(id));
+    expect(inLoop.length).toBe(4); // First Light, both album Surrounded By Light, Surrounded by Light 6
+    for (const id of inLoop) {
+      const j = loop.find((x) => x.id === id)!;
+      expect(j.modes.has("seraph"), j.name).toBe(true);
+    }
+    // the parked takes (19, 3) carry it in the pack (apply step's `ensure`)
+    const apply = read("scripts/shader-recast-2026-10-13.expansion-casts.json") as { ensure: Record<string, { musts: string[] }> };
+    for (const id of SURROUNDED_BY_LIGHT_IDS.filter((x) => !TRAMOKYO_SETLIST.includes(x))) expect(apply.ensure[id]?.musts, id).toContain("seraph");
+  });
+
+  it("Bath never casts ember or parsec (\"no ember 3d plane moving shader in bath\")", () => {
+    expect(SHADER_JOURNEY_BANS[BATH_ID]).toEqual(expect.arrayContaining(["ember", "parsec"]));
+    const bath = loop.find((j) => j.id === BATH_ID)!;
+    expect(bath.modes.has("ember")).toBe(false);
+    expect(bath.modes.has("parsec")).toBe(false);
   });
 
   it("honours every per-journey ban and must (Grasshopper: no parsec)", () => {
@@ -67,7 +94,8 @@ describe("shader balance across the kiosk loop", () => {
       for (const b of bans) expect(j.modes.has(b), `${j.name}: ${b}`).toBe(false);
     }
     for (const [id, musts] of Object.entries(SHADER_JOURNEY_MUSTS)) {
-      const j = loop.find((x) => x.id === id)!;
+      const j = loop.find((x) => x.id === id);
+      if (!j) continue; // parked takes: pack only (see the seraph test)
       for (const m of musts) expect(j.modes.has(m), `${j.name}: ${m}`).toBe(true);
     }
   });
@@ -130,5 +158,38 @@ describe("the engine's kindred borrow leans cool and skips the over-seen", () =>
     const got = borrowAll(["aureole", "covenant", "kairos"]);
     expect(got.some(isAmberShader)).toBe(true);
     for (const m of got) expect(KIN_BORROW_AVOID.has(m), m).toBe(false);
+  });
+
+  it("even a scripted (mastered) take never borrows dharma", () => {
+    const base = getJourney("the-bloom")!;
+    const peek = getJourneyEngine() as unknown as Peek;
+    peek.journey = { ...base, id: "kin-test", name: "Kin Test", phases: base.phases.map((p) => ({ ...p, shaderModes: ["aureole", "covenant", "kairos"] })) };
+    peek.scriptedTake = true;
+    peek.seenShaders = new Set(["aureole", "covenant", "kairos"]);
+    for (let i = 0; i < 200; i++) { const k = peek.kinBorrow(new Set()); if (!k) break; expect(k).not.toBe("dharma"); peek.seenShaders.add(k); }
+  });
+});
+
+describe("the engine honours the bans at pick time", () => {
+  afterEach(() => { getJourneyEngine().stop(); vi.restoreAllMocks(); });
+
+  it("Bath's finale-forced switch never lands on ember / parsec, nothing ever plays dharma", () => {
+    // a Bath whose phases (stale pack / DB row) still hold the banned shaders
+    const base = getJourney("the-bloom")!;
+    const bath = { ...base, id: BATH_ID, name: "Bath", phases: base.phases.map((p) => ({ ...p, shaderModes: ["ember", "parsec", "dharma", "r-mercury", "meteor-rain", "will-o-wisp"] })) };
+    const engine = getJourneyEngine();
+    let clock = 0;
+    vi.spyOn(performance, "now").mockImplementation(() => clock);
+    engine.start(bath, { seed: 11, trackDuration: 180 });
+    const seen = new Set<string>();
+    for (let i = 0; i <= 360; i++) {
+      clock += 500;
+      const f = engine.getFrame(i / 360);
+      if (i % 30 === 0 && i > 300) engine.forceShaderSwitch(); // the finale's forced arrivals
+      const g = engine.getFrame(i / 360);
+      for (const fr of [f, g]) if (fr) for (const m of [fr.shaderMode, fr.dualShaderMode, fr.tertiaryShaderMode]) if (m) seen.add(m);
+    }
+    for (const banned of ["ember", "parsec", "dharma"]) expect(seen.has(banned), banned).toBe(false);
+    expect(seen.size).toBeGreaterThan(0);
   });
 });
