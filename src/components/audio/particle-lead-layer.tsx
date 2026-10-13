@@ -69,7 +69,8 @@ import { MAX_DISSOLVES_PER_JOURNEY, dissolveAllowed, morphGuard, particlePalette
 import { presenceAt, colorAt } from "@/lib/journeys/particle-casting";
 import { LOOP_MEMORY, planCast, chooseNext, noteForm, recordUsage, blossomAllowed, previousJourney } from "@/lib/journeys/particle-rotation";
 import { freshVariant, rememberDesign, RECENT_DESIGNS } from "@/lib/particles/form-variety";
-import { emblemEnvelope, imageSlotStep, underlayDue, EMBLEM_HANDOFF, type ImageSlot } from "@/lib/particles/image-follow";
+import { emblemEnvelope, imageSlotStep, underlayDue, EMBLEM_HANDOFF, IMAGE_CLEAR, type ImageSlot } from "@/lib/particles/image-follow";
+import { FLIGHT, birdFlightEnabled, closingFlightStart, flightHold, flightPose, openingFlightStart, signatureFlightFor, wingBeatHz, type FlightFlag } from "@/lib/particles/signature-flight";
 import type { JourneyFrame } from "@/lib/journeys/types";
 import { journeyResponse } from "@/lib/journeys/kinetic";
 import { PARTICLE_PROFILES } from "@/lib/journeys/particle-profiles.generated";
@@ -1334,6 +1335,16 @@ export function ParticleLeadLayer({
     let jumpRecAt = 0;
     let imgVar = { mirror: false, tilt: 0, scale: 1, literal: 0.84 };
     let emblemOn = false;
+    // SIGNATURE FLIGHT (signature-flight.ts, ?birdflight=1 — off by default):
+    // Yellow Bird's opening AND closing emblems take flight instead of
+    // dissolving in place (Karel 2026-10-13). Only journeys in SIGNATURE_FLIGHTS.
+    const sigFlight = signatureFlightFor(journeyId);
+    let flightFlag: FlightFlag = { closing: false, opening: false };
+    if (sigFlight) { try { flightFlag = birdFlightEnabled(undefined, window.sessionStorage); } catch { /* storage blocked: off */ } }
+    const flBeatHz = wingBeatHz(PARTICLE_PROFILES[journeyId]?.tempo?.bpm);
+    let flightAt = -1, flightOcc = -1, flightDirX: -1 | 1 = 1;
+    // (true at mount: a pose carried over from the last journey is reset once its image has cleared)
+    let flightPosed = true;
     // ambient presence (Karel 2026-10-06: "on average particles should be
     // part of the journey around 60% of the time"): between conducted
     // windows the field returns for 12–22 s after 12–20 s away (measured
@@ -1468,9 +1479,26 @@ export function ParticleLeadLayer({
       // journey (Yellow Bird → a yellow bird, Snowflake → a snowflake …)
       // (image-follow.ts emblemEnvelope — same timings, unit-tested)
       const emEnv = emblemRef.current ? emblemEnvelope(t, useAudioStore.getState().duration || 0) : null;
-      const emForm = emEnv?.form ?? 0, emShow = emEnv?.show ?? 0;
+      let emForm = emEnv?.form ?? 0, emShow = emEnv?.show ?? 0;
       const emOcc = emEnv?.occ ?? 0; // 0 = opening, 1 = mid, 2 = closing
       const emAge = emEnv?.age ?? ssf(4, 11, t); // the emblem eases smaller while held (big is brief)
+      // SIGNATURE FLIGHT: lift off once the flown emblem is fully worn, at the
+      // start time the music sets (closing: the bird is gone by the quietest moment)
+      let flE = -1;
+      if (sigFlight && (flightFlag.closing || flightFlag.opening)) {
+        if (flightAt >= 0 && (t < flightAt - 0.5 || t > flightAt + 60)) { flightAt = -1; flightOcc = -1; } // seek back / long past
+        if (flightAt < 0) {
+          const Dn = useAudioStore.getState().duration || 0;
+          const st = emOcc === 2 && flightFlag.closing ? closingFlightStart(Dn, PARTICLE_PROFILES[journeyId]) : emOcc === 0 && flightFlag.opening ? openingFlightStart(Dn) : null;
+          if (st !== null && t >= st && t < st + 0.5 && imgLoaded === "emblem" && imgKey === `emblem:${emOcc}` && !imgReleasing && engine.imageShown() > 0.9) {
+            flightAt = t; flightOcc = emOcc; flightDirX = imgVar.mirror ? (-sigFlight.dir.x as -1 | 1) : sigFlight.dir.x;
+            glitchRecord("particle-flash", `signature flight ${sigFlight.name} emblem ${emOcc} @${t.toFixed(1)}s`);
+          }
+        }
+        if (flightAt >= 0) flE = t - flightAt;
+        // the opening emblem is HELD while it flies (its own release began at 11 s), then lets go
+        if (flE >= 0 && flightOcc === 0) { const hold = flightHold(flE); emForm = Math.max(emForm, hold); emShow = Math.max(emShow, hold); }
+      }
       // timed MOMENT (Ghost's blossom cloud): gather 4 s, hold breathing, dissipate
       let moForm = 0, moShow = 0;
       if (momentAt >= 0 && t >= momentAt) {
@@ -1597,6 +1625,17 @@ export function ParticleLeadLayer({
         }
       }
       emblemOn = (imgLoaded === "emblem" && (emForm > 0.02 || emShow > 0.02)) || (imgLoaded === "moment" && momentOn);
+      // the flown emblem's plane follows the flight path (the motes stay bound to
+      // it — the bird stays a bird); after it the far pose holds until the image
+      // has cleared (or another image takes the slot), then the plane returns unseen
+      if (sigFlight && flE >= 0 && imgLoaded === "emblem" && imgKey === `emblem:${flightOcc}` && !imgReleasing) {
+        const p = flightPose(flE, { ...sigFlight, dir: { x: flightDirX, y: 1 } }, flBeatHz, flightOcc === 0 ? FLIGHT.OPEN_SEC : FLIGHT.SEC);
+        engine.setImageFlight({ ...p, dirX: flightDirX, dirY: 1 });
+        flightPosed = true;
+      } else if (flightPosed && (engine.imageLevel() < IMAGE_CLEAR || (imgLoaded !== null && imgKey !== `emblem:${flightOcc}`))) {
+        engine.setImageFlight(null);
+        flightPosed = false;
+      }
       // HOVER (Karel 2026-10-12, Ghost blossom → wings: "a weird back and forth"):
       // while an image hands off to the next, the motes stay where they are; after
       // an image with nothing following, they hover 1.5 s, then ease into the form

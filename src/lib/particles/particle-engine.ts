@@ -296,6 +296,11 @@ export interface ParticleEngine {
   setOffset(x: number, y: number): void;
   /** Image-form plane size (1 = full frame). */
   setImageScale(k: number): void;
+  /** SIGNATURE FLIGHT (signature-flight.ts): the image plane the motes are
+   *  bound to flies — centre offset in screen half-extents, scale, vertical
+   *  squash (wing-beat), roll; `shed` 0..1 lets the tail's loose motes trail it
+   *  (dirX/dirY = flight direction on screen). Glides (never jumps); null = at rest. */
+  setImageFlight(pose: { x: number; y: number; scale: number; squash: number; roll: number; shed: number; dirX: number; dirY: number } | null): void;
   /** Particle sprite size multiplier. */
   setSizeScale(k: number): void;
   /** Sound reactivity multiplier (motion only — never luminance). */
@@ -905,6 +910,11 @@ export function createParticleEngine(
   // plane scale, particle size scale, sound reactivity — all glide
   let offX = 0, offY = 0, offTX = 0, offTY = 0;
   let imgScaleS = 1, imgScaleT = 1;
+  // signature flight (setImageFlight): targets + glided pose (springs 18-23)
+  let flTX = 0, flTY = 0, flTS = 1, flTQ = 1, flTR = 0, flTShed = 0, flDirX = 0, flDirY = 0;
+  let flX = 0, flY = 0, flS = 1, flQ = 1, flR = 0, flShed = 0;
+  let flSpeed = 0; // the plane centre's world speed this frame (u/s)
+  const flVel = [0, 0, 0];
   let sizeScaleS = 1, sizeScaleT = 1;
   let reactS = 1, reactT = 1;
   // field mode + image-form variety (Karel 2026-10-06: many blossoms, the
@@ -1239,9 +1249,18 @@ export function createParticleEngine(
 
     // image plane: scale, mirror, a gentle tilt (rotation within the plane)
     imgTiltS = sp(16, imgTiltS, imgTiltT, 2, dt);
-    const ca = Math.cos(imgTiltS), sa = Math.sin(imgTiltS);
-    const R = [0, 1, 2].map((i) => (ca * right[i] + sa * up[i]) * halfW * imgScaleS * imgMirror);
-    const U = [0, 1, 2].map((i) => (-sa * right[i] + ca * up[i]) * halfH * imgScaleS);
+    // signature flight: the plane itself flies (short glide — the path is
+    // already smooth; the spring only guards seeks / a flag toggled mid-flight)
+    flX = sp(18, flX, flTX, 0.15, dt); flY = sp(19, flY, flTY, 0.15, dt);
+    flS = sp(20, flS, flTS, 0.15, dt); flQ = sp(21, flQ, flTQ, 0.15, dt);
+    flR = sp(22, flR, flTR, 0.15, dt); flShed = sp(23, flShed, flTShed, 0.3, dt);
+    for (let i = 0; i < 3; i++) flVel[i] = right[i] * sv[18] * halfW + up[i] * sv[19] * halfH;
+    flSpeed = Math.hypot(flVel[0], flVel[1], flVel[2]);
+    const flying = Math.abs(flX) + Math.abs(flY) + Math.abs(flS - 1) + Math.abs(flQ - 1) + Math.abs(flR) > 1e-4;
+    const ca = Math.cos(imgTiltS + flR), sa = Math.sin(imgTiltS + flR);
+    const R = [0, 1, 2].map((i) => (ca * right[i] + sa * up[i]) * halfW * imgScaleS * flS * imgMirror);
+    const U = [0, 1, 2].map((i) => (-sa * right[i] + ca * up[i]) * halfH * imgScaleS * flS * flQ);
+    const C = [0, 1, 2].map((i) => flying ? right[i] * flX * halfW + up[i] * flY * halfH : 0);
     for (let i = 0; i < 3; i++) { fireR[i] = R[i]; fireU[i] = U[i]; }
 
     // ── 0. SPATIAL PAIRING (once per image, before the sim reads it) ────────
@@ -1315,7 +1334,8 @@ export function createParticleEngine(
     if (sim.u.uVarB) g.uniform4f(sim.u.uVarB, varB[0], varB[1], varB[2], varB[3]);
     if (sim.u.uVarC) g.uniform4f(sim.u.uVarC, varC[0], varC[1], varC[2], varC[3]);
     if (sim.u.uCamAz) g.uniform1f(sim.u.uCamAz, az);
-    g.uniform1f(sim.u.uMaxSpeed, maxSpeedNow);
+    // a flying image form must never outrun its motes (the cap would smear it)
+    g.uniform1f(sim.u.uMaxSpeed, Math.max(maxSpeedNow, flSpeed > 1e-3 ? flSpeed * 1.6 + 0.4 : 0));
     pullT += dt;
     if (pendingShape && figureHeld()) {
       const ps = pendingShape;
@@ -1461,7 +1481,14 @@ export function createParticleEngine(
     g.uniform1f(sim.u.uPairSoft, pairOn ? 1 - pairLit : 0);
     g.uniform1f(sim.u.uImgShow, env.imgShow);
     g.uniform1f(sim.u.uSnap, snapNow ? 1 : 0);
-    g.uniform3f(sim.u.uPlaneC, 0, 0, 0);
+    g.uniform3f(sim.u.uPlaneC, C[0], C[1], C[2]);
+    if (sim.u.uShedV) {
+      const k = flShed > 1e-3 ? flShed : 0;
+      g.uniform3f(sim.u.uShedV, flVel[0] * k, flVel[1] * k, flVel[2] * k);
+      // (plane ndc: the mirror flips the image's x)
+      const dl = Math.hypot(flDirX, flDirY) || 1;
+      g.uniform2f(sim.u.uShedDir, (flDirX / dl) * Math.sign(imgMirror || 1), flDirY / dl);
+    }
     g.uniform3f(sim.u.uPlaneR, R[0], R[1], R[2]);
     g.uniform3f(sim.u.uPlaneU, U[0], U[1], U[2]);
     if (sim.u.uInst) { g.uniform1f(sim.u.uInst, instN); g.uniform1f(sim.u.uInstSeed, instSeed); }
@@ -2059,6 +2086,14 @@ export function createParticleEngine(
     setCamScale(k) { camScaleTarget = camScaleBase * Math.max(0.3, Math.min(2.6, k)); },
     setOffset(x, y) { offTX = Math.max(-0.7, Math.min(0.7, x)); offTY = Math.max(-0.5, Math.min(0.5, y)); },
     setImageScale(k) { imgScaleT = Math.max(0.2, Math.min(1.2, k)); },
+    setImageFlight(pose) {
+      const f = (x: number, d: number, lo: number, hi: number) => (Number.isFinite(x) ? Math.max(lo, Math.min(hi, x)) : d);
+      if (!pose) { flTX = flTY = flTR = flTShed = 0; flTS = flTQ = 1; return; }
+      flTX = f(pose.x, 0, -3, 3); flTY = f(pose.y, 0, -3, 3);
+      flTS = f(pose.scale, 1, 0.2, 1.5); flTQ = f(pose.squash, 1, 0.6, 1.4);
+      flTR = f(pose.roll, 0, -0.5, 0.5); flTShed = f(pose.shed, 0, 0, 1);
+      flDirX = f(pose.dirX, 0, -1, 1); flDirY = f(pose.dirY, 0, -1, 1);
+    },
     setImagePace(k) { imgPaceK = Math.max(0.3, Math.min(1.5, k)); },
     setSizeScale(k) { sizeScaleT = Math.max(0.4, Math.min(2.5, k)); },
     setReact(k) { reactT = Math.max(0.5, Math.min(4, k)); },
@@ -2103,7 +2138,7 @@ export function createParticleEngine(
         offX = offTX; offY = offTY; imgScaleS = imgScaleT; imgMirror = imgMirrorT; imgTiltS = imgTiltT;
         for (const i of [10, 11, 12, 14, 16]) sv[i] = 0;
       }
-      if (clear) { imgFormTgt = imgShowTgt = 0; imgF.x = imgF.v = imgS.x = imgS.v = 0; fireT = fireS = 0; }
+      if (clear) { imgFormTgt = imgShowTgt = 0; imgF.x = imgF.v = imgS.x = imgS.v = 0; fireT = fireS = 0; flX = flTX = 0; flY = flTY = 0; flS = flTS = 1; flQ = flTQ = 1; flR = flTR = 0; flShed = flTShed = 0; for (const i of [18, 19, 20, 21, 22, 23]) sv[i] = 0; }
     },
     // (also lands the session's first-run brightness ramp — invisible field only:
     // the boot card's piano must appear at full brightness on the text's curve)
@@ -2197,6 +2232,9 @@ export function createParticleEngine(
       // and drew in for ~3.5 s while the camera drifted back (filmed 2026-10-13)
       camScale = camScaleTarget = camScaleBase;
       offX = offTX = 0; offY = offTY = 0;
+      // a signature flight never carries into the next journey
+      flX = flTX = 0; flY = flTY = 0; flS = flTS = 1; flQ = flTQ = 1; flR = flTR = 0; flShed = flTShed = 0;
+      for (const i of [18, 19, 20, 21, 22, 23]) sv[i] = 0;
       if (lost || !posInit.warm || !particlesInitialised) return;
       const g = gl;
       g.bindVertexArray(vao);

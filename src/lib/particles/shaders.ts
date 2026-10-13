@@ -169,6 +169,12 @@ uniform float uSnap;      // 1 for one frame: teleport onto the image plane
 uniform vec3 uPlaneC;     // image plane centre (world)
 uniform vec3 uPlaneR;     // plane right × half-width
 uniform vec3 uPlaneU;     // plane up × half-height
+// SIGNATURE FLIGHT (signature-flight.ts, ?birdflight=1): the tail sheds a few
+// loose motes that trail the flying form. xyz = the plane's world velocity ×
+// the shed amount (zero = off, the branch is skipped); uShedDir = the flight
+// direction in plane ndc (the tail is the opposite side)
+uniform vec3 uShedV;
+uniform vec2 uShedDir;
 uniform float uImgAspect;
 uniform float uScrAspect;
 // HARMONIC CURRENTS (harmonic-currents.ts, ?currents=1): x = amount × the
@@ -1285,7 +1291,16 @@ void main(){
       float ph = hash11(s.a * 61.7) * 6.2831853 + uTime * (0.08 + 0.12 * hash11(s.a * 13.1));
       imgT += (uPlaneR * cos(ph) + uPlaneU * sin(ph)) * uPairSoft * hash11(s.a * 29.3);
     }
+    // the flying form's TRAIL: ~30 % of the tail-side motes aim at a point
+    // behind their own (0.5-1.7 s of the flight back along its path) and drift
+    // a little — they stream after the bird. Motion only.
+    float shedW = 0.0;
+    if (dot(uShedV, uShedV) > 1e-6) {
+      shedW = smoothstep(0.2, 0.5, dot(ndc, -uShedDir)) * step(hash11(s.a * 173.7), 0.3);
+      imgT -= uShedV * (0.5 + 1.2 * hash11(s.a * 41.9)) * shedW;
+    }
     f = mix(f, vec4((imgT - p) * 9.0, 4.6), uImgForm);
+    if (shedW > 0.0) f.xyz += curlNoise(p * 1.5 + vec3(uClock.x * 0.1, 0.0, 0.0)) * 0.8 * shedW * min(length(uShedV), 3.0);
     float rel = uImgShow * (1.0 - uImgForm);
     f.xyz += curlNoise(p * 1.2 + vec3(0.0, uClock.y * 0.18, uClock.x * 0.05)) * (0.5 + 2.2 * max(drv, 0.0)) * rel * 0.9;
   }
