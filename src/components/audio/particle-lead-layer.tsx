@@ -70,7 +70,7 @@ import { presenceAt, colorAt } from "@/lib/journeys/particle-casting";
 import { LOOP_MEMORY, planCast, chooseNext, noteForm, recordUsage, blossomAllowed, previousJourney, journeyAvoidSet } from "@/lib/journeys/particle-rotation";
 import { freshVariant, rememberDesign, RECENT_DESIGNS } from "@/lib/particles/form-variety";
 import { emblemEnvelope, imageSlotStep, underlayDue, EMBLEM_HANDOFF, IMAGE_CLEAR, type ImageSlot } from "@/lib/particles/image-follow";
-import { FLIGHT, birdFlightEnabled, closingFlightStart, flightHold, openingFlightStart, signatureFlightFor, type FlightFlag } from "@/lib/particles/signature-flight";
+import { FLIGHT, birdFlightEnabled, closingFlightStart, flightHold, flightReleased, openingFlightStart, signatureFlightFor, type FlightFlag } from "@/lib/particles/signature-flight";
 import type { JourneyFrame } from "@/lib/journeys/types";
 import { journeyResponse } from "@/lib/journeys/kinetic";
 import { PARTICLE_PROFILES } from "@/lib/journeys/particle-profiles.generated";
@@ -1350,7 +1350,7 @@ export function ParticleLeadLayer({
     let flightFlag: FlightFlag = { closing: false, opening: false };
     if (sigFlight) { try { flightFlag = birdFlightEnabled(undefined, window.sessionStorage); } catch { /* storage blocked: off */ } }
     const flBpm = PARTICLE_PROFILES[journeyId]?.tempo?.bpm;
-    let flightAt = -1, flightOcc = -1, flightDirX: -1 | 1 = 1;
+    let flightAt = -1, flightOcc = -1, flightDirX: -1 | 1 = 1, flightLetGo = false;
     // (true at mount: a pose carried over from the last journey is reset once its image has cleared)
     let flightPosed = true;
     // ambient presence (Karel 2026-10-06: "on average particles should be
@@ -1494,18 +1494,30 @@ export function ParticleLeadLayer({
       // start time the music sets (closing: the bird is gone by the quietest moment)
       let flE = -1;
       if (sigFlight && (flightFlag.closing || flightFlag.opening)) {
-        if (flightAt >= 0 && (t < flightAt - 0.5 || t > flightAt + 60)) { flightAt = -1; flightOcc = -1; } // seek back / long past
+        if (flightAt >= 0 && (t < flightAt - 0.5 || t > flightAt + 60)) { flightAt = -1; flightOcc = -1; flightLetGo = false; } // seek back / long past
         if (flightAt < 0) {
           const Dn = useAudioStore.getState().duration || 0;
           const st = emOcc === 2 && flightFlag.closing ? closingFlightStart(Dn, PARTICLE_PROFILES[journeyId]) : emOcc === 0 && flightFlag.opening ? openingFlightStart(Dn) : null;
           if (st !== null && t >= st && t < st + 0.5 && imgLoaded === "emblem" && imgKey === `emblem:${emOcc}` && !imgReleasing && engine.imageShown() > 0.9) {
-            flightAt = t; flightOcc = emOcc; flightDirX = imgVar.mirror ? (-sigFlight.dir.x as -1 | 1) : sigFlight.dir.x;
+            flightAt = t; flightOcc = emOcc; flightLetGo = false; flightDirX = imgVar.mirror ? (-sigFlight.dir.x as -1 | 1) : sigFlight.dir.x;
             glitchRecord("particle-flash", `signature flight ${sigFlight.name} emblem ${emOcc} @${t.toFixed(1)}s`);
           }
         }
         if (flightAt >= 0) flE = t - flightAt;
         // the opening emblem is HELD while it flies (its own release began at 11 s), then lets go
-        if (flE >= 0 && flightOcc === 0) { const hold = flightHold(flE); emForm = Math.max(emForm, hold); emShow = Math.max(emShow, hold); }
+        if (flE >= 0 && emOcc === flightOcc) {
+          const sec = flightOcc === 0 ? FLIGHT.OPEN_SEC : FLIGHT.SEC;
+          // worn while it flies (the opening emblem's own release began at 11 s) …
+          if (flightOcc === 0) { const hold = flightHold(flE, sec); emForm = Math.max(emForm, hold); emShow = Math.max(emShow, hold); }
+          // … and once it is off-frame it LETS GO UNSEEN (Karel: "that morph of it
+          // coming back in frame was weird"): the emblem is done (no re-binding),
+          // the engine respawns every off-frame mote softly near the centre
+          // (fading in) and frees it from the flown image — nothing streams back
+          if (flightReleased(flE, sec)) {
+            emForm = 0; emShow = 0;
+            if (!flightLetGo) { flightLetGo = true; engine.releaseFlight(); glitchRecord("particle-flash", `signature flight let go (emblem ${flightOcc}) @${t.toFixed(1)}s`); }
+          }
+        }
       }
       // timed MOMENT (Ghost's blossom cloud): gather 4 s, hold breathing, dissipate
       let moForm = 0, moShow = 0;

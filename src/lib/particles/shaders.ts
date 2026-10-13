@@ -179,27 +179,59 @@ uniform vec2 uShedDir;
 // …and its WINGS articulate (signature-flight.ts wingDisplacement — mirrored
 // exactly): in q-space (x × image aspect, centred, y up) the hinge + body axis
 // (uWingH), the wing normal + length + root band (uWingN), the along-axis band
-// (uWingR); angles root / tip + body lift this frame (uWingT) and last frame
-// (uWingP). uWingOn 0 = off (the branch is skipped).
+// (uWingR.xy); the tail base + direction (uTailA) and length (uWingR.z);
+// angles root / tip + body lift (uWingT) and flex / fold / sweep / tail fan
+// (uWingS) this frame, and last frame (uWingP, uWingQ); the shape constants
+// (uWingK = flex, flex sweep, forward sweep, fold height; uWingK2 = fold
+// along, tail spread, wrist). uWingOn 0 = off (the branch is skipped).
 uniform float uWingOn;
 uniform vec4 uWingH;
 uniform vec4 uWingN;
-uniform vec2 uWingR;
+uniform vec3 uWingR;
+uniform vec4 uTailA;
 uniform vec3 uWingT;
 uniform vec3 uWingP;
-vec3 wingDisp(vec2 q, vec3 W){
+uniform vec4 uWingS;
+uniform vec4 uWingQ;
+uniform vec4 uWingK;
+uniform vec4 uWingK2;
+vec3 wingDisp(vec2 q, vec3 W, vec4 S){
   vec2 rel = q - uWingH.xy;
   float a = dot(rel, uWingH.zw), r = dot(rel, uWingN.xy);
   float inW = smoothstep(0.0, uWingN.w, r) * smoothstep(uWingR.x - 0.04, uWingR.x, a) * (1.0 - smoothstep(uWingR.y, uWingR.y + 0.04, a));
   vec3 d = vec3(0.0);
   if (inW > 0.0) {
+    float hand = max(0.0, r - uWingK2.z * uWingN.z);
+    float rr = r - hand * uWingK.x * S.x;
+    float aa = a + hand * uWingK.y * S.x - uWingK.z * r * S.z;
+    rr += (uWingK.w * r - rr) * S.y;
+    aa += uWingK2.x * r * S.y;
     float th = mix(W.x, W.y, smoothstep(0.0, 1.0, r / uWingN.z));
-    float dn = (r * cos(th) - r) * inW;
-    d = vec3(uWingN.xy * dn, r * sin(th) * inW);
+    float da = (aa - a) * inW, dr = (rr * cos(th) - r) * inW;
+    d = vec3(uWingH.zw * da + uWingN.xy * dr, rr * sin(th) * inW);
+  }
+  if (S.w > 0.0) {
+    vec2 tq = q - uTailA.xy;
+    float t = dot(tq, uTailA.zw) / uWingR.z;
+    float pp = -tq.x * uTailA.w + tq.y * uTailA.z;
+    float wt = smoothstep(-0.05, 0.15, t) * (1.0 - smoothstep(1.0, 1.15, t)) * (1.0 - smoothstep(0.08, 0.14, abs(pp)));
+    float k = pp * uWingK2.y * S.w * max(0.0, t) * wt;
+    d.xy += vec2(-uTailA.w, uTailA.z) * k;
   }
   d.y += W.z;
   return d;
 }
+// THE FLOWN BIRD LETS GO UNSEEN (Karel 2026-10-13: "that morph of it coming
+// back in frame was weird after it flew"): once the bird is off-frame, every
+// mote outside the frame (x = on, y = margin in screen half-extents) is
+// respawned softly near the centre, marked reborn (the draw fades it in by its
+// age) and freed from the flown image's pull — none streams back across the
+// screen. uFrameR / uFrameU = camera right / up ÷ half-extent; uFrameO = the
+// screen centre in the world.
+uniform vec2 uFlown;
+uniform vec3 uFrameR;
+uniform vec3 uFrameU;
+uniform vec3 uFrameO;
 uniform float uImgAspect;
 uniform float uScrAspect;
 // HARMONIC CURRENTS (harmonic-currents.ts, ?currents=1): x = amount × the
@@ -1354,6 +1386,8 @@ void main(){
   // the particles swirl with their own band (mids curl, bass surges)
   vec3 imgT = vec3(0.0);
   vec3 wingStep = vec3(0.0); // this frame's wing motion (world), carried kinematically
+  // a mote respawned off the flown bird (fading in) no longer feels its image
+  float imgK = (uFlown.x > 0.5 && P4.w < 0.0) ? 0.0 : uImgForm;
   if (uImgForm > 0.001 || uImgShow > 0.001 || uSnap > 0.5) {
     vec2 ndc = coverNdc(imgUv(c, s, uTexW), uImgAspect, uScrAspect);
     imgT = uPlaneC + uPlaneR * ndc.x + uPlaneU * ndc.y;
@@ -1366,13 +1400,13 @@ void main(){
       vec2 q = vec2((uv0.x - 0.5) * uImgAspect, uv0.y - 0.5);
       float qW = length(uPlaneR) * 2.12 * max(1.0, uImgAspect / uScrAspect) / uImgAspect;
       vec3 N = normalize(cross(uPlaneR, uPlaneU));
-      vec3 dA = wingDisp(q, uWingT), dB = wingDisp(q, uWingP);
+      vec3 dA = wingDisp(q, uWingT, uWingS), dB = wingDisp(q, uWingP, uWingQ);
       vec2 nA = coverNdc(uv0 + vec2(dA.x / uImgAspect, dA.y), uImgAspect, uScrAspect) - ndc;
       vec2 nB = coverNdc(uv0 + vec2(dB.x / uImgAspect, dB.y), uImgAspect, uScrAspect) - ndc;
       vec3 wA = uPlaneR * nA.x + uPlaneU * nA.y + N * dA.z * qW;
       vec3 wB = uPlaneR * nB.x + uPlaneU * nB.y + N * dB.z * qW;
       imgT += wA;
-      wingStep = (wA - wB) * uImgForm;
+      wingStep = (wA - wB) * imgK;
     }
     // SPATIAL PAIRING: the form's own pull is not left in (paired to a point on
     // its own side, it printed the previous form into the image — sample 1,
@@ -1392,7 +1426,7 @@ void main(){
       shedW = smoothstep(0.2, 0.5, dot(ndc, -uShedDir)) * step(hash11(s.a * 173.7), 0.3);
       imgT -= uShedV * (0.5 + 1.2 * hash11(s.a * 41.9)) * shedW;
     }
-    f = mix(f, vec4((imgT - p) * 9.0, 4.6), uImgForm);
+    f = mix(f, vec4((imgT - p) * 9.0, 4.6), imgK);
     if (shedW > 0.0) f.xyz += curlNoise(p * 1.5 + vec3(uClock.x * 0.1, 0.0, 0.0)) * 0.8 * shedW * min(length(uShedV), 3.0);
     float rel = uImgShow * (1.0 - uImgForm);
     f.xyz += curlNoise(p * 1.2 + vec3(0.0, uClock.y * 0.18, uClock.x * 0.05)) * (0.5 + 2.2 * max(drv, 0.0)) * rel * 0.9;
@@ -1430,6 +1464,15 @@ void main(){
   // in. Every recycled mote is now marked (age < 0) and the draw fades it in
   // over ~1.6 s wherever the camera is.
   bool reborn = false;
+  if (uFlown.x > 0.5) {
+    vec2 sc = vec2(dot(p - uFrameO, uFrameR), dot(p - uFrameO, uFrameU));
+    if (max(abs(sc.x), abs(sc.y)) > uFlown.y) {
+      vec3 r = hash31(s.a * 3307.0 + 1.7);
+      p = uFrameO + (r - 0.5) * vec3(2.4, 1.4, 2.0);
+      v = vec3(0.0);
+      reborn = true;
+    }
+  }
   // rise souls: climbers return to the hearth (fallers to the top) — the draw
   // fades both ends, so the return is never seen
   if (uRiseW > 0.5 && uImgShow < 0.01) {
