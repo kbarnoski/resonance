@@ -65,6 +65,7 @@ import type { SpectrumFrame } from "./spectrum";
 import { critStep, springTau, stillPreloadAllowed, type Crit } from "./image-follow";
 import { livingScoreEnabled, scoreSessionStore, SCORE_STRIDE, SCORE_TUNING } from "./living-score";
 import { currentFreedom, type CurrentState } from "./harmonic-currents";
+import { breathFreedom, BREATH_LAWS, type BreathState } from "./breath";
 
 /** Cinematic look default: on (Karel's keep 2026-10-13); ?cine=0 turns it off. */
 export function cineEnabled(): boolean {
@@ -227,6 +228,11 @@ export interface ParticleEngine {
    *  layering. Glides ~2.5 s on top of the eased timeline; null = off (glides
    *  to 0, or at once with `snap` — a force only, so even a snap never jumps a mote). */
   setCurrents(c: CurrentState | null, snap?: boolean): void;
+  /** BREATH (breath.ts): the free field's phrase breath — amount, breath
+   *  (−1 exhaled … +1 inhaled), settle. Glides ~1.2 s on top of the eased
+   *  timeline; null = off (glides to 0, or at once with `snap` — a force only,
+   *  so even a snap never jumps a mote). */
+  setBreath(b: BreathState | null, snap?: boolean): void;
   /** Off-centre placement: screen fractions of half-width / half-height. */
   setOffset(x: number, y: number): void;
   /** Image-form plane size (1 = full frame). */
@@ -839,6 +845,9 @@ export function createParticleEngine(
   // harmonic currents: targets / glided, the soul freedom (glided), the steady clock
   const curT = { amount: 0, tension: 0, layering: 0 }, curS = { amount: 0, tension: 0, layering: 0 };
   let curFree = 0, curClock = 0;
+  // breath: targets / glided, the soul's breath freedom (glided)
+  const brT = { amount: 0, breath: 0, settle: 0 }, brS = { amount: 0, breath: 0, settle: 0 };
+  let brFree = 0;
   let imgAspect: [number, number] = [16 / 9, 16 / 9];
   let haveB = false;
   // image pull + presence followers (image-follow.ts critStep)
@@ -1207,6 +1216,19 @@ export function createParticleEngine(
         const el = Math.hypot(eye[0], eye[1], eye[2]) || 1;
         g.uniform3f(sim.u.uCurEye, eye[0] / el, eye[1] / el, eye[2] / el);
         g.uniform3f(sim.u.uCurRight, right[0], right[1], right[2]);
+      }
+    }
+    // BREATH: glided on top of the eased (phrase-long, slew-limited) timeline;
+    // figures breathe only as a slight scale (breathFreedom). Off = at rest.
+    {
+      const kb = 1 - Math.exp(-dt / BREATH_LAWS.GLIDE_SEC);
+      brS.amount += (brT.amount - brS.amount) * kb;
+      brS.breath += (brT.breath - brS.breath) * kb;
+      brS.settle += (brT.settle - brS.settle) * kb;
+      brFree += (lerpS((x) => breathFreedom(x.id)) - brFree) * (1 - Math.exp(-dt / 3));
+      if (sim.u.uBreath) {
+        const amt = brS.amount * brFree;
+        g.uniform4f(sim.u.uBreath, amt > 1e-3 ? amt : 0, brS.breath, brS.settle, 0);
       }
     }
     if (sim.u.uPull) { const pk = Math.min(1, pullT / 2); g.uniform1f(sim.u.uPull, 0.5 + 0.5 * pk * pk * (3 - 2 * pk)); }
@@ -1749,6 +1771,13 @@ export function createParticleEngine(
       curT.tension = c ? fin(c.tension) : curT.tension;
       curT.layering = c ? fin(c.layering) : curT.layering;
       if (snap) { curS.amount = curT.amount; curS.tension = curT.tension; curS.layering = curT.layering; }
+    },
+    setBreath(b, snap = false) {
+      const fin = (x: number, lo: number) => (Number.isFinite(x) ? Math.max(lo, Math.min(1, x)) : 0);
+      brT.amount = b ? fin(b.amount, 0) : 0;
+      brT.breath = b ? fin(b.breath, -1) : brT.breath;
+      brT.settle = b ? fin(b.settle, 0) : brT.settle;
+      if (snap) { brS.amount = brT.amount; brS.breath = brT.breath; brS.settle = brT.settle; }
     },
     setCamScale(k) { camScaleTarget = camScaleBase * Math.max(0.3, Math.min(2.6, k)); },
     setOffset(x, y) { offTX = Math.max(-0.7, Math.min(0.7, x)); offTY = Math.max(-0.5, Math.min(0.5, y)); },

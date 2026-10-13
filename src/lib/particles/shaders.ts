@@ -12,6 +12,7 @@
 // COMP  : tonemap (1 - e^-x·exposure) + sRGB + 1/255 ordered dither → canvas.
 // ─────────────────────────────────────────────────────────────────────────────
 import { SCORE_TUNING } from "./living-score";
+import { BREATH_LAWS } from "./breath";
 
 export const QUAD_VS = /* glsl */ `#version 300 es
 const vec2 P[3] = vec2[3](vec2(-1.0,-1.0), vec2(3.0,-1.0), vec2(-1.0,3.0));
@@ -174,6 +175,10 @@ uniform float uScrAspect;
 uniform vec4 uCur;
 uniform vec3 uCurEye;
 uniform vec3 uCurRight;
+// BREATH (breath.ts, ?breath=1): x = amount × the soul's breath freedom (0 =
+// off — the branch is skipped), y = breath (−1 exhaled/contracted … +1
+// inhaled/expanded), z = settle 0..1 (extra drag as a phrase lands)
+uniform vec4 uBreath;
 layout(location = 0) out vec4 oPos;
 layout(location = 1) out vec4 oVel;
 ${NOISE}
@@ -1201,6 +1206,24 @@ void main(){
     float pr = length(p);
     if (pr > 3.2) fc -= (p / pr) * (pr - 3.2) * 1.2;
     f.xyz += fc * curG;
+  }
+
+  // BREATH (inno-breath 2026-10-13): the free field inhales and exhales with the
+  // music's phrasing — the inhale gently expands it and loosens it in depth, the
+  // exhale at a phrase's end draws it in a little and settles it (more drag: it
+  // slows, comes to rest), so the form lands on the cadence. A FORCE only —
+  // never a position / velocity set, never light — so on / off is continuous;
+  // the timeline is phrase-long and slew-limited (never on the beat). Images
+  // and emblems are untouched: gated by the image form and presence.
+  float brG = uBreath.x * (1.0 - uImgForm) * (1.0 - uImgShow);
+  if (brG > 0.001) {
+    float bdc = dot(p, uCurEye);                 // depth along the view axis
+    float bpr = length(p);
+    // expand / contract about the centre, more along depth; fades out near the
+    // world's edge so an inhale never carries a mote out of the world
+    vec3 rad = (p + uCurEye * (bdc * ${BREATH_LAWS.DEPTH_BIAS.toFixed(3)})) * (1.0 - smoothstep(2.4, 3.2, bpr));
+    f.xyz += rad * (uBreath.y * ${BREATH_LAWS.EXPAND_FORCE.toFixed(3)} * brG);
+    f.w += uBreath.z * ${BREATH_LAWS.SETTLE_DRAG.toFixed(3)} * brG;
   }
 
   // image dissolve / reform: spring onto the image plane; while released,
