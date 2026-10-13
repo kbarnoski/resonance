@@ -58,6 +58,8 @@ function frameStats(): { fps: number; p95: number } | null {
 export type KioskRemoteContext = "loop" | "room" | "live" | null;
 
 const POLL_MS = 2_000;
+/** Gap between long-polls (the parked request itself lasts ≤ 1.5 s). */
+const KIOSK_GAP_MS = 300;
 
 /** PRESENTER (song by song) commands — presenter-machine.ts. In the loop
  *  they drive the loop client; elsewhere (Live Theatre / DJ room) settings
@@ -279,12 +281,23 @@ export function useKioskRemote(context: KioskRemoteContext): void {
   useEffect(() => {
     if (!context) return;
     let stopped = false;
-    let timer: ReturnType<typeof setInterval> | null = null;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    const key = new URLSearchParams(window.location.search).get("key");
+    // LONG-POLL (2026-10-13, "no delays"): the bus parks this request until a
+    // phone command arrives (≤ 1.5 s), so taps reach the kiosk in ms; the
+    // status still goes up every ~1.8 s, and right after every command.
+    const url = `/api/pack/remote?wait=1${key ? `&key=${encodeURIComponent(key)}` : ""}`;
+    const schedule = (ms: number) => {
+      if (stopped) return;
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => void tick(), ms);
+    };
 
     const tick = async () => {
       const s = useAudioStore.getState();
+      let next = POLL_MS;
       try {
-        const res = await fetch(`/api/pack/remote${typeof window !== "undefined" && new URLSearchParams(window.location.search).get("key") ? `?key=${new URLSearchParams(window.location.search).get("key")}` : ""}`, {
+        const res = await fetch(url, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -340,26 +353,27 @@ export function useKioskRemote(context: KioskRemoteContext): void {
             },
           }),
         });
-        if (!res.ok || stopped) return;
-        const { commands } = (await res.json()) as { commands?: string[] };
-        for (const cmd of commands ?? []) runCommand(cmd, context);
-        // ECHO at once (lab 2026-10-13: playback:auto still read "manual" on
-        // the phone 3 s later): this POST's status was snapshotted BEFORE the
-        // commands ran, so the phone only saw the result one full poll later
-        // (up to ~6 s with its own poll). Post the fresh status right away.
-        if ((commands?.length ?? 0) > 0 && !stopped) setTimeout(() => { if (!stopped) void tick(); }, 150);
+        if (stopped) return;
+        if (res.ok) {
+          const { commands } = (await res.json()) as { commands?: string[] };
+          for (const cmd of commands ?? []) runCommand(cmd, context);
+          // ECHO at once (lab 2026-10-13: playback:auto still read "manual" on
+          // the phone 3 s later): this POST's status was snapshotted BEFORE the
+          // commands ran — post the fresh status right away.
+          next = (commands?.length ?? 0) > 0 ? 150 : KIOSK_GAP_MS;
+        }
       } catch { /* hotspot-local fetch; transient failures are fine */ }
+      schedule(next);
     };
 
     void fetchPackLocalImages().then(() => {
       if (stopped || !isPackActive()) return;
-      timer = setInterval(() => void tick(), POLL_MS);
       void tick();
     });
 
     return () => {
       stopped = true;
-      if (timer) clearInterval(timer);
+      if (timer) clearTimeout(timer);
     };
   }, [context]);
 }

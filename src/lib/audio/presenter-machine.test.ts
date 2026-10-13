@@ -170,11 +170,64 @@ describe("presenter — fade out now", () => {
 });
 
 describe("presenter — sets", () => {
+  it("choosing a set clears a pick from another set, keeps one inside it", () => {
+    const cue = (journeyId: string, programId: string): PresenterEvent => ({ type: "cue", ref: { journeyId, programId } });
+    expect(run(INITIAL_PRESENTER, cue("spectre", "ml"), { type: "set-set", setId: "ra" }).state.cued).toBeNull();
+    expect(run(INITIAL_PRESENTER, cue("spectre", "ml"), { type: "set-set", setId: "ml" }).state.cued).toEqual({ journeyId: "spectre", programId: "ml" });
+    // the phone's pick from another set: set first, then the cue
+    expect(run(INITIAL_PRESENTER, { type: "set-set", setId: "ml" }, cue("spectre", "ml")).state).toMatchObject({ setId: "ml", cued: { journeyId: "spectre" } });
+  });
   it("nextInSet follows the current journey inside the chosen set, else starts it", () => {
     expect(nextInSet(SETS, "ml", { journeyId: "yellow-bird", programId: "ra" })).toEqual({ journeyId: "spectre", programId: "ml" });
     expect(nextInSet(SETS, "ml", { journeyId: "ghost", programId: "ra" })).toEqual({ journeyId: "the-first", programId: "ml" });
     expect(nextInSet(SETS, null, { journeyId: "ghost", programId: "ra" })).toEqual({ journeyId: "first-snow", programId: "ra" });
     expect(nextInSet(SETS, "missing", null)).toBeNull();
+  });
+});
+
+// Lab 2026-10-13 (mode matrix steps 9–13): "going" stuck after Next from the
+// title hold; "idle" while playing after live→loop. The phone shows the truth.
+describe("presenter — status is always the truth", () => {
+  const manual = run(INITIAL_PRESENTER, { type: "set-playback", playback: "manual" }, started("first-snow")).state;
+
+  it("boot: a held card reads holding; a set start reads going until the music starts", () => {
+    expect(run(INITIAL_PRESENTER, { type: "boot", holding: false }).state.status).toBe("going");
+    const back = restorePresenter(serializePresenter(manual));
+    expect(run(back, { type: "boot", holding: true }).state.status).toBe("holding");
+    // then the pre-start (music begins) → playing
+    expect(run(INITIAL_PRESENTER, { type: "boot", holding: false }, started("ghost")).state.status).toBe("playing");
+  });
+  it("Next from the held title card: going only until the track starts", () => {
+    const r = run(restorePresenter(serializePresenter(manual)), { type: "boot", holding: true }, { type: "next" });
+    expect(r.state.status).toBe("going");
+    const p = run(r.state, started("first-light"));
+    expect(p.state.status).toBe("playing");
+    expect(p.state.current).toEqual({ journeyId: "first-light", programId: "ra" });
+  });
+  it("auto after a reload: never idle once a track has started", () => {
+    const back = restorePresenter(serializePresenter(run(INITIAL_PRESENTER, started("ghost")).state));
+    expect(back.status).toBe("idle");
+    const r = run(back, { type: "boot", holding: false }, started("first-snow"));
+    expect(r.state.status).toBe("playing");
+  });
+  it("auto hand-off: going through the end, playing at the next track (every time)", () => {
+    let s = run(INITIAL_PRESENTER, started("ghost")).state;
+    for (const next of ["first-snow", "first-light", "yellow-bird"]) {
+      const e = run(s, { type: "track-ended" });
+      expect(e.state.status).toBe("going");
+      s = run(e.state, started(next)).state;
+      expect(s.status).toBe("playing");
+    }
+  });
+  it("a go whose target vanished falls back to what is on screen", () => {
+    const g = run(manual, { type: "track-ended" }, { type: "next" });
+    expect(run(g.state, { type: "go-failed", playing: false }).state.status).toBe("holding");
+    const m = run(manual, { type: "next" });
+    expect(run(m.state, { type: "go-failed", playing: true }).state.status).toBe("playing");
+    expect(run(manual, { type: "go-failed", playing: false }).last).toEqual({ kind: "none" });
+  });
+  it("restore: song by song with nothing shown yet is not 'holding'", () => {
+    expect(restorePresenter(JSON.stringify({ playback: "manual" })).status).toBe("idle");
   });
 });
 

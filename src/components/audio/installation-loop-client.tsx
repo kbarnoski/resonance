@@ -421,6 +421,8 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
             void el.play();
             useAudioStore.setState({ isPlaying: true });
           } catch { /* engine gone */ }
+          // restarted in place (no phase change): tell the presenter
+          presenterStepRef.current({ type: "track-started", ref: { journeyId: jid, programId: programs[pi].id } });
           return;
         }
         setProgramIndex(pi);
@@ -570,6 +572,12 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
     const ji = pi >= 0 ? programs[pi].sequence.findIndex((e) => e.journey.id === target.journeyId) : -1;
     const entry = pi >= 0 && ji >= 0 ? programs[pi].sequence[ji] : null;
     postEvent(`presenter go → ${entry?.journey.name ?? target.journeyId}${fadeCurrent ? " (fading current)" : ""}`);
+    if (!entry) {
+      // nothing to go to (a set edited under a stale cue): stay, and say so
+      glitchRecord("presenter-go-miss", `${target.journeyId}@${target.programId}`);
+      presenterStepRef.current({ type: "go-failed", playing: useAudioStore.getState().isPlaying });
+      return;
+    }
     // warm the target's audio while the boundary breathes
     preloadTrack(entry?.track);
     if (titleHoldRef.current && entry) {
@@ -659,7 +667,8 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       runPresenterEffect.current(eff);
     };
     window.addEventListener("installation-presenter", onPresenter);
-    publishPresenter(presenterRef.current!);
+    // the truth from the first status: a held card, or a set start under way
+    presenterStepRef.current({ type: "boot", holding: titleHoldRef.current });
     return () => {
       window.removeEventListener("installation-presenter", onPresenter);
       if (presenterGoTimerRef.current) clearTimeout(presenterGoTimerRef.current);
@@ -1548,6 +1557,10 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         const track = trackForIndex(startIdx);
         if (track) setQueue([track], 0);
         startEntryJourney(entry.journey);
+        // the music starts NOW: the phone reads "playing" from the pre-start,
+        // not from the phase change ~15 s later (lab 2026-10-13: "going" for
+        // the whole set-start, "idle" after a reload)
+        presenterStepRef.current({ type: "track-started", ref: { journeyId: entry.journey.id, programId: program?.id ?? "" } });
         const cues = entry.cues ?? [];
         if (cues.length > 0 && track?.duration) {
           try {

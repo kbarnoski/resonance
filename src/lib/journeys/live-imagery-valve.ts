@@ -8,14 +8,38 @@
  * image (status probe, realtime token, websocket, REST generate, the Ghost
  * reference gens) — no request leaves the page at all.
  *
- * CLOSED when the build sets NEXT_PUBLIC_LIVE_IMAGERY=off (scripts/kiosk-deploy.sh
- * does, for the kiosk). The web app leaves it unset → open, as before.
- * To reopen it on the kiosk one day: set NEXT_PUBLIC_LIVE_IMAGERY=on in
- * scripts/kiosk-deploy.sh AND RESONANCE_LIVE_IMAGERY=on in scripts/tramokyo-server.sh
- * (the server half: /api/ai-image/* refuse on the kiosk unless it is on), then deploy.
+ * CLOSED when
+ *   • the build sets NEXT_PUBLIC_LIVE_IMAGERY=off (scripts/kiosk-deploy.sh does), or
+ *   • the page is served by the LOCAL APP at runtime, whatever the build flag
+ *     (lab 2026-10-13: a build without the flag on the local server sent seven
+ *     live-image requests the server half refused with 503):
+ *       – the server marked the page (KIOSK_NO_LIVE_IMAGERY_ATTR — the
+ *         installation page renders it whenever OFFLINE_PACK=1), or
+ *       – the offline-pack probe has confirmed the local pack.
+ * NEXT_PUBLIC_LIVE_IMAGERY=on forces it OPEN (with RESONANCE_LIVE_IMAGERY=on in
+ * scripts/tramokyo-server.sh for the server half) — the way to reopen it one day.
+ * The web app leaves the flag unset → open, as before.
  */
-export const LIVE_IMAGERY_OPEN: boolean = process.env.NEXT_PUBLIC_LIVE_IMAGERY !== "off";
+import { isPackActive } from "@/lib/offline/pack-client";
+
+const FLAG = process.env.NEXT_PUBLIC_LIVE_IMAGERY;
+export const LIVE_IMAGERY_OPEN: boolean = FLAG !== "off";
+
+/** Attribute the local app's server-rendered pages carry (read before any client code runs). */
+export const KIOSK_NO_LIVE_IMAGERY_ATTR = "data-resonance-no-live-imagery";
+
+let localSeen = false;
+function onLocalApp(): boolean {
+  if (localSeen) return true;
+  try {
+    if (isPackActive()) return (localSeen = true);
+    if (typeof document !== "undefined" && document.querySelector(`[${KIOSK_NO_LIVE_IMAGERY_ATTR}]`)) return (localSeen = true);
+  } catch { /* no DOM */ }
+  return false;
+}
 
 export function liveImageryOpen(): boolean {
-  return LIVE_IMAGERY_OPEN;
+  if (FLAG === "on") return true;
+  if (!LIVE_IMAGERY_OPEN) return false;
+  return !onLocalApp();
 }

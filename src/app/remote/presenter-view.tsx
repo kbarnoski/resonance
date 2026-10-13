@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { reconcile, mergeView, type Pending, type RefLite } from "@/lib/audio/presenter-optimistic";
 import { ArrowLeft, ArrowRight, ChevronDown, Play } from "lucide-react";
 import { TRAMOKYO_MAIN } from "@/lib/journeys/installation-sequence";
 import { Button } from "@/components/ui/button";
@@ -89,16 +90,6 @@ function position(ref: { journeyId: string; programId: string } | null, programs
 
 type View = "main" | "pick" | "sets";
 
-/** Optimistic echo: the kiosk reports back every ~2 s; the phone shows the
- *  choice at once and lets the kiosk's report take over when it arrives. */
-interface Optimistic {
-  at: number;
-  playback?: PresenterStatus["playback"];
-  setId?: string;
-  cued?: { journeyId: string; programId: string; name: string } | null;
-}
-const OPTIMISTIC_MS = 7_000;
-
 export function PresenterView({
   presenter,
   programs,
@@ -119,32 +110,35 @@ export function PresenterView({
   onControls: () => void;
 }) {
   const [view, setView] = useState<View>("main");
-  const [opt, setOpt] = useState<Optimistic | null>(null);
+  // OPTIMISTIC (presenter-optimistic.ts): a tap changes the screen in the same
+  // frame; the kiosk's report confirms it, and only a disagreeing kiosk (or
+  // none after 6 s) ever moves it back
+  const [pending, setPending] = useState<Pending>({});
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
     const id = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(id);
   }, []);
+  useEffect(() => {
+    setPending((p) => (Object.keys(p).length ? reconcile(p, presenter, Date.now()) : p));
+  }, [presenter, now]);
 
-  // merged view of the kiosk's report + the phone's just-sent choice
-  const live = opt && now - opt.at < OPTIMISTIC_MS ? opt : null;
-  const playback = live?.playback ?? presenter?.playback ?? "auto";
-  const setId = live?.setId ?? presenter?.setId ?? DEFAULT_SET;
-  const status = presenter?.status ?? "idle";
+  const merged = mergeView(presenter, pending, { setId: DEFAULT_SET });
+  const { playback, setId, status, cued } = merged;
   const holding = status === "holding";
   const current = presenter?.current ?? null;
-  const cued = live && "cued" in live ? live.cued ?? null : presenter?.cued ?? null;
-  // what NEXT plays: the cue, else the kiosk's own answer (it knows the set)
+  // what NEXT plays: the cue, else the kiosk's own answer (it knows the set);
+  // a set just chosen on the phone answers locally until the kiosk confirms
   const next = useMemo(() => {
     if (cued) return cued;
-    if (live?.setId && live.setId !== presenter?.setId) {
-      const p = programs.find((x) => x.id === live.setId);
+    if (pending.setId && pending.setId.v !== presenter?.setId) {
+      const p = programs.find((x) => x.id === pending.setId!.v);
       const i = current ? (p?.journeys.findIndex((j) => j.id === current.journeyId) ?? -1) : -1;
       const j = p?.journeys[i < 0 ? 0 : (i + 1) % p.journeys.length];
       return j && p ? { journeyId: j.id, programId: p.id, name: j.name } : null;
     }
     return presenter?.next ?? null;
-  }, [cued, live, presenter, programs, current]);
+  }, [cued, pending.setId, presenter, programs, current]);
 
   // how long the hold has lasted ("Holding · 2:14")
   const [holdSince, setHoldSince] = useState<number | null>(null);
@@ -153,8 +147,17 @@ export function PresenterView({
   }, [holding]);
   const heldFor = holdSince ? (now - holdSince) / 1000 : 0;
 
-  const choose = (cmd: string, o: Omit<Optimistic, "at">) => {
-    setOpt({ at: Date.now(), ...o });
+  /** one tap = the screen changes now (same frame) + the command goes out */
+  const choose = (cmd: string, o: { playback?: PresenterStatus["playback"]; holdOn?: PresenterStatus["holdOn"]; setId?: string; cued?: RefLite | null; action?: "going" | "fading" }) => {
+    const at = Date.now();
+    setPending((p) => ({
+      ...p,
+      ...(o.playback ? { playback: { v: o.playback, at } } : {}),
+      ...(o.holdOn ? { holdOn: { v: o.holdOn, at } } : {}),
+      ...(o.setId ? { setId: { v: o.setId, at } } : {}),
+      ...("cued" in o ? { cued: { v: o.cued ?? null, at } } : {}),
+      ...(o.action ? { action: { v: o.action, at, fromStatus: presenter?.status ?? null, fromCurrent: presenter?.current?.journeyId ?? null } } : {}),
+    }));
     send(cmd);
   };
   const manual = playback === "manual";
@@ -162,7 +165,7 @@ export function PresenterView({
 
   const shell = (children: React.ReactNode) => (
     <div
-      className="min-h-screen bg-background text-ink px-4 py-6 max-w-md mx-auto"
+      className="min-h-screen bg-background text-ink px-4 py-6 max-w-md mx-auto select-none [-webkit-tap-highlight-color:transparent] [&_button]:touch-manipulation [&_button:active]:transition-none"
       style={{ paddingBottom: "calc(2rem + env(safe-area-inset-bottom, 0px))" }}
     >
       {children}
@@ -191,8 +194,7 @@ export function PresenterView({
                 key={s.id}
                 className={`min-h-14 w-full rounded-xl border px-4 py-3 text-left transition-colors duration-instant ${on ? "border-primary bg-primary/10" : "border-border bg-card active:bg-white/[0.06]"}`}
                 onClick={() => {
-                  choose(`set:${s.id}`, { setId: s.id, cued: null });
-                  if (cued) send("cue:clear");
+                  choose(`set:${s.id}`, { setId: s.id, cued: null }); // choosing a set clears the pick
                   setView("main");
                 }}
               >
@@ -237,6 +239,7 @@ export function PresenterView({
                 className={`flex min-h-12 w-full items-center gap-3 rounded-lg border px-3 py-2 text-left transition-colors duration-instant ${isNext ? "border-primary/60 bg-primary/10" : "border-transparent active:bg-white/[0.06]"}`}
                 onClick={() => {
                   if (!p) return;
+                  if (p.id !== setId) send(`set:${p.id}`);
                   choose(`cue:${j.id}@${p.id}`, { setId: p.id, cued: { journeyId: j.id, programId: p.id, name: j.name } });
                   setView("main");
                 }}
@@ -317,7 +320,7 @@ export function PresenterView({
         <div className="mt-1 text-sm text-ink-faint">{position(current, programs) ?? ""}</div>
         {holding ? (
           <p className="mt-3 text-sm text-ink-mute">
-            Ended. {presenter?.holdOn === "title" ? "The title card is holding" : "The screen is holding on its last moment"} until you press Play.
+            Ended. {merged.holdOn === "title" ? "The title card is holding" : "The screen is holding on its last moment"} until you press Play.
           </p>
         ) : (
           <>
@@ -356,32 +359,32 @@ export function PresenterView({
       {/* NEXT / PLAY */}
       {holding ? (
         <Button
-          className="h-[104px] w-full flex-col gap-1 rounded-lg text-lg text-primary-foreground"
-          onClick={() => choose("next", { cued: null })}
+          className="h-[104px] w-full flex-col gap-1 rounded-lg active:bg-primary/75 text-lg text-primary-foreground"
+          onClick={() => choose("next", { cued: null, action: "going" })}
         >
           <span className="inline-flex items-center gap-2 text-xl"><Play className="size-6" /> Play</span>
           <span className="max-w-full truncate text-sm text-primary-foreground/80">{next?.name ?? ""}</span>
         </Button>
       ) : (
         <Button
-          className="h-[88px] w-full gap-3 rounded-lg text-xl text-primary-foreground"
-          onClick={() => choose("next", { cued: null })}
+          className="h-[88px] w-full gap-3 rounded-lg active:bg-primary/75 text-xl text-primary-foreground"
+          onClick={() => choose("next", { cued: null, action: "going" })}
         >
           Next <ArrowRight className="size-6" />
         </Button>
       )}
       <p className="mt-2 mb-4 text-center text-xs text-ink-faint">
         {holding
-          ? presenter?.holdOn === "title" ? "The title card flows straight into its title and music." : "The held ending flows straight into its title and music."
+          ? merged.holdOn === "title" ? "The title card flows straight into its title and music." : "The held ending flows straight into its title and music."
           : `Mid-song, Next fades this one out gracefully, then plays ${next?.name ?? "the next track"}.`}
       </p>
 
       <div className="grid grid-cols-2 gap-2">
-        <Button variant="glass" className="h-auto min-h-12 text-sm text-ink" onClick={() => setView("pick")}>
+        <Button variant="glass" className="h-auto min-h-12 text-sm text-ink active:bg-white/[0.14]" onClick={() => setView("pick")}>
           Pick a track
         </Button>
         {holding ? (
-          <Button variant="glass" className="h-auto min-h-12 text-sm text-ink" onClick={() => send("replay")}>
+          <Button variant="glass" className="h-auto min-h-12 text-sm text-ink active:bg-white/[0.14]" onClick={() => choose("replay", { action: "going" })}>
             Replay this one
           </Button>
         ) : (
@@ -389,7 +392,7 @@ export function PresenterView({
             variant="glass"
             className="h-auto min-h-12 text-sm text-ink"
             disabled={status !== "playing"}
-            onClick={() => choose("fadeout", { playback: "manual" })}
+            onClick={() => choose("fadeout", { playback: "manual", action: "fading" })}
           >
             Fade out now
           </Button>
@@ -404,8 +407,8 @@ export function PresenterView({
             <button
               type="button"
               key={h}
-              className={`min-h-11 rounded-none px-3 text-xs transition-colors duration-instant ${(presenter?.holdOn ?? "ending") === h ? "bg-primary/20 text-ink" : "text-ink-mute active:bg-white/[0.06]"}`}
-              onClick={() => send(`holdon:${h}`)}
+              className={`min-h-11 rounded-none px-3 text-xs transition-colors duration-instant ${merged.holdOn === h ? "bg-primary/20 text-ink" : "text-ink-mute active:bg-white/[0.06]"}`}
+              onClick={() => choose(`holdon:${h}`, { holdOn: h })}
             >
               {h === "ending" ? "Its ending" : "Title card"}
             </button>

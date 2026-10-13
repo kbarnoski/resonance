@@ -62,7 +62,11 @@ export type PresenterEvent =
   | { type: "skip" }
   | { type: "track-started"; ref: PresenterRef }
   | { type: "track-ended" }
-  | { type: "fade-complete" };
+  | { type: "fade-complete" }
+  /** page (re)loaded: `holding` = it opens on a held title card; otherwise a set start is under way */
+  | { type: "boot"; holding: boolean }
+  /** a go could not resolve its target: back to what was on screen */
+  | { type: "go-failed"; playing: boolean };
 
 export type PresenterEffect =
   | { kind: "none" }
@@ -163,7 +167,8 @@ export function presenterReduce(
     case "set-hold-on":
       return { state: { ...state, holdOn: event.holdOn }, effect: NONE };
     case "set-set":
-      return { state: { ...state, setId: event.setId }, effect: NONE };
+      // choosing a set clears a pick from another set (the phone: "Choose a set" → its next track)
+      return { state: { ...state, setId: event.setId, cued: state.cued?.programId === event.setId ? state.cued : null }, effect: NONE };
     case "cue":
       return { state: { ...state, cued: event.ref }, effect: NONE };
     case "clear-cue":
@@ -195,6 +200,11 @@ export function presenterReduce(
       return ended(state, sets);
     case "track-ended":
       return ended(state, sets);
+    case "boot":
+      return { state: { ...state, status: event.holding ? "holding" : "going" }, effect: NONE };
+    case "go-failed":
+      if (state.status !== "going") return { state, effect: NONE };
+      return { state: { ...state, status: event.playing ? "playing" : state.current ? "holding" : "idle" }, effect: NONE };
     case "track-started":
       return {
         state: {
@@ -238,7 +248,8 @@ export function restorePresenter(raw: string | null | undefined): PresenterState
     const current = isRef(o.current) ? o.current : null;
     return {
       playback, holdOn, setId, cued, current,
-      status: playback === "manual" ? "holding" : "idle",
+      // the loop's "boot" event sets the truth at once (holding card / set start)
+      status: playback === "manual" && current ? "holding" : "idle",
     };
   } catch {
     return INITIAL_PRESENTER;

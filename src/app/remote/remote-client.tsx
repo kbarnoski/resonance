@@ -1,8 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import { JOURNEYS } from "@/lib/journeys/journeys";
-import { PAIRED_TRACKS } from "@/lib/journeys/paired-tracks";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { INSTALLATION_PROGRAMS, TRAMOKYO_MIX_ID } from "@/lib/journeys/installation-sequence";
 import { Button } from "@/components/ui/button";
 import { PresenterView, type PresenterStatus } from "./presenter-view";
@@ -56,35 +54,91 @@ function fmt(sec: number | undefined): string {
   return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
-export function RemoteClient() {
-  const [status, setStatus] = useState<KioskStatus | null>(null);
-  const [ageMs, setAgeMs] = useState<number | null>(null);
+/** Phone status poll while the page is visible (GET is an in-memory read; the
+ *  set + track lists only travel when they change — programsRev). */
+const STATUS_POLL_MS = 500;
+const PROGRAMS_CACHE_KEY = "resonance-remote-programs-v1";
+
+function keyQuery(): string {
+  if (typeof window === "undefined") return "";
+  const k = new URLSearchParams(window.location.search).get("key");
+  return k ? `key=${encodeURIComponent(k)}` : "";
+}
+
+export function RemoteClient({
+  initialStatus = null,
+  initialAgeMs = null,
+  extras = [],
+}: {
+  initialStatus?: Record<string, unknown> | null;
+  initialAgeMs?: number | null;
+  extras?: { id: string; name: string }[];
+}) {
+  // first paint already has the kiosk's lists (server-rendered from the bus)
+  const [status, setStatus] = useState<KioskStatus | null>(initialStatus as KioskStatus | null);
+  const [ageMs, setAgeMs] = useState<number | null>(initialAgeMs);
+  const programsRef = useRef<KioskStatus["programs"]>((initialStatus as KioskStatus | null)?.programs ?? null);
+  const revRef = useRef<number>(0);
   const [sending, setSending] = useState<string | null>(null);
   const [sendError, setSendError] = useState<string | null>(null);
   // the presenter is the main screen; every other control lives behind the Live pill
   const [controlsOpen, setControlsOpen] = useState(false);
 
   useEffect(() => {
-    let stopped = false;
-    const poll = async () => {
+    // no lists from the server (kiosk not reporting yet)? the last ones this
+    // phone saw — never an empty picker
+    if (!programsRef.current) {
       try {
-        const res = await fetch(`/api/pack/remote${typeof window !== "undefined" && new URLSearchParams(window.location.search).get("key") ? `?key=${new URLSearchParams(window.location.search).get("key")}` : ""}`);
-        if (!res.ok || stopped) return;
-        const data = await res.json();
-        setStatus(data.status ?? null);
-        setAgeMs(data.statusAgeMs ?? null);
+        const cached = window.localStorage.getItem(PROGRAMS_CACHE_KEY);
+        if (cached) {
+          programsRef.current = JSON.parse(cached);
+          setStatus((st) => ({ ...(st ?? {}), programs: programsRef.current }));
+        }
+      } catch { /* storage blocked */ }
+    }
+    let stopped = false;
+    let inFlight = false;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    const poll = async () => {
+      if (stopped || inFlight) return;
+      inFlight = true;
+      try {
+        const q = [keyQuery(), `have=${revRef.current}`].filter(Boolean).join("&");
+        const res = await fetch(`/api/pack/remote?${q}`, { cache: "no-store" });
+        if (res.ok && !stopped) {
+          const data = await res.json();
+          const st = (data.status ?? null) as KioskStatus | null;
+          if (st && st.programs !== undefined) {
+            programsRef.current = st.programs ?? null;
+            revRef.current = Number(data.programsRev) || 0;
+            try { window.localStorage.setItem(PROGRAMS_CACHE_KEY, JSON.stringify(st.programs ?? null)); } catch { /* ok */ }
+          }
+          setStatus(st ? { ...st, programs: programsRef.current } : programsRef.current ? { programs: programsRef.current } : null);
+          setAgeMs(data.statusAgeMs ?? null);
+        }
       } catch { /* hotspot blip */ }
+      inFlight = false;
+      if (!stopped && document.visibilityState === "visible") timer = setTimeout(() => void poll(), STATUS_POLL_MS);
     };
+    // fast while looked at, silent in the pocket; instant catch-up on return
+    const onVis = () => {
+      if (document.visibilityState === "visible") { if (timer) clearTimeout(timer); void poll(); }
+    };
+    document.addEventListener("visibilitychange", onVis);
     void poll();
-    const id = setInterval(() => void poll(), 2000);
-    return () => { stopped = true; clearInterval(id); };
+    return () => {
+      stopped = true;
+      if (timer) clearTimeout(timer);
+      document.removeEventListener("visibilitychange", onVis);
+    };
   }, []);
 
   const send = useCallback(async (command: string) => {
     setSending(command);
     setSendError(null);
     try {
-      const res = await fetch(`/api/pack/remote${typeof window !== "undefined" && new URLSearchParams(window.location.search).get("key") ? `?key=${new URLSearchParams(window.location.search).get("key")}` : ""}`, {
+      const q = keyQuery();
+      const res = await fetch(`/api/pack/remote${q ? `?${q}` : ""}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ command }),
@@ -307,8 +361,7 @@ export function RemoteClient() {
             program sections above (loop jump → continues in setlist
             order). This DJ section offers only the extras, so choosing
             a show track can never strand playback outside the loop. */}
-        {JOURNEYS.filter((j) => {
-          if (!(j.recordingId || PAIRED_TRACKS[j.id])) return false;
+        {extras.filter((j) => {
           const inShow = (status?.programs ?? []).some((p) =>
             p.journeys.some((pj) => pj.id === j.id),
           );

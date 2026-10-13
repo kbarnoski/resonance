@@ -20,7 +20,7 @@ import { acquireSharedParticleEngine, setStatementHold, particlesDisabledReason 
 import { glitchRecord } from "@/lib/journeys/glitch-recorder";
 import { PARTICLES_ENABLED, particlesForcedThisSession } from "@/lib/journeys/particle-lead";
 import { loadStatementPiano, cachedSamples, budgetFor } from "./particle-lead-layer";
-import { REVEAL_AT_MS, LATEST_REVEAL_MS, FORM_LEAD_MS, READY_POLL_MS, HOLD_MAX_MS, PIANO_OPACITY, TEXT_FADE_MS, cardLayer, textOnlySchedule } from "@/lib/particles/statement-piano-plan";
+import { REVEAL_AT_MS, REVEAL_MS, LATEST_REVEAL_MS, FORM_LEAD_MS, READY_POLL_MS, HOLD_MAX_MS, PIANO_OPACITY, TEXT_FADE_MS, cardLayer, textOnlySchedule, heldCardClock, heldPianoWaits } from "@/lib/particles/statement-piano-plan";
 import type { PianoCard } from "@/lib/particles/statement-piano-card";
 
 /** a held card's engine hold: long but FINITE (setTimeout clamps anything over
@@ -63,7 +63,9 @@ export function StatementPiano({ cardT0, stage, revealed, onReveal, hold = false
     void canvas.offsetWidth;
     const card = createPianoCard<HTMLCanvasElement>({
       engine,
-      at,
+      // a HELD card has no pre-start to protect: its clock stays before the
+      // spin-up window while held, so a late piano may still form
+      at: () => heldCardClock(at(), holdRef.current),
       screenAspect: () => window.innerWidth / Math.max(1, window.innerHeight),
       samples: cachedSamples,
       setHold: (on) => {
@@ -80,10 +82,37 @@ export function StatementPiano({ cardT0, stage, revealed, onReveal, hold = false
     // AT LOAD TOO: the boot card waits for the session's program warm-up
     // (~3.85 s, measured; the engine must not run meanwhile) — the logo, text
     // and piano then appear together as soon as it has formed
+    // HELD card, piano not ready in time (lab 2026-10-13: back from Live into a
+    // song-by-song hold, the cold page's program warm-up missed the reveal and
+    // the held card sat as static text): the logo + text come up on time, and
+    // the piano keeps waiting (no deadline while held), then forms unseen and
+    // fades in behind them. The title card is ALWAYS the piano card.
+    const latePiano = (img: HTMLCanvasElement) => {
+      if (cancelled || card.released || !holdRef.current || particlesDisabledReason()) return;
+      if (!engine.isWarm()) { timers.push(setTimeout(() => latePiano(img), READY_POLL_MS * 3)); return; }
+      host.style.transition = "none";
+      host.style.opacity = "0";
+      card.run("upload", img);
+      timers.push(setTimeout(() => {
+        card.run("form", img);
+        glitchRecord("piano", `late form on a held card @${Math.round(at())}ms`);
+        timers.push(setTimeout(() => {
+          if (!holdRef.current || card.released) return;
+          host.style.transition = `opacity ${REVEAL_MS}ms ease-out`;
+          host.style.opacity = String(PIANO_OPACITY);
+        }, FORM_LEAD_MS));
+      }, 50));
+    };
     const schedule = (img: HTMLCanvasElement | null) => {
       if (cancelled) return;
       if (img && !engine.isWarm() && at() < LATEST_REVEAL_MS - FORM_LEAD_MS - 100) { timers.push(setTimeout(() => schedule(img), READY_POLL_MS)); return; }
       const ready = !!img && engine.isWarm();
+      if (heldPianoWaits(ready, !!img, holdRef.current)) {
+        glitchRecord("piano-late", "held card: text first, the piano once warm");
+        timers.push(setTimeout(() => card.run("reveal", img), Math.max(0, REVEAL_AT_MS - at())));
+        latePiano(img!);
+        return;
+      }
       const sched = ready ? card.schedule(at()) : textOnlySchedule(at());
       if (!ready) glitchRecord("piano-skip", img ? "programs warming" : "no image");
       else if (at() > 1000) glitchRecord("piano", `ready @${Math.round(at())}ms (boot warm-up)`);
