@@ -237,6 +237,8 @@ export function createWebGPUParticleEngine(canvas: HTMLCanvasElement, opts: WebG
   let bridgePS = 0, bridgePT = 0, bridgeMS = 0, bridgeMT = 0, bridgeDS = 0, bridgeDT = 0, bridgeFS = 0.2, bridgeFT = 0.2;
   let fireT = 0;
   let cineOn = opts.cine ?? true;
+  let flight: Parameters<ParticleEngine["setImageFlight"]>[0] = null;
+  let flownT = -1;
 
   let time = 0;
   const timeNow = () => time;
@@ -938,6 +940,8 @@ export function createWebGPUParticleEngine(canvas: HTMLCanvasElement, opts: WebG
     trailsShown() { return 0; },
     setOffset(x, y) { offTX = Math.max(-0.7, Math.min(0.7, x)); offTY = Math.max(-0.5, Math.min(0.5, y)); },
     setImageScale(k) { imgScaleT = Math.max(0.2, Math.min(1.2, k)); },
+    setImageFlight(fl) { flight = fl; /* TODO(webgpu-plan §A.8): image-plane path + wingDisp in the image force */ },
+    releaseFlight() { flownT = 0; /* TODO(webgpu-plan §A.8): respawn off-frame motes unseen */ },
     setSizeScale(k) { sizeScaleT = Math.max(0.4, Math.min(2.5, k)); },
     setReact(k) { reactT = Math.max(0.5, Math.min(4, k)); },
     setUnfold() { /* TODO(webgpu-plan §A.2) */ },
@@ -1000,6 +1004,6 @@ export function createWebGPUParticleEngine(canvas: HTMLCanvasElement, opts: WebG
     stats,
   };
   // the parity state not yet consumed on the GPU stays readable for tests/diag
-  void curT; void brT; void fireT;
+  void curT; void brT; void fireT; void flight; void flownT;
   return engine;
 }

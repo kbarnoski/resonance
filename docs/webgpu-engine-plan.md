@@ -314,6 +314,12 @@ watching).
   - hue spread and wave, height colour, the bridge, living fire.
 - **A.6 Probes:** async velocity tripwire and state sampling (mapAsync, one in flight);
   stats parity for the journey-review rig.
+- **A.8 Signature flight** (Yellow Bird, `signature-flight.ts`, merged 2026-10-13):
+  `setImageFlight` moves the image plane along the flight path and displaces wing and tail
+  motes with `wingDisp` (a direct WGSL port of the GLSL, mirrored from the CPU wing pose);
+  the tail sheds loose motes; `releaseFlight` respawns every off-frame mote unseen near the
+  centre (age < 0, fades in). The figure frame (`uFigRot`/`uFigOff`, figure-motion.ts)
+  ports with the souls (§A.2).
 - **A.7 Exit:**
   - shared-engine wiring behind `?gpu=webgpu`;
   - the full tour on WebGPU at 160k matches WebGL frame for frame (`scripts/journey-review/`);
