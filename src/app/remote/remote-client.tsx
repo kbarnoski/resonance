@@ -5,6 +5,7 @@ import { JOURNEYS } from "@/lib/journeys/journeys";
 import { PAIRED_TRACKS } from "@/lib/journeys/paired-tracks";
 import { INSTALLATION_PROGRAMS, TRAMOKYO_MIX_ID } from "@/lib/journeys/installation-sequence";
 import { Button } from "@/components/ui/button";
+import { PresenterView, type PresenterStatus } from "./presenter-view";
 
 // "Start from" jump points — the beginning is program 0's intro; every
 // program also gets its own starting point. New programs (backlog:
@@ -30,7 +31,7 @@ const START_POINTS: { cmd: string; label: string }[] = [
 interface KioskProgram {
   id: string;
   label: string;
-  journeys: { id: string; name: string }[];
+  journeys: { id: string; name: string; dur?: number | null }[];
 }
 
 interface KioskStatus {
@@ -44,6 +45,8 @@ interface KioskStatus {
   volume?: number;
   /** Live Theatre: the Nord's USB MIDI line (null when MIDI isn't in use) */
   midi?: string | null;
+  /** Presenter (auto-play / song by song) — loop context only */
+  presenter?: PresenterStatus | null;
 }
 
 function fmt(sec: number | undefined): string {
@@ -58,6 +61,8 @@ export function RemoteClient() {
   const [ageMs, setAgeMs] = useState<number | null>(null);
   const [sending, setSending] = useState<string | null>(null);
   const [sendError, setSendError] = useState<string | null>(null);
+  // the presenter is the main screen; every other control lives behind the Live pill
+  const [controlsOpen, setControlsOpen] = useState(false);
 
   useEffect(() => {
     let stopped = false;
@@ -71,7 +76,7 @@ export function RemoteClient() {
       } catch { /* hotspot blip */ }
     };
     void poll();
-    const id = setInterval(() => void poll(), 3000);
+    const id = setInterval(() => void poll(), 2000);
     return () => { stopped = true; clearInterval(id); };
   }, []);
 
@@ -104,11 +109,47 @@ export function RemoteClient() {
   const btn =
     "h-auto min-h-11 px-4 py-3.5 text-sm font-normal text-ink active:bg-white/[0.15]";
 
+  // PRESENTER main screen (auto-play / song by song) whenever the kiosk is
+  // in (or waiting to report) the loop; Live Theatre and DJ mode keep the
+  // full controls below
+  if (!controlsOpen && !inLive && (inLoop || stale)) {
+    return (
+      <>
+        {sendError ? (
+          <div className="mx-auto max-w-md px-4 pt-4">
+            <div className="rounded-xl px-4 py-3 text-sm text-destructive bg-destructive/10 border border-destructive/25">
+              {sendError}
+            </div>
+          </div>
+        ) : null}
+        <PresenterView
+          presenter={status?.presenter ?? null}
+          programs={status?.programs ?? []}
+          journeyName={status?.journey ?? null}
+          currentTime={status?.currentTime}
+          duration={status?.duration}
+          stale={stale}
+          send={(c) => void send(c)}
+          onControls={() => setControlsOpen(true)}
+        />
+      </>
+    );
+  }
+
   return (
     <div
       className="min-h-screen bg-background text-white px-5 py-8 max-w-md mx-auto"
       style={{ paddingBottom: "calc(2rem + env(safe-area-inset-bottom, 0px))" }}
     >
+      {inLoop && controlsOpen ? (
+        <button
+          type="button"
+          className="mb-3 inline-flex min-h-11 items-center text-sm text-ink-mute active:text-ink"
+          onClick={() => setControlsOpen(false)}
+        >
+          ← Presenter
+        </button>
+      ) : null}
       <div className="flex items-center justify-between mb-6">
         <h1
           className="text-xl text-white/90"
