@@ -12,13 +12,19 @@
 // light shadows only: the blurred 14 px pass rastered slowly on the kiosk
 const SHADOW = "0 1px 2px rgba(0,0,0,0.85), 0 0 6px rgba(0,0,0,0.5)";
 
-export function splitJourneyName(name: string): { title: string; num: string | null } {
+export function splitJourneyName(name: string): { title: string; num: string | null; sub: string | null } {
   const m = /^(.*?)\s+(\d+)$/.exec(name);
-  return m ? { title: m[1], num: m[2] } : { title: name, num: null };
+  if (m) return { title: m[1], num: m[2], sub: null };
+  // a trailing parenthetical rides under the line like the number (Karel
+  // 2026-10-13: "expanded without () needs to be underneath in the same style
+  // as you do No.") — "The First (Expanded)" → THE FIRST / Expanded
+  const p = /^(.*?)\s*\(([^()]+)\)\s*$/.exec(name);
+  if (p && p[1].trim()) return { title: p[1].trim(), num: null, sub: p[2].trim() };
+  return { title: name, num: null, sub: null };
 }
 
 export function HorizonTitle({ name, byline }: { name: string; byline?: string | null }) {
-  const { title, num } = splitJourneyName(name);
+  const { title, num, sub } = splitJourneyName(name);
   return (
     // its own compositor layer: the entrance (transform + opacity) never repaints
     <div className="relative flex flex-col items-center text-center" style={{ maxWidth: "92vw", willChange: "transform, opacity", transform: "translateZ(0)" }}>
@@ -41,13 +47,13 @@ export function HorizonTitle({ name, byline }: { name: string; byline?: string |
         className="hz-line relative"
         style={{ width: "46vw", height: 1, margin: "1.8vh 0 1.2vh", background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.55) 20%, rgba(255,255,255,0.55) 80%, transparent)" }}
       />
-      {num && (
+      {(num || sub) && (
         <div style={{ overflow: "hidden", padding: "0.1em 0" }}>
           <div
             className="hz-num relative"
             style={{ fontFamily: "var(--font-bodoni), Georgia, serif", fontStyle: "italic", fontWeight: 400, fontSize: "3.3vh", lineHeight: 1.1, color: "rgba(255,255,255,0.82)", textShadow: SHADOW }}
           >
-            No.&thinsp;{num}
+            {num ? <>No.&thinsp;{num}</> : sub}
           </div>
         </div>
       )}
