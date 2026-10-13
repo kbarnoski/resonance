@@ -72,6 +72,22 @@ import { freshVariant, rememberDesign, RECENT_DESIGNS } from "@/lib/particles/fo
 import { emblemEnvelope, imageSlotStep, underlayDue, EMBLEM_HANDOFF, type ImageSlot } from "@/lib/particles/image-follow";
 import type { JourneyFrame } from "@/lib/journeys/types";
 import { journeyResponse } from "@/lib/journeys/kinetic";
+import { PARTICLE_PROFILES } from "@/lib/journeys/particle-profiles.generated";
+import { conductPhrases, createPhraseCursor, formHoldDue, takePhraseEvent, swellAt, phraseConductorEnabled, PHRASE_LOCKED_JOURNEYS, type PhraseTimeline } from "@/lib/particles/phrase-conductor";
+
+/** PHRASE CONDUCTOR (?phrase=1, off by default — phrase-conductor.ts): the deep
+ *  analysis's section starts / crests / breaths time the form changes and the
+ *  density / size / response swells instead of the fixed hold clock. Never for
+ *  the locked journeys (Snowflake, Ghost). Off = the exact old behaviour. */
+function phraseTimelineFor(cast: ParticleLeadCast, journeyId: string): PhraseTimeline | null {
+  let on = false;
+  try { on = phraseConductorEnabled(undefined, typeof window !== "undefined" ? window.sessionStorage : null); } catch { on = false; }
+  if (!on || cast.mastered || PHRASE_LOCKED_JOURNEYS.has(journeyId)) return null;
+  const p = PARTICLE_PROFILES[journeyId];
+  if (!p) return null;
+  const tl = conductPhrases({ ...p, phaseBounds: cast.phaseBounds ?? p.phaseBounds }, { journeyId, formChanges: cast.windows.map((w) => w.start) });
+  return tl.events.length ? tl : null;
+}
 
 export const budgetFor = () => TIER_BUDGET[getDeviceTier()] ?? TIER_BUDGET.medium;
 
@@ -876,6 +892,11 @@ export function ParticleLeadLayer({
     // forms loop-wide and gives each appearance its own design; Snowflake +
     // Ghost run exactly as before (mastered)
     const diverse = !cast.mastered;
+    // the phrase conductor (null = flag off / locked journey: the old hold clock, unchanged)
+    const phraseTl = phraseTimelineFor(cast, journeyId);
+    const phraseCursor = phraseTl ? createPhraseCursor(phraseTl) : null;
+    if (phraseTl) glitchRecord("particle-phrase", `on: ${phraseTl.events.length} events, phrase ${phraseTl.phraseSec}s`);
+    let sizeBase = 1;
     let blossomShown = false;
     // dolly + placement (Karel 2026-10-06: "they always land in a shape at
     // same distance away … always hover dead center … i need dynamics")
@@ -937,7 +958,8 @@ export function ParticleLeadLayer({
       // its motes stay fine — it rises in place over the tunnel
       const ghostOpening = journeyId === "ghost" && (cast.phaseBounds ?? []).filter((b) => b <= (useAudioStore.getState().currentTime || 0)).length <= 1;
       if (ghostOpening) { offX = 0; offY = 0; }
-      engine.setSizeScale(ghostOpening ? 0.85 : thin ? 1.5 + 0.7 * rand01(9) : 0.6 + 1.4 * rand01(9));
+      sizeBase = ghostOpening ? 0.85 : thin ? 1.5 + 0.7 * rand01(9) : 0.6 + 1.4 * rand01(9);
+      engine.setSizeScale(sizeBase);
       if (thin) densK = Math.max(densK, 0.85);
     };
     // the forms THIS phase's imagery calls for (vision-tagged) — else the cycle
@@ -1141,6 +1163,8 @@ export function ParticleLeadLayer({
       lastTick = now;
       const t = useAudioStore.getState().currentTime || 0;
       signatureAt(t);
+      // phrase swell (motion only: density / size / response) — null when off
+      const phraseSw = phraseTl ? swellAt(phraseTl, t) : null;
       // MORPH LAW (Karel 2026-10-06: "particle system always overlaps the
       // morph and is present when morph videos end in all cases ever"):
       // travel morphs ride the phase boundaries, which are known — arm the
@@ -1421,7 +1445,8 @@ export function ParticleLeadLayer({
         const gOpen = journeyId === "ghost" && phaseIdxAt(t) <= 1;
         const openCap = gOpen && phaseIdxAt(t) === 1 ? 0.12 : 1;
         const holdImage = imgLoaded && !flashing && !(gOpen && hoverAt >= 0);
-        engine.setDensity(holdImage ? 1 : Math.min(cast.mastered ? 0.8 : 1, target, openCap) * densKS * (0.3 + 0.7 * densP));
+        const dens = Math.min(cast.mastered ? 0.8 : 1, target, openCap) * densKS * (0.3 + 0.7 * densP);
+        engine.setDensity(holdImage ? 1 : phraseSw ? dens * phraseSw.density : dens);
       }
       // evolve while visible: a new form (or the same form, a new figure),
       // morphing over ~7 s — never a cut
@@ -1449,11 +1474,18 @@ export function ParticleLeadLayer({
         if (sm !== lastShaderMode) { lastShaderMode = sm; lastShaderAt = t; }
       }
       const busyNow = t - lastShaderAt < 3 || (cast.phaseBounds ?? []).some((pb) => Math.abs(pb - t) < 4);
-      if (!busyNow && shown > 0.6 && !dissolving && !imgLoaded && echoAt < 0 && flashP < 0.05 && motifAt < 0 && performance.now() - formAt > formDur && !timedSoon(t, motifDur + 2) && (engine.settledFor() > 7 || performance.now() - formAt > formDur * 2.2) && rand01(61 + cycleIdx) < pMotif && startMotif(t)) {
+      // FORM TIMING: the hold clock (flag off: exactly `held > formDur`), or the
+      // phrase conductor's next section / phrase event once the form has held ≥ 10 s
+      const phraseHold = phraseCursor ? formHoldDue(phraseCursor, t, performance.now() - formAt, formDur) : null;
+      const holdDone = () => (phraseHold ? phraseHold.due : performance.now() - formAt > formDur);
+      const settledEnough = () => engine.settledFor() > (phraseHold?.event ? 3 : 7) || performance.now() - formAt > formDur * 2.2;
+      if (!busyNow && shown > 0.6 && !dissolving && !imgLoaded && echoAt < 0 && flashP < 0.05 && motifAt < 0 && holdDone() && !timedSoon(t, motifDur + 2) && settledEnough() && rand01(61 + cycleIdx) < pMotif && startMotif(t)) {
         cycleIdx++;
-      } else if (!busyNow && shown > 0.6 && !dissolving && !imgLoaded && echoAt < 0 && flashP < 0.05 && motifAt < 0 && performance.now() - formAt > formDur && !timedSoon(t, 15) && (engine.settledFor() > 7 || performance.now() - formAt > formDur * 2.2) && cast.formCycle?.length) {
+        if (phraseHold?.event) { takePhraseEvent(phraseCursor, phraseHold.index); glitchRecord("particle-phrase", `motif on ${phraseHold.event.label}`); }
+      } else if (!busyNow && shown > 0.6 && !dissolving && !imgLoaded && echoAt < 0 && flashP < 0.05 && motifAt < 0 && holdDone() && !timedSoon(t, 15) && settledEnough() && cast.formCycle?.length) {
         cycleIdx++;
-        if (cycleIdx % 3 === 0 && currentSoul) {
+        if (phraseHold?.event) { takePhraseEvent(phraseCursor, phraseHold.index); glitchRecord("particle-phrase", `${phraseHold.event.action} on ${phraseHold.event.label}`); }
+        if ((phraseHold?.event ? phraseHold.event.action === "refigure" : cycleIdx % 3 === 0) && currentSoul) {
           if (diverse) {
             const v = freshVariant(currentSoul as SoulId, `${journeyId}:r${cycleIdx}:${Math.round(t)}`, RECENT_DESIGNS);
             engine.setVariant(v ? { a: v.a, b: v.b, c: v.c } : null);
@@ -1488,7 +1520,10 @@ export function ParticleLeadLayer({
         }
       } else outSince = 0;
       const ambientP = ambientUntil > t ? Math.min(1, (ambientUntil - t) / 3) : 0;
-      if (ambientP > 0 && pr.presence <= 0) engine.setDensity(Math.min(cast.mastered ? 0.8 : 1, 0.6, journeyId === "ghost" && phaseIdxAt(t) === 1 ? 0.12 : 1) * densKS * (0.3 + 0.7 * densP));
+      if (ambientP > 0 && pr.presence <= 0) {
+        const dens = Math.min(cast.mastered ? 0.8 : 1, 0.6, journeyId === "ghost" && phaseIdxAt(t) === 1 ? 0.12 : 1) * densKS * (0.3 + 0.7 * densP);
+        engine.setDensity(phraseSw ? dens * phraseSw.density : dens);
+      }
       // ≥5 s TO ABSORB (Karel 2026-10-07: "dont have particles come in only
       // to go away a second or two later … 5 seconds minimum"): once the
       // field arrives it holds ≥6 s before any fade-out begins
@@ -1615,7 +1650,10 @@ export function ParticleLeadLayer({
       // 2.64× always, up to the engine's 4× ceiling alone on black
       // …and the vibe ladder (Karel 2026-10-13: solo piano noticeable, the intense
       // tracks full on) — the locked journeys keep their mastered response
-      engine.setReact((2.64 + 1.92 * veil) * (cast.mastered ? 1 : 0.8 + 0.2 * respK));
+      const react = (2.64 + 1.92 * veil) * (cast.mastered ? 1 : 0.8 + 0.2 * respK);
+      // phrase swells lean the motion in (never while an image is worn — emblems untouched)
+      engine.setReact(phraseSw && !imgLoaded ? react * phraseSw.react : react);
+      if (phraseSw) engine.setSizeScale(imgLoaded ? sizeBase : sizeBase * phraseSw.size);
 
       // colour: harmony per section + a drift on swells (hue/sat only — luma-safe)
       const st = engine.stats();
@@ -1717,6 +1755,7 @@ export function ParticleLeadLayer({
         maxLumStep: st.maxLumStep,
         state: st.state,
         stamp: Date.now(),
+        ...(phraseTl ? { phrase: { swell: phraseSw, next: phraseTl.events.find((e) => e.t > t)?.label ?? null } } : {}),
       };
     };
     const iv = window.setInterval(tick, 100);

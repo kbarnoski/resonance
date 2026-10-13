@@ -69,6 +69,11 @@ breaths from the deep summaries — to form changes and density swells, so the
 field breathes with the composition rather than the beat. Onsets may burst
 particles (allowed) but never move the camera or rotate graphic swirls.
 Post-event; pairs naturally with Live Theatre (the mic drives the same hooks).
+**Status 2026-10-12 (overnight):** phrase conductor built behind `?phrase=1`
+(default OFF, never Snowflake / Ghost) — `src/lib/particles/phrase-conductor.ts`:
+section starts + tempo-aligned phrases time the form changes, crests swell
+density / size / response, breaths thin; laws asserted in
+`phrase-conductor.test.ts` on real pack analyses. Awaiting Karel's look.
 
 ### 5. New form families (the mass expansion)
 Once 1–4 are in: new forms per family (e.g. flocking with obstacle avoidance,
