@@ -1666,7 +1666,10 @@ export function ParticleLeadLayer({
       // world form is ~invisible under it), the journey's opening form is set
       // underneath — the emblem then dissolves straight into it.
       if (underlayDue({ emblemWorn: imgLoaded === "emblem", releasing: imgReleasing, hasForm: currentSoul !== "", emForm, imageShow: engine.imageShown() })) {
-        const under = w?.soul ?? cast.morphSouls[0] ?? cast.souls.transition;
+        // always the planned OPENER (planCast: a calm soul, rotated, never the
+        // tendrils — Karel 2026-10-13); a conducted window already open takes
+        // over through its own hand-off once the emblem lets go
+        const under = cast.morphSouls[0] ?? w?.soul ?? cast.souls.transition;
         lastAsked = under;
         switchForm(under, t);
         glitchRecord("particle-underlay", under);
