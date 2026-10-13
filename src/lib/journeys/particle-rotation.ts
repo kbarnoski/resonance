@@ -233,6 +233,10 @@ export interface ChooseOpts {
   pool?: readonly SoulId[] | null;
   /** the journey choosing (spacing of capped souls skips its own entry) */
   journeyId?: string | null;
+  /** a filter on the souls reached BEYOND the phase's own list (siblings, the
+   *  cast pool, the release valve): the opener stays a quiet soul even when
+   *  every quiet candidate is spent */
+  only?: ((s: SoulId) => boolean) | null;
   /** an extra per-soul cost (the quiet-lead rotation) */
   cost?: ((s: SoulId) => number) | null;
 }
@@ -266,7 +270,7 @@ export function chooseNext(cands: readonly SoulId[], o: ChooseOpts): SoulId | un
     const fam = FAMILY_OF.get(cands[i]);
     if (!fam) continue;
     for (const sib of FORM_FAMILIES[fam]) {
-      if (seen.has(sib)) continue;
+      if (seen.has(sib) || (o.only && !o.only(sib))) continue;
       seen.add(sib);
       const score = 0.35 + overusePenalty(o.mem, sib) + extra(sib) + i * 0.02 + (o.jitter ?? 0) * 0.05;
       if (score < bestScore) { bestScore = score; best = sib; }
@@ -278,7 +282,7 @@ export function chooseNext(cands: readonly SoulId[], o: ChooseOpts): SoulId | un
   const spent = (s: SoulId | undefined) => !!s && (nb(s) > 0 || rep(s) > 0 || shareOf(o.mem, s) > capOf(s));
   if (o.pool?.length && spent(best)) {
     o.pool.forEach((x, i) => {
-      if (seen.has(x) || (x === "blossom" && !o.blossomOk)) return;
+      if (seen.has(x) || (x === "blossom" && !o.blossomOk) || (o.only && !o.only(x))) return;
       seen.add(x);
       const score = CAST_POOL_COST + overusePenalty(o.mem, x) + extra(x) + i * 0.01 + (o.jitter ?? 0) * 0.05;
       if (score < bestScore) { bestScore = score; best = x; }
@@ -295,7 +299,7 @@ export function chooseNext(cands: readonly SoulId[], o: ChooseOpts): SoulId | un
     for (const [fam, xs] of Object.entries(FORM_FAMILIES)) {
       if (fam === bf || familyShare(o.mem, xs[0]) > (FAMILY_CAP[fam] ?? MAX_FAMILY_SHARE) * 0.9) continue;
       for (const x of xs) {
-        if (seen.has(x) || IMAGERY_ONLY_SOULS.includes(x)) continue;
+        if (seen.has(x) || IMAGERY_ONLY_SOULS.includes(x) || (o.only && !o.only(x))) continue;
         const score = 1 + overusePenalty(o.mem, x) + extra(x) + (o.jitter ?? 0) * 0.05;
         if (score < bestScore) { bestScore = score; best = x; }
       }
@@ -348,6 +352,11 @@ export function planCast(cast: ParticleLeadCast, journeyId: string, mem: LoopMem
     const pick = chooseNext(cands, {
       recent: i > 0 ? [morphSouls[i - 1]] : [], mem: plan, blossomOk: false, cycleIdx: -1, avoid, neighbour: prev?.forms,
       shown: planned, pool, journeyId,
+      // the opener is ALWAYS a quiet soul when the journey offers one: with more,
+      // shorter forms per journey (the figure cap, figure-motion.ts) the previous
+      // journey spends more of the quiet pool, and an unfiltered sibling / valve
+      // pick (girih beside mandala) used to take the opening slot
+      only: lead && cands.some((c) => QUIET_POOL.includes(c)) ? (s) => QUIET_POOL.includes(s) : null,
       cost: lead ? (s) => leadRotationCost(mem, journeyId, s) + (QUIET_POOL.includes(s) ? 0 : 2) : null,
     }) ?? cast.morphSouls[i];
     morphSouls.push(pick);
