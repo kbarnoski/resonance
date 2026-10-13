@@ -13,10 +13,10 @@
 import { describe, it, expect } from "vitest";
 import { PARTICLE_LEADS } from "./particle-lead";
 import { TRAMOKYO_RISE_ABOVE } from "./installation-sequence";
-import { replayLoop, shares, type PlayLog } from "./loop-replay";
+import { loopOrder, replayLoop, shares, type PlayLog } from "./loop-replay";
 import {
   createLoopMemory, planCast, chooseNext, noteForm, recordUsage, QUIET_POOL, capOf, spacingCost,
-  journeyAvoidSet, quietCandidates, NEIGHBOUR_COST,
+  journeyAvoidSet, quietCandidates, NEIGHBOUR_COST, NEVER_OPENS, OPENER_POOL,
 } from "./particle-rotation";
 import { formVariant } from "@/lib/particles/form-variety";
 import type { SoulId } from "@/lib/particles/souls";
@@ -156,5 +156,39 @@ describe("variety budget — the tendrils' own designs", () => {
     // layouts × modifiers: a wide family, not one look
     expect(labels.size).toBeGreaterThanOrEqual(60);
     for (const layout of ["ring", "smile", "arch", "row"]) expect([...labels].some((l) => l.includes(` ${layout}`)), layout).toBe(true);
+  });
+});
+
+describe("variety budget — the fresh-start opener (a ?start= film, a reload: empty loop memory)", () => {
+  // the opener is the underlay the opening emblem is drawn with and the first
+  // form the field wears (Karel 2026-10-13 flagged the tendrils opening Yellow
+  // Bird and Grasshopper twice)
+  const opener = (id: string) => planCast(PARTICLE_LEADS[id], id, createLoopMemory()).morphSouls[0];
+  const ids = Object.keys(PARTICLE_LEADS).filter((id) => !PARTICLE_LEADS[id].mastered && !PARTICLE_LEADS[id].signatureImage);
+
+  it("no journey ever opens on the tendrils (or any capped soul)", () => {
+    for (const id of Object.keys(PARTICLE_LEADS)) expect(NEVER_OPENS.has(opener(id)), `${id}: ${opener(id)}`).toBe(false);
+    expect(NEVER_OPENS.has("tendrils")).toBe(true);
+    expect(OPENER_POOL).not.toContain("tendrils");
+  });
+  it("Yellow Bird + Grasshopper (the filmed ones) open on a calm soul", () => {
+    for (const id of ["c80a89bc-2c88-4bde-bec8-4be6916acb62", "fdc6470e-5c7e-43b4-968c-3e907f1fa88f"]) expect(OPENER_POOL).toContain(opener(id));
+  });
+  it("every journey whose cast offers a calm soul opens on one", () => {
+    for (const id of ids) {
+      const c = PARTICLE_LEADS[id];
+      if (c.formCycle.some((x) => OPENER_POOL.includes(x))) expect(OPENER_POOL, id).toContain(opener(id));
+    }
+  });
+  it("seeded rotation: deterministic, never one opener for 3 journeys running in the loop, none opens > 25 % of journeys", () => {
+    for (const id of ids) expect(opener(id)).toBe(opener(id));
+    for (const order of [RA, loopOrder()]) {
+      const xs = order.filter((id) => ids.includes(id)).map(opener);
+      for (let i = 2; i < xs.length; i++) expect(xs[i] === xs[i - 1] && xs[i] === xs[i - 2], `#${i} ${xs[i]} ${order.filter((id) => ids.includes(id)).slice(i - 2, i + 1).map((id) => PARTICLE_LEADS[id].formCycle.filter((x) => OPENER_POOL.includes(x)).join("+")).join(" | ")}`).toBe(false);
+    }
+    const counts = new Map<SoulId, number>();
+    for (const id of ids) counts.set(opener(id), (counts.get(opener(id)) ?? 0) + 1);
+    for (const [s, n] of counts) expect(n / ids.length, s).toBeLessThanOrEqual(0.25);
+    expect(counts.size).toBeGreaterThanOrEqual(10);
   });
 });

@@ -311,11 +311,36 @@ export function chooseNext(cands: readonly SoulId[], o: ChooseOpts): SoulId | un
 /** The opening / underlay form's candidates: the phase's quiet imagery forms,
  *  else the journey's quiet cast forms, else the phase's own forms. */
 export function quietCandidates(phaseForms: readonly SoulId[], castForms: readonly SoulId[]): SoulId[] {
-  const q = (xs: readonly SoulId[]) => xs.filter((x) => QUIET_POOL.includes(x));
+  const q = (xs: readonly SoulId[]) => xs.filter((x) => OPENER_POOL.includes(x));
   const own = q(phaseForms);
   if (own.length) return [...own, ...q(castForms).filter((x) => !own.includes(x))];
   const cast = q(castForms);
-  return cast.length ? cast : [...phaseForms];
+  if (cast.length) return cast;
+  const any = phaseForms.filter((x) => !NEVER_OPENS.has(x));
+  return any.length ? any : [...phaseForms];
+}
+
+/** Souls that never OPEN a journey (the opening form is what the emblem is
+ *  drawn with and what the field wears first — Karel flagged the tendrils
+ *  twice on 2026-10-13, both times opening Yellow Bird / Grasshopper): the
+ *  capped souls. They may still appear later, inside their budget. */
+export const NEVER_OPENS: ReadonlySet<SoulId> = new Set(Object.keys(SOUL_SHARE_CAPS) as SoulId[]);
+/** The calm souls that may open a journey. */
+export const OPENER_POOL: readonly SoulId[] = QUIET_POOL.filter((s) => !NEVER_OPENS.has(s));
+/** FRESH-START ROTATION: a deterministic per-journey lean (hash of the journey
+ *  id) across its quiet candidates — larger than the imagery rank steps, smaller
+ *  than the loop rotation / neighbour costs. Without it an empty loop memory
+ *  (a ?start= film, a reload) always opened on the phase's first quiet form:
+ *  smoke 41, motes 21, tendrils 15 of 111 journeys. */
+export const LEAD_SEED_SPREAD = 0.4;
+function seed01(key: string): number {
+  let h = 2166136261;
+  for (let i = 0; i < key.length; i++) { h ^= key.charCodeAt(i); h = Math.imul(h, 16777619); }
+  h ^= h >>> 13; h = Math.imul(h, 0x5bd1e995); h ^= h >>> 15;
+  return (h >>> 0) / 4294967296;
+}
+export function leadSeedCost(journeyId: string, soul: SoulId): number {
+  return LEAD_SEED_SPREAD * seed01(`${journeyId}|opener|${soul}`);
 }
 
 /**
@@ -348,7 +373,14 @@ export function planCast(cast: ParticleLeadCast, journeyId: string, mem: LoopMem
   for (let i = 0; i < cast.morphSouls.length; i++) {
     const avoid = i === 0 ? prev?.lead ?? null : morphSouls[i - 1];
     const lead = i === 0;
-    const cands = lead ? quietCandidates(formsAt(0), pool) : formsAt(i);
+    // the opener's candidates in a SEEDED order (the phase's own calm forms
+    // first, then the cast's): the imagery rank alone put smoke first in every
+    // air / fire phase, so a fresh start opened three journeys running on it
+    const seeded = (xs: SoulId[]) => [...xs].sort((a, b) => seed01(`${journeyId}|o|${a}`) - seed01(`${journeyId}|o|${b}`));
+    const qc = lead ? quietCandidates(formsAt(0), pool) : [];
+    const f0: readonly SoulId[] = formsAt(0);
+    const own0 = qc.filter((x) => f0.includes(x));
+    const cands = lead ? [...seeded(own0), ...seeded(qc.filter((x) => !own0.includes(x)))] : formsAt(i);
     const pick = chooseNext(cands, {
       recent: i > 0 ? [morphSouls[i - 1]] : [], mem: plan, blossomOk: false, cycleIdx: -1, avoid, neighbour: prev?.forms,
       shown: planned, pool, journeyId,
@@ -356,8 +388,8 @@ export function planCast(cast: ParticleLeadCast, journeyId: string, mem: LoopMem
       // shorter forms per journey (the figure cap, figure-motion.ts) the previous
       // journey spends more of the quiet pool, and an unfiltered sibling / valve
       // pick (girih beside mandala) used to take the opening slot
-      only: lead && cands.some((c) => QUIET_POOL.includes(c)) ? (s) => QUIET_POOL.includes(s) : null,
-      cost: lead ? (s) => leadRotationCost(mem, journeyId, s) + (QUIET_POOL.includes(s) ? 0 : 2) : null,
+      only: lead ? (cands.some((c) => OPENER_POOL.includes(c)) ? (s) => OPENER_POOL.includes(s) : (s) => !NEVER_OPENS.has(s)) : null,
+      cost: lead ? (s) => leadRotationCost(mem, journeyId, s) + leadSeedCost(journeyId, s) + (OPENER_POOL.includes(s) ? 0 : 2) + (NEVER_OPENS.has(s) ? 20 : 0) : null,
     }) ?? cast.morphSouls[i];
     morphSouls.push(pick);
     planned.add(pick);
