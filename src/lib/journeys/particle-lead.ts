@@ -71,7 +71,13 @@ export const JOURNEY_SIGNATURES: Readonly<Record<string, { image: "angel"; morph
   // cloud of pink tree blossoms (canopy images, trunk removed)
   ghost: {
     image: "angel",
-    morphs: [2, 5],
+    // ONLY the closing spirit (Karel 2026-10-13: "a slight brightness glitch …
+    // in the particle cloud during the change from the open section of ghost
+    // images to the tunnel … maybe that means keeping the cloud small until the
+    // tunnel section"): the angel signature at the morph INTO the tunnel (phase
+    // 2, 65.8 s) formed the whole field into a full-size angel over the falling
+    // lights — retired; the wings at the end stay
+    morphs: [5],
     // The tree-blossom MOMENT stays (Karel 2026-10-11: "you have to keep that
     // particle treatment where they turn into the pink blossoms and merge on the
     // tree like before. then they end as wings in that final image"). The hand-
@@ -173,6 +179,10 @@ export function buildParticleLeads(removals: FormRemovals = FORM_REMOVALS): Read
     // Snowflake's MURMURATION (a soft cloud that wanders on its own leader and
     // trails as it moves), worn exactly as Snowflake wears it
     if (id === "ghost" && chars[0]) chars[0] = { ...chars[0], forms: ["murmuration"] };
+    // …and the WHOLE opening stays that small wisp until the tunnel (Karel
+    // 2026-10-13: "keeping the cloud small until the tunnel section"): phase 1
+    // (the misty hall, 26-66 s) was petals / blossom
+    if (id === "ghost" && chars[1]) chars[1] = { ...chars[1], forms: ["murmuration"], floral: false };
     // fire FORMS only where the imagery really burns — same rule as fire colours
     // (2026-10-08: the vision tags call cool phases "fire"; embers then rose
     // over ice and night water)
