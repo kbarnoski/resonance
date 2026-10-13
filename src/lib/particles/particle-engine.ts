@@ -1470,7 +1470,7 @@ export function createParticleEngine(
     bindTex(0, hdrTex[hcur], comp.u.uHdr);
     bindTex(1, expTex[ecur], comp.u.uExp);
     g.uniform1f(comp.u.uTransparent, transparent ? 1 : 0);
-    if (comp.u.uBloom) g.uniform1f(comp.u.uBloom, cineOn ? 0.4 : 0); // 0.55 → 0.4 (Karel: flicker)
+    if (comp.u.uBloom) g.uniform1f(comp.u.uBloom, 0); // matches the show: bloom off (Karel: flicker)
     g.drawArrays(g.TRIANGLES, 0, 3);
     g.bindVertexArray(null);
     const cpu = performance.now() - frameT0;
