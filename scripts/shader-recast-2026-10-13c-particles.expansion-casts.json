@@ -1,0 +1,749 @@
+{
+ "by": "scripts/rebalance-shader-casts.mjs",
+ "note": "Expansion casts live in the pack (data/journeys.json phases[].shaderModes) + DB rows; apply with scripts/apply-shader-recast-2026-10-13.mjs --input=scripts/shader-recast-2026-10-13c-particles.expansion-casts.json",
+ "journeys": {
+  "4922ecbd-d1ab-4eec-a13d-735dcdc655da": {
+   "name": "Tranquility 21",
+   "before": {
+    "threshold": [
+     "pendulum-dust",
+     "nadir"
+    ],
+    "expansion": [
+     "nadir",
+     "r3-sleepingbloom",
+     "r-mercury",
+     "ember",
+     "magma"
+    ],
+    "transcendence": [
+     "will-o-wisp",
+     "r3-fairyglow"
+    ],
+    "illumination": [
+     "ripple",
+     "r2-pixie",
+     "iron-forge"
+    ],
+    "return": [
+     "ripple",
+     "r2-pixie",
+     "fracture-light"
+    ],
+    "integration": [
+     "fracture-light",
+     "drift"
+    ]
+   },
+   "handEdited": {
+    "threshold": [
+     "pendulum-dust",
+     "nadir"
+    ],
+    "expansion": [
+     "nadir",
+     "r3-sleepingbloom",
+     "r-mercury",
+     "r2-spiralgal",
+     "binary-stars"
+    ],
+    "transcendence": [
+     "will-o-wisp",
+     "r3-fairyglow"
+    ],
+    "illumination": [
+     "ripple",
+     "r2-pixie",
+     "iron-forge"
+    ],
+    "return": [
+     "ripple",
+     "r2-pixie",
+     "fracture-light"
+    ],
+    "integration": [
+     "fracture-light",
+     "drift"
+    ]
+   },
+   "after": {
+    "threshold": [
+     "dark-nebula",
+     "nadir"
+    ],
+    "expansion": [
+     "nadir",
+     "r3-sleepingbloom",
+     "r-mercury",
+     "r2-spiralgal",
+     "r-smokerings"
+    ],
+    "transcendence": [
+     "will-o-wisp",
+     "r3-fairyglow"
+    ],
+    "illumination": [
+     "ripple",
+     "r2-pixie",
+     "iron-forge"
+    ],
+    "return": [
+     "ripple",
+     "r2-pixie",
+     "fracture-light"
+    ],
+    "integration": [
+     "fracture-light",
+     "drift"
+    ]
+   }
+  },
+  "86b64938-26ea-40b9-9ea1-461323a049d5": {
+   "name": "Chenin 3",
+   "before": {
+    "threshold": [
+     "chinook"
+    ],
+    "expansion": [
+     "threshold",
+     "vestige"
+    ],
+    "transcendence": [
+     "lectio",
+     "aureole",
+     "kenosis",
+     "covenant"
+    ],
+    "illumination": [
+     "resonant-rings",
+     "hubble"
+    ],
+    "return": [
+     "dusk"
+    ],
+    "integration": [
+     "orbit-weaver",
+     "r2-spore"
+    ]
+   },
+   "handEdited": {
+    "threshold": [
+     "chinook"
+    ],
+    "expansion": [
+     "threshold",
+     "vestige"
+    ],
+    "transcendence": [
+     "lectio",
+     "aureole",
+     "kenosis",
+     "covenant"
+    ],
+    "illumination": [
+     "resonant-rings",
+     "r2-thermal"
+    ],
+    "return": [
+     "dusk"
+    ],
+    "integration": [
+     "orbit-weaver",
+     "r2-spore"
+    ]
+   },
+   "after": {
+    "threshold": [
+     "chinook"
+    ],
+    "expansion": [
+     "threshold",
+     "vestige"
+    ],
+    "transcendence": [
+     "lectio",
+     "aureole",
+     "kenosis",
+     "covenant"
+    ],
+    "illumination": [
+     "resonant-rings",
+     "r2-thermal"
+    ],
+    "return": [
+     "dusk"
+    ],
+    "integration": [
+     "monsoon",
+     "r2-spore"
+    ]
+   }
+  },
+  "6251d682-b5e4-46b6-98cf-ceb6b609a7bc": {
+   "name": "Surrounded by Light 6",
+   "before": {
+    "threshold": [
+     "resonant-rings"
+    ],
+    "expansion": [
+     "symbiosis",
+     "r2-photon",
+     "torrent",
+     "ocean",
+     "cascade-veil"
+    ],
+    "transcendence": [
+     "kenosis",
+     "tide"
+    ],
+    "illumination": [
+     "singularity"
+    ],
+    "return": [
+     "flame",
+     "meteor-rain"
+    ],
+    "integration": [
+     "r-mercury"
+    ]
+   },
+   "handEdited": {
+    "threshold": [
+     "resonant-rings"
+    ],
+    "expansion": [
+     "symbiosis",
+     "r2-photon",
+     "torrent",
+     "ocean",
+     "sun-veil"
+    ],
+    "transcendence": [
+     "kenosis",
+     "tide"
+    ],
+    "illumination": [
+     "singularity"
+    ],
+    "return": [
+     "sun-wind",
+     "meteor-rain"
+    ],
+    "integration": [
+     "seraph"
+    ]
+   },
+   "after": {
+    "threshold": [
+     "resonant-rings"
+    ],
+    "expansion": [
+     "symbiosis",
+     "r2-photon",
+     "torrent",
+     "ocean",
+     "sun-veil"
+    ],
+    "transcendence": [
+     "kenosis",
+     "tide"
+    ],
+    "illumination": [
+     "singularity"
+    ],
+    "return": [
+     "sun-wind",
+     "dark-nebula"
+    ],
+    "integration": [
+     "seraph"
+    ]
+   }
+  },
+  "79cad85a-13fa-4db9-b4cd-a507b62a6084": {
+   "name": "Nothing 30",
+   "before": {
+    "threshold": [
+     "r-stardust",
+     "lightyear"
+    ],
+    "expansion": [
+     "parsec",
+     "drift"
+    ],
+    "transcendence": [
+     "r-mercury",
+     "rose-window",
+     "r2-portalrim"
+    ],
+    "illumination": [
+     "zenith",
+     "r3-waveveil"
+    ],
+    "return": [
+     "firefly-field",
+     "pendulum-dust"
+    ],
+    "integration": [
+     "nadir"
+    ]
+   },
+   "handEdited": {
+    "threshold": [
+     "r-stardust",
+     "lightyear"
+    ],
+    "expansion": [
+     "photon",
+     "drift"
+    ],
+    "transcendence": [
+     "r-mercury",
+     "rose-window",
+     "r2-portalrim"
+    ],
+    "illumination": [
+     "zenith",
+     "r3-waveveil"
+    ],
+    "return": [
+     "firefly-field",
+     "pendulum-dust"
+    ],
+    "integration": [
+     "nadir"
+    ]
+   },
+   "after": {
+    "threshold": [
+     "torrent",
+     "lightyear"
+    ],
+    "expansion": [
+     "photon",
+     "drift"
+    ],
+    "transcendence": [
+     "r-mercury",
+     "rose-window",
+     "r2-portalrim"
+    ],
+    "illumination": [
+     "zenith",
+     "r3-waveveil"
+    ],
+    "return": [
+     "dark-nebula",
+     "pendulum-dust"
+    ],
+    "integration": [
+     "nadir"
+    ]
+   }
+  },
+  "9662fec9-04fa-4202-9859-8f01cd287aad": {
+   "name": "Tranquility 38",
+   "before": {
+    "threshold": [
+     "r3-plasmastorm"
+    ],
+    "expansion": [
+     "murmuration",
+     "ribbon-of-light",
+     "astral",
+     "r3-sleepingbloom",
+     "torrent"
+    ],
+    "transcendence": [
+     "ocean",
+     "r3-monsoonveil",
+     "tide"
+    ],
+    "illumination": [
+     "singularity"
+    ],
+    "return": [
+     "meteor-rain"
+    ],
+    "integration": [
+     "r2-curlswarm"
+    ]
+   },
+   "handEdited": {
+    "threshold": [
+     "r3-plasmastorm"
+    ],
+    "expansion": [
+     "murmuration",
+     "ribbon-of-light",
+     "astral",
+     "r3-sleepingbloom",
+     "torrent"
+    ],
+    "transcendence": [
+     "ocean",
+     "dark-nebula",
+     "tide"
+    ],
+    "illumination": [
+     "singularity"
+    ],
+    "return": [
+     "meteor-rain"
+    ],
+    "integration": [
+     "r2-curlswarm"
+    ]
+   },
+   "after": {
+    "threshold": [
+     "r3-plasmastorm"
+    ],
+    "expansion": [
+     "murmuration",
+     "ribbon-of-light",
+     "astral",
+     "r3-sleepingbloom",
+     "torrent"
+    ],
+    "transcendence": [
+     "ocean",
+     "dark-nebula",
+     "tide"
+    ],
+    "illumination": [
+     "singularity"
+    ],
+    "return": [
+     "flagella"
+    ],
+    "integration": [
+     "r2-curlswarm"
+    ]
+   }
+  },
+  "e4658610-336d-452f-a4f8-7b652b339db6": {
+   "name": "Night Wind 11",
+   "before": {
+    "threshold": [
+     "symbiosis",
+     "pelagic"
+    ],
+    "expansion": [
+     "r-stardust"
+    ],
+    "transcendence": [
+     "will-o-wisp"
+    ],
+    "illumination": [
+     "pendulum-dust",
+     "binary-stars",
+     "cascade-veil",
+     "cirrus"
+    ],
+    "return": [
+     "diatom",
+     "r3-waveveil"
+    ],
+    "integration": [
+     "orbit-weaver",
+     "typhoon"
+    ]
+   },
+   "handEdited": {
+    "threshold": [
+     "symbiosis",
+     "pelagic"
+    ],
+    "expansion": [
+     "r-stardust"
+    ],
+    "transcendence": [
+     "will-o-wisp"
+    ],
+    "illumination": [
+     "pendulum-dust",
+     "binary-stars",
+     "cascade-veil",
+     "cirrus"
+    ],
+    "return": [
+     "diatom",
+     "r3-waveveil"
+    ],
+    "integration": [
+     "orbit-weaver",
+     "typhoon"
+    ]
+   },
+   "after": {
+    "threshold": [
+     "symbiosis",
+     "pelagic"
+    ],
+    "expansion": [
+     "r-stardust"
+    ],
+    "transcendence": [
+     "stigmata"
+    ],
+    "illumination": [
+     "pendulum-dust",
+     "obsidian-flow",
+     "cascade-veil",
+     "cirrus"
+    ],
+    "return": [
+     "diatom",
+     "r3-waveveil"
+    ],
+    "integration": [
+     "orbit-weaver",
+     "typhoon"
+    ]
+   }
+  },
+  "2ff26268-997a-438f-8dac-d280d50da3a1": {
+   "name": "Tranquility 11",
+   "before": {
+    "threshold": [
+     "typhoon"
+    ],
+    "expansion": [
+     "cirrus",
+     "murmuration",
+     "r-stardust",
+     "seraph"
+    ],
+    "transcendence": [
+     "resonant-rings",
+     "r3-waveveil",
+     "kenosis"
+    ],
+    "illumination": [
+     "symbiosis"
+    ],
+    "return": [
+     "pelagic",
+     "cascade-veil"
+    ],
+    "integration": [
+     "pendulum-dust"
+    ]
+   },
+   "handEdited": {
+    "threshold": [
+     "typhoon"
+    ],
+    "expansion": [
+     "cirrus",
+     "murmuration",
+     "r-stardust",
+     "seraph"
+    ],
+    "transcendence": [
+     "resonant-rings",
+     "r3-waveveil",
+     "kenosis"
+    ],
+    "illumination": [
+     "symbiosis"
+    ],
+    "return": [
+     "pelagic",
+     "cascade-veil"
+    ],
+    "integration": [
+     "pendulum-dust"
+    ]
+   },
+   "after": {
+    "threshold": [
+     "typhoon"
+    ],
+    "expansion": [
+     "cirrus",
+     "stigmata",
+     "r-stardust",
+     "seraph"
+    ],
+    "transcendence": [
+     "resonant-rings",
+     "r3-waveveil",
+     "kenosis"
+    ],
+    "illumination": [
+     "symbiosis"
+    ],
+    "return": [
+     "pelagic",
+     "dark-nebula"
+    ],
+    "integration": [
+     "mandorla"
+    ]
+   }
+  }
+ },
+ "ensure": {
+  "21448504-ec00-48c3-8b0a-c92da2cf216a": {
+   "name": "Surrounded by Light 19",
+   "musts": [
+    "seraph",
+    "sun-dawn",
+    "sun-corona"
+   ],
+   "bans": [
+    "dharma"
+   ],
+   "before": {
+    "threshold": [
+     "firefly-field",
+     "protostar",
+     "chrysalis"
+    ],
+    "expansion": [
+     "murmuration",
+     "protostar",
+     "chrysalis"
+    ],
+    "transcendence": [
+     "murmuration",
+     "protostar",
+     "chrysalis"
+    ],
+    "illumination": [
+     "murmuration",
+     "protostar",
+     "diatom"
+    ],
+    "return": [
+     "r2-spore",
+     "pulsar",
+     "diatom"
+    ],
+    "integration": [
+     "r2-spore",
+     "pulsar",
+     "diatom"
+    ]
+   },
+   "handEdited": {
+    "threshold": [
+     "firefly-field",
+     "protostar",
+     "chrysalis"
+    ],
+    "expansion": [
+     "murmuration",
+     "protostar",
+     "chrysalis",
+     "seraph"
+    ],
+    "transcendence": [
+     "murmuration",
+     "protostar",
+     "chrysalis",
+     "sun-dawn"
+    ],
+    "illumination": [
+     "murmuration",
+     "protostar",
+     "diatom",
+     "seraph"
+    ],
+    "return": [
+     "r2-spore",
+     "pulsar",
+     "diatom"
+    ],
+    "integration": [
+     "r2-spore",
+     "pulsar",
+     "diatom",
+     "sun-corona"
+    ]
+   }
+  },
+  "06b07942-bf94-4513-8e71-ef00508ced3e": {
+   "name": "Surrounded by Light 3",
+   "musts": [
+    "seraph",
+    "sun-aster",
+    "sun-veil"
+   ],
+   "bans": [
+    "dharma"
+   ],
+   "before": {
+    "threshold": [
+     "yantra",
+     "ocean",
+     "r-smokerings"
+    ],
+    "expansion": [
+     "yantra",
+     "ocean",
+     "r-smokerings"
+    ],
+    "transcendence": [
+     "yantra",
+     "ocean",
+     "r-smokerings"
+    ],
+    "illumination": [
+     "yantra",
+     "ocean",
+     "r-droplets"
+    ],
+    "return": [
+     "starfield",
+     "obsidian-flow",
+     "r-droplets"
+    ],
+    "integration": [
+     "starfield",
+     "obsidian-flow",
+     "r-droplets"
+    ]
+   },
+   "handEdited": {
+    "threshold": [
+     "yantra",
+     "ocean",
+     "r-smokerings"
+    ],
+    "expansion": [
+     "yantra",
+     "ocean",
+     "r-smokerings",
+     "seraph"
+    ],
+    "transcendence": [
+     "yantra",
+     "ocean",
+     "r-smokerings",
+     "sun-aster"
+    ],
+    "illumination": [
+     "yantra",
+     "ocean",
+     "r-droplets",
+     "seraph",
+     "sun-veil"
+    ],
+    "return": [
+     "starfield",
+     "obsidian-flow",
+     "r-droplets"
+    ],
+    "integration": [
+     "starfield",
+     "obsidian-flow",
+     "r-droplets"
+    ]
+   }
+  }
+ },
+ "purge": {}
+}

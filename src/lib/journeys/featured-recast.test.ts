@@ -13,6 +13,7 @@ import { journeyLayerGain, expansionLayerGain, isKineticJourneyName, isWhisperIm
 import { SHADER_SUPPORT_GAIN } from "@/lib/shaders/shader-gain.generated";
 import { MODE_META, MODES_3D } from "@/lib/shaders";
 import { getJourneyEngine } from "./journey-engine";
+import { particleVoicesFor } from "./particle-shaders";
 import { createSeededRandom } from "./seeded-random";
 
 // Karel 2026-10-05: "your shader work is for featured journeys too not
@@ -197,7 +198,8 @@ describe("the engine plays the cast", () => {
 
   it("a cast built-in only ever renders shaders from its cast", () => {
     const j = getJourney("the-bloom")!;
-    const allowed = new Set(castShaders("the-bloom"));
+    // the cast + its particle voices (particle-shaders.ts, Karel 2026-10-13)
+    const allowed = new Set([...castShaders("the-bloom"), ...particleVoicesFor(j)]);
     const engine = getJourneyEngine();
     let clock = 0;
     vi.spyOn(performance, "now").mockImplementation(() => clock);

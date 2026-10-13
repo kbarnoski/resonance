@@ -36,6 +36,10 @@
 // Reads the Tramokyo pack READ-ONLY (phase bounds, sparse flags, durations).
 // Usage: node scripts/rebalance-shader-casts.mjs [--dry-run] [--changes] [--no-ra-repair] [--report] [--pack=<dir>] [--apply-out=scripts/<name>.json]
 // 2026-10-13b (sun promotion): --no-ra-repair --apply-out=scripts/shader-recast-2026-10-13b.expansion-casts.json
+// 2026-10-13c (particle shaders ~33 % of every journey — 7. PARTICLE PASS, also writes
+// src/lib/journeys/particle-voices.generated.ts + loop-phase-skeletons.generated.ts):
+// --no-ra-repair --apply-out=scripts/shader-recast-2026-10-13c-particles.expansion-casts.json
+// (re-run until "changed journeys 0"; measure with scripts/measure-particle-shader-share.mjs)
 import { createJiti } from "jiti";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -59,6 +63,14 @@ const BAL = await jiti.import(ROOT + "src/lib/journeys/shader-balance.ts");
 const MAST = await jiti.import(ROOT + "src/lib/journeys/mastered.ts");
 const { VETTED_SHADER_POOL } = await jiti.import(ROOT + "src/lib/journeys/journey-casts.generated.ts");
 const { STD } = await import("./lib/snowflake-standard.mjs");
+const PSH = await jiti.import(ROOT + "src/lib/journeys/particle-shaders.ts");
+const PARTICLE_SET = PSH.PARTICLE_SHADER_SET;
+const { PARTICLE_PROFILES } = await jiti.import(ROOT + "src/lib/journeys/particle-profiles.generated.ts");
+// the engine reads the voice lists from this module instance: the H lens
+// replays (journeyFor) see each journey's voices as the pass casts them
+const PVG = await jiti.import(ROOT + "src/lib/journeys/particle-voices.generated.ts");
+const CUR_VOICES = Object.fromEntries(Object.entries(PVG.PARTICLE_VOICES).map(([k, v]) => [k, [...v]]));
+const castParticles = (w) => [...modesOf(w)].filter((m) => PARTICLE_SET.has(m));
 
 const FEAT_PATH = ROOT + "scripts/featured-recast.json";
 const EXP_PATH = ROOT + "scripts/expansion-recast.json";
@@ -193,7 +205,7 @@ function capOk(w, r) {
   return true;
 }
 /** Candidates for replacing slot (pi, si) of w (currently `m`, or a new slot when m is null). */
-function candidates(w, pi, si, m, { allowAmber = false, expDist = EXP_DISTS[0], want = null } = {}) {
+function candidates(w, pi, si, m, { allowAmber = false, expDist = EXP_DISTS[0], want = null, noParticle = false } = {}) {
   const have = modesOf(w);
   const budget = slotBudget(w, pi, si);
   const isLeadSlot = m && m === w.lead;
@@ -204,6 +216,7 @@ function candidates(w, pi, si, m, { allowAmber = false, expDist = EXP_DISTS[0], 
     if (!allowAmber && BAL.isAmberShader(r)) continue;
     if (BAL.KIN_BORROW_AVOID.has(r) && !want) continue; // never ADD an over-seen shader
     if (BAL.SUN_SHADER_SET.has(r) && !want) continue; // sun shaders: light journeys only, placed as pins (SUN_SHADER_PINS)
+    if (noParticle && PARTICLE_SET.has(r)) continue; // particle trim: never trade one particle shader for another
     if (eff(r) > budget) continue;
     if (!capOk(w, r) || !spacingOk(w, r, expDist)) continue;
     const v = V[r];
@@ -508,10 +521,183 @@ for (const w of W) {
   if (!fixed) log.push(`WARN H-lens repair: ${w.name} still ${hRegress(w, fa).join(", ")}`);
 }
 
+// 7. PARTICLE PASS (Karel 2026-10-13: "ensure particle shaders appear in them
+//    all and ensure they are present 33% of the time for a journey"; laws in
+//    src/lib/journeys/particle-shaders.ts). The engine's particle voice keeps
+//    each journey near PARTICLE_TARGET of its live shader-layer time. This pass
+//    (a) casts each non-mastered journey's PARTICLE VOICES from its analysis:
+//    gentle motes for quiet journeys, lively sparkle for energetic ones,
+//    palette-fit, least-used first, amber only for warm palettes, the family
+//    union cap per shader, no family shader shared by setlist / Rise Above
+//    neighbours where avoidable; (b) trims casts so particle-heavy that the
+//    share overshoots even with the voice idle (a particle slot becomes a cool
+//    non-particle shader under every placement rule, else is dropped from a
+//    phase that keeps another voice; pinned takes never; H lens must not
+//    regress); (c) tops up a journey still under the band. Written to
+//    src/lib/journeys/particle-voices.generated.ts.
+const FAMILY = PSH.PARTICLE_SHADERS;
+const isP = (m) => PARTICLE_SET.has(m);
+const PINNED = new Set(Object.keys(PT.PINNED_TAKES));
+const particleLog = [];
+/** Real-engine particle share of one journey (all layers), per seed. */
+function particleSim(w, cast, seeds = [20261005, 1, 2, ...(PT.PINNED_TAKES[w.id] != null ? [[PT.PINNED_TAKES[w.id]].flat()[0]] : [])]) {
+  const journey = journeyFor(w, cast);
+  const shares = seeds.map((seed) => {
+    const eng = ENG.getJourneyEngine(); CLOCK = 1000; eng.start(journey, { seed, trackDuration: w.dur });
+    let p = 0, t = 0;
+    for (let s = 0; s <= w.dur; s += 0.5) {
+      CLOCK = 1000 + s * 1000; const f = eng.getFrame(s / w.dur); if (!f) continue;
+      for (const m of new Set([f.shaderMode, f.dualShaderMode, f.tertiaryShaderMode].filter(Boolean))) { t++; if (isP(m)) p++; }
+    }
+    eng.stop();
+    return t ? p / t : 0;
+  });
+  return { mean: shares.reduce((a, b) => a + b, 0) / shares.length, min: Math.min(...shares), max: Math.max(...shares) };
+}
+
+const energyOf = (id) => { const c = PARTICLE_PROFILES[id]?.curve ?? []; return c.length ? c.reduce((a, [, v]) => a + v, 0) / c.length : 0.5; };
+const voiceIds = L.filter((id) => !MAST.isMasteredJourneyLike(J.getJourney(id) ?? { id }));
+const energies = voiceIds.map(energyOf).sort((a, b) => a - b);
+const Q1 = energies[Math.floor(energies.length / 3)], Q2 = energies[Math.floor((2 * energies.length) / 3)];
+const characterOf = (id) => { const e = energyOf(id); return e < Q1 ? "quiet" : e < Q2 ? "middle" : "energetic"; };
+const VOICES = CUR_VOICES; // id -> generated voices (journeyFor exposes them to the engine)
+const unionOf = (id) => new Set([...rosterAt(id)].filter(isP).concat(VOICES[id] ?? []));
+const famUses = () => { const n = new Map(); for (const id of L) for (const m of unionOf(id)) n.set(m, (n.get(m) ?? 0) + 1); return n; };
+const neighboursOf = (id) => { const out = new Set(); const i = L.indexOf(id); out.add(L[(i + 1) % NL]); out.add(L[(i - 1 + NL) % NL]); const r = RA.indexOf(id); if (r >= 0) { out.add(RA[(r + 1) % RA.length]); out.add(RA[(r - 1 + RA.length) % RA.length]); } out.delete(id); return [...out]; };
+const WARM = new Set(["gold", "ember"]);
+function voiceInfo(id) {
+  const w = byId.get(id);
+  if (w) return { w, bans: w.bans, pf: w.pf, dur: w.dur, name: w.name };
+  const b = J.getJourney(id); // scripted take (Realized)
+  const realm = b?.realmId;
+  const bans = new Set([...(b?.blockedShaders ?? []), ...(realm ? J.REALM_SHADER_BLOCKLIST[realm] ?? [] : []), ...(realm ? [...(J.PICKTIME_REALM_BLOCKLIST[realm] ?? [])] : []), ...(BAL.SHADER_JOURNEY_BANS[id] ?? [])]);
+  return { w: null, bans, pf: paletteFamilies(b?.theme?.palette ?? b?.phases?.[0]?.palette), dur: PARTICLE_PROFILES[id]?.duration ?? 200, name: b?.name ?? id };
+}
+function rankVoices(id, n, relax = 0) {
+  const { bans, pf } = voiceInfo(id);
+  const ch = characterOf(id);
+  const have = unionOf(id);
+  const uses = famUses();
+  const near = neighboursOf(id).map(unionOf);
+  const warm = [...pf.core].some((h) => WARM.has(h));
+  const amberHave = [...have].filter(BAL.isAmberShader).length;
+  const out = [];
+  for (const m of FAMILY) {
+    if (have.has(m) || bans.has(m) || J.GLOBAL_SHADER_BLOCKLIST.includes(m) || J.KAREL_BANNED_SHADERS.has(m) || !BASE_POOL.includes(m)) continue;
+    if ((uses.get(m) ?? 0) + 1 > PSH.PARTICLE_LOOP_CAP) continue;
+    if (BAL.isAmberShader(m) && (!warm || amberHave >= 1) && relax < 2) continue;
+    const clash = near.filter((s) => s.has(m)).length;
+    if (clash && relax < 1) continue;
+    const gentle = PSH.GENTLE_PARTICLE_SET.has(m);
+    const charFit = ch === "quiet" ? (gentle ? 2 : -1) : ch === "energetic" ? (gentle ? 0 : 2) : 1;
+    out.push({ m, s: charFit * 1.5 + fit(m, pf) * 0.6 - (uses.get(m) ?? 0) * 0.25 - clash * 3 });
+  }
+  return out.sort((a, b) => b.s - a.s || a.m.localeCompare(b.m)).slice(0, n).map((x) => x.m);
+}
+/** Voices a journey wants: at least 3 particle shaders in all (4 on long
+ *  tracks) so no one of them carries the third alone (H2). */
+const voicesWanted = (id) => (voiceInfo(id).dur >= 260 ? 4 : 3);
+/** A pinned / scripted take's voices ride its free tertiary and never repeat
+ *  its own roster, so it needs a full set of its own. */
+const isTake = (id) => PINNED.has(id) || !!PT.SCRIPTED_TAKES[id];
+// …and so does a phase-owned cast: its own particle shaders may not leave their phases
+const ownVoicesOnly = (id) => isTake(id) || byId.get(id)?.kind === "exp" || !!byId.get(id)?.owned;
+const voiceCount = (id) => (ownVoicesOnly(id) ? (VOICES[id] ?? []).length : unionOf(id).size);
+function fillVoices(id) {
+  VOICES[id] ??= [];
+  for (let relax = 0; relax < 3 && voiceCount(id) < voicesWanted(id); relax++) VOICES[id].push(...rankVoices(id, voicesWanted(id) - voiceCount(id), relax));
+}
+for (const k of Object.keys(VOICES)) delete VOICES[k];
+// (a) most-constrained first: fewest particle members already, then setlist order
+for (const id of [...voiceIds].sort((a, b) => unionOf(a).size - unionOf(b).size || L.indexOf(a) - L.indexOf(b))) fillVoices(id);
+
+// (b) trim particle-heavy casts
+const P_HI = PSH.PARTICLE_JOURNEY_MAX - 0.03; // the mean over seeds, with margin under the test band's top
+function dropSlot(w, m, why) {
+  // the particle leaves a phase that keeps another voice (single-phase member only)
+  const sl = slotsOf(w, m);
+  if (sl.length !== 1 || w.cast[w.phaseIds[sl[0][0]]].length < 2) return false;
+  // the cast-size floors the cast tests hold (featured-recast / expansion-recast)
+  const floor = w.kind === "exp" ? (w.rec.mvStandard ? 10 : 6) : w.owned ? 10 : 7;
+  if (modesOf(w).size - 1 < floor) return false;
+  const pid = w.phaseIds[sl[0][0]];
+  w.cast[pid] = w.cast[pid].filter((x) => x !== m);
+  changes.push({ journey: w.name, id: w.id, phase: pid, from: m, to: "(dropped)", why, sparse: sl[0][0] === w.sparseIdx });
+  recount();
+  return true;
+}
+for (const w of W) {
+  if (PINNED.has(w.id)) continue;
+  let sim = particleSim(w, w.cast);
+  if (sim.mean <= P_HI) continue;
+  const fa = hFails(w, simulate(journeyFor(w, w.before), w.dur), w.beforeLead);
+  for (let guard = 0; guard < 6 && sim.mean > P_HI; guard++) {
+    const opts = castParticles(w).filter((m) => !protectedSlots.has(`${w.id}:${m}`) && !(w.kind === "exp" && w.lead === m))
+      .sort((a, b) => (C.all.get(b) ?? 0) - (C.all.get(a) ?? 0) || a.localeCompare(b));
+    let done = false;
+    const why = [];
+    for (const how of ["swap", "drop"]) {
+      for (const m of opts) {
+        const snap = clone(w.cast), lead = w.lead, nChanges = changes.length;
+        const label = `particle share ${(sim.max * 100).toFixed(0)} % > ${(P_HI * 100).toFixed(0)} %`;
+        const ok = how === "swap" ? replaceShader(w, m, label, { strictCool: true, noParticle: true }) : dropSlot(w, m, label);
+        if (!ok) { why.push(`${m}:no ${how}`); continue; }
+        const reg = hRegress(w, fa);
+        const after = particleSim(w, w.cast);
+        const amberOver = amberStats().share > BAL.AMBER_SHARE_MAX;
+        if (reg.length || amberOver || after.max >= sim.max) { why.push(`${m}:${how} ${reg.join("/") || (amberOver ? "amber share" : "no gain")}`); w.cast = snap; w.lead = lead; changes.length = nChanges; recount(); continue; }
+        done = true; break;
+      }
+      if (done) break;
+    }
+    if (!done) { particleLog.push(`WARN particle trim: ${w.name} stuck at ${(sim.max * 100).toFixed(0)} % (${why.join(", ")})`); break; }
+    sim = particleSim(w, w.cast);
+  }
+}
+
+// (c) top-ups: union back to the wanted size (a trim may have freed one), then
+//     one more voice while any seed sits under the band
+for (const id of voiceIds) fillVoices(id);
+for (const id of voiceIds) {
+  const w = byId.get(id);
+  if (!w) continue; // scripted take: measured by scripts/measure-particle-shader-share.mjs
+  for (let guard = 0; guard < 2; guard++) {
+    const sim = particleSim(w, w.cast);
+    if (sim.mean >= PSH.PARTICLE_JOURNEY_MIN + 0.015) break;
+    const more = rankVoices(id, 1, 1);
+    if (!more.length) { particleLog.push(`WARN particle voice: ${w.name} at ${(sim.min * 100).toFixed(0)} % and no voice left`); break; }
+    VOICES[id].push(...more);
+  }
+}
+// (d) a trim that regresses the H lens once the final voices play is undone
+for (const w of W) {
+  if (!changes.some((c) => c.id === w.id && c.why.startsWith("particle share"))) continue;
+  const fa = hFails(w, simulate(journeyFor(w, w.before), w.dur), w.beforeLead);
+  const reg = hRegress(w, fa);
+  if (!reg.length) continue;
+  const mine = changes.filter((c) => c.id === w.id && c.why.startsWith("particle share"));
+  if (changes.some((c) => c.id === w.id && !c.why.startsWith("particle share"))) { particleLog.push(`WARN particle trim in ${w.name} regresses ${reg.join("/")} (mixed with other changes — kept)`); continue; }
+  w.cast = clone(w.before); w.lead = w.beforeLead; recount();
+  for (const c of mine) changes.splice(changes.indexOf(c), 1);
+  particleLog.push(`particle trim in ${w.name} undone (${reg.join("/")} with its voices)`);
+}
+// a voice never doubles a shader the (final) cast plays
+for (const id of voiceIds) { const r = rosterAt(id); if ((VOICES[id] ?? []).some((m) => r.has(m))) { VOICES[id] = VOICES[id].filter((m) => !r.has(m)); fillVoices(id); } }
+for (const w of W) {
+  const sim = particleSim(w, w.cast);
+  if (sim.min < PSH.PARTICLE_JOURNEY_MIN || sim.max > PSH.PARTICLE_JOURNEY_MAX) particleLog.push(`WARN particle share ${w.name}: ${(sim.min * 100).toFixed(1)}-${(sim.max * 100).toFixed(1)} %`);
+}
+{
+  const uses = famUses();
+  const nm = voiceIds.map((id) => unionOf(id).size);
+  particleLog.push(`particle pass: ${changes.filter((c) => c.why.startsWith("particle share")).length} trims · voices for ${Object.values(VOICES).filter((v) => v.length).length}/${voiceIds.length} journeys · family per-journey ${Math.min(...nm)}-${Math.max(...nm)} · per-shader loop uses ${[...uses].sort((a, b) => b[1] - a[1]).map(([m, n]) => `${m} ${n}`).join(", ")}`);
+}
+
 // ── verify with the real engine (H lens), before vs after ──
 function journeyFor(w, cast) {
   const phases = w.phases.map((p) => ({ ...p, shaderModes: cast[p.id] ?? p.shaderModes, shaderOwned: w.kind === "exp" || w.owned ? true : p.shaderOwned }));
   const base = w.builtin && !w.row ? w.builtin : { ...(w.row.theme ?? {}), realmId: w.row.realm_id, strictCamera: true };
+  PVG.PARTICLE_VOICES["cast-check"] = CUR_VOICES[w.id] ?? [];
   return { ...base, id: "cast-check", name: "cast-check", phases };
 }
 // One replay is chaotic (the seeded pick stream shifts with any roster
@@ -564,6 +750,7 @@ const regress = hReport.filter((r) => r.regress.length);
 const after = { counts: C.all, amber: amberStats(), dharmaIn: W.filter((w) => modesOf(w).has("dharma")).map((w) => w.name) };
 const top = (cnt) => [...cnt].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
 console.log(log.join("\n"));
+console.log(particleLog.join("\n"));
 if (process.argv.includes("--changes")) for (const c of changes) console.log(`  ${c.journey.padEnd(26)} ${(c.phase + (c.sparse ? "*" : "")).padEnd(14)} ${String(c.from ?? "+").padEnd(16)} -> ${c.to.padEnd(16)} ${c.why}`);
 console.log(`changed journeys ${changed.length} (featured ${changed.filter((w) => w.kind === "feat").length}, Expansion ${changed.filter((w) => w.kind === "exp").length}) · slot changes ${changes.length}`);
 console.log(`amber share ${before.amber.share.toFixed(3)} -> ${after.amber.share.toFixed(3)} · max uses ${top(before.counts)[0].join(":")} -> ${top(after.counts)[0].join(":")}`);
@@ -622,6 +809,41 @@ if (!DRY && (changed.length || offLoop.length || parkedDrops.length)) {
   }
   console.log(`wrote featured-recast.json, journey-casts.generated.ts, expansion-recast.json${leadSwaps.length ? ", shader-gain.generated.ts (EXPANSION_LEADS)" : ""}`);
 }
+// particle voices -> particle-voices.generated.ts
+if (!DRY) {
+  const names = new Map();
+  for (const id of voiceIds) { const n = voiceInfo(id).name.trim().toLowerCase(); names.set(n, names.has(n) ? null : id); }
+  const ids = voiceIds.filter((id) => VOICES[id]?.length);
+  const body = ids.map((id) => `  ${JSON.stringify(id)}: ${JSON.stringify(VOICES[id])}, // ${voiceInfo(id).name} (${characterOf(id)})`).join("\n");
+  const byName = [...names].filter(([, id]) => id && VOICES[id]?.length).map(([n, id]) => `  ${JSON.stringify(n)}: ${JSON.stringify(VOICES[id])},`).join("\n");
+  writeFileSync(ROOT + "src/lib/journeys/particle-voices.generated.ts", `// GENERATED by scripts/rebalance-shader-casts.mjs (7. PARTICLE PASS) — do not edit by hand.
+// Each non-mastered loop journey's PARTICLE VOICES (src/lib/journeys/particle-shaders.ts):
+// the particle shaders the engine lays on the companion layer to keep ~33 % of the
+// journey's shader time on particle shaders (Karel 2026-10-13). The cast's own particle
+// members join them at runtime. Character (quiet / middle / energetic) from the analysis.
+export const PARTICLE_VOICES: Readonly<Record<string, readonly string[]>> = {
+${body}
+};
+
+/** The same lists by journey name (unique names only) — DB / path rows that wrap a built-in. */
+export const PARTICLE_VOICES_BY_NAME: Readonly<Record<string, readonly string[]>> = {
+${byName}
+};
+`);
+  console.log(`wrote particle-voices.generated.ts (${ids.length} journeys)`);
+  // the pack's phase skeletons for the loop's pack rows (the pack is gitignored):
+  // lets particle-shaders.test.ts replay every loop journey in the real engine
+  const sk = W.filter((w) => w.row).map((w) => `  ${JSON.stringify(w.id)}: ${JSON.stringify({ name: w.name, dur: Math.round(w.dur * 10) / 10, realmId: w.row.realm_id ?? null, blockedShaders: w.row.theme?.blockedShaders ?? [], owned: w.kind === "exp" || !!w.owned, phases: w.phases.map((p) => ({ id: p.id, start: p.start, end: p.end, intensityMultiplier: p.intensityMultiplier ?? 1, ...(p.sparse ? { sparse: true } : {}), ...(p.shaderOwned ? { shaderOwned: true } : {}) })) })},`).join("\n");
+  writeFileSync(ROOT + "src/lib/journeys/loop-phase-skeletons.generated.ts", `// GENERATED by scripts/rebalance-shader-casts.mjs from the Tramokyo pack — do not edit by hand.
+// Phase skeletons (bounds, intensity, sparse, owned) + track durations of the kiosk
+// loop's pack rows, so tests can replay them in the real engine without the gitignored pack.
+export interface LoopPhaseSkeleton { name: string; dur: number; realmId: string | null; blockedShaders: string[]; owned: boolean; phases: { id: string; start: number; end: number; intensityMultiplier: number; sparse?: boolean; shaderOwned?: boolean }[] }
+export const LOOP_PHASE_SKELETONS: Readonly<Record<string, LoopPhaseSkeleton>> = {
+${sk}
+};
+`);
+}
+
 // globally banned shaders leave the generated vetted pool (uncast journeys regenerate from it)
 if (!DRY) {
   let ts = readFileSync(TS_PATH, "utf8");

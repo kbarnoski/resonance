@@ -167,8 +167,8 @@
   }
  },
  "uses": {
+  "chrysalis": 9,
   "r-mercury": 9,
-  "chrysalis": 8,
   "dark-tide": 8,
   "pulsar": 8,
   "r-droplets": 8,
@@ -179,25 +179,23 @@
   "torrent": 8,
   "will-o-wisp": 8,
   "binary-stars": 7,
-  "cascade-veil": 7,
   "covenant": 7,
   "dark-nebula": 7,
   "diatom": 7,
   "drift": 7,
   "dusk": 7,
-  "firefly-field": 7,
   "fracture-light": 7,
   "kelp": 7,
   "kepler": 7,
   "mandorla": 7,
-  "meteor-rain": 7,
   "monsoon": 7,
+  "mycelium": 7,
   "nadir": 7,
   "obsidian-flow": 7,
   "ocean": 7,
-  "orbit-weaver": 7,
   "plankton": 7,
   "protostar": 7,
+  "r2-curlswarm": 7,
   "r2-photon": 7,
   "r3-plasmastorm": 7,
   "r3-sleepingbloom": 7,
@@ -214,20 +212,22 @@
   "tide": 7,
   "typhoon": 7,
   "astral": 6,
+  "cascade-veil": 6,
   "cirrus": 6,
   "event-horizon": 6,
+  "firefly-field": 6,
   "flagella": 6,
   "furnace": 6,
   "lightyear": 6,
-  "mycelium": 7,
+  "meteor-rain": 6,
+  "orbit-weaver": 6,
   "pelagic": 6,
   "pendulum-dust": 6,
   "photon": 6,
   "r-embers": 6,
   "r-smokerings": 6,
-  "r-stardust": 6,
-  "r2-curlswarm": 6,
   "r2-thermal": 6,
+  "r3-lightningveil": 6,
   "rapture": 6,
   "singularity": 6,
   "threshold": 6,
@@ -238,8 +238,8 @@
   "maelstrom-dark": 5,
   "molten-vein": 5,
   "murmuration": 5,
+  "r-stardust": 5,
   "r3-fairyglow": 5,
-  "r3-lightningveil": 5,
   "aureole": 4,
   "hubble": 4,
   "iron-forge": 4,
@@ -251,9 +251,9 @@
   "yantra": 4,
   "jubilee": 3,
   "merkaba": 3,
-  "r2-pixie": 3,
   "vestige": 3,
   "volcanic": 3,
+  "r2-pixie": 2,
   "shadow-fire": 2,
   "sun-corona": 2,
   "sun-halo": 2,
@@ -276,16 +276,16 @@
    "pathLen": null,
    "dur": 118,
    "shaders": [
-    "pollen",
-    "satori",
-    "seraph",
-    "r2-pixie",
-    "rapture",
-    "r3-fernunfurl",
     "iron-forge",
-    "fracture-light",
     "singularity",
-    "stigmata"
+    "seraph",
+    "stigmata",
+    "rapture",
+    "fracture-light",
+    "satori",
+    "r3-fernunfurl",
+    "pollen",
+    "r3-lightningveil"
    ],
    "cast": {
     "threshold": [
@@ -308,7 +308,7 @@
      "pollen"
     ],
     "integration": [
-     "r2-pixie"
+     "r3-lightningveil"
     ]
    },
    "owned": true,
@@ -951,7 +951,7 @@
     "r-mercury",
     "r3-sleepingbloom",
     "r3-fernunfurl",
-    "meteor-rain",
+    "chrysalis",
     "will-o-wisp"
    ],
    "cast": {
@@ -976,7 +976,7 @@
      "r3-fernunfurl"
     ],
     "integration": [
-     "meteor-rain",
+     "chrysalis",
      "will-o-wisp"
     ]
    },
@@ -1779,7 +1779,7 @@
     "r3-waveveil",
     "fracture-light",
     "chrysalis",
-    "cascade-veil",
+    "r2-curlswarm",
     "pendulum-dust"
    ],
    "cast": {
@@ -1804,7 +1804,7 @@
      "chrysalis"
     ],
     "integration": [
-     "cascade-veil",
+     "r2-curlswarm",
      "pendulum-dust"
     ]
    },
@@ -2504,7 +2504,6 @@
     "r-embers",
     "r2-photon",
     "r3-plasmastorm",
-    "orbit-weaver",
     "torrent",
     "dark-tide",
     "molten-vein",
@@ -2521,7 +2520,6 @@
      "r-embers",
      "r2-photon",
      "r3-plasmastorm",
-     "orbit-weaver",
      "torrent",
      "dark-tide"
     ],
@@ -2557,9 +2555,7 @@
     "sun-veil",
     "r2-curlswarm",
     "sun-corona",
-    "r-stardust",
     "chrysalis",
-    "firefly-field",
     "pendulum-dust",
     "zenith",
     "will-o-wisp",
@@ -2573,14 +2569,12 @@
     ],
     "expansion": [
      "r2-curlswarm",
-     "sun-corona",
-     "r-stardust"
+     "sun-corona"
     ],
     "transcendence": [
      "chrysalis"
     ],
     "illumination": [
-     "firefly-field",
      "pendulum-dust"
     ],
     "return": [

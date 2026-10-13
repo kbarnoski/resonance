@@ -9,6 +9,7 @@
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { getJourneyEngine } from "./journey-engine";
+import { particleVoicesFor } from "./particle-shaders";
 import { defaultPhases } from "./journeys";
 import type { Journey } from "./types";
 
@@ -139,8 +140,11 @@ describe("phase-owned shader choreography", () => {
       const frames = run(j, 600);
       for (const f of frames) {
         const pi = j.phases.findIndex((p) => f.progress >= p.start && (f.progress < p.end || p.end === 1));
-        const allowed = new Set([...(j.phases[pi]?.shaderModes ?? []), ...(j.phases[pi - 1]?.shaderModes ?? [])]);
-        for (const m of [f.shaderMode, f.dualShaderMode, f.tertiaryShaderMode].filter(Boolean)) expect(allowed.has(m as string)).toBe(true);
+        // + the journey's particle voices that no phase owns (Karel 2026-10-13:
+        // particle shaders ~33 % of every journey — the companion layer)
+        const roster = new Set(j.phases.flatMap((p) => p.shaderModes));
+        const allowed = new Set([...(j.phases[pi]?.shaderModes ?? []), ...(j.phases[pi - 1]?.shaderModes ?? []), ...particleVoicesFor(j).filter((m) => !roster.has(m))]);
+        for (const m of [f.shaderMode, f.dualShaderMode, f.tertiaryShaderMode].filter(Boolean)) expect(allowed.has(m as string), `${m} @p${f.progress.toFixed(3)} phase ${pi}`).toBe(true);
       }
       // and a phase's shaders mostly stay inside it (stray only during the hand-off)
       const stray = frames.filter((f) => {
