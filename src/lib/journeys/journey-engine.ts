@@ -4,7 +4,7 @@ import { getRealm } from "./realms";
 import { glitchRecord } from "./glitch-recorder";
 import { isKineticJourneyName, isFullKineticJourney } from "./kinetic";
 import { TAKE_FINALE_SHADERS } from "./pinned-takes";
-import { RECAST_SAFELIST, regenerateJourneyShaders, castJourneyShaders, getJourneyCast, PICKTIME_SHADER_BLOCKLIST, PICKTIME_REALM_BLOCKLIST, GLOBAL_SHADER_BLOCKLIST } from "./journeys";
+import { RECAST_SAFELIST, regenerateJourneyShaders, castJourneyShaders, getJourneyCast, PICKTIME_SHADER_BLOCKLIST, PICKTIME_REALM_BLOCKLIST, GLOBAL_SHADER_BLOCKLIST, KAREL_BANNED_SHADERS, RETIRED_POOL_SLOT_MODES } from "./journeys";
 import type { TakeScriptEntry } from "./pinned-takes";
 import { createSeededRandom, seededShuffle } from "./seeded-random";
 import { MODES_3D, MODE_META, LAB_SHADERS } from "@/lib/shaders";
@@ -12,7 +12,7 @@ import { SHADER_HUES } from "@/lib/shaders/shader-hues.generated";
 import { VETTED_POOL } from "@/lib/shaders/shader-brightness.generated";
 import { KIN_BORROW_AVOID, isAmberShader, isShaderBannedFor } from "./shader-balance";
 import { isMasteredJourneyLike } from "./mastered";
-import { pickMorphShader, finaleSwitchRedundant, type MorphShaderPick } from "./morph-shader";
+import { pickMorphShader, finaleSwitchRedundant, registerMorphArrivalFade, type MorphShaderPick } from "./morph-shader";
 import { getUserBlockedShaders, getUserDeletedShaders } from "@/lib/shader-preferences";
 import {
   getPhaseBlend,
@@ -176,7 +176,7 @@ class JourneyEngine {
   /** Primary shaders that must run solo — never paired with a dual layer.
    *  These tend to be GPU-expensive enough that stacking a second shader on top
    *  drops framerate into the teens. The shader still runs happily as primary. */
-  private static readonly NEVER_DUAL_PRIMARIES = new Set<string>(["thermal"]);
+  private static readonly NEVER_DUAL_PRIMARIES = new Set<string>([]); // "thermal" deleted from the codebase 2026-10-13 (Karel reviewed on film)
 
   /** ─── Composition conductor (2026-09-27, Karel/Johnny/Joseph review) ───
    *  The authored per-phase intensity arc (0.4 → 1.0 → 0.3) must shape HOW
@@ -1210,13 +1210,22 @@ class JourneyEngine {
     let dual: string | null = null;
     let tert: string | null = null;
     const resolve = (m: string) => (this.isShaderAllowed(m) ? m : this.substituteFor(m));
+    // What each played mode stands in for (Karel 2026-10-13: credo played at
+    // Realized @p0.382 as a scripted entry — the flight log now says when a
+    // recorded entry was replaced, and by what).
+    const replaced = new Map<string, string>();
+    const track = (orig: string, r: string | null) => {
+      if (r && r !== orig) replaced.set(r, orig); else if (r) replaced.delete(r);
+      return r;
+    };
     for (const en of this.takeScript) {
       if (en.p > clamped) break;
-      if (en.role === "primary") { const r = resolve(en.mode); if (r) prim = r; }
-      else if (en.role === "dual") { const r = resolve(en.mode); if (r) dual = r; }
-      else if (en.role === "tertiary-on") { tert = resolve(en.mode); }
+      if (en.role === "primary") { const r = track(en.mode, resolve(en.mode)); if (r) prim = r; }
+      else if (en.role === "dual") { const r = track(en.mode, resolve(en.mode)); if (r) dual = r; }
+      else if (en.role === "tertiary-on") { tert = track(en.mode, resolve(en.mode)); }
       else if (en.role === "tertiary-off") { tert = null; }
     }
+    const tag = (m: string) => { const o = replaced.get(m); return o ? `(scripted→replaced ${o})` : "(scripted)"; };
     // Edge-triggered: only a CHANGE of the scripted choice is applied.
     if (prim && prim !== this.lastScriptPrim && prim !== this.currentShaderMode) {
       this.lastScriptPrim = prim;
@@ -1225,7 +1234,7 @@ class JourneyEngine {
       this.seenShaders.add(prim);
       this.shaderHistory.push({ mode: prim, role: "primary", phaseId: this.currentPhaseId ?? "scripted", startMs: now, endMs: 0 });
       this.shaderStartMs = now;
-      glitchRecord("shader-primary", `${prim} @p${clamped.toFixed(3)} (scripted)`);
+      glitchRecord("shader-primary", `${prim} @p${clamped.toFixed(3)} ${tag(prim)}`);
       this.lastAnySwitchMs = now; this.nudgeForce = false;
     } else if (prim) {
       this.lastScriptPrim = prim;
@@ -1249,7 +1258,7 @@ class JourneyEngine {
       if (dual) {
         this.seenShaders.add(dual);
         this.shaderHistory.push({ mode: dual, role: "dual", phaseId: this.currentPhaseId ?? "scripted", startMs: now, endMs: 0 });
-        glitchRecord("shader-dual", `${dual} @p${clamped.toFixed(3)} (scripted)`);
+        glitchRecord("shader-dual", `${dual} @p${clamped.toFixed(3)} ${tag(dual)}`);
         this.lastAnySwitchMs = now; this.nudgeForce = false;
       }
     }
@@ -1261,7 +1270,7 @@ class JourneyEngine {
       if (tert) {
         this.seenShaders.add(tert);
         this.shaderHistory.push({ mode: tert, role: "tertiary", phaseId: this.currentPhaseId ?? "scripted", startMs: now, endMs: 0 });
-        glitchRecord("shader-tertiary-on", `${tert} @p${clamped.toFixed(3)} (scripted)`);
+        glitchRecord("shader-tertiary-on", `${tert} @p${clamped.toFixed(3)} ${tag(tert)}`);
         this.lastAnySwitchMs = now; this.nudgeForce = false;
       }
     }
@@ -1344,11 +1353,11 @@ class JourneyEngine {
   }
 
   /** MORPH SHADER — land the staged plan as the primary NOW (the image layer
-   *  calls this ~3-4 s before the clip's end). Bypasses the morph quiet
+   *  calls this early — up to ~7 s before the clip's end, see morphShaderTiming). Bypasses the morph quiet
    *  window on purpose: the program is already compiled and drawn once on
    *  the parked layer, so the crossfade costs no compile. Returns the mode,
    *  or null when the plan went stale (cancelled, freeze, layer conflict). */
-  landMorphShader(secondsBeforeEnd: number): string | null {
+  landMorphShader(secondsBeforeEnd: number, fadeMs?: number): string | null {
     const plan = this.morphPlan;
     this.morphPlan = null;
     if (!plan || !this.running || !this.journey || this.takeScript || this.frozen || this.playbackPaused) return null;
@@ -1368,7 +1377,10 @@ class JourneyEngine {
     this.shaderDurationMs = this.randomDuration(this.morphRandom, JourneyEngine.SHADER_SWITCH_MIN_SECS, JourneyEngine.SHADER_SWITCH_MAX_SECS);
     this.lastAnySwitchMs = now; this.nudgeForce = false;
     this.lastMorphArrivalMs = now;
-    glitchRecord("morph-shader-arrive", `${m} ${Math.max(0, secondsBeforeEnd).toFixed(1)}s-before-end @p${this.lastProgress.toFixed(3)}`);
+    // the crossfade the timing was computed for (shortened on short clips)
+    const fade = fadeMs ?? plan.fadeMs;
+    registerMorphArrivalFade(m, fade);
+    glitchRecord("morph-shader-arrive", `${m} ${Math.max(0, secondsBeforeEnd).toFixed(1)}s-before-end fade ${(fade / 1000).toFixed(1)}s @p${this.lastProgress.toFixed(3)}`);
     return m;
   }
 
@@ -1565,6 +1577,12 @@ class JourneyEngine {
    *  browser's context limit and triggers context-loss bursts). */
   private isShaderAllowed(mode: string): boolean {
     if (PICKTIME_SHADER_BLOCKLIST.has(mode)) return false;
+    // Karel's personal bans (credo, dharma, biofilm, monsoon veil) — every
+    // picker AND scripted takes (which recast them; see applyTakeScript).
+    if (KAREL_BANNED_SHADERS.has(mode)) return false;
+    // Retired pool slots (snow / lightning — deleted 2026-10-13, kept only as
+    // seeded-pool placeholders): nothing to render, never picked.
+    if (RETIRED_POOL_SLOT_MODES.has(mode)) return false;
     // LAB shaders (audition only) — never picked (empty since 2026-10-13).
     if (LAB_SHADERS.has(mode)) return false;
     // Shader balance (Karel 2026-10-13): dharma never; per-journey bans

@@ -67,7 +67,7 @@ export function paletteHueFamilies(palette: Partial<JourneyPalette> | null | und
 }
 
 function shaderCompatible(mode: string, families: Set<string>): boolean {
-  const fam = SHADER_HUES[mode];
+  const fam = SHADER_HUES[mode] ?? RETIRED_POOL_HUES[mode];
   return !fam || fam === "neutral" || fam === "prismatic" || families.has(fam);
 }
 
@@ -110,31 +110,30 @@ function recordUsedShaders(shaders: string[]) {
 // Every journey draws from this pool — balanced across all categories.
 const ALL_SHADERS_RAW: string[] = [
   // Elemental (21)
-  "fog", "dusk", "snow", "ocean", "cascade", "whirlpool", "flux",
+  "dusk", "ocean", "flux",
   "monsoon", "magma", "typhoon",
-  "chinook", "thermal", "lightning", "maelstrom",
+  "chinook", "maelstrom",
   "deluge",
   "rime",
-  "cirrus", "torrent", "swell", "aurora-borealis",
-  "estuary",
+  "cirrus", "torrent", "aurora-borealis",
   // Visionary (33)
-  "astral", "portal",
-  "revelation", "threshold", "rapture",
+  "astral",
+  "threshold", "rapture",
   "mandorla", "seraph",
   "halo",
-  "dharma", "gnosis", "chakra", "vestige",
-  "empyrean", "stigmata", "aureole", "apophatic",
+  "gnosis", "chakra", "vestige",
+  "stigmata", "aureole", "apophatic",
   "yantra", "satori", "merkaba", "soma",
-  "kenosis", "numinous", "anima",
-  "covenant", "agape", "vespers",
+  "kenosis", "anima",
+  "covenant", "vespers",
   "jubilee", "pilgrimage", "cataphatic",
-  "hesychasm", "kairos", "lectio", "credo",
+  "hesychasm", "kairos", "lectio",
   // Cosmic (22)
-  "pulsar", "quasar", "supernova",
+  "pulsar", "supernova",
   "singularity", "drift", "expanse",
   "protostar", "redshift",
   "nadir", "parsec", "nova", "photon",
-  "selene", "kepler", "hubble", "doppler",
+  "selene", "kepler", "hubble",
   "aurora-wave",
   "zenith",
   "lightyear", "event-horizon",
@@ -144,21 +143,21 @@ const ALL_SHADERS_RAW: string[] = [
   "enzyme", "pollen", "symbiosis",
   "kelp",
   "flagella", "mycelium", "coral",
-  "synapse", "biolume",
-  "diatom", "biofilm",
+  "synapse",
+  "diatom",
   "pelagic", "zooid",
   "laminar",
   "whorl",
   "stamen", "meristem",
   // Geometry (41)
-  "neon", "spiral",
+  "spiral",
   "geodesic", "moire",
   "catenary",
   "astroid", "cardioid", "lissajous", "cymatic", "guilloche",
-  "trefoil", "quatrefoil", "involute", "rosette", "roulette", "deltoid", "nephroid", "epicycle",
+  "trefoil", "quatrefoil", "involute", "rosette", "deltoid", "nephroid", "epicycle",
   "helix",
   "harmonograph", "voronoi-flow", "mobius-strip", "fibonacci-spiral",
-  "interference", "fractal-tree", "weave",
+  "fractal-tree", "weave",
   "constellation",
   "parabola", "cassegrain", "cissoid", "agnesi",
   "strophoid", "brachistochrone", "chladni", "caustic-pool",
@@ -167,17 +166,16 @@ const ALL_SHADERS_RAW: string[] = [
   // Dark (32)
   "umbra", "inferno", "plasma",
   "vortex",
-  "hollow",
-  "terminus", "maelstrom-dark", "obsidian-flow",
+  "maelstrom-dark", "obsidian-flow",
   "furnace",
   "eclipse-ring", "smolder",
   "crucible",
   "ember-drift", "deep-current", "molten-vein", "dark-aurora", "shadow-fire",
-  "dark-tide", "smoke-signal", "iron-forge", "abyss-light", "catacomb-torch",
-  "blood-moon", "witch-light", "dark-crystal", "night-rain", "volcanic",
-  "dark-bloom", "lightning-field", "dark-nebula", "onyx", "night-forest",
+  "dark-tide", "smoke-signal", "iron-forge", "catacomb-torch",
+  "blood-moon", "witch-light", "dark-crystal", "volcanic",
+  "lightning-field", "dark-nebula", "night-forest",
   // Nature (3)
-  "rain", "ripple", "flame",
+  "ripple", "flame",
   "starfield", "radiance",
   // 3D Worlds
   "orb",
@@ -253,7 +251,6 @@ export const RECAST_SAFELIST: Record<string, readonly string[]> = {
 /** Per-realm pick-time bans — same pin-safe semantics, scoped. */
 export const PICKTIME_REALM_BLOCKLIST: Record<string, ReadonlySet<string>> = {
   winter: new Set([
-    "credo", // Karel 2026-09-30 screenshot: concentric golden rings + radial spokes — "violates everything" (in Snowflake)
     "enzyme", // Karel 2026-09-30 screenshot: the veined membrane/moth (enzyme dual at p0.704 of the take) — "i hate this image in snowflake"
     "r2-sunsetcascade", // Karel 2026-09-29: "the 2 colored horizontal colors shader"
     "maelstrom", "vortex", // Karel 2026-09-29: "that red swirling shader"
@@ -262,7 +259,6 @@ export const PICKTIME_REALM_BLOCKLIST: Record<string, ReadonlySet<string>> = {
     "r2-spiralgal", // Karel 2026-09-29 screenshot: the purple spiral — another swirl out of Snowflake
     "event-horizon", "stamen", // Karel 2026-09-30 screenshot: "dont use this circle thing in snowflake" — the giant dim sphere (both were recast picks)
     "flux", // Karel 2026-09-30: "that colored shader gradient that is full screen over snowflake" — the wavy rainbow field-lines wash
-    "snow", // Karel 2026-09-30 screenshot: recast landed on it at p0.676 — full-frame frost dendrites, near-static, "hung out too long at this point"
     "r3-pulseringssoft", "r3-coralpulse", // Karel 2026-09-30 screenshot: full-screen rainbow concentric-ring wash (both pulse-ring recasts in that window) — "dont use this full screen shader"
     "umbra", "r3-wishtrails", // Karel 2026-09-30 screenshot: the dark-iris/web-eye family ("ugly web looking shaders... those type should never be used in snowflake")
     "lichen", // Karel 2026-09-30: "subtle web like shader with some green" — lichen dual recast at p0.314
@@ -276,42 +272,51 @@ export const PICKTIME_REALM_BLOCKLIST: Record<string, ReadonlySet<string>> = {
   ]),
 };
 
+/** Karel's PERSONAL bans — shaders he explicitly asked, in his own words, to
+ *  be out of Resonance. Unlike the wider GLOBAL_SHADER_BLOCKLIST (measured
+ *  washes etc., which recorded takes keep as recorded), these hold even
+ *  inside scripted/pinned takes: a scripted entry naming one plays a
+ *  deterministic replacement instead (journey-engine applyTakeScript).
+ *  - biofilm        2026-10-06 "that bright green cellular shader should never be used"
+ *  - dharma         2026-10-13 "i cant stand dharma in resonance"
+ *  - r3-monsoonveil 2026-10-13 "dont use that shader where the diaganol light keeps passing over"
+ *  - credo          2026-10-13 "i said to ban this shader from resonance" (screenshot, Realized) */
+export const KAREL_BANNED_SHADERS: ReadonlySet<string> = new Set([
+  "biofilm", "dharma", "r3-monsoonveil", "credo",
+]);
+
 export const GLOBAL_SHADER_BLOCKLIST: string[] = [
-  // Karel 2026-10-06: "that bright green cellular shader should never be
-  // used. it doesnt work" (seen in Ghost) — banned everywhere.
-  "biofilm",
-  // Karel 2026-10-13: "i cant stand dharma in resonance" (the big solid
-  // spinning wheel) — banned everywhere (src/lib/journeys/shader-balance.ts).
-  "dharma",
-  // Karel 2026-10-13 (The First, Expanded): "dont use that shader where the
-  // diaganol light keeps passing over" — Monsoon Veil, out of every cast.
-  // Confirmed on film 2026-10-13: THE diagonal-lines shader he wanted out
-  // (Spirit Trails — "the rainbow lines i love" — and Chinook — "that swirl
-  // is fine" — were briefly banned with it and are back).
-  "r3-monsoonveil",
+  // Ghost-ending-only pink particle shader (Karel 2026-10-01) — scripted take
+  // only, never rotation. KEPT in the codebase on 2026-10-13 when the other
+  // banned shaders were deleted (Karel: "the one for ghost has to stay for ghost").
+  "r-petals",
+  // ── Deleted from the codebase 2026-10-13 (Karel reviewed on film) ──
+  // Karel: "reviewed and marked all banned. might as well remove from the code
+  // too". Source files, SHADERS / MODE_META entries, generated tables and casts
+  // are gone; the names stay here so a stale cache, DB cast or pack JSON can
+  // never pull one back. Why each was banned:
+  // Karel's personal bans (KAREL_BANNED_SHADERS above):
+  "biofilm",        // 2026-10-06 "that bright green cellular shader should never be used. it doesnt work" (Ghost)
+  "dharma",         // 2026-10-13 "i cant stand dharma in resonance" (the big solid spinning wheel)
+  "r3-monsoonveil", // 2026-10-13 "dont use that shader where the diaganol light keeps passing over" (Spirit Trails + Chinook confirmed innocent on film)
+  "credo",          // 2026-10-13 "i said to ban this shader from resonance" (gold rings + spokes, Realized @p0.382)
   // Measured full-screen washes / flicker (scripts/shader-vetting.json,
-  // 2026-10-05): they lift the black floor or brighten the frame even
-  // when dimmed — "full screen ones that brighten the screen and makes
-  // things look banded and low quality" (Karel). Never in rotation.
+  // 2026-10-05) — "full screen ones that brighten the screen and makes things
+  // look banded and low quality" (Karel). swell / revelation / portal /
+  // numinous / biolume also played inside the Snowflake and Realized takes —
+  // replaced there by same-take shaders (src/lib/journeys/pinned-takes.ts).
   "agape", "cascade", "empyrean", "numinous", "portal", "r2-kelvin", "r2-marble",
   "r3-heatshimmer", "r3-peelingbark", "r3-shadowflow", "revelation", "swell",
   "thermal", "whirlpool", "lightning", "biolume",
-  "interference", // Karel 2026-09-29: opened Snowflake with it — "i hate that shader it opened with"
-  "quasar", "neon", // Karel 2026-09-29 LAW: no full-screen intensity monsters anywhere — "shaders that interplay with the images in a perfect dance"
-  "doppler", // Karel 2026-09-29: THE "pulsing full screen shader" (played in both flagged sessions; r3-coralpulse was the wrong guess)
-  "roulette", // Karel 2026-09-29 session oc9dr2: its switch dropped the kiosk to ~12fps for 3 straight seconds — perf hazard
-  "r3-moltenglass", // Karel 2026-09-28: full-frame color wash "takes away from the imaging" — no edge-to-edge palette floods
-  "snow", // only appropriate for winter/snowflake or user-created journeys
-  "r-petals", // Ghost-ending-only pink particle shader (Karel 2026-10-01) — scripted take only, never rotation
-  "rain", "night-rain", // banned ENTIRELY (Karel 2026-09-30) — no realm exceptions
-  // Too subtle / invisible over journey imagery
-  "abyss-light", // output 0.0–0.15, tiny particles on near-black base
-  "terminus",    // void-colored base, faint dying light
-  "onyx",        // dark polished stone, specular at 0.12
-  "estuary",     // water transparency simulation, vanishes over non-water imagery
-  "hollow",      // shell edges at 0.3, interior darkness
-  "dark-bloom",  // flower on near-black base, disappears on any light
-  "fog",         // atmosphere-based, 0.05–0.3 density, too subtle over imagery
+  "interference",   // 2026-09-29 opened Snowflake with it — "i hate that shader it opened with"
+  "quasar", "neon", // 2026-09-29 LAW: no full-screen intensity monsters — "shaders that interplay with the images in a perfect dance"
+  "doppler",        // 2026-09-29 THE "pulsing full screen shader"
+  "roulette",       // 2026-09-29 session oc9dr2: its switch dropped the kiosk to ~12fps for 3 s — perf hazard
+  "r3-moltenglass", // 2026-09-28 full-frame color wash "takes away from the imaging"
+  "snow",           // full-frame frost dendrites — was winter-only (Snowflake), recast-banned there 2026-09-30
+  "rain", "night-rain", // banned ENTIRELY 2026-09-30
+  // Too subtle / invisible over journey imagery:
+  "abyss-light", "terminus", "onyx", "estuary", "hollow", "dark-bloom", "fog",
   // Safety net — these shaders were REMOVED from the codebase entirely.
   // They can't be picked (not in MODE_META/SHADERS), but listed here
   // to guard against accidental re-addition.
@@ -335,14 +340,13 @@ export const GLOBAL_SHADER_BLOCKLIST: string[] = [
 export const LOW_TIER_BLOCKED_SHADERS: string[] = [
   "dark-nebula", // dense fbm + raymarched volume
   "supernova",   // multi-octave fbm explosion
-  "quasar",      // volumetric jets
   "magma",       // thick fbm + reaction-diffusion
   "inferno",     // volumetric fire fbm
 ];
 
 /** Realms that ARE allowed to use globally-blocked shaders */
 const REALM_SHADER_ALLOW: Record<string, string[]> = {
-  winter: ["snow"], // snow is core to the winter realm
+  winter: ["snow"], // RETIRED POOL SLOT — see RETIRED_POOL_SLOTS (snow deleted 2026-10-13)
   // rain allowances removed (Karel 2026-09-30: "the rain shader...
   // should be banned entirely from resonance")
 };
@@ -352,21 +356,19 @@ export const REALM_SHADER_BLOCKLIST: Record<string, string[]> = {
     "r3-fernunfurl", "fractal-tree", // green fractals — Karel 2026-09-29: "no bright green fractile spinning over snowflake" (fernunfurl was also the boundary "green twirl")
     "molten-vein", "smolder", "obsidian-flow", "ember-drift", "shadow-fire", // fire-toned darks — Karel 2026-09-29: "that red shader dont work on snowflake"
     "volcanic", "blood-moon", "furnace", "crucible", "iron-forge", "catacomb-torch", "r2-thermal", "r2-infrared",
-    "zooid", "coral", "biofilm", "spore", "symbiosis", "plankton", // celly organics — Karel 2026-09-29: "small cells hanging out" clash with the crystalline world
+    "zooid", "coral", "spore", "symbiosis", "plankton", // celly organics — Karel 2026-09-29: "small cells hanging out" clash with the crystalline world
     "magma", "inferno", "flame", // fire
     "orb", // wrong vibe
-    "neon", "moire", // solid/geometric
+    "moire", // solid/geometric
     "cage", // geometric/cube — wrong vibe
     "supernova", "nova", "photon", "pulsar", // yellow sun/hot graphics
-    "thermal", "lightning", // warm/fiery elemental
     "ember", // warm organic tones
     "redshift", // warm cosmic
   ],
   hell: [
-    "ocean", "cascade", "whirlpool", "tide", "ripple", // water elemental
+    "ocean", "tide", "ripple", // water elemental
     "wave", "seabed", // water 3D worlds
     "plankton", "kelp", "coral", // aquatic/botanical organic
-    "snow", // cold/winter
     "cloud", // serene — wrong vibe
   ],
   heaven: [
@@ -388,9 +390,43 @@ export const REALM_SHADER_BLOCKLIST: Record<string, string[]> = {
 
 /** Per-realm must-include shaders — always present in the journey pool */
 const REALM_SHADER_MUSTINCLUDE: Record<string, string[]> = {
-  winter: ["spiral", "snow"],
-  hell: ["lightning", "flame", "magma", "inferno", "vortex"],
+  winter: ["spiral", "snow"], // "snow" = RETIRED POOL SLOT (deleted 2026-10-13)
+  hell: ["lightning", "flame", "magma", "inferno", "vortex"], // "lightning" = RETIRED POOL SLOT (deleted 2026-10-13)
 };
+
+/** RETIRED POOL SLOTS — shaders deleted from the codebase 2026-10-13 (Karel
+ *  reviewed on film: "reviewed and marked all banned. might as well remove from
+ *  the code too") that a realm's SEEDED pool generation still counts. Snowflake
+ *  (winter: realm-allowed + must-include "snow") and Realized (hell: must-include
+ *  "lightning") play pinned / scripted takes whose seeded draws — tail-release
+ *  rotation, duals, tertiaries, scripted-take recasts — depend on the pool's
+ *  exact shape; dropping the name reshuffled them (Snowflake's tail dual went
+ *  gnosis -> sun-wind). The placeholder keeps every draw identical. NEVER
+ *  rendered: both names stay in GLOBAL_SHADER_BLOCKLIST, which the journey
+ *  engine strips from every phase before anything plays (withoutGlobalBlocked).
+ *  `category` / `label` place the slot where MODE_META's sort had it; `hue` is
+ *  its last generated hue family (palette lean). */
+const RETIRED_POOL_SLOTS: readonly { mode: string; label: string; category: string; hue: string }[] = [
+  { mode: "snow", label: "Snow", category: "Elemental", hue: "violet" },
+  { mode: "lightning", label: "Lightning", category: "Elemental", hue: "blue" },
+];
+const RETIRED_POOL_HUES: Readonly<Record<string, string>> = Object.fromEntries(RETIRED_POOL_SLOTS.map((s) => [s.mode, s.hue]));
+/** The retired slot names — the journey engine refuses them at EVERY pick
+ *  (isShaderAllowed): a mid-play duration regen (updateTrackDuration) skips the
+ *  start-time guard, and a deleted shader has nothing to render. */
+export const RETIRED_POOL_SLOT_MODES: ReadonlySet<string> = new Set(RETIRED_POOL_SLOTS.map((s) => s.mode));
+const POOL_CATEGORY_ORDER = ["Review", "Visionary", "Cosmic", "Organic", "Geometry", "3D Worlds", "Elemental", "Dark", "AI Imagery"];
+let _poolMeta: readonly { mode: string; label: string; category: string }[] | null = null;
+/** MODE_META plus the retired slots, in MODE_META's own sort order. */
+function poolMeta() {
+  if (!_poolMeta) {
+    _poolMeta = [...MODE_META, ...RETIRED_POOL_SLOTS].sort((a, b) => {
+      const c = POOL_CATEGORY_ORDER.indexOf(a.category) - POOL_CATEGORY_ORDER.indexOf(b.category);
+      return c !== 0 ? c : a.label.localeCompare(b.label);
+    });
+  }
+  return _poolMeta;
+}
 
 
 function pickJourneyShaders(
@@ -416,9 +452,10 @@ function pickJourneyShaders(
   ]);
   const mustInclude = realmId ? REALM_SHADER_MUSTINCLUDE[realmId] ?? [] : [];
 
-  // Build category lookup from MODE_META (skip AI Imagery category)
+  // Build category lookup from MODE_META (skip AI Imagery category); retired
+  // slots ride along (globally blocked — they count only where a realm allows them)
   const categoryMap = new Map<string, string[]>();
-  for (const meta of MODE_META) {
+  for (const meta of poolMeta()) {
     if (meta.category === "AI Imagery") continue;
     if (LAB_SHADERS.has(meta.mode)) continue; // LAB shaders — audition only, never rotated
     if (blocklist.has(meta.mode)) continue;

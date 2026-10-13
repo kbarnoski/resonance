@@ -55,7 +55,7 @@ import {
 // Lightweight 2D shaders for the instant journey→viz switch. Every id here
 // MUST exist in SHADERS — "nebula" lingered after its registry removal
 // (dead pick), and "cosmos" was a realm name, not a shader id.
-const LIGHT_SHADERS = ["fog", "drift", "dusk", "tide", "ember"];
+const LIGHT_SHADERS = ["drift", "dusk", "tide", "ember"]; // "fog" deleted from the codebase 2026-10-13
 
 if (process.env.NODE_ENV !== "production") {
   for (const id of LIGHT_SHADERS) {

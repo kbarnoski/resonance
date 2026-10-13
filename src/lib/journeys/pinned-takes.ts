@@ -37,7 +37,12 @@ export const SCRIPTED_TAKES: Record<string, TakeScriptEntry[]> = {
   // knows what i loved") — recast-lottery removed: every slot names
   // its final shader. Dual rests until pendulum-dust's loved entrance.
   "first-snow": [
-    {"p":0,"role":"primary","mode":"plasma"},{"p":0.112,"role":"primary","mode":"swell"},
+    // p0.112 was "swell" — deleted from the codebase 2026-10-13 (Karel: "reviewed
+    // and marked all banned. might as well remove from the code too"). cirrus
+    // holds the slot: already in this take (p0.292) and the winter safelist, the
+    // same family (blue Elemental) but calm with a dark floor (vetting mean 17.5 /
+    // floor 9 vs swell's 91.8 full-frame wash).
+    {"p":0,"role":"primary","mode":"plasma"},{"p":0.112,"role":"primary","mode":"cirrus"},
     {"p":0.183,"role":"primary","mode":"r2-photon"},{"p":0.292,"role":"primary","mode":"cirrus"},
     {"p":0.354,"role":"primary","mode":"r3-spirittrails"},
     {"p":0.429,"role":"primary","mode":"murmuration"},{"p":0.498,"role":"primary","mode":"firefly-field"},
@@ -80,13 +85,24 @@ export const SCRIPTED_TAKES: Record<string, TakeScriptEntry[]> = {
     {"p":0.69,"role":"primary","mode":"magma"}, // amber web back (Karel 2026-10-01: "you lost that cool amber web shader. a mix of shaders is good"); sparkler banned
     {"p":0.749,"role":"primary","mode":"starfield"},
     {"p":0.817,"role":"primary","mode":"drift"}, // cirrus out (neon-green algae)
+    // r-petals stays in the codebase for THIS entry only (Karel 2026-10-13: "the
+    // one for ghost has to stay for ghost") — rotation-banned everywhere else
+    // (GLOBAL_SHADER_BLOCKLIST); the 2026-10-13 deletion of the banned shaders spared it.
         {"p":0.85,"role":"primary","mode":"r-petals"}, // petals over the TREE/union only (Karel: "cool with that tree scene but dont have it over the cosmos scene after")
     {"p":0.91,"role":"primary","mode":"starfield"}, // the cosmos ending: "another subtle shader"
   ],
   // Realized — locked 2026-09-30 ("keep every take of what you have and
   // we will start mastering from here") — latest complete lap, flight log.
+  // 2026-10-13 — four recorded shaders were deleted from the codebase (Karel:
+  // "reviewed and marked all banned. might as well remove from the code too");
+  // each slot now names a shader already in this take, same role, calm with a
+  // dark floor (scripts/shader-vetting.json), never the shader live at that moment:
+  //   p0.295 dual    biolume    -> maelstrom-dark (the take's calmest, darkest layer: mean 2.3 / floor 0)
+  //   p0.47  primary numinous   -> lectio         (same family: gold Visionary, calm; the wash is gone)
+  //   p0.724 primary revelation -> seraph         (Visionary, Karel's light-ray bar; no wash / flicker)
+  //   p0.84  primary portal     -> singularity    (the gateway becomes the take's own black-hole calm)
   "inferno": [
-    {"p":0,"role":"primary","mode":"ember"},{"p":0.094,"role":"primary","mode":"maelstrom-dark"},{"p":0.148,"role":"dual","mode":"eclipse-ring"},{"p":0.165,"role":"primary","mode":"redshift"},{"p":0.217,"role":"dual","mode":"photon"},{"p":0.234,"role":"primary","mode":"singularity"},{"p":0.279,"role":"primary","mode":"lectio"},{"p":0.295,"role":"dual","mode":"biolume"},{"p":0.331,"role":"primary","mode":"r3-dreamtendrils"},{"p":0.366,"role":"dual","mode":"r-silk"},{"p":0.382,"role":"primary","mode":"catacomb-torch"},{"p":0.47,"role":"primary","mode":"numinous"},{"p":0.525,"role":"primary","mode":"parsec"},{"p":0.598,"role":"primary","mode":"seraph"},{"p":0.609,"role":"tertiary-on","mode":"r3-coronastreams"},{"p":0.614,"role":"tertiary-off","mode":""},{"p":0.625,"role":"dual","mode":"radiance"},{"p":0.65,"role":"primary","mode":"hesychasm"},{"p":0.724,"role":"primary","mode":"revelation"},{"p":0.782,"role":"primary","mode":"maelstrom"},{"p":0.84,"role":"primary","mode":"portal"},{"p":0.851,"role":"tertiary-on","mode":"maelstrom"},{"p":0.876,"role":"dual","mode":"r3-aurorastreams"},{"p":0.893,"role":"primary","mode":"cataphatic"},{"p":0.932,"role":"tertiary-off","mode":""},
+    {"p":0,"role":"primary","mode":"ember"},{"p":0.094,"role":"primary","mode":"maelstrom-dark"},{"p":0.148,"role":"dual","mode":"eclipse-ring"},{"p":0.165,"role":"primary","mode":"redshift"},{"p":0.217,"role":"dual","mode":"photon"},{"p":0.234,"role":"primary","mode":"singularity"},{"p":0.279,"role":"primary","mode":"lectio"},{"p":0.295,"role":"dual","mode":"maelstrom-dark"},{"p":0.331,"role":"primary","mode":"r3-dreamtendrils"},{"p":0.366,"role":"dual","mode":"r-silk"},{"p":0.382,"role":"primary","mode":"catacomb-torch"},{"p":0.47,"role":"primary","mode":"lectio"},{"p":0.525,"role":"primary","mode":"parsec"},{"p":0.598,"role":"primary","mode":"seraph"},{"p":0.609,"role":"tertiary-on","mode":"r3-coronastreams"},{"p":0.614,"role":"tertiary-off","mode":""},{"p":0.625,"role":"dual","mode":"radiance"},{"p":0.65,"role":"primary","mode":"hesychasm"},{"p":0.724,"role":"primary","mode":"seraph"},{"p":0.782,"role":"primary","mode":"maelstrom"},{"p":0.84,"role":"primary","mode":"singularity"},{"p":0.851,"role":"tertiary-on","mode":"maelstrom"},{"p":0.876,"role":"dual","mode":"r3-aurorastreams"},{"p":0.893,"role":"primary","mode":"cataphatic"},{"p":0.932,"role":"tertiary-off","mode":""},
   ],
   // Expansion set 1's six scripted takes (locked 2026-09-30, pre-kinetic
   // rosters) were RETIRED 2026-10-04: Karel asked for every Expansion

@@ -117,14 +117,6 @@ export const R3_EMBERWISPS = mk(`
   col *= smoothstep(-0.7, 0.0, uv.y + n * 0.3);
 `);
 
-export const R3_SHADOWFLOW = mk(`
-  vec2 q = uv * 1.3;
-  q += vec2(fbm(q + t * 0.05), fbm(q - t * 0.05)) * 0.5;
-  float h = fbm(q * 1.8);
-  col = vec3(0.05, 0.04, 0.08) + (1.0 - h) * vec3(0.15, 0.2, 0.3);
-  col += pow(1.0 - h, 6.0) * vec3(0.5, 0.6, 0.8) * 0.2;
-`);
-
 export const R3_LIGHTRIVERS = mk(`
   vec2 q = vec2(uv.x + t * 0.1, uv.y);
   q.y += 0.15 * fbm(q * 3.0 - t * 0.2);
@@ -182,15 +174,6 @@ export const R3_MERCURYPOOL = mk(`
   vec3 silver = vec3(0.7, 0.75, 0.85);
   col = mix(dark, silver, smoothstep(0.3, 0.7, h));
   col += pow(smoothstep(0.55, 0.85, h), 6.0) * vec3(1.0);
-`);
-
-export const R3_MOLTENGLASS = mk(`
-  vec2 q = uv * 1.5;
-  q += 0.4 * vec2(fbm(q + t * 0.1), fbm(q - t * 0.1));
-  float h = fbm(q * 2.0);
-  col = palette(h * 0.5 + t * 0.03, vec3(0.4, 0.3, 0.3), vec3(0.4, 0.3, 0.3), vec3(1.0), vec3(0.1, 0.3, 0.5));
-  col *= 0.4 + 0.6 * h;
-  col += pow(smoothstep(0.6, 0.9, h), 8.0) * vec3(1.0, 0.95, 0.85);
 `);
 
 export const R3_LIQUIDPEARL = mk(`
@@ -553,14 +536,6 @@ export const R3_SLEEPINGBLOOM = mk(`
   col += pow(flower, 4.0) * vec3(1.0);
 `);
 
-export const R3_PEELINGBARK = mk(`
-  vec2 q = uv * 4.0;
-  float lines = abs(fract(q.x + fbm(q * 0.5 + t * 0.05)) - 0.5);
-  float crack = smoothstep(0.05, 0.0, lines);
-  vec3 base = mix(vec3(0.2, 0.12, 0.06), vec3(0.5, 0.3, 0.15), fbm(q * 0.7));
-  col = base + crack * vec3(0.6, 0.4, 0.2);
-`);
-
 export const R3_ROOTSPULSE = mk(`
   for (int i = 0; i < 6; i++) {
     float fi = float(i);
@@ -798,17 +773,6 @@ export const R3_FOGRIVER = mk(`
   col *= smoothstep(0.5, -0.2, abs(q.y - 0.1));
 `);
 
-export const R3_HEATSHIMMER = mk(`
-  vec2 q = uv;
-  q.x += 0.05 * sin(q.y * 12.0 + t * 1.5);
-  float band = uv.y + 0.4;
-  band = smoothstep(0.0, 1.0, band);
-  vec3 ground = vec3(0.6, 0.3, 0.15);
-  vec3 sky = vec3(0.95, 0.85, 0.6);
-  col = mix(ground, sky, band);
-  col *= 1.0 + 0.05 * sin(q.y * 30.0 + t * 5.0);
-`);
-
 export const R3_MISTCURTAIN = mk(`
   vec2 q = vec2(uv.x, uv.y * 1.4);
   q += 0.2 * vec2(fbm(q * 3.0 + t * 0.05), fbm(q * 3.0 - t * 0.05));
@@ -825,15 +789,6 @@ export const R3_DAWNHAZE = mk(`
   vec3 warm = vec3(1.0, 0.7, 0.5);
   col = mix(deep, warm, smoothstep(0.0, 0.7, band));
   col += pow(smoothstep(0.85, 1.0, band), 4.0) * vec3(1.0, 0.95, 0.7) * 0.3;
-`);
-
-export const R3_MONSOONVEIL = mk(`
-  vec2 q = vec2(uv.x + t * 0.5, uv.y * 4.0 + t * 1.5);
-  float streaks = abs(fract(q.x * 0.5 + q.y * 0.1) - 0.5);
-  streaks = smoothstep(0.45, 0.5, streaks);
-  float fog = fbm(uv * 2.0 + t * 0.1);
-  col = mix(vec3(0.05, 0.07, 0.1), vec3(0.3, 0.4, 0.5), fog);
-  col += streaks * vec3(0.7, 0.8, 0.9) * 0.3;
 `);
 
 export const R3_DESERTHAZE = mk(`

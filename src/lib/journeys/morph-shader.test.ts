@@ -5,7 +5,8 @@
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
-  pickMorphShader, morphShaderLeadSec, morphShaderDue, finaleSwitchRedundant,
+  pickMorphShader, morphShaderLeadSec, morphShaderDue, finaleSwitchRedundant, morphShaderTiming,
+  registerMorphArrivalFade, takeMorphArrivalFade,
   morphShaderEnabled, MORPH_SHADER_LAWS, MORPH_SHADER_DEFAULT, type MorphShaderPickInput,
 } from "./morph-shader";
 import { fadeMsFor, SHADER_FADE_DURATION_MS } from "@/lib/shaders/shader-fade";
@@ -101,21 +102,75 @@ describe("timing", () => {
   it("the shared fade module matches the visualizer's brightness-aware fade", () => {
     expect(fadeMsFor("drift", "drift")).toBe(SHADER_FADE_DURATION_MS);
     expect(fadeMsFor(null, null)).toBe(SHADER_FADE_DURATION_MS);
-    expect(fadeMsFor("plasma", "swell")).toBeGreaterThan(SHADER_FADE_DURATION_MS);
-    expect(fadeMsFor("plasma", "swell")).toBeLessThanOrEqual(7000);
+    expect(fadeMsFor("plasma", "cataphatic")).toBeGreaterThan(SHADER_FADE_DURATION_MS);
+    expect(fadeMsFor("plasma", "cataphatic")).toBeLessThanOrEqual(7000);
   });
-  it("lands ~3 s before the end for a standard 2.5 s fade — fully in ~0.5 s before the end frame", () => {
-    const lead = morphShaderLeadSec(2500, 5);
-    expect(lead).toBeCloseTo(3.1, 5);
-    expect(lead - 2.5).toBeGreaterThanOrEqual(0.5);
+  // Karel 2026-10-13: "your shaders come in a bit late such that when the
+  // final frames of the morph are reached they are still coming in but should
+  // already be there" — the arrival is FULLY IN ≥ 1.5 s before the end frame.
+  const L = MORPH_SHADER_LAWS;
+  it("long morph: begins ~7 s before the end, fully in ≥ 1.5 s before it (natural fade kept)", () => {
+    const t = morphShaderTiming(2500, 12);
+    expect(t.leadSec).toBe(7);
+    expect(t.fadeMs).toBe(2500);
+    expect(t.fullyInSec).toBeGreaterThanOrEqual(L.FULLY_IN_BEFORE_END_SEC);
+    expect(morphShaderLeadSec(2500, 12)).toBe(7);
   });
-  it("starts earlier for a longer (brightness-stretched) fade, capped at 4 s", () => {
-    expect(morphShaderLeadSec(3300, 5)).toBeCloseTo(3.9, 5);
-    expect(morphShaderLeadSec(7000, 5)).toBe(MORPH_SHADER_LAWS.MAX_LEAD_SEC);
+  it("a long (brightness-stretched) fade starts earlier still, up to the cap", () => {
+    const t = morphShaderTiming(7000, 20);
+    expect(t.leadSec).toBeCloseTo(9, 5); // 7 + 1.5 + 0.5
+    expect(t.fadeMs).toBe(7000);
+    expect(t.fullyInSec).toBeGreaterThanOrEqual(L.FULLY_IN_BEFORE_END_SEC - 1e-9);
   });
-  it("never schedules before the clip has played a second", () => {
-    expect(morphShaderLeadSec(2500, 3)).toBe(2);
-    expect(morphShaderLeadSec(2500, NaN)).toBeCloseTo(3.1, 5); // unknown duration → 5 s clip
+  it("the real ~5 s travel morph: lands as the clip starts, natural 2.5 s fade fits, fully in ≥ 1.5 s early", () => {
+    const t = morphShaderTiming(2500, 5.04);
+    expect(t.leadSec).toBeCloseTo(5.04 - L.MIN_PLAYED_SEC, 5);
+    expect(t.fadeMs).toBe(2500);
+    expect(t.fullyInSec).toBeGreaterThanOrEqual(L.FULLY_IN_BEFORE_END_SEC);
+    // vs the old law (landed 3.1 s before the end: fully in only 0.6 s early)
+    expect(t.leadSec).toBeGreaterThan(4.5);
+  });
+  it("short morph: the fade is shortened to finish in time — never under the never-abrupt floor", () => {
+    const t = morphShaderTiming(3400, 5);
+    expect(t.fadeMs).toBeLessThan(3400);
+    expect(t.fadeMs).toBeGreaterThanOrEqual(L.MIN_FADE_MS);
+    expect(t.fullyInSec).toBeCloseTo(L.FULLY_IN_BEFORE_END_SEC, 5);
+    const tiny = morphShaderTiming(2500, 3);
+    expect(tiny.fadeMs).toBe(L.MIN_FADE_MS);
+    expect(tiny.leadSec).toBeCloseTo(3 - L.MIN_PLAYED_SEC, 5);
+    expect(tiny.fullyInSec).toBeGreaterThan(0); // still completes before the end
+  });
+  it("every clip length 3-15 s and fade 1.8-7 s: in before the end, ≥ 1.5 s whenever the clip allows", () => {
+    for (let dur = 3; dur <= 15; dur += 0.25) {
+      for (let f = 1800; f <= 7000; f += 400) {
+        const t = morphShaderTiming(f, dur);
+        expect(t.fadeMs).toBeLessThanOrEqual(f);
+        expect(t.fadeMs).toBeGreaterThanOrEqual(Math.min(f, L.MIN_FADE_MS));
+        expect(t.leadSec).toBeLessThanOrEqual(dur - L.MIN_PLAYED_SEC + 1e-9);
+        expect(t.fullyInSec).toBeGreaterThan(0);
+        if (dur - L.MIN_PLAYED_SEC >= L.LAND_SLACK_SEC + L.FULLY_IN_BEFORE_END_SEC + L.MIN_FADE_MS / 1000) {
+          expect(t.fullyInSec).toBeGreaterThanOrEqual(L.FULLY_IN_BEFORE_END_SEC - 1e-9);
+        }
+      }
+    }
+  });
+  it("never lands before the staged shader has had its prewarm (compile + sync + warm draw)", () => {
+    // canplay 0.2 s after staging: the clip must play ≥ 1.0 s more first
+    const quick = morphShaderTiming(2500, 5.04, 0.2);
+    expect(quick.leadSec).toBeCloseTo(5.04 - (L.PREWARM_MIN_SEC - 0.2), 5);
+    expect(quick.fullyInSec).toBeGreaterThan(0);
+    expect(quick.fadeMs).toBeGreaterThanOrEqual(L.MIN_FADE_MS);
+    // a slow load already covered the prewarm: only MIN_PLAYED applies
+    expect(morphShaderTiming(2500, 5.04, 3).leadSec).toBeCloseTo(5.04 - L.MIN_PLAYED_SEC, 5);
+  });
+  it("unknown duration is treated as a 5 s clip", () => {
+    expect(morphShaderLeadSec(2500, NaN)).toBeCloseTo(5 - L.MIN_PLAYED_SEC, 5);
+  });
+  it("the arrival fade is handed to the visualizer once, for that shader only, while fresh", () => {
+    registerMorphArrivalFade("mid", 2100);
+    expect(takeMorphArrivalFade("other")).toBeNull();
+    expect(takeMorphArrivalFade("mid")).toBe(2100);
+    expect(takeMorphArrivalFade("mid")).toBeNull(); // consumed
   });
   it("due when the remaining time reaches the lead", () => {
     expect(morphShaderDue(3.5, 3.1)).toBe(false);
@@ -155,7 +210,10 @@ describe("engine plan → land", () => {
     expect([before.shaderMode, before.dualShaderMode, before.tertiaryShaderMode]).not.toContain(plan!.mode);
     for (const b of GLOBAL_SHADER_BLOCKLIST) expect(plan!.mode).not.toBe(b);
     clock += 1500;
-    expect(eng.landMorphShader(3.1)).toBe(plan!.mode);
+    const timing = morphShaderTiming(plan!.fadeMs, 5.04);
+    expect(eng.landMorphShader(4.79, timing.fadeMs)).toBe(plan!.mode);
+    // the visualizer runs the fade the landing time was computed for
+    expect(takeMorphArrivalFade(plan!.mode)).toBe(timing.fadeMs);
     const landed = eng.getFrame(0.3)!;
     expect(landed.shaderMode).toBe(plan!.mode);
     expect(landed.stagedShaderMode).toBeUndefined();

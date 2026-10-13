@@ -39,7 +39,7 @@ function formatTime(s: number): string {
 // app). Every id MUST exist in SHADERS — "nebula" lingered here after its
 // registry removal and produced black backdrops + crossfade stalls.
 const AI_BACKDROP_SHADERS: VisualizerMode[] = [
-  "fog", "drift",
+  "dusk", "drift", // "fog" deleted from the codebase 2026-10-13 — dusk keeps the 4-slot hash
   "tide", "ember",
 ];
 

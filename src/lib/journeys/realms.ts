@@ -32,9 +32,9 @@ export const REALMS: Realm[] = [
       ],
     },
     shaderModes: [
-      "astral", "revelation", "mandorla", "seraph", "halo",
+      "astral", "mandorla", "seraph", "halo",
       "helix", "drift", "expanse",
-      "kenosis", "agape",
+      "kenosis",
     ],
     palette: {
       primary: "#1a1408",
@@ -174,10 +174,10 @@ export const REALMS: Realm[] = [
     },
     shaderModes: [
       "liquid", "drift", "tide", "ocean",
-      "whirlpool", "plankton", "coral",
-      "drift", "cascade", "ripple",
+      "plankton", "coral",
+      "drift", "ripple",
       "pelagic", "laminar",
-      "deep-current", "dark-tide", "abyss-light",
+      "deep-current", "dark-tide",
     ],
     palette: {
       primary: "#050a1a",
@@ -221,7 +221,7 @@ export const REALMS: Realm[] = [
       ],
     },
     shaderModes: [
-      "neon", "geodesic", "moire", "helix",
+      "geodesic", "moire", "helix",
       "prism", "moire", "spiral", "geodesic", "weave",
       "plasma", "pulsar",
     ],
@@ -268,7 +268,7 @@ export const REALMS: Realm[] = [
     },
     shaderModes: [
       "astral",
-      "supernova", "pulsar", "quasar", "singularity",
+      "supernova", "pulsar", "singularity",
       "drift", "expanse",
       "cassegrain", "waveform",
     ],
@@ -315,9 +315,9 @@ export const REALMS: Realm[] = [
     },
     shaderModes: [
       "mandorla", "geodesic", "astral", "halo",
-      "revelation", "sigil", "helix",
+      "sigil", "helix",
       "prism", "geodesic",
-      "numinous", "covenant",
+      "covenant",
     ],
     palette: {
       primary: "#141008",
@@ -362,8 +362,8 @@ export const REALMS: Realm[] = [
     },
     shaderModes: [
       "moire", "spiral",
-      "moire", "weave", "portal", "threshold",
-      "fog", "geodesic",
+      "moire", "weave", "threshold",
+      "geodesic",
     ],
     palette: {
       primary: "#0a0a08",
@@ -407,9 +407,9 @@ export const REALMS: Realm[] = [
       ],
     },
     shaderModes: [
-      "astral", "fog", "expanse", "drift",
+      "astral", "expanse", "drift",
       "halo",
-      "revelation", "threshold",
+      "threshold",
     ],
     palette: {
       primary: "#080a10",
@@ -454,7 +454,7 @@ export const REALMS: Realm[] = [
     },
     shaderModes: [
       "dusk", "expanse", "umbra", "drift",
-      "fog", "ember", "flux",
+      "ember", "flux",
       "singularity", "mesa",
     ],
     palette: {
@@ -499,9 +499,9 @@ export const REALMS: Realm[] = [
       ],
     },
     shaderModes: [
-      "fog", "threshold",
+      "threshold",
       "mandorla", "spiral", "moire", "sigil", "halo",
-      "revelation", "weave", "chronos",
+      "weave", "chronos",
     ],
     palette: {
       primary: "#10100a",
@@ -546,7 +546,7 @@ export const REALMS: Realm[] = [
     },
     shaderModes: [
       "plasma", "inferno",
-      "flux", "cascade", "whirlpool",
+      "flux",
       "umbra",
       "lightning-field",
     ],
@@ -592,7 +592,7 @@ export const REALMS: Realm[] = [
       ],
     },
     shaderModes: [
-      "snow", "fog", "rime", "drift", "expanse",
+      "rime", "drift", "expanse",
       "threshold", "tide", "glacier",
       "dark-aurora", "night-forest",
     ],
@@ -686,7 +686,7 @@ export const REALMS: Realm[] = [
     },
     shaderModes: [
       "dusk", "ember",
-      "ember", "bloom", "flux", "cascade", "fog",
+      "ember", "bloom", "flux",
       "tide", "supernova",
     ],
     palette: {
@@ -731,9 +731,9 @@ export const REALMS: Realm[] = [
       ],
     },
     shaderModes: [
-      "ember", "fog", "dusk", "drift",
+      "ember", "dusk", "drift",
       "lichen", "tide", "flux", "mycelium",
-      "spore", "cascade",
+      "spore",
     ],
     palette: {
       primary: "#1a0e08",
@@ -779,7 +779,7 @@ export const REALMS: Realm[] = [
     shaderModes: [
       "astral", "mandorla", "seraph",
       "mycelium",
-      "revelation", "halo",
+      "halo",
     ],
     palette: {
       primary: "#0a0814",
@@ -825,7 +825,7 @@ export const REALMS: Realm[] = [
     shaderModes: [
       "umbra",
       "plasma",
-      "fog", "singularity", "inferno",
+      "singularity", "inferno",
     ],
     palette: {
       primary: "#020204",

@@ -62,7 +62,8 @@ const CSP_DIRECTIVES = [
   "media-src 'self' data: blob: https:",
   // Google Fonts ship the actual woff2 files from fonts.gstatic.com.
   `font-src 'self' data: https://fonts.gstatic.com${DREAM_ASSET_SRC}`,
-  "connect-src 'self' https: wss: blob:",
+  // ws://127.0.0.1 / localhost: the VJ bridge's local relay (scripts/osc-relay.mjs)
+  "connect-src 'self' https: wss: blob: ws://127.0.0.1:* ws://localhost:*",
   `worker-src 'self' blob:${DREAM_ASSET_SRC}`,
   "frame-ancestors 'none'",
   "base-uri 'self'",

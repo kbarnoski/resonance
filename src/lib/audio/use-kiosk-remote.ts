@@ -10,6 +10,14 @@ import { getParticlePresent } from "@/lib/journeys/particle-presence";
 import { disableParticlesForSession } from "@/lib/particles/shared-engine";
 import { glitchRecord } from "@/lib/journeys/glitch-recorder";
 import { PARTICLES_SESSION_KEY } from "@/lib/journeys/particle-lead";
+import {
+  parsePresenterCommand,
+  presenterReduce,
+  restorePresenter,
+  serializePresenter,
+  PRESENTER_STORAGE_KEY,
+} from "./presenter-machine";
+import { useVjBridge } from "@/lib/vj-bridge/use-vj-bridge";
 
 // Rolling frame-rate meter (2026-10-05: a steady slowdown never trips the
 // >50ms gap recorder — Karel saw journeys crawl while the log stayed clean).
@@ -51,9 +59,42 @@ function frameStats(): { fps: number; p95: number } | null {
 export type KioskRemoteContext = "loop" | "room" | "live" | null;
 
 const POLL_MS = 2_000;
+/** Gap between long-polls (the parked request itself lasts ≤ 1.5 s). */
+const KIOSK_GAP_MS = 300;
+
+/** PRESENTER (song by song) commands — presenter-machine.ts. In the loop
+ *  they drive the loop client; elsewhere (Live Theatre / DJ room) settings
+ *  are stored for the loop to pick up, and NEXT / play-now enter the loop. */
+function runPresenterCommand(cmd: string, context: KioskRemoteContext): boolean {
+  const ev = parsePresenterCommand(cmd);
+  if (!ev) return false;
+  if (context === "loop") {
+    window.dispatchEvent(new CustomEvent("installation-presenter", { detail: ev }));
+    return true;
+  }
+  let raw: string | null = null;
+  try { raw = window.localStorage.getItem(PRESENTER_STORAGE_KEY); } catch { /* storage blocked */ }
+  const state = restorePresenter(raw);
+  const kiosk = context === "live" ? "&kiosk=1" : "";
+  if (ev.type === "next" || ev.type === "play-now") {
+    const target = ev.type === "play-now" ? ev.ref : state.cued;
+    const start = target ? `${target.journeyId}@${target.programId}` : state.setId;
+    if (ev.type === "play-now") {
+      try { window.localStorage.setItem(PRESENTER_STORAGE_KEY, serializePresenter({ ...state, cued: null })); } catch { /* ok */ }
+    }
+    window.location.href = `/room/installation?loop=1${start ? `&start=${encodeURIComponent(start)}` : ""}${kiosk}`;
+    return true;
+  }
+  if (ev.type === "set-playback" || ev.type === "set-hold-on" || ev.type === "set-set" || ev.type === "cue" || ev.type === "clear-cue") {
+    const next = presenterReduce(state, ev, []).state;
+    try { window.localStorage.setItem(PRESENTER_STORAGE_KEY, serializePresenter(next)); } catch { /* ok */ }
+  }
+  return true;
+}
 
 function runCommand(cmd: string, context: KioskRemoteContext): void {
   const store = useAudioStore.getState();
+  if (runPresenterCommand(cmd, context)) return;
   if (cmd.startsWith("mark:")) {
     // MARK (Karel 2026-10-12): he taps "Mark glitch" the moment he sees one;
     // the phone's send time puts it on the exact second of the track (the
@@ -238,15 +279,30 @@ function useBuildWatchdog(enabled: boolean): void {
 
 export function useKioskRemote(context: KioskRemoteContext): void {
   useBuildWatchdog(!!context);
+  // VJ bridge (TouchDesigner / Resolume via scripts/osc-relay.mjs): every
+  // kiosk context mounts this hook, so the bridge runs wherever the show
+  // does. Off unless ?osc=1 / the kiosk setting — then a no-op (ref-counted).
+  useVjBridge();
   useEffect(() => {
     if (!context) return;
     let stopped = false;
-    let timer: ReturnType<typeof setInterval> | null = null;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    const key = new URLSearchParams(window.location.search).get("key");
+    // LONG-POLL (2026-10-13, "no delays"): the bus parks this request until a
+    // phone command arrives (≤ 1.5 s), so taps reach the kiosk in ms; the
+    // status still goes up every ~1.8 s, and right after every command.
+    const url = `/api/pack/remote?wait=1${key ? `&key=${encodeURIComponent(key)}` : ""}`;
+    const schedule = (ms: number) => {
+      if (stopped) return;
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => void tick(), ms);
+    };
 
     const tick = async () => {
       const s = useAudioStore.getState();
+      let next = POLL_MS;
       try {
-        const res = await fetch(`/api/pack/remote${typeof window !== "undefined" && new URLSearchParams(window.location.search).get("key") ? `?key=${new URLSearchParams(window.location.search).get("key")}` : ""}`, {
+        const res = await fetch(url, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -292,24 +348,37 @@ export function useKioskRemote(context: KioskRemoteContext): void {
               programs:
                 (window as unknown as Record<string, unknown>)
                   .__resonanceKioskPrograms ?? null,
+              // PRESENTER: playback (auto / manual = song by song), hold
+              // setting, status (playing / fading / holding / going), the
+              // set playing from, current, cued and what NEXT will play
+              presenter:
+                (context === "loop"
+                  ? (window as unknown as Record<string, unknown>).__resonancePresenter
+                  : null) ?? null,
             },
           }),
         });
-        if (!res.ok || stopped) return;
-        const { commands } = (await res.json()) as { commands?: string[] };
-        for (const cmd of commands ?? []) runCommand(cmd, context);
+        if (stopped) return;
+        if (res.ok) {
+          const { commands } = (await res.json()) as { commands?: string[] };
+          for (const cmd of commands ?? []) runCommand(cmd, context);
+          // ECHO at once (lab 2026-10-13: playback:auto still read "manual" on
+          // the phone 3 s later): this POST's status was snapshotted BEFORE the
+          // commands ran — post the fresh status right away.
+          next = (commands?.length ?? 0) > 0 ? 150 : KIOSK_GAP_MS;
+        }
       } catch { /* hotspot-local fetch; transient failures are fine */ }
+      schedule(next);
     };
 
     void fetchPackLocalImages().then(() => {
       if (stopped || !isPackActive()) return;
-      timer = setInterval(() => void tick(), POLL_MS);
       void tick();
     });
 
     return () => {
       stopped = true;
-      if (timer) clearInterval(timer);
+      if (timer) clearTimeout(timer);
     };
   }, [context]);
 }

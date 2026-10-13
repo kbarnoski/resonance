@@ -129,3 +129,20 @@ export function stepAllowed(step: PianoStep, tMs: number): boolean {
   if (step === "release" || step === "reveal") return true;
   return engineWorkAllowed(tMs);
 }
+
+/**
+ * A HELD card (phone title-hold, song by song "hold on the title", a reload or
+ * the return from Live into a hold) has no pre-start coming, so there is no
+ * spin-up to protect: its clock stays just before the window while held, and
+ * the piano may form late. Released, the real clock resumes (the release is
+ * always legal).
+ */
+export function heldCardClock(tMs: number, held: boolean): number {
+  return held ? Math.min(tMs, WINDOW_START_MS - 1) : tMs;
+}
+
+/** Held, image decoded, programs not warm by the reveal: text first, the piano
+ *  forms as soon as the programs are warm (never a piano-less held card). */
+export function heldPianoWaits(ready: boolean, hasImage: boolean, held: boolean): boolean {
+  return !ready && hasImage && held;
+}

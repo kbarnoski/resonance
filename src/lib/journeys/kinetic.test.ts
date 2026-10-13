@@ -109,7 +109,7 @@ describe("imagery native resolution", () => {
 describe("steady-clock shaders (Karel 2026-10-11: graphic swirls must not lurch with the music)", () => {
   it("the big graphic spirals run steady; the dark hurricane stays reactive", async () => {
     const { isSteadyClockShader, STEADY_CLOCK_SHADERS } = await import("./kinetic");
-    for (const m of ["r2-spiralgal", "r3-fernunfurl", "fibonacci-spiral", "whirlpool"]) expect(isSteadyClockShader(m)).toBe(true);
+    for (const m of ["r2-spiralgal", "r3-fernunfurl", "fibonacci-spiral"]) expect(isSteadyClockShader(m)).toBe(true); // whirlpool deleted 2026-10-13
     for (const m of ["maelstrom", "maelstrom-dark", "magma", null, undefined]) expect(isSteadyClockShader(m)).toBe(false);
     const { SHADERS } = await import("@/lib/shaders");
     for (const m of STEADY_CLOCK_SHADERS) expect(SHADERS).toHaveProperty(m);
