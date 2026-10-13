@@ -63,6 +63,7 @@ import {
 } from "./souls";
 import type { SpectrumFrame } from "./spectrum";
 import { critStep, springTau, stillPreloadAllowed, type Crit } from "./image-follow";
+import { livingScoreEnabled, scoreSessionStore, SCORE_STRIDE, SCORE_TUNING } from "./living-score";
 
 /** Cinematic look default: on (Karel's keep 2026-10-13); ?cine=0 turns it off. */
 export function cineEnabled(): boolean {
@@ -102,6 +103,10 @@ export interface ParticleEngineOptions {
    *  ON in the show since Karel's keep (2026-10-13); ?cine=0 turns it off.
    *  Per journey via setCine (the mastered takes keep their locked look). */
   cine?: boolean;
+  /** THE LIVING SCORE (living-score.ts): compile the note-ripple force field
+   *  into the simulation. Default: ?score=1 (sessionStorage-kept), else off —
+   *  off, the simulation source is exactly the show build's. */
+  score?: boolean;
   /** Frame-time watchdog: called (once) when a frame's CPU time or the rAF gap
    *  while running exceeds the budget, or a program fails. */
   watchdog?: { cpuMs: number; gapMs: number; onStall: (why: string) => void };
@@ -210,6 +215,12 @@ export interface ParticleEngine {
   setCamScale(k: number): void;
   /** Cinematic look for the current journey (off for the mastered takes). */
   setCine(on: boolean): void;
+  /** THE LIVING SCORE: this frame's packed ripples (living-score.ts LivingScore
+   *  .packed, `n` live) — null / 0 clears. Not refreshed for 0.25 s (the layer
+   *  let go) = the ripples fade out on their own. No-op when compiled out. */
+  setScore(packed: Float32Array | null, n: number): void;
+  /** Is the living score compiled into this engine? */
+  scoreCompiled(): boolean;
   /** Off-centre placement: screen fractions of half-width / half-height. */
   setOffset(x: number, y: number): void;
   /** Image-form plane size (1 = full frame). */
@@ -495,6 +506,12 @@ export function createParticleEngine(
   const pairingOn = (opts.pairing ?? pairingEnabled()) && !!gl.getExtension("EXT_float_blend");
   const cineAllowed = opts.cine ?? cineEnabled();
   let cineOn = cineAllowed;
+  // THE LIVING SCORE: decided once per engine (its programs carry it or not)
+  const scoreOn = opts.score ?? livingScoreEnabled(undefined, scoreSessionStore());
+  const SCORE_MAX = SCORE_TUNING.MAX_RIPPLES;
+  const scoreIn = new Float32Array(SCORE_MAX * SCORE_STRIDE);
+  const scoreA = new Float32Array(SCORE_MAX * 4), scoreB = new Float32Array(SCORE_MAX * 4);
+  let scoreN = 0, scoreStale = 1e9, scoreLive = 0;
   const pairProgs = pairingOn
     ? {
         stats: startProgram(gl, QUAD_VS, PAIR_STATS_FS),
@@ -520,7 +537,7 @@ export function createParticleEngine(
     const k = `s:${b}`;
     let pr = simProgs.get(k);
     if (!pr) {
-      pr = startProgram(gl!, QUAD_VS, buildSimFS([b]));
+      pr = startProgram(gl!, QUAD_VS, buildSimFS([b], { score: scoreOn }));
       simProgs.set(k, pr);
     }
     return pr;
@@ -1172,6 +1189,33 @@ export function createParticleEngine(
       g.uniform3f(sim.u.uMelody, melody[0], melody[1], melody[2]);
       g.uniform1f(sim.u.uMelodyW, melodyW);
     }
+    // THE LIVING SCORE: screen-plane ripples → world, faded when the layer lets
+    // go (stale > 0.25 s) and held back while an image form is worn
+    if (scoreOn && sim.u.uScoreN) {
+      scoreStale += dt;
+      scoreLive += ((scoreStale < 0.25 ? 1 : 0) - scoreLive) * (1 - Math.exp(-dt / 0.3));
+      const held = 1 - 0.85 * Math.min(1, Math.max(env.imgForm, env.imgShow));
+      const k = scoreLive * held;
+      const n = k > 1e-3 ? scoreN : 0;
+      for (let i = 0; i < n; i++) {
+        const o = i * SCORE_STRIDE, x = scoreIn[o] * halfW, y = scoreIn[o + 1] * halfH;
+        for (let j = 0; j < 3; j++) scoreA[i * 4 + j] = o3[j] + right[j] * x + up[j] * y;
+        scoreA[i * 4 + 3] = scoreIn[o + 2] * k;
+        scoreB[i * 4] = Math.max(0.05, scoreIn[o + 3] * halfH);
+        scoreB[i * 4 + 1] = scoreIn[o + 4];
+        scoreB[i * 4 + 2] = scoreIn[o + 5];
+        scoreB[i * 4 + 3] = scoreIn[o + 6];
+      }
+      g.uniform1i(sim.u.uScoreN, n);
+      if (n > 0) {
+        if (sim.u["uScoreA[0]"]) g.uniform4fv(sim.u["uScoreA[0]"], scoreA);
+        if (sim.u["uScoreB[0]"]) g.uniform4fv(sim.u["uScoreB[0]"], scoreB);
+        if (sim.u.uScoreAxis) {
+          const ax = [right[1] * up[2] - right[2] * up[1], right[2] * up[0] - right[0] * up[2], right[0] * up[1] - right[1] * up[0]];
+          g.uniform3f(sim.u.uScoreAxis, ax[0], ax[1], ax[2]);
+        }
+      }
+    }
     const pairOn = pairUse && dissolveT === null;
     g.uniform1f(sim.u.uImgForm, pairOn ? Math.min(1, env.imgForm / pairLit) : env.imgForm);
     g.uniform1f(sim.u.uPairSoft, pairOn ? 1 - pairLit : 0);
@@ -1617,6 +1661,14 @@ export function createParticleEngine(
     setHue(h, sv = 1) { hueTarget = h; satTarget = Math.max(0.3, Math.min(1.6, sv)); },
     setForm(f) { formTarget = [...f] as [number, number, number, number]; },
     setCine(on) { cineOn = cineAllowed && on; },
+    setScore(packed, n) {
+      if (!scoreOn) return;
+      if (!packed || n <= 0) { scoreN = 0; scoreStale = 0; return; }
+      scoreN = Math.min(SCORE_MAX, n, Math.floor(packed.length / SCORE_STRIDE));
+      scoreIn.set(packed.subarray(0, scoreN * SCORE_STRIDE));
+      scoreStale = 0;
+    },
+    scoreCompiled() { return scoreOn; },
     setCamScale(k) { camScaleTarget = camScaleBase * Math.max(0.3, Math.min(2.6, k)); },
     setOffset(x, y) { offTX = Math.max(-0.7, Math.min(0.7, x)); offTY = Math.max(-0.5, Math.min(0.5, y)); },
     setImageScale(k) { imgScaleT = Math.max(0.2, Math.min(1.2, k)); },
