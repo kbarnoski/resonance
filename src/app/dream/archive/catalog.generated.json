@@ -1,5 +1,21 @@
 [
  {
+  "slug": "20400-lenticule",
+  "cycle": 20400,
+  "name": "Lenticule",
+  "status": "demoable",
+  "description": "One question: What if two of Karel's recordings were woven into a single *lenticular* print — and moving your head (or dragging) swept the viewing angle so the woven image *and* th",
+  "category": "local"
+ },
+ {
+  "slug": "20160-timesring",
+  "cycle": 20160,
+  "name": "Times Ring",
+  "status": "demoable",
+  "description": "What if conducting your own recording sculpted a living string-art figure — and the exact number of petals you *see* is the harmonic color you *hear*?",
+  "category": "local"
+ },
+ {
   "slug": "20080-phosphorhelm",
   "cycle": 20080,
   "name": "Phosphor Helm",
