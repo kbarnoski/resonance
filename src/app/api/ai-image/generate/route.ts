@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { logger } from "@/lib/logger";
 import { isAdmin } from "@/lib/auth/require-admin";
 import { checkRateLimit, rateLimitedResponse, rateLimitKey } from "@/lib/rate-limit";
-import { checkOrigin } from "../origin-check";
+import { checkOrigin, kioskNoLive } from "../origin-check";
 
 // Three fal models, billed at very different rates:
 //   schnell — 4 inference steps, ~$0.003/frame   (cheap)
@@ -54,6 +54,7 @@ const GLOBAL_DAILY_MAX = Math.max(
 const GLOBAL_DAILY_REFILL_PER_SEC = GLOBAL_DAILY_MAX / 86_400;
 
 export async function POST(request: Request) {
+  const kiosk = kioskNoLive(); if (kiosk) return kiosk;
   // Origin allowlist FIRST — random third-party sites can't spend the
   // fal key. Same-origin pages (/installation, /dream, /demo) pass;
   // no auth is demanded (the kiosk is anonymous by design).
