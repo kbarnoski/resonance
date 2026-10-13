@@ -10,6 +10,13 @@ import { getParticlePresent } from "@/lib/journeys/particle-presence";
 import { disableParticlesForSession } from "@/lib/particles/shared-engine";
 import { glitchRecord } from "@/lib/journeys/glitch-recorder";
 import { PARTICLES_SESSION_KEY } from "@/lib/journeys/particle-lead";
+import {
+  parsePresenterCommand,
+  presenterReduce,
+  restorePresenter,
+  serializePresenter,
+  PRESENTER_STORAGE_KEY,
+} from "./presenter-machine";
 
 // Rolling frame-rate meter (2026-10-05: a steady slowdown never trips the
 // >50ms gap recorder — Karel saw journeys crawl while the log stayed clean).
@@ -52,8 +59,39 @@ export type KioskRemoteContext = "loop" | "room" | "live" | null;
 
 const POLL_MS = 2_000;
 
+/** PRESENTER (song by song) commands — presenter-machine.ts. In the loop
+ *  they drive the loop client; elsewhere (Live Theatre / DJ room) settings
+ *  are stored for the loop to pick up, and NEXT / play-now enter the loop. */
+function runPresenterCommand(cmd: string, context: KioskRemoteContext): boolean {
+  const ev = parsePresenterCommand(cmd);
+  if (!ev) return false;
+  if (context === "loop") {
+    window.dispatchEvent(new CustomEvent("installation-presenter", { detail: ev }));
+    return true;
+  }
+  let raw: string | null = null;
+  try { raw = window.localStorage.getItem(PRESENTER_STORAGE_KEY); } catch { /* storage blocked */ }
+  const state = restorePresenter(raw);
+  const kiosk = context === "live" ? "&kiosk=1" : "";
+  if (ev.type === "next" || ev.type === "play-now") {
+    const target = ev.type === "play-now" ? ev.ref : state.cued;
+    const start = target ? `${target.journeyId}@${target.programId}` : state.setId;
+    if (ev.type === "play-now") {
+      try { window.localStorage.setItem(PRESENTER_STORAGE_KEY, serializePresenter({ ...state, cued: null })); } catch { /* ok */ }
+    }
+    window.location.href = `/room/installation?loop=1${start ? `&start=${encodeURIComponent(start)}` : ""}${kiosk}`;
+    return true;
+  }
+  if (ev.type === "set-playback" || ev.type === "set-hold-on" || ev.type === "set-set" || ev.type === "cue" || ev.type === "clear-cue") {
+    const next = presenterReduce(state, ev, []).state;
+    try { window.localStorage.setItem(PRESENTER_STORAGE_KEY, serializePresenter(next)); } catch { /* ok */ }
+  }
+  return true;
+}
+
 function runCommand(cmd: string, context: KioskRemoteContext): void {
   const store = useAudioStore.getState();
+  if (runPresenterCommand(cmd, context)) return;
   if (cmd.startsWith("mark:")) {
     // MARK (Karel 2026-10-12): he taps "Mark glitch" the moment he sees one;
     // the phone's send time puts it on the exact second of the track (the
@@ -292,6 +330,13 @@ export function useKioskRemote(context: KioskRemoteContext): void {
               programs:
                 (window as unknown as Record<string, unknown>)
                   .__resonanceKioskPrograms ?? null,
+              // PRESENTER: playback (auto / manual = song by song), hold
+              // setting, status (playing / fading / holding / going), the
+              // set playing from, current, cued and what NEXT will play
+              presenter:
+                (context === "loop"
+                  ? (window as unknown as Record<string, unknown>).__resonancePresenter
+                  : null) ?? null,
             },
           }),
         });

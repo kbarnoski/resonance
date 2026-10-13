@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { VisualizerClient } from "./visualizer-client";
 import { useAudioStore, type Track } from "@/lib/audio/audio-store";
 import { getAudioEngine, ensureResumed, primeAudioElement, tryPlay, rampGainTo } from "@/lib/audio/audio-engine";
@@ -17,6 +17,19 @@ import { InstallationCredits } from "./installation-credits";
 import { InstallationDebugHud, logInstallFailure } from "./installation-debug-hud";
 import { InstallationStatusPanel } from "./installation-status-panel";
 import { useKioskRemote } from "@/lib/audio/use-kiosk-remote";
+import {
+  presenterReduce,
+  restorePresenter,
+  serializePresenter,
+  peekNext,
+  PRESENTER_STORAGE_KEY,
+  PRESENTER_NEXT_FADE_MS,
+  PRESENTER_GO_BEAT_MS,
+  type PresenterEvent,
+  type PresenterEffect,
+  type PresenterRef,
+  type PresenterState,
+} from "@/lib/audio/presenter-machine";
 import { ResonanceMark } from "@/components/branding/resonance-mark";
 import { Eyebrow, DisplayTitle } from "@/components/ui/typography";
 import type { ProgramDedication } from "@/lib/journeys/installation-sequence";
@@ -181,9 +194,26 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
   // and resonance hanging out … introduce it and leave it up until i formally
   // start"): the statement card holds indefinitely; "title-release" starts
   // Rise Above from the card. ?titlehold=1 opens the page already holding.
-  const [titleHold, setTitleHold] = useState(
-    () => typeof window !== "undefined" && new URLSearchParams(window.location.search).has("titlehold"),
-  );
+  // PRESENTER (song by song, presenter-machine.ts) — persisted so a kiosk
+  // recovery reload keeps the mode, the chosen set and the cue.
+  const presenterRef = useRef<PresenterState | null>(null);
+  if (presenterRef.current === null) {
+    let raw: string | null = null;
+    try { raw = typeof window !== "undefined" ? window.localStorage.getItem(PRESENTER_STORAGE_KEY) : null; } catch { /* storage blocked */ }
+    presenterRef.current = restorePresenter(raw);
+  }
+  // bumped by every presenter go / fade — a pending hold or fade checks it
+  const presenterGoGenRef = useRef(0);
+  const [titleHold, setTitleHold] = useState(() => {
+    if (typeof window === "undefined") return false;
+    const q = new URLSearchParams(window.location.search);
+    if (q.has("titlehold")) return true;
+    // song by song, reloaded mid-show (watchdog / recovery): the ending can't
+    // be recreated, so the loop opens HOLDING on the title card; NEXT plays on
+    // (an explicit ?start= from the phone still starts there)
+    const pr = presenterRef.current;
+    return !q.has("start") && pr?.playback === "manual" && !!pr.current;
+  });
   const titleHoldRef = useRef(titleHold);
   titleHoldRef.current = titleHold;
   const releaseFromHoldRef = useRef(false);
@@ -286,13 +316,18 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
 
   useEffect(() => {
     let t: ReturnType<typeof setTimeout> | null = null;
-    const onHold = () => {
+    const onHold = (e: Event) => {
       if (titleHoldRef.current || t) return;
+      // presenter "hold on the title": keep the set playing from (NEXT picks the track)
+      const keep = (e as CustomEvent<{ keep?: boolean } | undefined>).detail?.keep === true;
+      const gen = presenterGoGenRef.current;
       glitchRecord("title-hold", phaseRef.current.kind);
-      postEvent("title-hold");
+      postEvent(keep ? "title-hold (presenter)" : "title-hold");
       const ra = Math.max(0, programs.findIndex((p) => p.id === TRAMOKYO_MIX_ID));
       const toCard = () => {
         t = null;
+        // NEXT landed during the fade: the go owns the screen now
+        if (presenterGoGenRef.current !== gen) { setHoldFading(false); return; }
         try { getJourneyEngine().setFrozen(true); } catch { /* engine gone */ }
         // the faded journey is torn down (as at credits): the GPU idles under
         // the card, and the phone shows "HOLDING" instead of the old journey
@@ -300,8 +335,10 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         setTitleHold(true);
         setHoldFading(false); // the card's opaque black is up in the same render
         useAudioStore.getState().setSuppressNextJourneyIntro(false);
-        setStartIdx(0);
-        setProgramIndex(ra);
+        if (!keep) {
+          setStartIdx(0);
+          setProgramIndex(ra);
+        }
         setPhase({ kind: "intro" });
       };
       if (phaseRef.current.kind === "intro") { toCard(); return; } // already on black / the card
@@ -335,7 +372,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       programs.map((p) => ({
         id: p.id,
         label: p.presenting.replace(/^the /, ""),
-        journeys: p.sequence.map((e) => ({ id: e.journey.id, name: e.journey.name })),
+        journeys: p.sequence.map((e) => ({ id: e.journey.id, name: e.journey.name, dur: e.track?.duration ? Math.round(e.track.duration) : null })),
       }));
     // Journeys can live in several programs (Snowflake opens the main loop,
     // Rise Above and its album): resolve in the program playing, then its
@@ -484,6 +521,152 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       } catch { /* best-effort warm-up */ }
     })();
   };
+  // ─── PRESENTER — song by song (Karel 2026-10-13, Tramokyo) ─────────
+  // "autoplay within whatever set is selected versus song by song manual":
+  // the pure machine (presenter-machine.ts) decides; this performs. Auto-play
+  // with nothing cued = the loop's own hand-off, exactly as before. Song by
+  // song HOLDS on the ending (the journey's last moment stays alive — the
+  // closing emblem settled, particles breathing, shaders on their clock,
+  // silence) until NEXT, which goes through the loop's normal jump boundary.
+  const presenterSets = useMemo(
+    () => programs.map((p) => ({ id: p.id, journeyIds: p.sequence.map((e) => e.journey.id) })),
+    [programs],
+  );
+  const publishPresenter = useCallback(
+    (s: PresenterState) => {
+      try { window.localStorage.setItem(PRESENTER_STORAGE_KEY, serializePresenter(s)); } catch { /* storage blocked */ }
+      const named = (r: PresenterRef | null) => {
+        if (!r) return null;
+        const p = programs.find((x) => x.id === r.programId);
+        const e = p?.sequence.find((x) => x.journey.id === r.journeyId) ??
+          programs.flatMap((x) => x.sequence).find((x) => x.journey.id === r.journeyId);
+        return { ...r, name: e?.journey.name ?? r.journeyId };
+      };
+      (window as unknown as Record<string, unknown>).__resonancePresenter = {
+        playback: s.playback,
+        holdOn: s.holdOn,
+        status: s.status,
+        setId: s.setId,
+        current: named(s.current),
+        cued: named(s.cued),
+        next: named(peekNext(s, presenterSets)),
+      };
+    },
+    [programs, presenterSets],
+  );
+  const presenterStepRef = useRef<(e: PresenterEvent) => PresenterEffect>(() => ({ kind: "none" }));
+  presenterStepRef.current = (e: PresenterEvent) => {
+    const r = presenterReduce(presenterRef.current!, e, presenterSets);
+    presenterRef.current = r.state;
+    publishPresenter(r.state);
+    return r.effect;
+  };
+  const presenterGoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const presenterGoRef = useRef<(target: PresenterRef, fadeCurrent: boolean) => void>(() => {});
+  presenterGoRef.current = (target: PresenterRef, fadeCurrent: boolean) => {
+    const gen = ++presenterGoGenRef.current;
+    if (presenterGoTimerRef.current) clearTimeout(presenterGoTimerRef.current);
+    const pi = programs.findIndex((p) => p.id === target.programId);
+    const ji = pi >= 0 ? programs[pi].sequence.findIndex((e) => e.journey.id === target.journeyId) : -1;
+    const entry = pi >= 0 && ji >= 0 ? programs[pi].sequence[ji] : null;
+    postEvent(`presenter go → ${entry?.journey.name ?? target.journeyId}${fadeCurrent ? " (fading current)" : ""}`);
+    // warm the target's audio while the boundary breathes
+    preloadTrack(entry?.track);
+    if (titleHoldRef.current && entry) {
+      // held on the title card: release straight into the target — the
+      // set-start hand-off (card fades, the journey spins up on black, title)
+      setStartIdx(ji);
+      setProgramIndex(pi);
+      releaseFromHoldRef.current = true;
+      setTitleHold(false);
+      return;
+    }
+    if (fadeCurrent) {
+      // mid-song: the music fades gracefully (store stays "playing" so the
+      // provider's 200 ms pause ramp can't cut it short), then pauses
+      void rampGainTo(0, PRESENTER_NEXT_FADE_MS).then(() => {
+        if (presenterGoGenRef.current !== gen) return;
+        try { getAudioEngine().audioElement.pause(); } catch { /* ok */ }
+        useAudioStore.setState({ isPlaying: false });
+      });
+    }
+    presenterGoTimerRef.current = setTimeout(() => {
+      presenterGoTimerRef.current = null;
+      if (presenterGoGenRef.current !== gen) return;
+      setHoldFading(false);
+      const cur = phaseRef.current;
+      if (
+        entry && cur.kind === "journey" && pi === programIndexRef.current && cur.index === ji &&
+        useAudioStore.getState().activeJourney?.id === target.journeyId
+      ) {
+        // REPLAY the journey on screen: rewind and re-run its phase (fresh
+        // end listeners + clocks); the journey itself stays mounted
+        try {
+          const el = getAudioEngine().audioElement;
+          el.currentTime = 0;
+          useAudioStore.setState({ isPlaying: true });
+          void tryPlay(el);
+        } catch { /* engine gone */ }
+        setPhase({ kind: "journey", index: ji });
+        return;
+      }
+      // the loop's own jump boundary (title card, music starts)
+      window.dispatchEvent(
+        new CustomEvent("installation-operator-jump-journey", { detail: `${target.journeyId}@${target.programId}` }),
+      );
+    }, (fadeCurrent ? PRESENTER_NEXT_FADE_MS : 0) + PRESENTER_GO_BEAT_MS);
+  };
+  const runPresenterEffect = useRef<(eff: PresenterEffect) => void>(() => {});
+  runPresenterEffect.current = (eff: PresenterEffect) => {
+    if (eff.kind === "go") presenterGoRef.current(eff.target, eff.fadeCurrent);
+    else if (eff.kind === "hold" && eff.on === "title") {
+      window.dispatchEvent(new CustomEvent("installation-operator-title-hold", { detail: { keep: true } }));
+    } else if (eff.kind === "advance") {
+      if (titleHoldRef.current) {
+        // auto-play from the held title card: on into the set
+        const t = peekNext(presenterRef.current!, presenterSets);
+        if (t) presenterGoRef.current(t, false);
+      } else {
+        window.dispatchEvent(new Event("installation-presenter-advance"));
+      }
+    } else if (eff.kind === "fade-out") {
+      // "Fade out now": the music fades over ~7 s (visuals settle under it),
+      // then the presenter holds — on the ending or the title card
+      const gen = ++presenterGoGenRef.current;
+      postEvent("presenter fade-out");
+      void rampGainTo(0, eff.ms).then(() => {
+        if (presenterGoGenRef.current !== gen) return;
+        try { getAudioEngine().audioElement.pause(); } catch { /* ok */ }
+        useAudioStore.setState({ isPlaying: false });
+        runPresenterEffect.current(presenterStepRef.current({ type: "fade-complete" }));
+      });
+    }
+  };
+  // Next / → on a held title card: song by song plays NEXT, otherwise Start
+  const titleHoldSkip = () => {
+    if (presenterRef.current?.playback === "manual") {
+      window.dispatchEvent(new CustomEvent<PresenterEvent>("installation-presenter", { detail: { type: "next" } }));
+    } else {
+      window.dispatchEvent(new Event("installation-operator-title-release"));
+    }
+  };
+  useEffect(() => {
+    const onPresenter = (e: Event) => {
+      const ev = (e as CustomEvent<PresenterEvent>).detail;
+      if (!ev || typeof ev !== "object") return;
+      const eff = presenterStepRef.current(ev);
+      if (ev.type !== "cue" && ev.type !== "clear-cue") postEvent(`presenter ${ev.type} → ${eff.kind}`);
+      runPresenterEffect.current(eff);
+    };
+    window.addEventListener("installation-presenter", onPresenter);
+    publishPresenter(presenterRef.current!);
+    return () => {
+      window.removeEventListener("installation-presenter", onPresenter);
+      if (presenterGoTimerRef.current) clearTimeout(presenterGoTimerRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [publishPresenter]);
+
   // Indices of journeys that were skipped due to audio load failure —
   // shown as red dots so the operator knows which recordings need fixing.
   const [skippedIndices, setSkippedIndices] = useState<Set<number>>(() => new Set());
@@ -1093,8 +1276,9 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
     const id = setInterval(() => {
       if (playOnce && !started) return;
       if (
-        phaseRef.current.kind === "journey" &&
-        !useAudioStore.getState().isPlaying
+        (phaseRef.current.kind === "journey" && !useAudioStore.getState().isPlaying) ||
+        // a held title card (phone / presenter) is deliberate, never a wedge
+        titleHoldRef.current
       ) {
         // Operator pause — freeze the wedge clock instead of reloading
         // a deliberately paused show.
@@ -1278,7 +1462,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         : `Title card — ${program?.presenting ?? "Resonance"}`;
       if (titleHold && expMs > 0) {
         // HOLD: no countdown, no pre-start. Next/skip also starts the set.
-        const skipToStart = () => window.dispatchEvent(new Event("installation-operator-title-release"));
+        const skipToStart = titleHoldSkip; // song by song: NEXT
         window.addEventListener("installation-operator-skip", skipToStart);
         return () => window.removeEventListener("installation-operator-skip", skipToStart);
       }
@@ -1715,6 +1899,16 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
     // cleared only one, and the orphan fired after a remote jump during the breath, yanking the kiosk
     // to the old next journey 3 s later (Karel 2026-10-09: "you started skipping around").
     let advanced = false;
+    // PRESENTER: every end signal (natural end, failure, cap) goes through the
+    // presenter once — auto-play hands back "advance" (today's loop, exactly);
+    // song by song HOLDS on this journey's ending until NEXT.
+    let endHandled = false;
+    presenterStepRef.current({ type: "track-started", ref: { journeyId: entry.journey.id, programId: program?.id ?? "" } });
+    const runEndEffect = (eff: PresenterEffect) => {
+      if (eff.kind === "advance") { advanceNow(); return; }
+      if (eff.kind === "hold") postEvent(`presenter hold (${eff.on}) ${entry.journey.name}`);
+      runPresenterEffect.current(eff);
+    };
     const advance = () => {
       // Mastering hold: replay the same journey instead of advancing.
       const masterId = masteringJourneyRef.current;
@@ -1722,6 +1916,14 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         window.dispatchEvent(new CustomEvent("installation-operator-jump-journey", { detail: masterId }));
         return;
       }
+      if (advanced || endHandled) return;
+      endHandled = true;
+      runEndEffect(presenterStepRef.current({ type: "track-ended" }));
+    };
+    // presenter → auto-play from a held ending: the loop's own hand-off
+    const presenterAdvance = () => advanceNow();
+    window.addEventListener("installation-presenter-advance", presenterAdvance);
+    const advanceNow = () => {
       if (advanced) return;
       advanced = true;
       if (phase.index + 1 < sequence.length) {
@@ -1780,7 +1982,11 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       // eslint-disable-next-line no-console
       console.log(`[installation] ${entry.journey.name}: operator skip`);
       postEvent(`skip ${entry.journey.name}`);
-      advance();
+      // auto-play: the loop's own skip (a cue / chosen set redirects it);
+      // song by song: NEXT (fades this one out, then the boundary)
+      const masterId = masteringJourneyRef.current;
+      if (masterId && sequence[phase.index]?.journey.id === masterId) { advance(); return; }
+      runEndEffect(presenterStepRef.current({ type: "skip" }));
     };
     window.addEventListener("installation-operator-skip", operatorSkip);
 
@@ -2237,6 +2443,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       unsubPauseClock();
       window.removeEventListener("installation-operator-skip", operatorSkip);
       window.removeEventListener("installation-operator-prev", operatorPrev);
+      window.removeEventListener("installation-presenter-advance", presenterAdvance);
       cancelAnimationFrame(raf);
       clearInterval(bgSafetyTick);
       clearInterval(preloadCheckId);
