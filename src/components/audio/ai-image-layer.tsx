@@ -739,7 +739,11 @@ export function AiImageLayer({
         void fetchPackLocalImages().then((map) => {
           packRefetchRef.current = false;
           const urls = map?.[jid];
-          if (urls && urls.length && journeyIdRef.current === jid) setPackUrls(urls);
+          // the ref directly too: when React's state already holds this same
+          // list (the journey-change reset cleared only the ref), setPackUrls
+          // bails out as "no change" and the ref stayed empty forever — Snowflake
+          // after First Light froze on one frame (replay, 2026-10-13)
+          if (urls && urls.length && journeyIdRef.current === jid) { localImageUrlsRef.current = urls; setPackUrls(urls); }
         });
       }
       return;
