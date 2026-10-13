@@ -442,6 +442,15 @@ vec4 soulForce(int soul, vec3 p, vec3 v, vec4 s, float fid, float lvl, float drv
                             u * tdH,
                             cos(u * 2.5 + k * 1.7 + uClock.y * 0.25) * tdSw * u);
     if (uVarOn > 0.5) home.xz += vec2(cos(u * 9.0 + k + uClock.y * 0.2), sin(u * 9.0 + k + uClock.y * 0.2)) * uVarB.w * u;
+    // (2026-10-13, Karel: "you use this pattern too much … dont get lazy with
+    // particle patterns" — a row of upright strands every time) uVarC: sheaf
+    // (strands lean out from the centre) · arc (roots on a smile / arch) ·
+    // stagger (uneven heights). All zero = the old upright row / ring.
+    if (uVarOn > 0.5) {
+      home.y -= u * tdH * uVarC.z * fract(k * 0.618034 + 0.17);
+      home.xz += root.xz * uVarC.x * u;
+      home.y += uVarC.y * root.x * root.x / max(0.5, (tdN - 1.0) * 0.5 * tdSp);
+    }
     home += curlNoise(vec3(k * 3.1, u * 2.0, uClock.y * 0.12)) * 0.12 * u * (1.0 + 2.0 * up * midW);
     home += (hash31(s.a * 77.0) - 0.5) * 0.05 * (1.0 + 4.0 * up * trebW);
     return vec4((home - p) * 8.0, 4.0);
