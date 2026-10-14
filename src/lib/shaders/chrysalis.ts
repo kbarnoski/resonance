@@ -62,9 +62,15 @@ void main() {
   vec2 vortexUV = vec2(cos(vortexAngle), sin(vortexAngle)) * radius * interiorDepth * 0.3;
   vortexUV += vec2(t * 0.05, 0.0);
 
-  float innerNoise = fbm(vortexUV * 2.0 + t * 0.2);
-  float innerNoise2 = fbm(vortexUV * 4.5 - t * 0.3 + innerNoise * 0.4);
-  float innerNoise3 = fbm(vortexUV * 9.0 + t * 0.4 + innerNoise2 * 0.3);
+  // PERF (2026-10-13, the 120 fps law): every use of the interior noise is
+  // multiplied by a mask that is exactly 0 outside the cocoon (interior
+  // 0.42, fog 0.40, bass glow 0.35) — skipped there, no pixel changes
+  float innerNoise = 0.0, innerNoise2 = 0.0, innerNoise3 = 0.0;
+  if (cocoonDist < 0.42) {
+    innerNoise = fbm(vortexUV * 2.0 + t * 0.2);
+    innerNoise2 = fbm(vortexUV * 4.5 - t * 0.3 + innerNoise * 0.4);
+    innerNoise3 = fbm(vortexUV * 9.0 + t * 0.4 + innerNoise2 * 0.3);
+  }
 
   // Interior is morphing organic matter — half-transformed wing scales, fluid chrysalis soup
   float morphProgress = innerNoise * 0.4 + innerNoise2 * 0.35 + innerNoise3 * 0.25;
@@ -137,7 +143,8 @@ void main() {
   color += vec3(1.3, 1.2, 1.0) * catchlight * exteriorMask * 1.5;
 
   // Outermost silk texture — FBM surface variation
-  float surfaceTexture = fbm(uv * 6.0 + t * 0.15);
+  // (the shell mask is exactly 0 outside 0.35-0.55 — skip the texture there)
+  float surfaceTexture = cocoonDist >= 0.35 && cocoonDist < 0.55 ? fbm(uv * 6.0 + t * 0.15) : 0.0;
   float shellMask = smoothstep(0.35, 0.45, cocoonDist) * smoothstep(0.55, 0.42, cocoonDist);
   color += silkColor * 0.2 * surfaceTexture * shellMask;
 

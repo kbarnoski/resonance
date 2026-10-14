@@ -110,30 +110,35 @@ void main() {
     }
 
     // ── Surface texture: fine bumps (SEM-like) ──
-    float surfaceNoise = fbm((gp / grainRadius) * 8.0 + vec2(seed * 5.0, tumble * 0.2));
-    float surfaceBump = surfaceNoise * 0.5 + 0.5;
+    // PERF (2026-10-13, the 120 fps law): every term below is exactly 0
+    // beyond 0.04 of the grain (glow, edge, rim and tips all fade by then) —
+    // the surface fbm and its colours only run where they can show.
+    if (grainDist < 0.04) {
+      float surfaceNoise = fbm((gp / grainRadius) * 8.0 + vec2(seed * 5.0, tumble * 0.2));
+      float surfaceBump = surfaceNoise * 0.5 + 0.5;
 
-    // Rim lighting — strong at edges like in microscopy
-    float rimLight = smoothstep(spikyRadius * 0.7, spikyRadius, gpLen);
-    rimLight = rimLight * grainEdge;
+      // Rim lighting — strong at edges like in microscopy
+      float rimLight = smoothstep(spikyRadius * 0.7, spikyRadius, gpLen);
+      rimLight = rimLight * grainEdge;
 
-    vec3 rimColor = palette(
-      gpAngle * 0.2 + t * 0.04 + paletteShift + 0.5,
-      vec3(0.6, 0.55, 0.4),
-      vec3(0.4, 0.35, 0.25),
-      vec3(0.9, 0.8, 0.6),
-      vec3(0.0, 0.08, 0.15)
-    );
+      vec3 rimColor = palette(
+        gpAngle * 0.2 + t * 0.04 + paletteShift + 0.5,
+        vec3(0.6, 0.55, 0.4),
+        vec3(0.4, 0.35, 0.25),
+        vec3(0.9, 0.8, 0.6),
+        vec3(0.0, 0.08, 0.15)
+      );
 
-    // Compose grain
-    color += surfaceColor * grainEdge * surfaceBump * depthFade * 0.7;
-    color += rimColor * rimLight * depthFade * 1.2;
-    color += surfaceColor * grainGlow * depthFade * 0.2;
+      // Compose grain
+      color += surfaceColor * grainEdge * surfaceBump * depthFade * 0.7;
+      color += rimColor * rimLight * depthFade * 1.2;
+      color += surfaceColor * grainGlow * depthFade * 0.2;
 
-    // ── Spike highlights — individual spine tips ──
-    float spikeTips = pow(max(spikes, 0.0), 3.0);
-    float tipHighlight = spikeTips * smoothstep(spikyRadius + 0.01, spikyRadius - 0.02, gpLen);
-    color += rimColor * tipHighlight * depthFade * u_mid * 0.8;
+      // ── Spike highlights — individual spine tips ──
+      float spikeTips = pow(max(spikes, 0.0), 3.0);
+      float tipHighlight = spikeTips * smoothstep(spikyRadius + 0.01, spikyRadius - 0.02, gpLen);
+      color += rimColor * tipHighlight * depthFade * u_mid * 0.8;
+    }
   }
 
   // ── Floating debris / smaller particles in the field ──

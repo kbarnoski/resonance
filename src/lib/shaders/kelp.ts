@@ -1,6 +1,12 @@
 import { U, SMOOTH_NOISE, VISIONARY_PALETTE, ROT2 } from "./shared";
+import { deriveFrag } from "./prepass-pack";
 
-export const FRAG =
+// PERF (2026-10-13, the 120 fps law): each strand's sway, width and growth
+// depend only on the pixel's ROW (uv.y) — 2 noise + 3 sin per strand per
+// pixel, 8 strands. A per-row float table (8 strands x canvas rows, PRE: the
+// identical code at the same uv.y) holds them; the main pass reads it. ORIG
+// is the reference and the no-float fallback. A/B: scripts/perf/shader-ab.mjs.
+export const ORIG =
   U +
   SMOOTH_NOISE +
   VISIONARY_PALETTE +
@@ -109,3 +115,61 @@ void main() {
   gl_FragColor = vec4(color, 1.0);
 }
 `;
+
+/** Texel (strand i, row y) = (xPos, width, growth * topTaper) for that row. */
+export const PRE_COLUMNS = 8;
+export const PRE =
+  U +
+  SMOOTH_NOISE +
+  `
+void main() {
+  float fi = floor(gl_FragCoord.x);
+  // the main canvas row this texel stands for (same y, same uv.y)
+  vec2 uv = (vec2(0.0, gl_FragCoord.y) - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y);
+  float t = u_time * 0.15;
+    float xBase = -0.6 + fi * 0.17 + sin(fi * 2.7) * 0.08;
+
+    // Sway with current — bass drives stronger sway
+    float sway = sin(uv.y * 3.0 + t * 0.8 + fi * 1.3) * (0.06 + u_bass * 0.04);
+    sway += sin(uv.y * 7.0 + t * 1.2 + fi * 0.7) * 0.02;
+    sway += snoise(vec2(uv.y * 2.0 + fi * 5.0, t * 0.3)) * 0.03;
+
+    float xPos = xBase + sway;
+    // Ribbon width varies along length — wider near base
+    float width = 0.025 + (1.0 - uv.y * 0.5 - 0.25) * 0.012;
+    width *= 0.8 + snoise(vec2(uv.y * 8.0 + fi * 3.0, t * 0.1)) * 0.3;
+
+    // Kelp grows from bottom
+    float growth = smoothstep(-0.8, -0.7, uv.y - 0.2 + fi * 0.08);
+    float topTaper = smoothstep(0.7 - fi * 0.03, 0.4 - fi * 0.03, uv.y);
+
+    gl_FragColor = vec4(xPos, width, growth * topTaper, 1.0);
+}
+`;
+
+export const FRAG = deriveFrag(ORIG, [
+  ["void main() {", "uniform sampler2D u_pre;\nvoid main() {"],
+  [`    float xBase = -0.6 + fi * 0.17 + sin(fi * 2.7) * 0.08;
+
+    // Sway with current — bass drives stronger sway
+    float sway = sin(uv.y * 3.0 + t * 0.8 + fi * 1.3) * (0.06 + u_bass * 0.04);
+    sway += sin(uv.y * 7.0 + t * 1.2 + fi * 0.7) * 0.02;
+    sway += snoise(vec2(uv.y * 2.0 + fi * 5.0, t * 0.3)) * 0.03;
+
+    float xPos = xBase + sway;
+`, `    vec4 k = texture2D(u_pre, vec2((fi + 0.5) / 8.0, gl_FragCoord.y / u_resolution.y)); // PRE: this row's strand
+    float xPos = k.x;
+`],
+  [`    // Ribbon width varies along length — wider near base
+    float width = 0.025 + (1.0 - uv.y * 0.5 - 0.25) * 0.012;
+    width *= 0.8 + snoise(vec2(uv.y * 8.0 + fi * 3.0, t * 0.1)) * 0.3;
+
+    // Kelp grows from bottom
+    float growth = smoothstep(-0.8, -0.7, uv.y - 0.2 + fi * 0.08);
+    float topTaper = smoothstep(0.7 - fi * 0.03, 0.4 - fi * 0.03, uv.y);
+
+`, `    float width = k.y;
+`],
+  ["float strand = smoothstep(width + 0.005, width - 0.002, dist) * growth * topTaper;", "float strand = smoothstep(width + 0.005, width - 0.002, dist) * k.z;"],
+  ["float strandGlow = smoothstep(width + 0.04, width, dist) * growth * topTaper;", "float strandGlow = smoothstep(width + 0.04, width, dist) * k.z;"],
+], "kelp");

@@ -1,6 +1,13 @@
 import { U, SMOOTH_NOISE, VISIONARY_PALETTE, ROT2 } from "./shared";
+import { deriveFrag, fieldGrid } from "./prepass-pack";
 
-export const FRAG = U + SMOOTH_NOISE + VISIONARY_PALETTE + ROT2 + `
+// PERF (2026-10-13, the 120 fps law): the smooth noise of the forge — the
+// metal grain, brushing and oxide, and the six hot spots' shape noise (18
+// noise evaluations per pixel) — is computed once per 3x3 pixels in a float
+// prepass (PRE, the same code at the same points) and interpolated; the heat
+// itself, palettes and sparks stay per pixel. ORIG is the reference and the
+// no-float fallback. A/B: scripts/perf/shader-ab.mjs.
+export const ORIG = U + SMOOTH_NOISE + VISIONARY_PALETTE + ROT2 + `
 // Glowing iron being worked — dark metallic surface with bright
 // orange-white hot spots that pulse with bass. Bloom-like falloff.
 
@@ -158,3 +165,81 @@ void main() {
   gl_FragColor = vec4(color, 1.0);
 }
 `;
+
+const GRID = fieldGrid(3, 0);
+export const PRE_SCALE = 1 / 3;
+
+/** Block 0 = (metalGrain, metalGrain2, brushed, oxide noise); blocks 1-2 =
+ *  the six spots' shape noise. */
+export const PRE =
+  U +
+  SMOOTH_NOISE +
+  ROT2 +
+  `
+// Glowing iron being worked — dark metallic surface with bright
+// orange-white hot spots that pulse with bass. Bloom-like falloff.
+
+// Light 3-octave fbm
+float fbm3(vec2 p) {
+  float v = 0.0, a = 0.5;
+  mat2 r = mat2(0.8, 0.6, -0.6, 0.8);
+  for (int i = 0; i < 3; i++) { v += a * snoise(p); p = r * p * 2.0; a *= 0.5; }
+  return v;
+}
+
+float hash1(float n) { return fract(sin(n) * 43758.5453); }
+` +
+  GRID.pre +
+  `
+float spotShape(vec2 uv, float fi, float t) {
+    float hx = hash1(fi * 13.37) * 1.4 - 0.7;
+    float hy = hash1(fi * 7.91) * 1.0 - 0.5;
+    hx += sin(t * (0.3 + hash1(fi * 3.1) * 0.4) + fi * 2.1) * 0.2;
+    hy += cos(t * (0.25 + hash1(fi * 5.3) * 0.3) + fi * 1.7) * 0.15;
+
+    // Distance to hot spot
+    vec2 toSpot = uv - vec2(hx, hy);
+    // Rotate for variety
+    toSpot *= rot2(fi * 1.047);
+    // Elliptical shape — stretched randomly
+    float aspect = 0.6 + hash1(fi * 11.3) * 0.8;
+    toSpot.x *= aspect;
+    return fbm3(toSpot * 5.0 + vec2(t * 0.2, fi * 3.0));
+}
+void main() {
+  float block, row;
+  vec2 fc = preTexel(block, row);
+  vec2 uv = (fc - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y);
+  float t = u_time * 0.08;
+  if (block < 0.5) {
+    vec2 metalUV = uv * 3.0;
+  float metalGrain = fbm3(metalUV + vec2(t * 0.05, 0.0));
+  float metalGrain2 = snoise(metalUV * 4.0 + vec2(0.0, t * 0.03));
+
+  // Anisotropic brushed effect — stretch noise horizontally
+  float brushed = snoise(vec2(uv.x * 8.0, uv.y * 2.0) + t * 0.02);
+    gl_FragColor = vec4(metalGrain, metalGrain2, brushed, snoise(uv * 12.0 + metalGrain * 2.0));
+  } else if (block < 1.5) {
+    gl_FragColor = vec4(spotShape(uv, 0.0, t), spotShape(uv, 1.0, t), spotShape(uv, 2.0, t), spotShape(uv, 3.0, t));
+  } else {
+    gl_FragColor = vec4(spotShape(uv, 4.0, t), spotShape(uv, 5.0, t), 0.0, 1.0);
+  }
+}
+`;
+
+export const FRAG = deriveFrag(ORIG, [
+  ["void main() {", GRID.main + `
+void main() {
+  vec4 field0 = preField(0.0);
+  vec4 field1 = preField(1.0);
+  vec4 field2 = preField(2.0);`],
+  [`  float metalGrain = fbm3(metalUV + vec2(t * 0.05, 0.0));
+  float metalGrain2 = snoise(metalUV * 4.0 + vec2(0.0, t * 0.03));
+
+  // Anisotropic brushed effect — stretch noise horizontally
+  float brushed = snoise(vec2(uv.x * 8.0, uv.y * 2.0) + t * 0.02);`, `  float metalGrain = field0.x;
+  float metalGrain2 = field0.y;
+  float brushed = field0.z;`],
+  [`    float shapeNoise = fbm3(toSpot * 5.0 + vec2(t * 0.2, fi * 3.0));`, `    float shapeNoise = i == 0 ? field1.x : i == 1 ? field1.y : i == 2 ? field1.z : i == 3 ? field1.w : i == 4 ? field2.x : field2.y;`],
+  [`  float oxide = snoise(uv * 12.0 + metalGrain * 2.0);`, "  float oxide = field0.w;"],
+], "iron-forge");

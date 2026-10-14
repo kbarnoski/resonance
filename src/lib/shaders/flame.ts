@@ -1,6 +1,17 @@
 import { U, SMOOTH_NOISE, VISIONARY_PALETTE, ROT2 } from "./shared";
+import { deriveFrag, fieldGrid, FBM_SPLIT } from "./prepass-pack";
 
-export const FRAG = U + SMOOTH_NOISE + VISIONARY_PALETTE + ROT2 + `
+// PERF (2026-10-13 — the 120 fps law). The original (ORIG, below —
+// unchanged, and the layer's fallback without float render targets) paid ~64
+// noise evaluations per pixel. Its SMOOTH parts are computed once per 3x3
+// pixels in a float prepass (PRE, the same code at the same points) and
+// interpolated: both domain-warped flame bodies, the low octaves (1-4) of
+// both flicker layers and of the ember bed, and the smoke. The flickers' and
+// embers' top octaves (periods down to ~6 px) stay per pixel, and every
+// noise is still skipped exactly where its mask is zero.
+// A/B vs ORIG at kiosk resolution: scripts/perf/shader-ab.mjs.
+
+export const ORIG = U + SMOOTH_NOISE + VISIONARY_PALETTE + ROT2 + `
 // Dancing fire — organic flames rising from the bottom with layered noise.
 // Hot white/yellow core, orange mid, red/crimson edges fading to darkness.
 
@@ -78,10 +89,8 @@ void main() {
 
   // ─── LAYER 3: Inner fire (faster, narrow, bright) ───
   {
-    // PERF (2026-10-13, the 120 fps law): every noise below is skipped only
-    // where its mask is EXACTLY zero — same pixels, bit for bit.
     vec2 fp = vec2(uv.x * 1.8, above * 1.3);
-    float n = above >= 0.85 ? 0.0 : flickerNoise(fp * 2.0, t * 1.3);
+    float n = flickerNoise(fp * 2.0, t * 1.3);
     n = n * 0.5 + 0.5;
 
     float heightFade = smoothstep(0.85, -0.05, above);
@@ -102,7 +111,7 @@ void main() {
   // ─── LAYER 4: Hot core (fastest, very narrow, white-yellow) ───
   {
     vec2 fp = vec2(uv.x * 2.5, above * 1.5);
-    float n = above >= 0.5 ? 0.0 : flickerNoise(fp * 2.5 + 3.0, t * 1.8);
+    float n = flickerNoise(fp * 2.5 + 3.0, t * 1.8);
     n = n * 0.5 + 0.5;
 
     float heightFade = smoothstep(0.5, -0.03, above);
@@ -124,7 +133,7 @@ void main() {
   // ─── EMBER BED at ground level ───
   {
     float groundMask = smoothstep(0.08, -0.15, above);
-    float emberN = above >= 0.08 ? 0.0 : fbm(vec2(uv.x * 5.0 + t * 0.4, t * 0.3)) * 0.5 + 0.5;
+    float emberN = fbm(vec2(uv.x * 5.0 + t * 0.4, t * 0.3)) * 0.5 + 0.5;
     float ember = smoothstep(0.25, 0.75, emberN);
 
     vec3 emberColor = palette(0.04 + paletteShift * 0.3,
@@ -155,7 +164,7 @@ void main() {
   // ─── SMOKE above the fire ───
   {
     float smokeY = above - 0.5;
-    float smokeN = smokeY <= 0.0 ? 0.0 : fbm(vec2(uv.x * 1.8, smokeY * 2.5 - t * 0.4)) * 0.5 + 0.5;
+    float smokeN = fbm(vec2(uv.x * 1.8, smokeY * 2.5 - t * 0.4)) * 0.5 + 0.5;
     float smoke = smoothstep(0.3, 0.65, smokeN) * smoothstep(0.0, 0.2, smokeY) * exp(-smokeY * 2.5) * 0.2;
     vec3 smokeColor = vec3(0.03, 0.02, 0.015);
     color += smokeColor * smoke * u_mid;
@@ -178,3 +187,89 @@ void main() {
 
   gl_FragColor = vec4(color, 1.0);
 }`;
+
+
+const HELPERS = `
+// Turbulent fire noise with domain warping for natural flicker
+float flameNoise(vec2 p, float time) {
+  vec2 warp1 = vec2(
+    fbm(p * 1.2 + vec2(time * 0.7, time * 0.3)),
+    fbm(p * 1.1 + vec2(-time * 0.5, time * 0.6) + 5.3)
+  );
+  vec2 warped = p + warp1 * 0.45;
+  return fbm(warped * 1.5 + vec2(0.0, -time * 2.0));
+}
+
+// Secondary flickering layer — faster, more chaotic
+float flickerNoise(vec2 p, float time) {
+  vec2 q = vec2(
+    snoise(p * 3.0 + vec2(time * 1.5, 0.0)),
+    snoise(p * 2.8 + vec2(0.0, time * 1.2) + 7.1)
+  );
+  return fbm(p * 2.0 + q * 0.35 + vec2(0.0, -time * 3.5));
+}
+`;
+const GRID = fieldGrid(2, 0);
+export const PRE_SCALE = 1 / 3;
+
+/** Block 0 = (flame 1, flame 2, flicker 1 octaves 1-4, flicker 2 octaves 1-4);
+ *  block 1 = (ember bed octaves 1-4, smoke). */
+export const PRE =
+  U +
+  SMOOTH_NOISE +
+  FBM_SPLIT +
+  HELPERS +
+  GRID.pre +
+  `
+// flickerNoise's own steps, the final fbm cut after octave 4
+float flickerLow(vec2 p, float time) {
+  vec2 q = vec2(
+    snoise(p * 3.0 + vec2(time * 1.5, 0.0)),
+    snoise(p * 2.8 + vec2(0.0, time * 1.2) + 7.1)
+  );
+  return fbmLow(p * 2.0 + q * 0.35 + vec2(0.0, -time * 3.5));
+}
+void main() {
+  float block, row;
+  vec2 fc = preTexel(block, row);
+  vec2 uv = (fc - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y);
+  float t = u_time * 0.12;
+  float groundY = -0.45 - u_bass * 0.03;
+  float above = uv.y - groundY;
+  if (block < 0.5) {
+    vec4 o;
+    o.x = flameNoise(vec2(uv.x * 0.8, above * 0.9) * 1.8, t * 0.6);
+    o.y = flameNoise(vec2(uv.x * 1.2, above * 1.1) * 2.2, t * 1.0);
+    o.z = flickerLow(vec2(uv.x * 1.8, above * 1.3) * 2.0, t * 1.3);
+    o.w = flickerLow(vec2(uv.x * 2.5, above * 1.5) * 2.5 + 3.0, t * 1.8);
+    gl_FragColor = o;
+  } else {
+    float emberLow = fbmLow(vec2(uv.x * 5.0 + t * 0.4, t * 0.3));
+    float smokeY = above - 0.5;
+    float smokeN = fbm(vec2(uv.x * 1.8, smokeY * 2.5 - t * 0.4)) * 0.5 + 0.5;
+    gl_FragColor = vec4(emberLow, smokeN, 0.0, 1.0);
+  }
+}
+`;
+
+/** The two-pass main shader: ORIG with its smooth parts read from PRE. */
+export const FRAG = deriveFrag(ORIG, [
+  ["void main() {", FBM_SPLIT + GRID.main + `
+// flickerNoise = its low octaves (PRE) + octaves 5-6 here, at the same point
+float flickerSplit(float low, vec2 p, float time) {
+  vec2 q = vec2(
+    snoise(p * 3.0 + vec2(time * 1.5, 0.0)),
+    snoise(p * 2.8 + vec2(0.0, time * 1.2) + 7.1)
+  );
+  return low + fbmHigh(p * 2.0 + q * 0.35 + vec2(0.0, -time * 3.5));
+}
+void main() {
+  vec4 field0 = preField(0.0);
+  vec4 field1 = preField(1.0);`],
+  ["float n = flameNoise(fp * 1.8, t * 0.6);", "float n = field0.x;"],
+  ["float n = flameNoise(fp * 2.2, t * 1.0);", "float n = field0.y;"],
+  ["float n = flickerNoise(fp * 2.0, t * 1.3);", "float n = above >= 0.85 ? 0.0 : flickerSplit(field0.z, fp * 2.0, t * 1.3); // 0 where the mask is 0"],
+  ["float n = flickerNoise(fp * 2.5 + 3.0, t * 1.8);", "float n = above >= 0.5 ? 0.0 : flickerSplit(field0.w, fp * 2.5 + 3.0, t * 1.8); // 0 where the mask is 0"],
+  ["float emberN = fbm(vec2(uv.x * 5.0 + t * 0.4, t * 0.3)) * 0.5 + 0.5;", "float emberN = above >= 0.08 ? 0.0 : (field1.x + fbmHigh(vec2(uv.x * 5.0 + t * 0.4, t * 0.3))) * 0.5 + 0.5;"],
+  ["float smokeN = fbm(vec2(uv.x * 1.8, smokeY * 2.5 - t * 0.4)) * 0.5 + 0.5;", "float smokeN = field1.y;"],
+], "flame");

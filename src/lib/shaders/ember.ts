@@ -93,7 +93,8 @@ void main() {
 
   // ── Smoke/heat haze above ── (upper portion of screen)
   float smokeRegion = smoothstep(0.0, 0.5, uv.y);
-  float smoke = fbm(vec2(uv.x * 2.0 + t * 0.5, uv.y * 3.0 - t * 0.8)) * 0.5 + 0.5;
+  // (the smoke region is exactly 0 below uv.y 0 — PERF 2026-10-13: its fbm only runs above)
+  float smoke = uv.y > 0.0 ? fbm(vec2(uv.x * 2.0 + t * 0.5, uv.y * 3.0 - t * 0.8)) * 0.5 + 0.5 : 0.0;
   smoke *= smokeRegion;
 
   vec3 smokeColor = palette(

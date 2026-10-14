@@ -1,18 +1,102 @@
 import { U } from "./shared";
 
-// 16-bit packing for prepass TABLES (shaders/index.ts SHADER_PREPASS): a value
-// in [lo, hi] is stored in two 8-bit channels (65 536 steps — a light's
-// position over an 8-unit range lands within 1/10 of a kiosk pixel). The 8-bit
-// target stores k/255 exactly, so the round trip is exact to the step.
-export const PACK16 = `
-vec2 pack16(float v, float lo, float hi) {
-  float q = floor(clamp((v - lo) / (hi - lo), 0.0, 1.0) * 65535.0 + 0.5);
-  float h = floor(q / 256.0);
-  return vec2(h, q - h * 256.0) / 255.0;
+/**
+ * Derive a two-pass FRAG from a shader's ORIGINAL single-pass source by exact
+ * text substitutions — the original stays the single source of truth (and the
+ * no-float fallback), and the rewrite is reviewable as a diff. Throws at load
+ * if a substitution no longer matches (the original changed underneath).
+ */
+export function deriveFrag(src: string, subs: readonly (readonly [string, string])[], name: string): string {
+  let out = src;
+  for (const [from, to] of subs) {
+    if (!out.includes(from)) throw new Error(`[shaders] ${name}: prepass derivation lost its anchor: ${from.slice(0, 60)}`);
+    out = out.replace(from, to);
+  }
+  return out;
 }
-// (no re-rounding: c·255 is the stored byte to ~1e-7 — ≤ 0.004 of a step)
-float unpack16(vec2 c, float lo, float hi) {
-  return lo + dot(c, vec2(65280.0, 255.0)) * ((hi - lo) / 65535.0);
+
+/**
+ * FIELD GRID helpers for a scaled FLOAT prepass (SHADER_PREPASS scale +
+ * blocks + extraRows). The prepass texture holds `blocks` stacked copies of a
+ * round(W·scale) × round(H·scale) grid (4 values per texel each) and
+ * `extraRows` table rows above them. The grid is CORNER-ALIGNED: its first and
+ * last texel centres sit on the first and last pixel centres, so every pixel
+ * interpolates between computed samples (never extrapolates at the edges).
+ * Both passes get `u_preres` (the whole texture's size).
+ *
+ * PRE side:  preTexel(block, row) → the main-canvas pixel this texel stands
+ *            for; `block` = which field block (or −1 on a table row, then
+ *            `row` = the table row and the pixel's x = the table index).
+ * Main side: preField(block) — this pixel's interpolated 4 values;
+ *            preTable(i, row) — table entry i of a table row (exact texel).
+ */
+export function fieldGrid(blocks: number, extraRows: number): { pre: string; main: string } {
+  const B = blocks.toFixed(1), E = extraRows.toFixed(1);
+  const common = `
+uniform vec2 u_preres;
+vec2 preGrid() { return vec2(u_preres.x, (u_preres.y - ${E}) / ${B}); }
+`;
+  return {
+    pre: common + `
+vec2 preTexel(out float block, out float row) {
+  vec2 G = preGrid();
+  float y = gl_FragCoord.y - 0.5;
+  block = floor(y / G.y);
+  row = -1.0;
+  if (block >= ${B}) { row = y - ${B} * G.y; block = -1.0; return vec2(floor(gl_FragCoord.x), 0.0); }
+  vec2 cell = vec2(gl_FragCoord.x - 0.5, y - block * G.y);
+  return cell * (u_resolution - 1.0) / (G - 1.0) + 0.5;
+}
+`,
+    main: common + `
+uniform sampler2D u_pre;
+vec4 preField(float block) {
+  vec2 G = preGrid();
+  vec2 tc = (gl_FragCoord.xy - 0.5) * (G - 1.0) / (u_resolution - 1.0) + 0.5;
+  return texture2D(u_pre, vec2(tc.x / u_preres.x, (tc.y + block * G.y) / u_preres.y));
+}
+vec4 preTable(float i, float row) {
+  vec2 G = preGrid();
+  return texture2D(u_pre, vec2((i + 0.5) / u_preres.x, (${B} * G.y + row + 0.5) / u_preres.y));
+}
+`,
+  };
+}
+
+/** fbm (shared.ts SMOOTH_NOISE) split by octave: fbmLow = octaves 1-4 (smooth
+ *  enough to interpolate from a low-res prepass), fbmHigh = octaves 5-6 at
+ *  full resolution. fbmLow(p) + fbmHigh(p) = the same six terms as fbm(p). */
+export const FBM_SPLIT = `
+float fbmLow(vec2 p) {
+  float v = 0.0, a = 0.5;
+  mat2 rot = mat2(0.8, 0.6, -0.6, 0.8);
+  for (int i = 0; i < 4; i++) { v += a * snoise(p); p = rot * p * 2.0; a *= 0.5; }
+  return v;
+}
+float fbmHigh(vec2 p) {
+  mat2 rot = mat2(0.8, 0.6, -0.6, 0.8);
+  for (int i = 0; i < 4; i++) p = rot * p * 2.0;
+  float v = 0.03125 * snoise(p);
+  p = rot * p * 2.0;
+  return v + 0.015625 * snoise(p);
+}
+`;
+
+/** The same split after octave 3 (for fbm whose 4th octave is already finer
+ *  than a 3x3-pixel grid resolves): fbmLow3 + fbmHigh3 = fbm. */
+export const FBM_SPLIT3 = `
+float fbmLow3(vec2 p) {
+  float v = 0.0, a = 0.5;
+  mat2 rot = mat2(0.8, 0.6, -0.6, 0.8);
+  for (int i = 0; i < 3; i++) { v += a * snoise(p); p = rot * p * 2.0; a *= 0.5; }
+  return v;
+}
+float fbmHigh3(vec2 p) {
+  float v = 0.0, a = 0.0625;
+  mat2 rot = mat2(0.8, 0.6, -0.6, 0.8);
+  for (int i = 0; i < 3; i++) p = rot * p * 2.0;
+  for (int i = 0; i < 3; i++) { v += a * snoise(p); p = rot * p * 2.0; a *= 0.5; }
+  return v;
 }
 `;
 
@@ -49,62 +133,98 @@ float palT(float seed) { return seed + u_time * 0.012 + u_mid * 0.18; }
  * like murmuration / firefly-field / meteor-rain sum N small glows; every
  * light's position, colour and weight are the same for every pixel, but were
  * computed (≈10 sin/cos each) per light PER PIXEL — 3.3 M pixels × N. PRE
- * runs the identical light math once per frame on the GPU into an N×3 table
- * (row 0 position 16-bit, row 1 colour + 0.05 8-bit, row 2 gain + core
- * 16-bit); FRAG sums `tint * w / (d² + e)` from it. A/B against each
- * original: scripts/perf/shader-ab.mjs (≤ 2 steps of 255 on a few pixels).
+ * runs the identical light math once per frame on the GPU into a float table
+ * (read NEAREST, 32-bit: every value exact): row 0 = (x, y, gain, core
+ * softening), row 1 = colour. FRAG sums `tint * w / (d² + e)` from it. A/B
+ * against each original: scripts/perf/shader-ab.mjs (≤ 1 step of 255).
  *
  * `light` is GLSL that, given `float fi` (the light's index), sets
- * `vec2 lp` (position, in the FRAG's uv space), `vec3 lt` (colour, −0.05…0.95),
- * `float lw` (the glow's whole numerator gain, 0…wMax; 0 = off) and
- * `float le` (its core softening, 0…eMax). `header` holds its helpers.
+ * `vec2 lp` (position, in the FRAG's uv space), `vec3 lt` (colour),
+ * `float lw` (the glow's whole numerator gain; 0 = off) and `float le` (its
+ * core softening; `eConst` when every light shares one). `header` holds its
+ * helpers. Without float targets the layer runs the shader's ORIG
+ * (SHADER_PREPASS fallback).
  */
-export function pointLightTable(o: { n: number; header: string; light: string; posRange: number; wMax: number; eMax: number; eConst?: string }) {
-  const R = o.posRange.toFixed(1), Wm = o.wMax.toExponential(3), E = o.eMax.toExponential(3);
-  // one core softening for every light (eConst): a 2-row table — the gain
-  // rides the colour texel's alpha (sqrt-encoded 8-bit: finest where it is
-  // faint), two fetches per light instead of three
-  const two = o.eConst !== undefined;
-  const PRE = U + PACK16 + o.header + `
+const LIGHT_PRE = (header: string, light: string, e: string) => U + header + `
 void main() {
   float fi = floor(gl_FragCoord.x);
   vec2 lp = vec2(0.0);
   vec3 lt = vec3(0.0);
   float lw = 0.0;
-  float le = ${E};
+  float le = ${e};
   {
-${o.light}
+${light}
   }
-  if (gl_FragCoord.y < 1.0) gl_FragColor = vec4(pack16(lp.x, -${R}, ${R}), pack16(lp.y, -${R}, ${R}));
-  else if (gl_FragCoord.y < 2.0) gl_FragColor = vec4(lt + 0.05, ${two ? `sqrt(clamp(lw / ${Wm}, 0.0, 1.0))` : "1.0"});
-  else gl_FragColor = vec4(pack16(lw, 0.0, ${Wm}), pack16(le, 0.0, ${E}));
+  gl_FragColor = gl_FragCoord.y < 1.0 ? vec4(lp, lw, le) : vec4(lt, 1.0);
 }
 `;
-  const rows = two ? 2 : 3;
-  const loop = two ? `
-    vec4 b = texture2D(u_pre, vec2(u, 0.75));
-    if (b.a <= 0.0) continue;
-    vec4 a = texture2D(u_pre, vec2(u, 0.25));
-    float d = length(uv - vec2(unpack16(a.xy, -${R}, ${R}), unpack16(a.zw, -${R}, ${R})));
-    col += (b.rgb - 0.05) * (b.a * b.a * ${Wm}) / (d * d + ${o.eConst});` : `
-    vec4 b = texture2D(u_pre, vec2(u, 2.5 / 3.0));
-    float w = unpack16(b.xy, 0.0, ${Wm});
-    if (w <= 0.0) continue;
-    vec4 a = texture2D(u_pre, vec2(u, 0.5 / 3.0));
-    vec3 tint = texture2D(u_pre, vec2(u, 1.5 / 3.0)).rgb - 0.05;
-    float d = length(uv - vec2(unpack16(a.xy, -${R}, ${R}), unpack16(a.zw, -${R}, ${R})));
-    col += tint * w / (d * d + unpack16(b.zw, 0.0, ${E}));`;
-  const FRAG = U + PACK16 + `
+export function pointLightTableF(o: { n: number; header: string; light: string; eConst?: string }) {
+  const PRE = LIGHT_PRE(o.header, o.light, o.eConst ?? "0.0");
+  const FRAG = U + `
 uniform sampler2D u_pre;
 void main() {
   vec2 uv = (gl_FragCoord.xy * 2.0 - u_resolution.xy) / min(u_resolution.x, u_resolution.y);
   vec3 col = vec3(0.0);
   for (int i = 0; i < ${o.n}; i++) {
-    float u = (float(i) + 0.5) / ${o.n}.0;${loop}
+    float u = (float(i) + 0.5) / ${o.n}.0;
+    vec4 a = texture2D(u_pre, vec2(u, 0.25));
+    if (a.z <= 0.0) continue;
+    vec3 tint = texture2D(u_pre, vec2(u, 0.75)).rgb;
+    vec2 dd = uv - a.xy;
+    col += tint * a.z / (dot(dd, dd) + a.w);
   }
   col += (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453) - 0.5) / 128.0;
   gl_FragColor = vec4(col, 1.0);
 }
 `;
-  return { PRE, FRAG, SIZE: [o.n, rows] as const };
+  return { PRE, FRAG, SIZE: [o.n, 2] as const };
+}
+
+/**
+ * WHOLE-SHADER prepass (SHADER_PREPASS `whole`): some shaders hold no detail
+ * finer than a few pixels at the kiosk's shader resolution (soft glows,
+ * nebulae, mist) — rendered as they are at `scale` into a float target and
+ * bilinearly upsampled, they are the same picture (each A/B'd against the
+ * full-resolution render: ≤ 2 of 255) at a fraction of the cost. The prepass
+ * IS the shader (its own u_resolution = the small target); this is the main
+ * pass.
+ */
+export const UPSAMPLE_FRAG = `
+precision highp float;
+uniform vec2 u_resolution;
+uniform sampler2D u_pre;
+void main() {
+  gl_FragColor = texture2D(u_pre, gl_FragCoord.xy / u_resolution);
+}
+`;
+
+/**
+ * The light table for shaders whose lights are only PART of the picture (and
+ * may use their own uv convention or falloff): PRE as pointLightTableF's
+ * (row 0 = x, y, gain; row 1 = colour), plus `plSum(uv)` — the summed light
+ * for the main pass to use in place of its loop. `glow` is the GLSL falloff
+ * of one light: in terms of `w` (gain), `dd2` (squared distance) and `fi`
+ * (the light's index). Lights with gain 0 are skipped.
+ */
+export function lightTable(o: { n: number; header: string; light: string; glow: string }) {
+  const PRE = LIGHT_PRE(o.header, o.light, "0.0");
+  const SUM = `
+uniform sampler2D u_pre;
+vec3 plSum(vec2 uv) {
+  vec3 col = vec3(0.0);
+  for (int i = 0; i < ${o.n}; i++) {
+    float fi = float(i);
+    float u = (fi + 0.5) / ${o.n}.0;
+    vec4 a = texture2D(u_pre, vec2(u, 0.25));
+    float w = a.z;
+    if (w <= 0.0) continue;
+    vec3 tint = texture2D(u_pre, vec2(u, 0.75)).rgb;
+    vec2 dd = uv - a.xy;
+    float dd2 = dot(dd, dd);
+    col += tint * (${o.glow});
+  }
+  return col;
+}
+`;
+  return { PRE, SUM, SIZE: [o.n, 2] as const };
 }

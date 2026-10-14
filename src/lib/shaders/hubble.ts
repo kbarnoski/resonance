@@ -1,6 +1,13 @@
 import { U, SMOOTH_NOISE, VISIONARY_PALETTE, ROT2 } from "./shared";
+import { deriveFrag, fieldGrid } from "./prepass-pack";
 
-export const FRAG =
+// PERF (2026-10-13, the 120 fps law): the 30 distant galaxies (a palette
+// each, per pixel) come from a per-frame table and the faint background glow
+// from a 1/4-resolution field (it adds at most 0.01) — both computed in a
+// float prepass (PRE, the identical math). Galaxies skip their arm/palette
+// math where they are exactly 0 (outside r 1.5 / 1.0). ORIG is the reference
+// and the no-float fallback. A/B: scripts/perf/shader-ab.mjs.
+export const ORIG =
   U +
   SMOOTH_NOISE +
   VISIONARY_PALETTE +
@@ -137,3 +144,93 @@ void main() {
   gl_FragColor = vec4(color, 1.0);
 }
 `;
+
+const GRID = fieldGrid(1, 2);
+export const PRE_SCALE = 1 / 4;
+
+/** Field = (bgGlow); table row 0 = dot i (x, y, brightness), row 1 = its colour. */
+export const PRE =
+  U +
+  SMOOTH_NOISE +
+  VISIONARY_PALETTE +
+  GRID.pre +
+  `
+void main() {
+  float block, row;
+  vec2 fc = preTexel(block, row);
+  float t = u_time * 0.1;
+  float paletteShift = u_amplitude * 0.2;
+  if (block >= 0.0) {
+    vec2 uv = (fc - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y);
+    gl_FragColor = vec4(fbm(uv * 3.0 + t * 0.02) * 0.5 + 0.5, 0.0, 0.0, 1.0);
+    return;
+  }
+  float fi = fc.x;
+  if (fi > 29.5) { gl_FragColor = vec4(0.0); return; }
+  float seed = fi * 5.37 + 200.0;
+  if (row < 0.5) {
+    vec2 pos = vec2(
+      fract(sin(seed * 127.1) * 43758.5) * 1.4 - 0.7,
+      fract(sin(seed * 311.7) * 43758.5) * 1.0 - 0.5
+    );
+    float brightness = 0.1 + fract(seed * 0.71) * 0.2;
+    gl_FragColor = vec4(pos, brightness, 1.0);
+  } else {
+    float redshift = fract(seed * 0.31);
+    gl_FragColor = vec4(palette(
+      redshift + paletteShift + 0.5,
+      vec3(0.5, 0.4, 0.4),
+      vec3(0.2, 0.15, 0.2),
+      vec3(0.5, 0.3, 0.4),
+      vec3(0.1 + redshift * 0.3, 0.05, 0.1)
+    ), 1.0);
+  }
+}
+`;
+
+export const FRAG = deriveFrag(ORIG, [
+  ["void main() {", GRID.main + "\nvoid main() {"],
+  [`  float r = length(p);
+  float angle = atan(p.y, p.x);
+  float arms = sin(angle * 2.0 - r * 8.0 + t * spin) * 0.5 + 0.5;`, `  float r = length(p);
+  if (r >= 1.5) return 0.0; // smoothstep(1.5, 0.0, r) is exactly 0 — skip the arms
+  float angle = atan(p.y, p.x);
+  float arms = sin(angle * 2.0 - r * 8.0 + t * spin) * 0.5 + 0.5;`],
+  [`  float r = length(p);
+  return exp(-r * 3.0) * smoothstep(1.0, 0.0, r);`, `  float r = length(p);
+  if (r >= 1.0) return 0.0; // exactly 0 outside
+  return exp(-r * 3.0) * smoothstep(1.0, 0.0, r);`],
+  ["float bgGlow = fbm(uv * 3.0 + t * 0.02) * 0.5 + 0.5;", "float bgGlow = preField(0.0).x;"],
+  [`  for (int i = 0; i < 30; i++) {
+    float fi = float(i);
+    float seed = fi * 5.37 + 200.0;
+    vec2 pos = vec2(
+      fract(sin(seed * 127.1) * 43758.5) * 1.4 - 0.7,
+      fract(sin(seed * 311.7) * 43758.5) * 1.0 - 0.5
+    );
+    float brightness = 0.1 + fract(seed * 0.71) * 0.2;
+    float glow = exp(-length(uv - pos) * (40.0 + fi * 2.0)) * brightness;
+
+    // Color by redshift — distant = redder
+    float redshift = fract(seed * 0.31);
+    vec3 dotCol = palette(
+      redshift + paletteShift + 0.5,
+      vec3(0.5, 0.4, 0.4),
+      vec3(0.2, 0.15, 0.2),
+      vec3(0.5, 0.3, 0.4),
+      vec3(0.1 + redshift * 0.3, 0.05, 0.1)
+    );
+    color += dotCol * glow * (0.6 + u_bass * 0.2);
+  }
+
+  // Foreground star spikes — a few bright stars with diffraction
+`, `  for (int i = 0; i < 30; i++) {
+    float fi = float(i);
+    vec4 q = preTable(fi, 0.0); // (x, y, brightness) — PRE
+    float glow = exp(-length(uv - q.xy) * (40.0 + fi * 2.0)) * q.z;
+    vec3 dotCol = preTable(fi, 1.0).rgb;
+    color += dotCol * glow * (0.6 + u_bass * 0.2);
+  }
+
+`],
+], "hubble");

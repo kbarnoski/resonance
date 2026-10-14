@@ -1,6 +1,13 @@
 import { U, SMOOTH_NOISE, VISIONARY_PALETTE, ROT2 } from "./shared";
+import { deriveFrag, fieldGrid } from "./prepass-pack";
 
-export const FRAG = U + SMOOTH_NOISE + VISIONARY_PALETTE + ROT2 + `
+// PERF (2026-10-13, the 120 fps law): the domain warp and the rock surface
+// noise are smooth on a ~60 px+ scale — computed once per 3x3 pixels in a
+// float prepass (PRE, the same code at the same points) and interpolated;
+// both vein networks stay per pixel, and the hot-spot noise only runs on a
+// vein (it is multiplied by one, exactly 0 elsewhere). ORIG is the reference
+// and the no-float fallback. A/B: scripts/perf/shader-ab.mjs.
+export const ORIG = U + SMOOTH_NOISE + VISIONARY_PALETTE + ROT2 + `
 // Molten veins — glowing cracks across a dark cooling surface.
 // Simple 3x3 voronoi for edge detection. Veins pulse with bass.
 
@@ -157,3 +164,82 @@ void main() {
 
   gl_FragColor = vec4(color, 1.0);
 }`;
+
+const GRID = fieldGrid(1, 0);
+export const PRE_SCALE = 1 / 3;
+
+/** Field = (wx, wy, surfNoise). */
+export const PRE =
+  U +
+  SMOOTH_NOISE +
+  `
+// Molten veins — glowing cracks across a dark cooling surface.
+// Simple 3x3 voronoi for edge detection. Veins pulse with bass.
+
+// 3-octave fbm
+float fbm3(vec2 p) {
+  float v = 0.0, a = 0.5;
+  mat2 r = mat2(0.8, 0.6, -0.6, 0.8);
+  for (int i = 0; i < 3; i++) { v += a * snoise(p); p = r * p * 2.0; a *= 0.5; }
+  return v;
+}
+
+// Simple voronoi — returns vec3(f1, f2, cellId hash)
+float hash1(float n) { return fract(sin(n) * 43758.5453); }
+vec2 hashCell(vec2 cell) {
+  float h = fract(sin(dot(cell, vec2(127.1, 311.7))) * 43758.5453);
+  float h2 = fract(sin(dot(cell, vec2(269.5, 183.3))) * 43758.5453);
+  return vec2(h, h2);
+}
+
+vec3 simpleVoronoi(vec2 p, float time) {
+  vec2 n = floor(p);
+  vec2 f = fract(p);
+  float md1 = 8.0, md2 = 8.0;
+  float cellHash = 0.0;
+  for (int j = -1; j <= 1; j++) {
+    for (int i = -1; i <= 1; i++) {
+      vec2 g = vec2(float(i), float(j));
+      vec2 cell = n + g;
+      vec2 o = hashCell(cell);
+      // Animate cell centers slowly
+      o = 0.5 + 0.45 * sin(time * 0.4 + 6.28 * o);
+      vec2 r = g + o - f;
+      float d = dot(r, r);
+      if (d < md1) {
+        md2 = md1;
+        md1 = d;
+        cellHash = fract(sin(dot(cell, vec2(41.7, 89.3))) * 2745.3);
+      } else if (d < md2) {
+        md2 = d;
+      }
+    }
+  }
+  return vec3(sqrt(md1), sqrt(md2), cellHash);
+}
+` +
+  GRID.pre +
+  `
+void main() {
+  float block, row;
+  vec2 fc = preTexel(block, row);
+  vec2 uv = (fc - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y);
+  float t = u_time * 0.1;
+  float wx = fbm3(uv * 1.5 + vec2(t * 0.2, 0.0));
+  float wy = fbm3(uv * 1.5 + vec2(0.0, t * 0.15) + vec2(5.0, 3.0));
+  vec2 warped = uv + vec2(wx, wy) * 0.15;
+  float surfNoise = fbm3(warped * 6.0 + t * 0.05);
+  gl_FragColor = vec4(wx, wy, surfNoise, 1.0);
+}
+`;
+
+export const FRAG = deriveFrag(ORIG, [
+  ["void main() {", GRID.main + `
+void main() {
+  vec4 field = preField(0.0);`],
+  [`  float wx = fbm3(uv * 1.5 + vec2(t * 0.2, 0.0));
+  float wy = fbm3(uv * 1.5 + vec2(0.0, t * 0.15) + vec2(5.0, 3.0));`, `  float wx = field.x;
+  float wy = field.y;`],
+  [`  float surfNoise = fbm3(warped * 6.0 + t * 0.05);`, "  float surfNoise = field.z;"],
+  [`  float hotSpot = snoise(warped * 10.0 + vec2(u_time * 0.8, 0.0));`, "  float hotSpot = vein > 0.0 ? snoise(warped * 10.0 + vec2(u_time * 0.8, 0.0)) : 0.0;"],
+], "molten-vein");

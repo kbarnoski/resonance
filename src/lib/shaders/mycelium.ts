@@ -1,6 +1,14 @@
 import { U, SMOOTH_NOISE, VISIONARY_PALETTE, ROT2 } from "./shared";
+import { deriveFrag, fieldGrid } from "./prepass-pack";
 
-export const FRAG =
+// PERF (2026-10-13, the 120 fps law): the background fbm and the network's
+// domain warp are smooth on a ~25 px+ scale — computed once per 3x3 pixels
+// in a float prepass (PRE, the same code at the same points) and
+// interpolated; the three voronoi networks stay per pixel, and the spore
+// noise only runs where a fruiting body glows (it is multiplied by one,
+// exactly 0 elsewhere). ORIG is the reference and the no-float fallback.
+// A/B: scripts/perf/shader-ab.mjs.
+export const ORIG =
   U +
   SMOOTH_NOISE +
   VISIONARY_PALETTE +
@@ -156,3 +164,38 @@ void main() {
   gl_FragColor = vec4(color, 1.0);
 }
 `;
+
+const GRID = fieldGrid(1, 0);
+export const PRE_SCALE = 1 / 3;
+
+/** Field = (bgN, warp). */
+export const PRE =
+  U +
+  SMOOTH_NOISE +
+  GRID.pre +
+  `
+void main() {
+  float block, row;
+  vec2 fc = preTexel(block, row);
+  vec2 uv = (fc - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y);
+  float t = u_time * 0.07;
+  float bgN = fbm(uv * 1.8 + vec2(t * 0.03, -t * 0.02));
+  vec2 warp = vec2(
+    snoise(uv * 2.5 + vec2(t * 0.15, 0.0)),
+    snoise(uv * 2.5 + vec2(0.0, t * 0.12) + 5.0)
+  );
+  gl_FragColor = vec4(bgN, warp, 1.0);
+}
+`;
+
+export const FRAG = deriveFrag(ORIG, [
+  ["void main() {", GRID.main + `
+void main() {
+  vec4 field = preField(0.0);`],
+  [`  float bgN = fbm(uv * 1.8 + vec2(t * 0.03, -t * 0.02));`, "  float bgN = field.x;"],
+  [`  vec2 warp = vec2(
+    snoise(uv * 2.5 + vec2(t * 0.15, 0.0)),
+    snoise(uv * 2.5 + vec2(0.0, t * 0.12) + 5.0)
+  );`, "  vec2 warp = field.yz;"],
+  [`  float sporeNoise = snoise(uv * 30.0 + t * 1.5);`, "  float sporeNoise = fruitGlow > 0.0 ? snoise(uv * 30.0 + t * 1.5) : 0.0;"],
+], "mycelium");

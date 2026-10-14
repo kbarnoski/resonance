@@ -22,8 +22,14 @@ void main() {
 
   // Storm clouds rolling — layered fbm
   vec2 cloudUV = uv * 2.0 + vec2(t * 0.5, 0.0);
-  float cloud1 = fbm(cloudUV * 1.5 + vec2(0.0, t * 0.2));
-  float cloud2 = fbm(cloudUV * 2.5 + vec2(t * 0.3, -t * 0.1));
+  // PERF (2026-10-13, the 120 fps law): the clouds are exactly 0 below
+  // uv.y -0.3 and the mist exactly 0 above 0.1 — their fbm only run where
+  // they can show (no pixel changes)
+  float cloud1 = 0.0, cloud2 = 0.0;
+  if (uv.y > -0.3) {
+    cloud1 = fbm(cloudUV * 1.5 + vec2(0.0, t * 0.2));
+    cloud2 = fbm(cloudUV * 2.5 + vec2(t * 0.3, -t * 0.1));
+  }
   float clouds = smoothstep(0.0, 0.6, cloud1 * 0.6 + cloud2 * 0.4 + 0.1);
   clouds *= smoothstep(-0.3, 0.5, uv.y); // clouds above horizon
   vec3 cloudColor = palette(clouds * 0.4 + 0.15 + paletteShift,
@@ -116,7 +122,7 @@ void main() {
   // Mist at ground level — bass-reactive density
   float mistDensity = 0.3 + u_bass * 0.3;
   float mist = smoothstep(0.1, -0.4, uv.y);
-  float mistNoise = fbm(vec2(uv.x * 3.0 + t, uv.y * 2.0) * 2.0) * 0.5 + 0.5;
+  float mistNoise = uv.y < 0.1 ? fbm(vec2(uv.x * 3.0 + t, uv.y * 2.0) * 2.0) * 0.5 + 0.5 : 0.0;
   mist *= mistNoise * mistDensity;
   vec3 mistColor = palette(0.2 + paletteShift, vec3(0.15, 0.15, 0.2), vec3(0.1, 0.1, 0.15),
     vec3(1.0, 1.0, 1.0), vec3(0.45, 0.5, 0.6));

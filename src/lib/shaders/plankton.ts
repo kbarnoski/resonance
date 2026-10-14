@@ -1,42 +1,33 @@
 import { U, SMOOTH_NOISE, VISIONARY_PALETTE, ROT2 } from "./shared";
+import { deriveFrag, fieldGrid } from "./prepass-pack";
 
-export const FRAG =
+// PERF (2026-10-13 — the 120 fps law: plankton held First Light at ~36-65
+// fps even at a 60 Hz redraw). The original (ORIG, below — unchanged, and the
+// layer's fallback without float render targets) traced 17 curl-noise steps
+// per pixel (68 noise evaluations) plus 2 fbm and 12 point-noise.
+//  • the SMOOTH parts — the large current's streamline phase, the
+//    convergence curl, the background + haze fbm — are computed once per 3x3
+//    pixels in a float prepass (PRE, the same code at the same points) and
+//    interpolated; the six luminous points depend on time only (a table row);
+//  • the two finer currents' traces are chaotic at pixel scale (their phase is
+//    multiplied by 12-24 into stripes) — they stay per pixel, on a curl noise
+//    whose four central-difference samples share one noise cell's hashes
+//    (bit-for-bit the same values).
+// A/B vs ORIG at kiosk resolution: scripts/perf/shader-ab.mjs.
+
+export const ORIG =
   U +
   SMOOTH_NOISE +
   VISIONARY_PALETTE +
   ROT2 +
   `
-// Curl noise 2D — returns perpendicular gradient of snoise.
-// PERF (2026-10-13, the 120 fps law): the four central-difference samples
-// sit 0.01 apart, so they nearly always share one noise cell — its four
-// corner hashes (the sin() calls that dominated plankton's cost: 17 curl
-// steps per pixel) are computed once and reused, each sample keeping its own
-// exact fract()/fade math. Samples straddling a cell edge take the original
-// path. Bit-for-bit the same field (A/B: scripts/perf/shader-ab.mjs).
-float snoiseCell(vec2 f, vec2 g00, vec2 g10, vec2 g01, vec2 g11) {
-  vec2 u = f * f * f * (f * (f * 6.0 - 15.0) + 10.0);
-  return mix(mix(dot(g00, f),
-                 dot(g10, f - vec2(1.0, 0.0)), u.x),
-             mix(dot(g01, f - vec2(0.0, 1.0)),
-                 dot(g11, f - vec2(1.0, 1.0)), u.x), u.y);
-}
+// Curl noise 2D — returns perpendicular gradient of snoise
 vec2 curlNoise(vec2 p, float scale) {
   float eps = 0.01;
-  vec2 q1 = p * scale + vec2(eps, 0.0);
-  vec2 q2 = p * scale - vec2(eps, 0.0);
-  vec2 q3 = p * scale + vec2(0.0, eps);
-  vec2 q4 = p * scale - vec2(0.0, eps);
-  vec2 i = floor(q1);
-  float n1, n2, n3, n4;
-  if (floor(q2) == i && floor(q3) == i && floor(q4) == i) {
-    vec2 g00 = hash2(i), g10 = hash2(i + vec2(1.0, 0.0)), g01 = hash2(i + vec2(0.0, 1.0)), g11 = hash2(i + vec2(1.0, 1.0));
-    n1 = snoiseCell(fract(q1), g00, g10, g01, g11);
-    n2 = snoiseCell(fract(q2), g00, g10, g01, g11);
-    n3 = snoiseCell(fract(q3), g00, g10, g01, g11);
-    n4 = snoiseCell(fract(q4), g00, g10, g01, g11);
-  } else {
-    n1 = snoise(q1); n2 = snoise(q2); n3 = snoise(q3); n4 = snoise(q4);
-  }
+  float n1 = snoise(p * scale + vec2(eps, 0.0));
+  float n2 = snoise(p * scale - vec2(eps, 0.0));
+  float n3 = snoise(p * scale + vec2(0.0, eps));
+  float n4 = snoise(p * scale - vec2(0.0, eps));
   float dndx = (n1 - n2) / (2.0 * eps);
   float dndy = (n3 - n4) / (2.0 * eps);
   // Curl = perpendicular to gradient (divergence-free)
@@ -210,3 +201,140 @@ void main() {
   gl_FragColor = vec4(color, 1.0);
 }
 `;
+
+
+const CURL = `
+// Curl noise 2D — returns perpendicular gradient of snoise
+vec2 curlNoise(vec2 p, float scale) {
+  float eps = 0.01;
+  float n1 = snoise(p * scale + vec2(eps, 0.0));
+  float n2 = snoise(p * scale - vec2(eps, 0.0));
+  float n3 = snoise(p * scale + vec2(0.0, eps));
+  float n4 = snoise(p * scale - vec2(0.0, eps));
+  float dndx = (n1 - n2) / (2.0 * eps);
+  float dndy = (n3 - n4) / (2.0 * eps);
+  // Curl = perpendicular to gradient (divergence-free)
+  return vec2(dndy, -dndx);
+}
+`;
+const GRID = fieldGrid(1, 1);
+export const PRE_SCALE = 1 / 3;
+
+/** Field = (large-current phase, |curl1|, bgNoise, haze); table row 0 = the
+ *  six points (x, y). */
+export const PRE =
+  U +
+  SMOOTH_NOISE +
+  ROT2 +
+  CURL +
+  GRID.pre +
+  `
+void main() {
+  float t = u_time * 0.05;
+  float block, row;
+  vec2 fc = preTexel(block, row);
+  if (block < 0.0) {
+    float fi = fc.x;
+    vec2 pp = vec2(
+      snoise(vec2(fi * 7.3, t * 0.15 + fi)),
+      snoise(vec2(fi * 13.1, t * 0.12 + fi * 2.0))
+    ) * 0.7;
+    gl_FragColor = vec4(pp, 0.0, 1.0);
+    return;
+  }
+  vec2 uv = (fc - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y);
+  float phase1;
+  {
+    float flowScale = 1.8;
+    float speed = 0.3;
+    vec2 pos = uv;
+    float phase = 0.0;
+    float pathLen = 0.0;
+
+    // Backward trace along flow field — 6 Euler steps
+    for (int i = 0; i < 6; i++) {
+      vec2 vel = curlNoise(pos + vec2(t * speed, t * speed * 0.7), flowScale);
+      pos -= vel * 0.04;
+      phase += length(vel) * 0.8;
+      pathLen += 0.04;
+    }
+
+    // Streamline density from accumulated phase
+    phase1 = phase;
+  }
+  vec2 curl1 = curlNoise(uv + vec2(t * 0.4, t * 0.3), 3.0);
+  float bgNoise = fbm(uv * 1.5 + t * 0.03);
+  float haze = fbm(uv * 2.0 + t * 0.04) * 0.5 + 0.5;
+  gl_FragColor = vec4(phase1, length(curl1), bgNoise, haze);
+}
+`;
+
+/** The two-pass main shader: ORIG with its smooth fields read from PRE. */
+export const FRAG = deriveFrag(ORIG, [
+  [`// Curl noise 2D — returns perpendicular gradient of snoise
+vec2 curlNoise(vec2 p, float scale) {
+  float eps = 0.01;
+  float n1 = snoise(p * scale + vec2(eps, 0.0));
+  float n2 = snoise(p * scale - vec2(eps, 0.0));
+  float n3 = snoise(p * scale + vec2(0.0, eps));
+  float n4 = snoise(p * scale - vec2(0.0, eps));
+  float dndx = (n1 - n2) / (2.0 * eps);
+  float dndy = (n3 - n4) / (2.0 * eps);
+  // Curl = perpendicular to gradient (divergence-free)
+  return vec2(dndy, -dndx);
+}`, `// Curl noise 2D — returns perpendicular gradient of snoise.
+// PERF (2026-10-13, the 120 fps law): the four central-difference samples
+// sit 0.01 apart, so they nearly always share one noise cell — its four
+// corner hashes (the sin() calls that dominated plankton's cost: 17 curl
+// steps per pixel) are computed once and reused, each sample keeping its own
+// exact fract()/fade math. Samples straddling a cell edge take the original
+// path. Bit-for-bit the same field (A/B: scripts/perf/shader-ab.mjs).
+float snoiseCell(vec2 f, vec2 g00, vec2 g10, vec2 g01, vec2 g11) {
+  vec2 u = f * f * f * (f * (f * 6.0 - 15.0) + 10.0);
+  return mix(mix(dot(g00, f),
+                 dot(g10, f - vec2(1.0, 0.0)), u.x),
+             mix(dot(g01, f - vec2(0.0, 1.0)),
+                 dot(g11, f - vec2(1.0, 1.0)), u.x), u.y);
+}
+vec2 curlNoise(vec2 p, float scale) {
+  float eps = 0.01;
+  vec2 q1 = p * scale + vec2(eps, 0.0);
+  vec2 q2 = p * scale - vec2(eps, 0.0);
+  vec2 q3 = p * scale + vec2(0.0, eps);
+  vec2 q4 = p * scale - vec2(0.0, eps);
+  vec2 i = floor(q1);
+  float n1, n2, n3, n4;
+  if (floor(q2) == i && floor(q3) == i && floor(q4) == i) {
+    vec2 g00 = hash2(i), g10 = hash2(i + vec2(1.0, 0.0)), g01 = hash2(i + vec2(0.0, 1.0)), g11 = hash2(i + vec2(1.0, 1.0));
+    n1 = snoiseCell(fract(q1), g00, g10, g01, g11);
+    n2 = snoiseCell(fract(q2), g00, g10, g01, g11);
+    n3 = snoiseCell(fract(q3), g00, g10, g01, g11);
+    n4 = snoiseCell(fract(q4), g00, g10, g01, g11);
+  } else {
+    n1 = snoise(q1); n2 = snoise(q2); n3 = snoise(q3); n4 = snoise(q4);
+  }
+  float dndx = (n1 - n2) / (2.0 * eps);
+  float dndy = (n3 - n4) / (2.0 * eps);
+  // Curl = perpendicular to gradient (divergence-free)
+  return vec2(dndy, -dndx);
+}`],
+  ["void main() {", GRID.main + `
+void main() {
+  vec4 field = preField(0.0);`],
+  ["float bgNoise = fbm(uv * 1.5 + t * 0.03);", "float bgNoise = field.z;"],
+  [`for (int i = 0; i < 6; i++) {
+      vec2 vel = curlNoise(pos + vec2(t * speed, t * speed * 0.7), flowScale);
+      pos -= vel * 0.04;
+      phase += length(vel) * 0.8;
+      pathLen += 0.04;
+    }
+
+    // Streamline density from accumulated phase`, "phase = field.x;"],
+  ["vec2 curl1 = curlNoise(uv + vec2(t * 0.4, t * 0.3), 3.0);\n  vec2 curl2 = curlNoise(uv + vec2(-t * 0.3, t * 0.35), 5.0);\n  float convergence = 1.0 / (length(curl1) * 8.0 + 0.5);",
+    "float convergence = 1.0 / (field.y * 8.0 + 0.5);"],
+  [`    vec2 pp = vec2(
+      snoise(vec2(fi * 7.3, t * 0.15 + fi)),
+      snoise(vec2(fi * 13.1, t * 0.12 + fi * 2.0))
+    ) * 0.7;`, "    vec2 pp = preTable(fi, 0.0).xy;"],
+  ["float haze = fbm(uv * 2.0 + t * 0.04) * 0.5 + 0.5;", "float haze = field.w;"],
+], "plankton");

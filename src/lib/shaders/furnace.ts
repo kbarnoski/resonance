@@ -40,7 +40,8 @@ void main() {
   // ── Furnace walls — dark refractory material visible at edges ──
   float wallDist = max(abs(uv.x), abs(uv.y * 0.7));
   float walls = smoothstep(0.5, 0.7, wallDist);
-  float wallTexture = fbm4(distortedUV * 5.0 + 10.0) * 0.5 + 0.5;
+  // (only seen through walls, exactly 0 inside 0.5 — PERF 2026-10-13: skipped there)
+  float wallTexture = walls > 0.0 ? fbm4(distortedUV * 5.0 + 10.0) * 0.5 + 0.5 : 0.0;
 
   // ── Hot spots — concentrated heat zones ──
   float hotspot1 = exp(-length(distortedUV - vec2(0.15, -0.2)) * 4.0);

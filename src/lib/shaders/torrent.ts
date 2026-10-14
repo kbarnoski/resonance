@@ -1,6 +1,12 @@
 import { U, SMOOTH_NOISE, VISIONARY_PALETTE, ROT2 } from "./shared";
+import { deriveFrag, fieldGrid } from "./prepass-pack";
 
-export const FRAG =
+// PERF (2026-10-13, the 120 fps law): the turbulence warp and the speed field
+// (3 of the 7 fbm per pixel) are smooth on a ~180 px+ scale — computed once
+// per 3x3 pixels in a float prepass (PRE, the same code at the same points)
+// and interpolated; rapids, foam, caustics and splashes stay per pixel. ORIG
+// is the reference and the no-float fallback. A/B: scripts/perf/shader-ab.mjs.
+export const ORIG =
   U +
   SMOOTH_NOISE +
   VISIONARY_PALETTE +
@@ -132,3 +138,69 @@ void main() {
   gl_FragColor = vec4(color, 1.0);
 }
 `;
+
+const GRID = fieldGrid(1, 0);
+export const PRE_SCALE = 1 / 3;
+
+/** Field = (turb before the bass gain, speed). */
+export const PRE =
+  U +
+  SMOOTH_NOISE +
+  `
+// Torrent — Rushing water current with turbulent foam patterns and underwater caustics
+
+// 3-octave fbm for performance
+float fbm3(vec2 p) {
+  float v = 0.0, a = 0.5;
+  mat2 r = mat2(0.8, 0.6, -0.6, 0.8);
+  for (int i = 0; i < 3; i++) { v += a * snoise(p); p = r * p * 2.0; a *= 0.5; }
+  return v;
+}
+
+// Caustic light pattern
+float caustic(vec2 p) {
+  vec2 i = floor(p);
+  vec2 f = fract(p);
+  float d1 = 8.0, d2 = 8.0;
+  for (int y = -1; y <= 1; y++) {
+    for (int x = -1; x <= 1; x++) {
+      vec2 g = vec2(float(x), float(y));
+      vec2 o = 0.5 + 0.5 * sin(u_time * 0.5 + 6.28 * fract(
+        sin(vec2(dot(i + g, vec2(127.1, 311.7)), dot(i + g, vec2(269.5, 183.3))))
+        * 43758.5453));
+      float d = length(f - g - o);
+      if (d < d1) { d2 = d1; d1 = d; }
+      else if (d < d2) { d2 = d; }
+    }
+  }
+  return d2 - d1;
+}
+` +
+  GRID.pre +
+  `
+void main() {
+  float block, row;
+  vec2 fc = preTexel(block, row);
+  vec2 uv = (fc - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y);
+  float t = u_time * 0.12;
+  vec2 flowUV = uv;
+  flowUV.x -= t * 2.0;
+  vec2 turb = vec2(
+    fbm3(flowUV * 2.0 + vec2(0.0, 10.0)),
+    fbm3(flowUV * 2.0 + vec2(10.0, 0.0))
+  ) * 0.15;
+  float speed = fbm3(uv * 0.5 + vec2(t * 0.3));
+  gl_FragColor = vec4(turb, speed, 1.0);
+}
+`;
+
+export const FRAG = deriveFrag(ORIG, [
+  ["void main() {", GRID.main + `
+void main() {
+  vec4 field = preField(0.0);`],
+  [`  vec2 turb = vec2(
+    fbm3(flowUV * 2.0 + vec2(0.0, 10.0)),
+    fbm3(flowUV * 2.0 + vec2(10.0, 0.0))
+  ) * 0.15;`, "  vec2 turb = field.xy;"],
+  [`  float speed = fbm3(uv * 0.5 + vec2(t * 0.3));`, "  float speed = field.z;"],
+], "torrent");

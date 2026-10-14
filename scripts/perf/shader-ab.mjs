@@ -17,10 +17,10 @@ const br = await chromium.launch({ channel: "chrome", headless: true, args: ["--
 const p = await br.newPage();
 for (const n of names) {
   await p.setContent("<canvas></canvas>");
-  const side = (M) => ({ main: M[n], pre: M[`${n}::pre`] ?? null, scale: M[`${n}::scale`] ?? 0, size: M[`${n}::size`] ?? null, nearest: !!M[`${n}::nearest`] });
+  const side = (M) => ({ main: M[n], pre: M[`${n}::pre`] ?? null, scale: M[`${n}::scale`] ?? 0, size: M[`${n}::size`] ?? null, nearest: !!M[`${n}::nearest`], float: !!M[`${n}::float`], extraRows: M[`${n}::extraRows`] ?? 0, blocks: M[`${n}::blocks`] ?? 1, whole: !!M[`${n}::whole`], columns: M[`${n}::columns`] ?? 0 });
   const r = await p.evaluate(({ a, b, W, H, TIMES }) => {
     const c = document.querySelector("canvas"); c.width = W; c.height = H;
-    const gl = c.getContext("webgl", { antialias: true, preserveDrawingBuffer: true });
+    const gl = c.getContext("webgl", { antialias: true, preserveDrawingBuffer: true }); for (const e of ["OES_texture_float", "OES_texture_float_linear", "WEBGL_color_buffer_float"]) gl.getExtension(e);
     const vs = gl.createShader(gl.VERTEX_SHADER); gl.shaderSource(vs, "attribute vec2 a_position;void main(){gl_Position=vec4(a_position,0.0,1.0);}"); gl.compileShader(vs);
     const mk = (src) => {
       const fs = gl.createShader(gl.FRAGMENT_SHADER); gl.shaderSource(fs, src); gl.compileShader(fs);
@@ -31,12 +31,12 @@ for (const n of names) {
     const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
     gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
     const build = (s) => {
-      const o = { main: mk(s.main), pre: s.pre ? mk(s.pre) : null, scale: s.scale };
+      const o = { main: mk(s.main), pre: s.pre ? mk(s.pre) : null, scale: s.scale, whole: s.whole };
       if (o.pre) {
-        o.pw = s.size ? s.size[0] : Math.max(1, Math.round(W * s.scale)); o.ph = s.size ? s.size[1] : Math.max(1, Math.round(H * s.scale));
+        o.pw = s.size ? s.size[0] : s.columns ? s.columns : Math.max(1, Math.round(W * s.scale)); o.ph = s.size ? s.size[1] : s.columns ? H : Math.max(1, Math.round(H * s.scale)) * (s.blocks || 1) + (s.extraRows ?? 0);
         o.tex = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, o.tex);
         for (const [k, v] of [[gl.TEXTURE_MIN_FILTER, s.nearest ? gl.NEAREST : gl.LINEAR], [gl.TEXTURE_MAG_FILTER, s.nearest ? gl.NEAREST : gl.LINEAR], [gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE], [gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE]]) gl.texParameteri(gl.TEXTURE_2D, k, v);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, o.pw, o.ph, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, o.pw, o.ph, 0, gl.RGBA, s.float ? gl.FLOAT : gl.UNSIGNED_BYTE, null);
         o.fbo = gl.createFramebuffer(); gl.bindFramebuffer(gl.FRAMEBUFFER, o.fbo);
         gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, o.tex, 0);
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);
@@ -54,12 +54,12 @@ for (const n of names) {
     const frame = (o, t, au) => {
       if (o.pre) {
         gl.bindFramebuffer(gl.FRAMEBUFFER, o.fbo); gl.viewport(0, 0, o.pw, o.ph);
-        setU(o.pre, t, au, (u) => gl.uniform2f(u("u_preres"), o.pw, o.ph));
+        setU(o.pre, t, au, (u) => { gl.uniform2f(u("u_preres"), o.pw, o.ph); if (o.whole) gl.uniform2f(u("u_resolution"), o.pw, o.ph); });
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
         gl.bindFramebuffer(gl.FRAMEBUFFER, null); gl.viewport(0, 0, W, H);
         gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, o.tex);
       }
-      setU(o.main, t, au, (u) => { const l = u("u_pre"); if (l) gl.uniform1i(l, 0); });
+      setU(o.main, t, au, (u) => { const l = u("u_pre"); if (l) gl.uniform1i(l, 0); const r = u("u_preres"); if (r) gl.uniform2f(r, o.pw, o.ph); });
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     };
     gl.viewport(0, 0, W, H);
@@ -76,12 +76,12 @@ for (const n of names) {
     TIMES.forEach((t, ti) => {
       const au = AU[ti % AU.length];
       const x = grab(P[0], t, au), y = grab(P[1], t, au);
-      let max = 0, n1 = 0, n2 = 0, sum = 0, lumA = 0;
-      for (let i = 0; i < x.length; i++) { if ((i & 3) === 3) continue; const d = Math.abs(x[i] - y[i]); sum += d; lumA += x[i]; if (d > max) max = d; if (d > 1) n1++; if (d > 2) n2++; }
-      diffs.push({ t, max, gt1: n1, gt2: n2, meanDiff: +(sum / (W * H * 3)).toFixed(4), meanA: +(lumA / (W * H * 3)).toFixed(2) });
+      let at = 0, max = 0, n1 = 0, n2 = 0, sum = 0, lumA = 0;
+      for (let i = 0; i < x.length; i++) { if ((i & 3) === 3) continue; const d = Math.abs(x[i] - y[i]); sum += d; lumA += x[i]; if (d > max) { max = d; at = i; } if (d > 1) n1++; if (d > 2) n2++; }
+      diffs.push({ t, max, gt1: n1, gt2: n2, meanDiff: +(sum / (W * H * 3)).toFixed(4), meanA: +(lumA / (W * H * 3)).toFixed(2), at: `${(at >> 2) % W},${Math.floor((at >> 2) / W)} ${x[at]}vs${y[at]}` });
     });
     return { msA, msB, diffs };
   }, { a: side(A), b: side(Bm), W, H, TIMES });
-  console.log(n.padEnd(18), `before ${r.msA}ms  after ${r.msB}ms`, r.diffs.map((d) => `t${d.t}: max${d.max} >1:${d.gt1} >2:${d.gt2} mean${d.meanDiff} (lum ${d.meanA})`).join(" | "));
+  console.log(n.padEnd(18), `before ${r.msA}ms  after ${r.msB}ms`, r.diffs.map((d) => `t${d.t}: max${d.max} >1:${d.gt1} >2:${d.gt2} mean${d.meanDiff} (lum ${d.meanA}) @${d.at}`).join(" | "));
 }
 await br.close();

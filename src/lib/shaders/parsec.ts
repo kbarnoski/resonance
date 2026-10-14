@@ -1,6 +1,12 @@
 import { U, SMOOTH_NOISE, VISIONARY_PALETTE, ROT2 } from "./shared";
+import { deriveFrag, fieldGrid } from "./prepass-pack";
 
-export const FRAG =
+// PERF (2026-10-13, the 120 fps law): the two nebula wisps and the distant
+// glow (three fbm per pixel) are smooth on a ~30 px+ scale — computed once
+// per 3x3 pixels in a float prepass (PRE, the same code at the same points)
+// and interpolated; the seven star layers stay per pixel. ORIG is the
+// reference and the no-float fallback. A/B: scripts/perf/shader-ab.mjs.
+export const ORIG =
   U +
   SMOOTH_NOISE +
   VISIONARY_PALETTE +
@@ -98,3 +104,44 @@ void main() {
   gl_FragColor = vec4(color, 1.0);
 }
 `;
+
+const GRID = fieldGrid(1, 0);
+export const PRE_SCALE = 1 / 3;
+
+/** Field = (dust, dust2, distGlow). */
+export const PRE =
+  U +
+  SMOOTH_NOISE +
+  ROT2 +
+  `
+float nebulaWisp(vec2 uv, float t) {
+  float n = fbm(uv * 1.5 + t * 0.1);
+  n = n * 0.5 + 0.5;
+  return smoothstep(0.45, 0.7, n) * 0.4;
+}
+` +
+  GRID.pre +
+  `
+void main() {
+  float block, row;
+  vec2 fc = preTexel(block, row);
+  vec2 uv = (fc - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y);
+  float t = u_time * 0.12;
+  vec2 drift = vec2(t * 0.3, sin(t * 0.2) * 0.15);
+  vec2 dustUv = uv + drift * 0.3;
+  float dust = nebulaWisp(dustUv, t);
+  float dust2 = nebulaWisp(dustUv * rot2(1.5) + vec2(20.0), t * 0.7);
+  float distGlow = fbm(uv * 0.5 + drift * 0.1) * 0.5 + 0.5;
+  gl_FragColor = vec4(dust, dust2, distGlow, 1.0);
+}
+`;
+
+export const FRAG = deriveFrag(ORIG, [
+  ["void main() {", GRID.main + `
+void main() {
+  vec4 field = preField(0.0);`],
+  [`  float dust = nebulaWisp(dustUv, t);
+  float dust2 = nebulaWisp(dustUv * rot2(1.5) + vec2(20.0), t * 0.7);`, `  float dust = field.x;
+  float dust2 = field.y;`],
+  [`  float distGlow = fbm(uv * 0.5 + drift * 0.1) * 0.5 + 0.5;`, "  float distGlow = field.z;"],
+], "parsec");

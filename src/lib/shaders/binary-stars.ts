@@ -1,6 +1,49 @@
 import { U } from "./shared";
+import { pointLightTableF, LIGHT_HEADER } from "./prepass-pack";
 
-export const FRAG =
+// Binary Stars — two bright hearts orbiting each other, exchanging a
+// stream of particles. Bass tightens and brightens the dance.
+//
+// PERF (2026-10-13, the 120 fps law): rendered from a per-frame light table
+// (prepass-pack.ts pointLightTableF — 32-bit, one fetch per light): the
+// identical per-light math, computed once per frame instead of once per
+// light per pixel. ORIG (below) is the reference and the no-float fallback.
+const LIGHT = `
+
+    // light 0, 1 = the two stars; 2-35 = the exchanged stream
+    vec2 c = vec2(0.1, -0.05);
+    float orb = u_time * 0.505; // constant rate (was u_time * (A + u_bass * B): on a long-running layer the phase leapt as bass moved — kiosk slew audit 2026-10-10; the kinetic clock already rides the band)
+    float sep = 0.34 - u_bass * 0.08;
+    vec2 a = c + vec2(cos(orb), sin(orb) * 0.6) * sep;
+    vec2 b = c - vec2(cos(orb), sin(orb) * 0.6) * sep;
+    vec3 ta = pal(palT(0.0));
+    vec3 tb = pal(palT(0.4));
+    if (fi < 0.5) { lp = a; lt = ta; lw = 0.0011 * 0.45; le = 0.0006; }
+    else if (fi < 1.5) { lp = b; lt = tb; lw = 0.0009 * 0.45; le = 0.0006; }
+    else {
+      float i = fi - 2.0;
+      float s = i / 34.0;
+      float jt = u_time * 2.0;
+      vec3 h0 = hash3(i * 5.57 + floor(jt));
+      vec3 h1 = hash3(i * 5.57 + floor(jt) + 1.0);
+      vec2 jit = mix(h0.xy, h1.xy, smoothstep(0.0, 1.0, fract(jt)));
+      float hz = hash3(i * 5.57).z;
+      lp = mix(a, b, s) + vec2(sin(s * 3.14159 + orb) * 0.1, cos(s * 6.28 + orb) * 0.06) + (jit - 0.5) * 0.03;
+      float tw = 0.5 + 0.5 * sin(u_time * (5.0 + hz * 8.0) * (0.6 + u_treble) + i);
+      lt = mix(ta, tb, s);
+      lw = 0.0003 * tw * 0.28;
+      le = 0.00012;
+    }
+`;
+
+const T = pointLightTableF({ n: 36, header: LIGHT_HEADER, light: LIGHT });
+export const FRAG = T.FRAG;
+export const PRE = T.PRE;
+export const PRE_SIZE = T.SIZE;
+
+/** The original single-pass shader — the fallback without float render
+ *  targets, and the reference the table is A/B'd against. */
+export const ORIG =
   U +
   `
 float hash(float n) { return fract(sin(n) * 43758.5453); }

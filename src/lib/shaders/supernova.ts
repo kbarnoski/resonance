@@ -22,7 +22,11 @@ float hash1(float n) { return fract(sin(n) * 43758.5453); }
 
 // Expanding shock ring — distance from an annulus of radius r
 float shockRing(vec2 uv, float radius, float thickness, float wobble, float t) {
-  // Angular wobble — shocks are not perfectly spherical
+  // PERF (2026-10-13, the 120 fps law): the ring is exactly 0 farther than
+  // its thickness + the noise warp's reach (|snoise| <= 1 -> r x 0.08 x
+  // wobble) from its radius — the angle + noise only run where it can show
+  float r0 = length(uv);
+  if (abs(r0 - radius) >= thickness + r0 * wobble * 0.08) return 0.0;
   float angle = atan(uv.y, uv.x);
   float warp = 1.0 + wobble * snoise(vec2(angle * 2.0, t * 0.3)) * 0.08;
   float r = length(uv) * warp;
@@ -34,6 +38,9 @@ float shockRing(vec2 uv, float radius, float thickness, float wobble, float t) {
 // Filamentary debris — Rayleigh-Taylor instabilities create finger structures
 float debris(vec2 uv, float expansionAge, float t) {
   float r = length(uv);
+  // (the shell's gaussian is < 1e-4 beyond 0.61 of it — 0.03 of an 8-bit
+  // step after the tone map: the filament fbm is skipped there)
+  if (abs(r - expansionAge * 0.22) > 0.61) return 0.0;
   float angle = atan(uv.y, uv.x);
 
   // Radial filaments from noise-perturbed angle
@@ -116,7 +123,8 @@ void main() {
   // ── Interior hot gas — shocked interstellar medium ──
   float r = length(uv);
   float interiorMask = smoothstep(blastRadius, blastRadius * 0.85, r);
-  float interiorNoise = fbm(uv * 3.0 + t * 0.1) * 0.5 + 0.5;
+  // (the interior is exactly 0 outside the blast — skip its noise there)
+  float interiorNoise = r < blastRadius ? fbm(uv * 3.0 + t * 0.1) * 0.5 + 0.5 : 0.0;
   float interior = interiorMask * interiorNoise * 0.15;
 
   // ── Colors ──

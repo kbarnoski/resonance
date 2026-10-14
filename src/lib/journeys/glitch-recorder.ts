@@ -1,4 +1,5 @@
 import { ensureVisibilityTracking, hiddenSince } from "./visibility-epoch";
+import { FpsWindow, fpsSampleDetail } from "./fps-sample";
 /**
  * Visual flight recorder (Karel 2026-09-28: "do further scientific
  * analysis... something is off and we're going in circles for months").
@@ -114,10 +115,22 @@ function startMonitors(): void {
     } catch { /* LoAF unsupported */ }
     ensureVisibilityTracking();
     let last = performance.now();
+    // FPS SAMPLES (fps-sample.ts): one "fps-sample" line every 20 s — the
+    // kiosk certifies every journey's real frame rate itself. A hidden window
+    // restarts the sample (the browser pausing is not a slow frame).
+    const fpsWin = new FpsWindow();
     const tick = (now: number) => {
       const gap = now - last;
       const wasHidden = hiddenSince(last);
       last = now;
+      if (wasHidden) fpsWin.reset(now);
+      else {
+        const sample = fpsWin.add(gap, now);
+        if (sample) {
+          const pl = (window as unknown as { __resonanceParticleLead?: { journeyId?: string; t?: number } }).__resonanceParticleLead;
+          emit({ t: Math.round(now), wall: new Date().toISOString().slice(11, 23), type: "fps-sample", detail: fpsSampleDetail(sample, pl?.journeyId ?? null, pl?.t ?? null) });
+        }
+      }
       // >80ms between frames = at least 4 dropped frames at 60Hz —
       // a gap a viewer can see on moving content.
       // >80ms = FRAME-GAP (4+ dropped frames, viewer-visible on motion).

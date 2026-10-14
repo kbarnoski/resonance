@@ -1,6 +1,45 @@
 import { U } from "./shared";
+import { pointLightTableF, LIGHT_HEADER } from "./prepass-pack";
 
-export const FRAG =
+// Fracture Light — a jagged seam of light splits the dark and heals;
+// bass restrikes a new fracture. Contained to one diagonal seam.
+//
+// PERF (2026-10-13, the 120 fps law): rendered from a per-frame light table
+// (prepass-pack.ts pointLightTableF — 32-bit, one fetch per light): the
+// identical per-light math, computed once per frame instead of once per
+// light per pixel. ORIG (below) is the reference and the no-float fallback.
+const LIGHT = `
+
+    // light fi = seam k x 46 + i (k = 1: the previous seam, smouldering)
+    float sclk = u_time * 0.17;
+    float strike = floor(sclk);
+    float age = fract(sclk);
+    float glow = 0.3 + 0.7 * (1.0 - age) * (1.0 - age);
+    float wNew = smoothstep(0.0, 0.06, age);
+    float k = floor((fi + 0.5) / 46.0);
+    float i = fi - k * 46.0;
+    float sk = strike - k;
+    float g = k < 0.5 ? glow * wNew : 0.3 * (1.0 - wNew);
+    if (g >= 0.0005) {
+      float s = i / 46.0;
+      vec3 h = hash3(sk * 31.7 + floor(s * 9.0));
+      vec2 p = mix(vec2(-0.9, -0.45), vec2(0.75, 0.55), s);
+      p += vec2((h.x - 0.5) * 0.22, (h.y - 0.5) * 0.3) * sin(s * 3.14159);
+      lp = p;
+      float tw = 0.6 + 0.4 * sin(u_time * (6.0 + h.z * 9.0) * (0.6 + u_treble) + i);
+      lt = pal(palT(s * 0.15));
+      lw = 0.0006 * g * tw * 0.4;
+    }
+`;
+
+const T = pointLightTableF({ n: 92, header: LIGHT_HEADER, light: LIGHT, eConst: "0.00011" });
+export const FRAG = T.FRAG;
+export const PRE = T.PRE;
+export const PRE_SIZE = T.SIZE;
+
+/** The original single-pass shader — the fallback without float render
+ *  targets, and the reference the table is A/B'd against. */
+export const ORIG =
   U +
   `
 float hash(float n) { return fract(sin(n) * 43758.5453); }

@@ -2,7 +2,13 @@ import { U, SMOOTH_NOISE, VISIONARY_PALETTE, ROT2 } from "./shared";
 
 // Ancient light traces: ghost-like luminous trails of something that passed
 // long ago — fading afterimages, spectral echoes, temporal residue.
-export const FRAG =
+import { deriveFrag, lightTable } from "./prepass-pack";
+
+// PERF (2026-10-13, the 120 fps law): the five trails' 40 echoes (each a
+// palette + path trig per pixel) come from a per-frame light table
+// (prepass-pack.ts lightTable — the identical per-echo math, once per frame).
+// ORIG is the reference and the no-float fallback. A/B: scripts/perf/shader-ab.mjs.
+export const ORIG =
   U +
   SMOOTH_NOISE +
   VISIONARY_PALETTE +
@@ -93,3 +99,78 @@ void main() {
   gl_FragColor = vec4(color, 1.0);
 }
 `;
+
+const LIGHTS = lightTable({
+  n: 40,
+  header: VISIONARY_PALETTE,
+  // light fi = trail ft x 8 + echo fe
+  light: `
+    float ft = floor((fi + 0.5) / 8.0);
+    float fe = fi - ft * 8.0;
+    float t = u_time * 0.07;
+    float paletteShift = u_amplitude * 0.3;
+    float pathPhase = t * (0.3 + ft * 0.08) + ft * 1.2;
+    float delay = fe * 0.08;
+    float echoPhase = pathPhase - delay * 2.0;
+    lp = vec2(
+      sin(echoPhase) * 0.4 + cos(echoPhase * 1.3 + ft) * 0.2,
+      cos(echoPhase * 0.7 + ft) * 0.35 + sin(echoPhase * 0.5) * 0.15
+    );
+    vec3 echoCol = palette(
+      ft * 0.2 + fe * 0.05 + paletteShift,
+      vec3(0.5, 0.45, 0.4),
+      vec3(0.4, 0.35, 0.3),
+      vec3(1.0, 0.85, 0.6),
+      vec3(0.05, 0.1, 0.25)
+    );
+    float ageShift = fe * 0.03;
+    lt = mix(echoCol, vec3(0.4, 0.3, 0.6), ageShift);
+    lw = exp(-fe * 0.4); // older echoes dimmer`,
+  glow: "w * exp(-dd2 * (40.0 + mod(fi, 8.0) * 20.0))",
+});
+export const PRE = LIGHTS.PRE;
+export const PRE_SIZE = LIGHTS.SIZE;
+
+export const FRAG = deriveFrag(ORIG, [
+  ["void main() {", LIGHTS.SUM + "\nvoid main() {"],
+  [`  for (int trail = 0; trail < 5; trail++) {
+    float ft = float(trail);
+    float trailSeed = ft * 2.7 + 1.3;
+
+    // Each trail follows a different curved path
+    float pathPhase = t * (0.3 + ft * 0.08) + ft * 1.2;
+    float pathCurve = sin(pathPhase) * 0.4;
+    float pathY = cos(pathPhase * 0.7 + ft) * 0.35;
+
+    // Sample multiple points along the trail (afterimages)
+    for (int echo = 0; echo < 8; echo++) {
+      float fe = float(echo);
+      float delay = fe * 0.08;
+      float echoPhase = pathPhase - delay * 2.0;
+
+      vec2 echoPos = vec2(
+        sin(echoPhase) * 0.4 + cos(echoPhase * 1.3 + ft) * 0.2,
+        cos(echoPhase * 0.7 + ft) * 0.35 + sin(echoPhase * 0.5) * 0.15
+      );
+
+      float echoDist = length(uv - echoPos);
+      float echoFade = exp(-fe * 0.4); // older echoes dimmer
+      float echoGlow = exp(-echoDist * echoDist * (40.0 + fe * 20.0)) * echoFade;
+
+      vec3 echoCol = palette(
+        ft * 0.2 + fe * 0.05 + paletteShift,
+        vec3(0.5, 0.45, 0.4),
+        vec3(0.4, 0.35, 0.3),
+        vec3(1.0, 0.85, 0.6),
+        vec3(0.05, 0.1, 0.25)
+      );
+
+      // Older echoes shift toward violet
+      float ageShift = fe * 0.03;
+      echoCol = mix(echoCol, vec3(0.4, 0.3, 0.6), ageShift);
+
+      color += echoCol * echoGlow * (0.5 + 0.5 * u_mid);
+    }
+  }
+`, "  color += plSum(uv) * (0.5 + 0.5 * u_mid); // the 40 echoes (PRE)\n"],
+], "vestige");

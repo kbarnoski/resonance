@@ -1,5 +1,6 @@
 import { U, SMOOTH_NOISE, ROT2 } from "./shared";
 import { SUN_COMMON } from "./sun-shared";
+import { deriveFrag, fieldGrid } from "./prepass-pack";
 
 // SUN · Veiled Sun — a sun just above centre seen through slow drifting
 // veils of mist. Each pixel marches ten steps back toward the sun and
@@ -7,7 +8,14 @@ import { SUN_COMMON } from "./sun-shared";
 // rays) open and close as the veils drift; the veils' edges catch a faint
 // silver-lilac lining near the sun. Fine seraph-like rays thread the
 // shafts. Dark wherever the veil holds the light back.
-export const FRAG =
+//
+// PERF (2026-10-13, the 120 fps law): the veils (11 three-octave noise
+// fields per pixel: the ten-step march toward the sun + the veil here) are
+// smooth at a ~250 px scale — computed once per 4x4 pixels in a float
+// prepass (PRE, the same code at the same points) and interpolated. The fine
+// rays and everything after stay per pixel. ORIG (below) is the reference
+// and the no-float fallback. A/B: scripts/perf/shader-ab.mjs.
+export const ORIG =
   U +
   SMOOTH_NOISE +
   ROT2 +
@@ -52,3 +60,59 @@ void main() {
   gl_FragColor = vec4(sunTone(col), 1.0);
 }
 `;
+
+const GRID = fieldGrid(1, 0);
+export const PRE_SCALE = 1 / 4;
+
+/** Field = (illum, veilHere). */
+export const PRE =
+  U +
+  SMOOTH_NOISE +
+  ROT2 +
+  SUN_COMMON +
+  GRID.pre +
+  `
+void main() {
+  float block, row;
+  vec2 fc = preTexel(block, row);
+  vec2 uv = (fc - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y);
+  float t = u_time * 0.05;
+  vec2 src = vec2(0.07 * sin(t * 0.6), 0.14 + 0.03 * sin(t * 0.43));
+  vec2 drift = vec2(t * 0.55, t * 0.17);
+  // march toward the sun: how much light survives the veils
+  float illum = 0.0, w = 1.0, wsum = 0.0;
+  vec2 q = uv;
+  vec2 stepv = (src - uv) / 10.0;
+  for (int i = 0; i < 10; i++) {
+    q += stepv;
+    float veil = smoothstep(-0.05, 0.18, sunFbm3(q * 1.5 + drift));
+    illum += (1.0 - veil) * w;
+    wsum += w;
+    w *= 0.9;
+  }
+  illum /= wsum;
+  float veilHere = smoothstep(-0.05, 0.18, sunFbm3(uv * 1.5 + drift));
+  gl_FragColor = vec4(illum, veilHere, 0.0, 1.0);
+}
+`;
+
+export const FRAG = deriveFrag(ORIG, [
+  ["void main() {", GRID.main + `
+void main() {
+  vec4 field = preField(0.0);`],
+  [`  // march toward the sun: how much light survives the veils
+  float illum = 0.0, w = 1.0, wsum = 0.0;
+  vec2 q = uv;
+  vec2 stepv = (src - uv) / 10.0;
+  for (int i = 0; i < 10; i++) {
+    q += stepv;
+    float veil = smoothstep(-0.05, 0.18, sunFbm3(q * 1.5 + drift));
+    illum += (1.0 - veil) * w;
+    wsum += w;
+    w *= 0.9;
+  }
+  illum /= wsum;
+  float veilHere = smoothstep(-0.05, 0.18, sunFbm3(uv * 1.5 + drift));`, `  // the veils (PRE): light surviving the march toward the sun, and the veil here
+  float illum = field.x;
+  float veilHere = field.y;`],
+], "sun-veil");

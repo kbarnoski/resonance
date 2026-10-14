@@ -1,6 +1,35 @@
 import { U } from "./shared";
+import { pointLightTableF, LIGHT_HEADER } from "./prepass-pack";
 
-export const FRAG =
+// Rose Window — particles tracing a slowly turning five-petal rose
+// curve around the shared anchor (concentric law). Bass blooms it.
+//
+// PERF (2026-10-13, the 120 fps law): rendered from a per-frame light table
+// (prepass-pack.ts pointLightTableF — 32-bit, one fetch per light): the
+// identical per-light math, computed once per frame instead of once per
+// light per pixel. ORIG (below) is the reference and the no-float fallback.
+const LIGHT = `
+
+    vec2 c = vec2(-0.08, 0.05);
+    float bloom = 0.42 + u_bass * 0.22;
+    float turn = u_time * 0.09;
+    float th = fi / 64.0 * 6.28318 + turn;
+    float r = bloom * cos(2.5 * th) ;
+    lp = c + vec2(cos(th + turn * 0.4), sin(th + turn * 0.4)) * abs(r);
+    vec3 h = hash3(fi * 2.33);
+    float tw = 0.55 + 0.45 * sin(u_time * (3.5 + h.x * 6.0) * (0.6 + u_treble) + fi);
+    lt = pal(palT(abs(r) * 0.3));
+    lw = 0.00038 * tw * 0.3;
+`;
+
+const T = pointLightTableF({ n: 64, header: LIGHT_HEADER, light: LIGHT, eConst: "0.00012" });
+export const FRAG = T.FRAG;
+export const PRE = T.PRE;
+export const PRE_SIZE = T.SIZE;
+
+/** The original single-pass shader — the fallback without float render
+ *  targets, and the reference the table is A/B'd against. */
+export const ORIG =
   U +
   `
 float hash(float n) { return fract(sin(n) * 43758.5453); }

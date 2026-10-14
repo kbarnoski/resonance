@@ -48,7 +48,7 @@ const Visualizer3D = dynamic(() => import("./visualizer-3d").then((m) => m.Visua
 import { isMasteredJourneyLike } from "@/lib/journeys/mastered";
 import { isFullKineticJourney, isAudioReactiveJourney, driveOnlyRate, BAND_PROFILES, journeyLayerGain, isSteadyClockShader, journeyResponse, boostedProfile } from "@/lib/journeys/kinetic";
 import { useAudioStore } from "@/lib/audio/audio-store";
-import { SHADERS, MODE_META, MODE_CATEGORIES, MODES_3D, MODES_AI, prepassFor } from "@/lib/shaders";
+import { SHADERS, MODE_META, MODE_CATEGORIES, MODES_3D, MODES_AI, prepassFor, UPSAMPLE_FRAG } from "@/lib/shaders";
 import { fadeMsFor } from "@/lib/shaders/shader-fade";
 import { morphShaderOn, takeMorphArrivalFade } from "@/lib/journeys/morph-shader";
 import { getDeviceTier } from "@/lib/audio/device-tier";
@@ -431,8 +431,23 @@ export function ShaderVisualizer({
     gl.shaderSource(vs, VERTEX_SHADER);
     gl.compileShader(vs);
 
+    // LOW-RES PREPASS (SHADER_PREPASS, shaders/index.ts — the 120 fps law): a
+    // shader's smooth field (or per-frame light table) rendered small into a
+    // texture its FRAG samples. Compiled + linked with the main program (same
+    // async path, same single sync frame); drawn every frame before it. A
+    // FLOAT prepass needs float render targets — without them the layer runs
+    // the shader's original single-pass source (same picture, full cost).
+    let prepass = prepassFor(fragShader);
+    let fragSrc = fragShader;
+    if (prepass?.float && !floatPrepassOk(gl, !!prepass.nearest)) {
+      fragSrc = prepass.fallback ?? fragShader;
+      prepass = null;
+    }
+    // WHOLE: the shader itself renders small (the prepass); the layer's own
+    // program only upsamples it
+    if (prepass?.whole) fragSrc = UPSAMPLE_FRAG;
     const fs = gl.createShader(gl.FRAGMENT_SHADER)!;
-    gl.shaderSource(fs, fragShader);
+    gl.shaderSource(fs, fragSrc);
     gl.compileShader(fs);
     // Link immediately — valid GL before compile status is known (a failed
     // compile fails the link); the status is read once, later (see render).
@@ -441,11 +456,6 @@ export function ShaderVisualizer({
     gl.attachShader(program, fs);
     gl.bindAttribLocation(program!, 0, "a_position"); // shared with a prepass
     gl.linkProgram(program);
-    // LOW-RES PREPASS (SHADER_PREPASS, shaders/index.ts — the 120 fps law): a
-    // shader's smooth field rendered at a fraction of the canvas into a
-    // texture its FRAG samples. Compiled + linked with the main program (same
-    // async path, same single sync frame); drawn every frame before it.
-    const prepass = prepassFor(fragShader);
     let preFs: WebGLShader | null = null;
     let preProg: WebGLProgram | null = null;
     if (prepass) {
@@ -463,6 +473,35 @@ export function ShaderVisualizer({
     let preW = 0, preH = 0;
     const preU: Record<string, WebGLUniformLocation | null> = {};
     let uPre: WebGLUniformLocation | null = null;
+    let uPreresMain: WebGLUniformLocation | null = null;
+    // the prepass target: a fixed table, a per-ROW table (columns x canvas
+    // rows), or a scaled field (blocks + table rows)
+    const preSize = (cw: number, ch: number): [number, number] => {
+      const p = prepass!;
+      if (p.size) return [p.size[0], p.size[1]];
+      if (p.columns) return [p.columns, ch];
+      return [Math.max(1, Math.round(cw * p.scale)), Math.max(1, Math.round(ch * p.scale)) * (p.blocks ?? 1) + (p.extraRows ?? 0)];
+    };
+    const ensurePreTarget = (cw: number, ch: number) => {
+      const [pw, ph] = preSize(cw, ch);
+      if (preTex && pw === preW && ph === preH) return;
+      if (!preTex) preTex = gl.createTexture();
+      gl.bindTexture(gl.TEXTURE_2D, preTex);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, prepass!.nearest ? gl.NEAREST : gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, prepass!.nearest ? gl.NEAREST : gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, pw, ph, 0, gl.RGBA, prepass!.float ? gl.FLOAT : gl.UNSIGNED_BYTE, null);
+      if (!preFbo) preFbo = gl.createFramebuffer();
+      gl.bindFramebuffer(gl.FRAMEBUFFER, preFbo);
+      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, preTex, 0);
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+      preW = pw;
+      preH = ph;
+    };
+    // allocate the target NOW, with the compile (this canvas keeps its size
+    // across shaders) — not on the first visible frame of the crossfade
+    if (prepass && canvas.width > 0 && canvas.height > 0) ensurePreTarget(canvas.width, canvas.height);
     gl.flush();
     const linkIssuedAt = performance.now();
     let nextSyncAt = linkIssuedAt + SYNC_DELAY_MS;
@@ -686,6 +725,7 @@ export function ShaderVisualizer({
         uAmplitude = gl.getUniformLocation(program!, "u_amplitude");
         if (preProg) {
           uPre = gl.getUniformLocation(program!, "u_pre");
+          uPreresMain = gl.getUniformLocation(program!, "u_preres"); // the field grid, for the main pass too
           for (const k of ["u_time", "u_resolution", "u_preres", "u_bass", "u_mid", "u_treble", "u_amplitude"]) preU[k] = gl.getUniformLocation(preProg, k);
         }
         syncNote("linked", tSync);
@@ -824,29 +864,13 @@ export function ShaderVisualizer({
       shown = slewVisibleDrive(shown, { bass: s.bass, mid: s.mid, treble: s.treble, amplitude: s.amplitude, scale: scaleTarget }, dt, driveGain);
 
       if (preProg) {
-        const pw = prepass!.size ? prepass!.size[0] : Math.max(1, Math.round(canvas.width * prepass!.scale));
-        const ph = prepass!.size ? prepass!.size[1] : Math.max(1, Math.round(canvas.height * prepass!.scale));
-        if (!preTex || pw !== preW || ph !== preH) {
-          // first frame / resize only: a small target (1/16 of the pixels, or
-          // a fixed per-particle table)
-          if (!preTex) preTex = gl.createTexture();
-          gl.bindTexture(gl.TEXTURE_2D, preTex);
-          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, prepass!.nearest ? gl.NEAREST : gl.LINEAR);
-          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, prepass!.nearest ? gl.NEAREST : gl.LINEAR);
-          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-          gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, pw, ph, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
-          if (!preFbo) preFbo = gl.createFramebuffer();
-          gl.bindFramebuffer(gl.FRAMEBUFFER, preFbo);
-          gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, preTex, 0);
-          preW = pw;
-          preH = ph;
-        }
+        const [pw, ph] = preSize(canvas.width, canvas.height);
+        if (!preTex || pw !== preW || ph !== preH) ensurePreTarget(canvas.width, canvas.height); // resize only (allocated at setup)
         gl.bindFramebuffer(gl.FRAMEBUFFER, preFbo);
         gl.viewport(0, 0, pw, ph);
         gl.useProgram(preProg);
         gl.uniform1f(preU.u_time, time);
-        gl.uniform2f(preU.u_resolution, canvas.width, canvas.height);
+        gl.uniform2f(preU.u_resolution, prepass!.whole ? pw : canvas.width, prepass!.whole ? ph : canvas.height);
         gl.uniform2f(preU.u_preres, pw, ph);
         gl.uniform1f(preU.u_bass, shown.bass * REACTIVITY);
         gl.uniform1f(preU.u_mid, shown.mid * REACTIVITY);
@@ -860,6 +884,7 @@ export function ShaderVisualizer({
       }
       gl.useProgram(program!);
       if (uPre) gl.uniform1i(uPre, 0);
+      if (uPreresMain) gl.uniform2f(uPreresMain, preW, preH);
       gl.uniform1f(uTime, time);
       gl.uniform2f(uRes, canvas.width, canvas.height);
       gl.uniform1f(uBass, shown.bass * REACTIVITY);
@@ -952,6 +977,13 @@ export function ShaderVisualizer({
       style={style}
     />
   );
+}
+
+/** Float render targets for a FLOAT prepass (OES_texture_float +
+ *  WEBGL_color_buffer_float, + linear filtering unless the table is read
+ *  NEAREST). getExtension also enables them on this context. */
+function floatPrepassOk(gl: WebGLRenderingContext, nearest: boolean): boolean {
+  return !!gl.getExtension("OES_texture_float") && !!gl.getExtension("WEBGL_color_buffer_float") && (nearest || !!gl.getExtension("OES_texture_float_linear"));
 }
 
 /** Solid-black fallback layer that still reports readiness — a missing

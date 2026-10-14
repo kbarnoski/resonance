@@ -40,11 +40,14 @@ void main() {
     float ray = smoothstep(thickness, thickness * 0.1, angDist);
     ray *= smoothstep(burstRadius + 0.02, burstRadius * 0.3, r);
 
-    // Noise texture on rays
-    float n = fbm3(vec2(fi, r * 5.0 + t * 0.2));
-    ray *= (0.6 + n * 0.4);
-
-    rays += ray * 0.12;
+    // Noise texture on rays — only where the ray is (PERF 2026-10-13, the
+    // 120 fps law: 24 three-octave noises per pixel, almost all multiplied
+    // by an exact 0; skipping them changes no pixel)
+    if (ray > 0.0) {
+      float n = fbm3(vec2(fi, r * 5.0 + t * 0.2));
+      ray *= (0.6 + n * 0.4);
+      rays += ray * 0.12;
+    }
   }
 
   // Central bright core — the moment itself

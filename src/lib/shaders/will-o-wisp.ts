@@ -1,6 +1,45 @@
 import { U } from "./shared";
+import { pointLightTableF, LIGHT_HEADER } from "./prepass-pack";
 
-export const FRAG =
+// Will-o-Wisp — four large wandering souls of light, each trailing
+// glitter and wearing its own slowly turning color. Bass is breath.
+//
+// PERF (2026-10-13, the 120 fps law): rendered from a per-frame light table
+// (prepass-pack.ts pointLightTableF — 32-bit, one fetch per light): the
+// identical per-light math, computed once per frame instead of once per
+// light per pixel. ORIG (below) is the reference and the no-float fallback.
+const LIGHT = `
+
+    // light fi = wisp fw x 10 + k (k = 0: the wisp, 1-9: its trail)
+    float fw = floor((fi + 0.5) / 10.0);
+    float fk = fi - fw * 10.0;
+    float t = u_time * (0.21 + fw * 0.04) + fw * 9.7;
+    lt = pal(palT(fw * 0.26));
+    if (fk < 0.5) {
+      lp = vec2(sin(t * 0.53) * 0.9 + sin(t * 0.27) * 0.3, cos(t * 0.41) * 0.55 + sin(t * 0.19) * 0.2);
+      float breath = 0.5 + u_bass * 0.8;
+      lw = 0.0022 * breath * 0.3;
+      le = 0.0016;
+    } else {
+      float tt = t - fk * 0.09;
+      vec2 wp = vec2(sin(tt * 0.53) * 0.9 + sin(tt * 0.27) * 0.3, cos(tt * 0.41) * 0.55 + sin(tt * 0.19) * 0.2);
+      vec3 rnd = hash3(floor(tt * 14.0) + fk * 5.3) - 0.5;
+      wp += rnd.xy * fk * 0.025;
+      lp = wp;
+      float tw = 0.5 + 0.5 * sin(u_time * (5.0 + hash(fw * 9.0 + fk) * 8.0) * (0.6 + u_treble) + fk);
+      lw = 0.00032 * (1.0 - fk / 9.0) * tw * 0.24;
+      le = 0.00012;
+    }
+`;
+
+const T = pointLightTableF({ n: 40, header: LIGHT_HEADER, light: LIGHT });
+export const FRAG = T.FRAG;
+export const PRE = T.PRE;
+export const PRE_SIZE = T.SIZE;
+
+/** The original single-pass shader — the fallback without float render
+ *  targets, and the reference the table is A/B'd against. */
+export const ORIG =
   U +
   `
 float hash(float n) { return fract(sin(n) * 43758.5453); }

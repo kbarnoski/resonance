@@ -39,11 +39,16 @@ void main() {
     vec2 d = uv - leftCenter;
     float a = atan(d.y, d.x);
     float r = length(d);
+    // PERF (2026-10-13, the 120 fps law): the arc is exactly 0 farther than
+    // its thickness + the noise's reach (|fbm3| < 1 -> 0.02) from its radius,
+    // or outside its angular window — the noise only runs where it can show
+    float thickness = 0.01 + 0.005 * sin(t + fi);
+    float angMaskL = smoothstep(-0.8, -0.3, a) * smoothstep(0.8, 0.3, a);
+    if (angMaskL <= 0.0 || abs(r - radius) >= thickness + 0.02) continue;
     float n = fbm3(vec2(a * 2.0, r * 3.0 + t));
     float radialDist = abs(r - radius + n * 0.02);
-    float thickness = 0.01 + 0.005 * sin(t + fi);
     float arcVal = smoothstep(thickness, 0.0, radialDist);
-    arcVal *= smoothstep(-0.8, -0.3, a) * smoothstep(0.8, 0.3, a);
+    arcVal *= angMaskL;
     float fade = 1.0 - fi * 0.15;
 
     vec3 arcColor = palette(
@@ -64,11 +69,12 @@ void main() {
     vec2 d = uv - rightCenter;
     float a = atan(d.y, d.x);
     float r = length(d);
+    float thickness = 0.01 + 0.005 * sin(t + fi);
+    float angMask = smoothstep(2.3, 2.8, a) + smoothstep(-2.3, -2.8, a);
+    if (angMask <= 0.0 || abs(r - radius) >= thickness + 0.02) continue;
     float n = fbm3(vec2(a * 2.0, r * 3.0 - t));
     float radialDist = abs(r - radius + n * 0.02);
-    float thickness = 0.01 + 0.005 * sin(t + fi);
     float arcVal = smoothstep(thickness, 0.0, radialDist);
-    float angMask = smoothstep(2.3, 2.8, a) + smoothstep(-2.3, -2.8, a);
     arcVal *= angMask;
     float fade = 1.0 - fi * 0.15;
 
@@ -88,7 +94,7 @@ void main() {
   color += vec3(1.0, 0.9, 0.6) * meetGlow * 0.8;
 
   // Soft noise along the bridge
-  float bridgeN = fbm3(vec2(uv.x * 5.0, uv.y * 3.0 + t));
+  float bridgeN = abs(uv.x) >= 0.5 ? 0.0 : fbm3(vec2(uv.x * 5.0, uv.y * 3.0 + t)); // the bridge is 0 beyond |x| 0.5
   float bridgeLine = exp(-uv.y * uv.y * 30.0) * (0.5 + bridgeN * 0.3);
   bridgeLine *= smoothstep(0.5, 0.1, abs(uv.x));
   color += vec3(0.8, 0.65, 0.3) * bridgeLine * 0.4;

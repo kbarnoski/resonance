@@ -55,11 +55,14 @@ void main() {
     float rachis = smoothstep(0.012, 0.0, abs(sa)) * smoothstep(0.0, 0.08, r) * smoothstep(1.0, 0.1, r);
 
     // FBM distortion along feathers for organic quality
-    float featherNoise = snoise(vec2(sa * 10.0 + fw * 5.0, r * 8.0 - t)) * 0.3;
+    // PERF (2026-10-13, the 120 fps law): the feather noise and down only
+    // ever show through wingMask, which is exactly 0 outside the wing —
+    // skipped there (no pixel changes)
+    float featherNoise = wingMask > 0.0 ? snoise(vec2(sa * 10.0 + fw * 5.0, r * 8.0 - t)) * 0.3 : 0.0;
     float featherDetail = barb * wingMask * (0.7 + featherNoise) + vaneWave * wingMask;
 
     // Downy under-feathers: soft fbm glow underneath
-    float downy = fbm(vec2(sa * 6.0, r * 5.0 + t * 0.5 + fw * 3.0));
+    float downy = wingMask > 0.0 ? fbm(vec2(sa * 6.0, r * 5.0 + t * 0.5 + fw * 3.0)) : 0.0;
     downy = smoothstep(-0.1, 0.4, downy) * wingMask * 0.4;
 
     // Color per wing layer - shifting from warm inner to cool outer

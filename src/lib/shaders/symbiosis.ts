@@ -1,8 +1,17 @@
 import { U, SMOOTH_NOISE, VISIONARY_PALETTE, ROT2, SMIN } from "./shared";
 import { withAngleSeamBlend } from "./angle-seam";
+import { deriveFrag, fieldGrid, FBM_SPLIT3 } from "./prepass-pack";
 
 // Angle seam-blended (atan branch cut — see ./angle-seam).
-export const FRAG = withAngleSeamBlend(
+
+// PERF (2026-10-13, the 120 fps law): seven full fbm per pixel. The smooth
+// parts — both organisms' domain warps, octaves 1-3 of the six textures
+// and tendrils, the shared field — are computed once per 3x3 pixels in a float prepass (PRE,
+// the same code at the same points) and interpolated; octaves 4-6 stay per
+// pixel. ORIG is the reference and the no-float fallback.
+// A/B: scripts/perf/shader-ab.mjs.
+const RAW =
+
   U +
   SMOOTH_NOISE +
   VISIONARY_PALETTE +
@@ -191,4 +200,79 @@ void main() {
 
   gl_FragColor = vec4(color, 1.0);
 }
-`);
+`;
+export const ORIG = withAngleSeamBlend(RAW);
+
+const GRID = fieldGrid(3, 0);
+export const PRE_SCALE = 1 / 3;
+
+/** Block 0 = (warpA, warpB); block 1 = octaves 1-3 of (texA, texA2, texB,
+ *  texB2); block 2 = octaves 1-3 of (tendrilA, tendrilB), the shared field. */
+export const PRE =
+  U +
+  SMOOTH_NOISE +
+  FBM_SPLIT3 +
+  GRID.pre +
+  `
+void main() {
+  float block, row;
+  vec2 fc = preTexel(block, row);
+  vec2 uv = (fc - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y);
+  float t = u_time * 0.08;
+  float orbitR = 0.15 + u_mid * 0.05;
+  float orbitSpeed = t * 0.6;
+  vec2 centerA = vec2(cos(orbitSpeed), sin(orbitSpeed)) * orbitR;
+  vec2 centerB = vec2(cos(orbitSpeed + 3.14159), sin(orbitSpeed + 3.14159)) * orbitR;
+  vec2 uvA = uv - centerA;
+  vec2 uvB = uv - centerB;
+  vec2 warpA = vec2(
+    snoise(uvA * 3.0 + vec2(t * 0.4, 0.0)),
+    snoise(uvA * 3.0 + vec2(0.0, t * 0.35) + 5.0)
+  );
+  vec2 warpB = vec2(
+    snoise(uvB * 4.0 + vec2(-t * 0.3, t * 0.2) + 10.0),
+    snoise(uvB * 4.0 + vec2(t * 0.25, t * 0.3) + 15.0)
+  );
+  if (block < 0.5) {
+    gl_FragColor = vec4(warpA, warpB);
+    return;
+  }
+  if (block > 1.5) {
+    vec2 AtoB = normalize(centerB - centerA);
+    vec2 BtoA = -AtoB;
+    gl_FragColor = vec4(
+      fbmLow3(uv * 6.0 + AtoB * t * 2.0),
+      fbmLow3(uv * 6.0 + BtoA * t * 2.0 + 7.0),
+      fbm(uv * 2.0 + vec2(t * 0.1, -t * 0.08)), 1.0);
+    return;
+  }
+  gl_FragColor = vec4(
+    fbmLow3(uvA * 5.0 + warpA * 2.0 + t * 0.2),
+    fbmLow3(uvA * 8.0 + vec2(t * 0.3, -t * 0.15)),
+    fbmLow3(uvB * 6.0 + warpB * 1.5 - t * 0.15),
+    fbmLow3(uvB * 10.0 + vec2(-t * 0.2, t * 0.25)));
+}
+`;
+
+export const FRAG = withAngleSeamBlend(deriveFrag(RAW, [
+  ["void main() {", FBM_SPLIT3 + GRID.main + `
+void main() {
+  vec4 field0 = preField(0.0);
+  vec4 field1 = preField(1.0);
+  vec4 field2 = preField(2.0);`],
+  ["float tendrilA = fbm(uv * 6.0 + AtoB * t * 2.0);", "float tendrilA = field2.x + fbmHigh3(uv * 6.0 + AtoB * t * 2.0);"],
+  ["float tendrilB = fbm(uv * 6.0 + BtoA * t * 2.0 + 7.0);", "float tendrilB = field2.y + fbmHigh3(uv * 6.0 + BtoA * t * 2.0 + 7.0);"],
+  ["float sharedField = fbm(uv * 2.0 + vec2(t * 0.1, -t * 0.08));", "float sharedField = field2.z;"],
+  [`  vec2 warpA = vec2(
+    snoise(uvA * 3.0 + vec2(t * 0.4, 0.0)),
+    snoise(uvA * 3.0 + vec2(0.0, t * 0.35) + 5.0)
+  );`, "  vec2 warpA = field0.xy;"],
+  [`  vec2 warpB = vec2(
+    snoise(uvB * 4.0 + vec2(-t * 0.3, t * 0.2) + 10.0),
+    snoise(uvB * 4.0 + vec2(t * 0.25, t * 0.3) + 15.0)
+  );`, "  vec2 warpB = field0.zw;"],
+  ["float texA = fbm(uvA * 5.0 + warpA * 2.0 + t * 0.2);", "float texA = field1.x + fbmHigh3(uvA * 5.0 + warpA * 2.0 + t * 0.2);"],
+  ["float texA2 = fbm(uvA * 8.0 + vec2(t * 0.3, -t * 0.15));", "float texA2 = field1.y + fbmHigh3(uvA * 8.0 + vec2(t * 0.3, -t * 0.15));"],
+  ["float texB = fbm(uvB * 6.0 + warpB * 1.5 - t * 0.15);", "float texB = field1.z + fbmHigh3(uvB * 6.0 + warpB * 1.5 - t * 0.15);"],
+  ["float texB2 = fbm(uvB * 10.0 + vec2(-t * 0.2, t * 0.25));", "float texB2 = field1.w + fbmHigh3(uvB * 10.0 + vec2(-t * 0.2, t * 0.25));"],
+], "symbiosis"));

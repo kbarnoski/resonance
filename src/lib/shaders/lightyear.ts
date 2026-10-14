@@ -1,6 +1,12 @@
 import { U, SMOOTH_NOISE, VISIONARY_PALETTE, ROT2 } from "./shared";
+import { deriveFrag, fieldGrid } from "./prepass-pack";
 
-export const FRAG =
+// PERF (2026-10-13, the 120 fps law): the four nebula gas layers and the
+// dust (five fbm per pixel) are smooth on a ~180 px+ scale — computed once
+// per 4x4 pixels in a float prepass (PRE, the same code at the same points)
+// and interpolated; the six star layers stay per pixel. ORIG is the reference
+// and the no-float fallback. A/B: scripts/perf/shader-ab.mjs.
+export const ORIG =
   U +
   SMOOTH_NOISE +
   VISIONARY_PALETTE +
@@ -155,3 +161,76 @@ void main() {
   gl_FragColor = vec4(color, 1.0);
 }
 `;
+
+const GRID = fieldGrid(2, 0);
+export const PRE_SCALE = 1 / 4;
+
+/** Block 0 = (n65, n54, n43, n32) before their audio gains; block 1 = (dust). */
+export const PRE =
+  U +
+  SMOOTH_NOISE +
+  `
+// Lightyear — Deep parallax layers of stars with nebula gas
+// between layers, creating profound depth as you drift through space.
+
+float fbm3(vec2 p) {
+  float v = 0.0, a = 0.5;
+  mat2 rot = mat2(0.8, 0.6, -0.6, 0.8);
+  for (int i = 0; i < 3; i++) { v += a * snoise(p); p = rot * p * 2.0; a *= 0.5; }
+  return v;
+}
+
+// Star layer at a given depth
+float starLayer(vec2 uv, float density, float seed) {
+  vec2 id = floor(uv * density);
+  vec2 f = fract(uv * density) - 0.5;
+  float h = fract(sin(dot(id + seed, vec2(127.1, 311.7))) * 43758.5453);
+  float star = step(0.91, h);
+  float radius = 0.02 + 0.05 * fract(h * 37.0);
+  float brightness = smoothstep(radius, 0.0, length(f));
+  float twinkle = 0.5 + 0.5 * sin(u_time * (1.5 + h * 7.0) + h * 60.0 + seed);
+  return star * brightness * twinkle;
+}
+
+// Nebula gas at a given depth — soft domain-warped clouds
+float nebulaGas(vec2 uv, float t, float seed) {
+  vec2 warp = vec2(
+    sin(uv.y * 1.5 + t * 0.04 + seed) * 0.4,
+    cos(uv.x * 1.3 + t * 0.03 + seed * 2.0) * 0.4
+  );
+  float n = fbm3(uv * 0.8 + warp + seed);
+  n = smoothstep(-0.1, 0.5, n);
+  return n;
+}
+` +
+  GRID.pre +
+  `
+void main() {
+  float block, row;
+  vec2 fc = preTexel(block, row);
+  vec2 uv = (fc - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y);
+  float t = u_time * 0.1;
+  vec2 drift = vec2(sin(t * 0.3) * 0.2, cos(t * 0.2) * 0.15) + t * vec2(0.08, 0.04);
+  if (block < 0.5) {
+  float n65 = nebulaGas(uv * 0.35 + drift * 0.12 + vec2(90.0, 70.0), t, 65.0);
+  float n54 = nebulaGas(uv * 0.55 + drift * 0.25 + vec2(60.0, 40.0), t * 0.9, 54.0);
+  float n43 = nebulaGas(uv * 0.75 + drift * 0.4 + vec2(30.0, 15.0), t * 0.8, 43.0);
+  float n32 = nebulaGas(uv + drift * 0.65 + vec2(8.0, 4.0), t * 0.7, 32.0);
+    gl_FragColor = vec4(n65, n54, n43, n32);
+  } else {
+  float dust = fbm3(uv * 2.0 + drift * 1.5);
+    gl_FragColor = vec4(dust, 0.0, 0.0, 1.0);
+  }
+}
+`;
+
+export const FRAG = deriveFrag(ORIG, [
+  ["void main() {", GRID.main + `
+void main() {
+  vec4 gas = preField(0.0);`],
+  [`  float n65 = nebulaGas(uv * 0.35 + drift * 0.12 + vec2(90.0, 70.0), t, 65.0);`, "  float n65 = gas.x;"],
+  [`  float n54 = nebulaGas(uv * 0.55 + drift * 0.25 + vec2(60.0, 40.0), t * 0.9, 54.0);`, "  float n54 = gas.y;"],
+  [`  float n43 = nebulaGas(uv * 0.75 + drift * 0.4 + vec2(30.0, 15.0), t * 0.8, 43.0);`, "  float n43 = gas.z;"],
+  [`  float n32 = nebulaGas(uv + drift * 0.65 + vec2(8.0, 4.0), t * 0.7, 32.0);`, "  float n32 = gas.w;"],
+  [`  float dust = fbm3(uv * 2.0 + drift * 1.5);`, "  float dust = preField(1.0).x;"],
+], "lightyear");

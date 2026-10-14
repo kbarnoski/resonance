@@ -110,6 +110,13 @@ void main() {
       // segment tests per pixel — 3 consecutive 66 ms render frames on the
       // kiosk the moment flagella became primary (tour pass 3, 2026-10-11)
       if (length(uv - orgPos) > flagLen + 0.16) continue;
+      // tighter, still exact (PERF 2026-10-13, the 120 fps law): every tail
+      // point sits within 0.12 (wave 0.08 + wave2 0.04) of the straight line
+      // from the body along flagAngle, so the whole tail + width + glow lies
+      // inside a 0.148 capsule around that line — a quarter of the circle above
+      vec2 fdir = vec2(cos(flagAngle), sin(flagAngle));
+      vec2 rel = uv - orgPos;
+      if (length(rel - fdir * clamp(dot(rel, fdir), 0.0, flagLen)) > 0.148) continue;
 
       float flagDist = tendrilDist(uv, orgPos, flagAngle, flagLen, t + fi * 2.0, seed + ff);
       float flagGlow = smoothstep(0.015, 0.0, flagDist);
