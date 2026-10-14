@@ -78,8 +78,10 @@ void main() {
 
   // ─── LAYER 3: Inner fire (faster, narrow, bright) ───
   {
+    // PERF (2026-10-13, the 120 fps law): every noise below is skipped only
+    // where its mask is EXACTLY zero — same pixels, bit for bit.
     vec2 fp = vec2(uv.x * 1.8, above * 1.3);
-    float n = flickerNoise(fp * 2.0, t * 1.3);
+    float n = above >= 0.85 ? 0.0 : flickerNoise(fp * 2.0, t * 1.3);
     n = n * 0.5 + 0.5;
 
     float heightFade = smoothstep(0.85, -0.05, above);
@@ -100,7 +102,7 @@ void main() {
   // ─── LAYER 4: Hot core (fastest, very narrow, white-yellow) ───
   {
     vec2 fp = vec2(uv.x * 2.5, above * 1.5);
-    float n = flickerNoise(fp * 2.5 + 3.0, t * 1.8);
+    float n = above >= 0.5 ? 0.0 : flickerNoise(fp * 2.5 + 3.0, t * 1.8);
     n = n * 0.5 + 0.5;
 
     float heightFade = smoothstep(0.5, -0.03, above);
@@ -122,7 +124,7 @@ void main() {
   // ─── EMBER BED at ground level ───
   {
     float groundMask = smoothstep(0.08, -0.15, above);
-    float emberN = fbm(vec2(uv.x * 5.0 + t * 0.4, t * 0.3)) * 0.5 + 0.5;
+    float emberN = above >= 0.08 ? 0.0 : fbm(vec2(uv.x * 5.0 + t * 0.4, t * 0.3)) * 0.5 + 0.5;
     float ember = smoothstep(0.25, 0.75, emberN);
 
     vec3 emberColor = palette(0.04 + paletteShift * 0.3,
@@ -153,7 +155,7 @@ void main() {
   // ─── SMOKE above the fire ───
   {
     float smokeY = above - 0.5;
-    float smokeN = fbm(vec2(uv.x * 1.8, smokeY * 2.5 - t * 0.4)) * 0.5 + 0.5;
+    float smokeN = smokeY <= 0.0 ? 0.0 : fbm(vec2(uv.x * 1.8, smokeY * 2.5 - t * 0.4)) * 0.5 + 0.5;
     float smoke = smoothstep(0.3, 0.65, smokeN) * smoothstep(0.0, 0.2, smokeY) * exp(-smokeY * 2.5) * 0.2;
     vec3 smokeColor = vec3(0.03, 0.02, 0.015);
     color += smokeColor * smoke * u_mid;

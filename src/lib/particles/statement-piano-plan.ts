@@ -141,8 +141,23 @@ export function heldCardClock(tMs: number, held: boolean): number {
   return held ? Math.min(tMs, WINDOW_START_MS - 1) : tMs;
 }
 
-/** Held, image decoded, programs not warm by the reveal: text first, the piano
- *  forms as soon as the programs are warm (never a piano-less held card). */
-export function heldPianoWaits(ready: boolean, hasImage: boolean, held: boolean): boolean {
-  return !ready && hasImage && held;
+/**
+ * ONE title card (Karel 2026-10-13: "the piano emblem has to be with all
+ * resonance title screens. its one and only one design for that"): the
+ * Resonance logo + text NEVER appear without the piano. A card whose piano is
+ * not ready by its reveal deadline (image decoded, programs still warming —
+ * a loaded boot ran the warm-up past 4.95 s and the old boot card fell back to
+ * text alone) keeps the screen BLACK and waits: the boot card holds the loop's
+ * timeline (its hand-off runs from the moment the card is seen), a held card
+ * simply waits. Logo, text and piano then appear together, as on every card.
+ */
+export function pianoWaits(ready: boolean, hasImage: boolean): boolean {
+  return !ready && hasImage;
 }
+/** A piano that cannot form (engine never warms): after this long on black the
+ *  text appears alone rather than a black screen forever (and a held card's
+ *  piano keeps trying behind it). */
+export const PIANO_WAIT_MAX_MS = 30_000;
+/** A card that waited for its piano is shown for a normal card's span (reveal →
+ *  fade-out) before the loop's hand-off. */
+export const LATE_CARD_SHOW_MS = FADE_OUT_AT_MS - REVEAL_AT_MS;

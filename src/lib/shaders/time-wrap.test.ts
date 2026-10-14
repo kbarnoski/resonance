@@ -16,7 +16,10 @@ import { readFileSync } from "node:fs";
  * re-rolls in one frame). A NEW such shader fails until scanned and listed.
  */
 import { describe, it, expect } from "vitest";
-import { SHADERS } from "./index";
+import { SHADERS, SHADER_PREPASS } from "./index";
+// a shader's whole GPU source: its FRAG plus its prepass (shaders/index.ts
+// SHADER_PREPASS — the per-frame light tables carry the clocks now)
+const fullSrc = (m: string): string | undefined => { const f = SHADERS[m as keyof typeof SHADERS]; return f ? f + (SHADER_PREPASS[m as keyof typeof SHADER_PREPASS]?.frag ?? "") : f; };
 import { RS_WRAP_ENV } from "./time-wrap";
 import { SCRIPTED_TAKES, TAKE_FINALE_SHADERS } from "@/lib/journeys/pinned-takes";
 import { JOURNEYS, RECAST_SAFELIST } from "@/lib/journeys/journeys";
@@ -94,7 +97,7 @@ const AUDIO_CLOCK_FIXED = ["sparkler", "comet-swarm", "ribbon-of-light", "galaxy
 const AUDIO_POSITION_CLOCK = /\b(float\s+(t|orb|spin|climb|cycle)\s*=\s*(fract\s*\()?u_time\s*\*\s*\([^;]*u_(bass|mid|treble|amplitude))/;
 
 describe("shader registry — periodic-time wraps", () => {
-  const entries = Object.entries(SHADERS) as [string, string][];
+  const entries = Object.keys(SHADERS).map((m) => [m, fullSrc(m)!]) as [string, string][];
   const locked = lockedRoster();
 
   it("every periodic-time shader is enveloped, render-verified, or locked", () => {
@@ -107,7 +110,7 @@ describe("shader registry — periodic-time wraps", () => {
 
   it("fixed shaders keep their envelopes", () => {
     for (const [m, snippets] of Object.entries(FIXED)) {
-      const s = SHADERS[m as keyof typeof SHADERS];
+      const s = fullSrc(m);
       expect(s, `${m} not registered`).toBeTruthy();
       for (const snip of snippets) expect(s!.includes(snip), `${m}: lost "${snip}"`).toBe(true);
       if (snippets.some((x) => x.includes("rsWrapEnv"))) expect(s!).toContain("float rsWrapEnvK(");
@@ -122,7 +125,7 @@ describe("shader registry — periodic-time wraps", () => {
 
   it("audio no longer scales the fixed position clocks", () => {
     for (const m of AUDIO_CLOCK_FIXED) {
-      const s = SHADERS[m as keyof typeof SHADERS]!;
+      const s = fullSrc(m)!;
       expect(stripComments(s), m).not.toMatch(AUDIO_POSITION_CLOCK);
       expect(s, m).toContain("kiosk slew audit 2026-10-10");
     }

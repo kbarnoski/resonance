@@ -6,13 +6,37 @@ export const FRAG =
   VISIONARY_PALETTE +
   ROT2 +
   `
-// Curl noise 2D — returns perpendicular gradient of snoise
+// Curl noise 2D — returns perpendicular gradient of snoise.
+// PERF (2026-10-13, the 120 fps law): the four central-difference samples
+// sit 0.01 apart, so they nearly always share one noise cell — its four
+// corner hashes (the sin() calls that dominated plankton's cost: 17 curl
+// steps per pixel) are computed once and reused, each sample keeping its own
+// exact fract()/fade math. Samples straddling a cell edge take the original
+// path. Bit-for-bit the same field (A/B: scripts/perf/shader-ab.mjs).
+float snoiseCell(vec2 f, vec2 g00, vec2 g10, vec2 g01, vec2 g11) {
+  vec2 u = f * f * f * (f * (f * 6.0 - 15.0) + 10.0);
+  return mix(mix(dot(g00, f),
+                 dot(g10, f - vec2(1.0, 0.0)), u.x),
+             mix(dot(g01, f - vec2(0.0, 1.0)),
+                 dot(g11, f - vec2(1.0, 1.0)), u.x), u.y);
+}
 vec2 curlNoise(vec2 p, float scale) {
   float eps = 0.01;
-  float n1 = snoise(p * scale + vec2(eps, 0.0));
-  float n2 = snoise(p * scale - vec2(eps, 0.0));
-  float n3 = snoise(p * scale + vec2(0.0, eps));
-  float n4 = snoise(p * scale - vec2(0.0, eps));
+  vec2 q1 = p * scale + vec2(eps, 0.0);
+  vec2 q2 = p * scale - vec2(eps, 0.0);
+  vec2 q3 = p * scale + vec2(0.0, eps);
+  vec2 q4 = p * scale - vec2(0.0, eps);
+  vec2 i = floor(q1);
+  float n1, n2, n3, n4;
+  if (floor(q2) == i && floor(q3) == i && floor(q4) == i) {
+    vec2 g00 = hash2(i), g10 = hash2(i + vec2(1.0, 0.0)), g01 = hash2(i + vec2(0.0, 1.0)), g11 = hash2(i + vec2(1.0, 1.0));
+    n1 = snoiseCell(fract(q1), g00, g10, g01, g11);
+    n2 = snoiseCell(fract(q2), g00, g10, g01, g11);
+    n3 = snoiseCell(fract(q3), g00, g10, g01, g11);
+    n4 = snoiseCell(fract(q4), g00, g10, g01, g11);
+  } else {
+    n1 = snoise(q1); n2 = snoise(q2); n3 = snoise(q3); n4 = snoise(q4);
+  }
   float dndx = (n1 - n2) / (2.0 * eps);
   float dndy = (n3 - n4) / (2.0 * eps);
   // Curl = perpendicular to gradient (divergence-free)
