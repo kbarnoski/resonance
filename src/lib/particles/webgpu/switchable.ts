@@ -24,6 +24,8 @@ export interface Switchable {
   /** which implementation runs now */
   backend(): "webgpu" | "webgl2";
   /** Swap to `next` (already created), replaying the remembered state. */
+  swap(next: ParticleEngine, backend: "webgpu" | "webgl2"): void;
+  /** swap(next, "webgl2") */
   fallBack(next: ParticleEngine): void;
 }
 
@@ -48,13 +50,10 @@ export function createSwitchableEngine(first: ParticleEngine, backend: "webgpu" 
     },
   });
 
-  return {
-    engine,
-    backend: () => which,
-    fallBack(next) {
+  const swap = (next: ParticleEngine, b: "webgpu" | "webgl2") => {
       const old = cur;
       cur = next;
-      which = "webgl2";
+      which = b;
       try { old.stop(); } catch { /* already gone */ }
       if (prepared.size) next.prepare([...prepared] as Parameters<ParticleEngine["prepare"]>[0]);
       for (const [m, args] of last) {
@@ -62,6 +61,6 @@ export function createSwitchableEngine(first: ParticleEngine, backend: "webgpu" 
       }
       if (running) next.start();
       try { old.dispose(); } catch { /* already gone */ }
-    },
   };
+  return { engine, backend: () => which, swap, fallBack: (next) => swap(next, "webgl2") };
 }

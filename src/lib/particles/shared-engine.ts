@@ -125,6 +125,7 @@ export function acquireSharedParticleEngine(budget: { count: number; dpr: number
   if (releaseTimer) { clearTimeout(releaseTimer); releaseTimer = null; }
   ++releaseSeq; // a release's pending fade-to-0 must not land on the new owner
   if (shared) {
+    tryUpgrade("re-acquire");
     // visible again: a release of an invisible field parked it hidden
     Object.assign(shared.canvas.style, { position: "absolute", inset: "0", zIndex: "", transition: "opacity 0.6s linear", visibility: "visible" } as Partial<CSSStyleDeclaration>);
     return shared;
@@ -159,41 +160,21 @@ export function acquireSharedParticleEngine(budget: { count: number; dpr: number
       // (2026-10-08 A/B: Snowflake tripped at 2.8 s with the read-back, never without)
       watchdog: { cpuMs: measuring() ? 1000 : 50, gapMs: 1000, onStall: (why) => disableParticlesForSession(`watchdog: ${why}`) },
   };
-  const gpu = gpuReady;
-  gpuReady = null; // an adapter serves one device
-  if (gpu) {
-    // WebGPU, with an in-place WebGL2 fallback on any GPU failure
-    const fallBack = (why: string) => {
-      const sh = shared, sw = switchable;
-      if (!sh || !sw || sw.backend() === "webgl2" || disabledWhy) return;
-      const c2 = sh.canvas.cloneNode(false) as HTMLCanvasElement; // same style, data, size
-      try {
-        const e2 = createParticleEngine(c2, common);
-        sharedEnginesCreated++;
-        if (sh.canvas.parentElement) sh.canvas.replaceWith(c2);
-        sh.canvas = c2;
-        sw.fallBack(e2);
-        setBackendDiag(`webgl2 (fallback: ${why})`);
-      } catch (e) {
-        disableParticlesForSession(`webgpu failed (${why}); webgl2 unavailable: ${e instanceof Error ? e.message : String(e)}`);
-      }
-    };
-    try {
-      const first = gpu.mod.createParticleEngineFor(canvas, { ...common, onGpuFailure: (why: string) => fallBack(why) }, "webgpu", { available: true, adapter: gpu.adapter as never });
-      switchable = createSwitchableEngine(first, "webgpu");
-      sharedEnginesCreated++;
-      shared = { canvas, engine: switchable.engine, hooks };
-      setBackendDiag("webgpu");
-      return shared;
-    } catch {
-      /* navigator.gpu vanished: WebGL2 below */
-    }
-  }
+  commonOpts = common;
   try {
-    const engine = createParticleEngine(canvas, common);
+    const gpu = gpuReady;
+    gpuReady = null; // an adapter serves one device
+    let first: ParticleEngine | null = null;
+    if (gpu) { try { first = makeWebGPU(canvas, gpu); } catch { first = null; /* navigator.gpu vanished: WebGL2 */ } }
+    const backend = first ? "webgpu" : "webgl2";
+    if (!first) first = createParticleEngine(canvas, common);
+    switchable = createSwitchableEngine(first, backend);
     sharedEnginesCreated++;
-    shared = { canvas, engine, hooks };
-    setBackendDiag("webgl2");
+    shared = { canvas, engine: switchable.engine, hooks };
+    setBackendDiag(backend);
+    // the adapter probe is still in flight: WebGL2 now, WebGPU as soon as it
+    // lands while the field is still off screen (the boot warm-up acquires early)
+    if (backend === "webgl2" && priming && !gpuFailed) void priming.then(() => tryUpgrade("probe landed"));
     return shared;
   } catch (e) {
     disableParticlesForSession(`engine unavailable: ${e instanceof Error ? e.message : String(e)}`);
@@ -201,10 +182,53 @@ export function acquireSharedParticleEngine(budget: { count: number; dpr: number
   }
 }
 
+let commonOpts: ParticleEngineOptions | null = null;
+let gpuFailed = false;
+
+function makeWebGPU(canvas: HTMLCanvasElement, gpu: { mod: BackendModule; adapter: unknown }): ParticleEngine {
+  return gpu.mod.createParticleEngineFor(canvas, { ...commonOpts!, onGpuFailure: (why: string) => fallBackToGL(why) }, "webgpu", { available: true, adapter: gpu.adapter as never });
+}
+
+/** Swap the shared engine's implementation onto a fresh canvas (cloned style
+ *  and data), the remembered state replayed (webgpu/switchable.ts). */
+function swapEngine(make: (c: HTMLCanvasElement) => ParticleEngine, backend: "webgpu" | "webgl2", diag: string): boolean {
+  const sh = shared, sw = switchable;
+  if (!sh || !sw || disabledWhy) return false;
+  const c2 = sh.canvas.cloneNode(false) as HTMLCanvasElement;
+  const next = make(c2);
+  sharedEnginesCreated++;
+  if (sh.canvas.parentElement) sh.canvas.replaceWith(c2);
+  sh.canvas = c2;
+  sw.swap(next, backend);
+  setBackendDiag(diag);
+  return true;
+}
+
+/** Any WebGPU failure (adapter, WGSL, device loss): WebGL2 in place. */
+function fallBackToGL(why: string): void {
+  gpuFailed = true;
+  if (!switchable || switchable.backend() === "webgl2" || !commonOpts) return;
+  try { swapEngine((c) => createParticleEngine(c, commonOpts!), "webgl2", `webgl2 (fallback: ${why})`); }
+  catch (e) { disableParticlesForSession(`webgpu failed (${why}); webgl2 unavailable: ${e instanceof Error ? e.message : String(e)}`); }
+}
+
+/** WebGL2 → WebGPU once the probe has landed — only while the field is off screen. */
+function tryUpgrade(why: string): void {
+  const sh = shared, sw = switchable, gpu = gpuReady;
+  if (!sh || !sw || !gpu || gpuFailed || sw.backend() === "webgpu" || !commonOpts || disabledWhy) return;
+  const onScreen = sh.canvas.isConnected && sh.canvas.style.visibility !== "hidden" && Number(sh.canvas.style.opacity || "0") > 0.02;
+  if (onScreen) return; // a later acquire / release retries
+  gpuReady = null;
+  try { swapEngine((c) => makeWebGPU(c, gpu), "webgpu", `webgpu (upgraded: ${why})`); }
+  catch { gpuFailed = true; }
+}
+
 /** test hook */
 export function __resetSharedParticleEngineForTest(): void {
   shared = null;
   switchable = null;
+  commonOpts = null;
+  gpuFailed = false;
   gpuReady = null;
   priming = null;
   disabledWhy = null;
