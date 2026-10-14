@@ -16,12 +16,15 @@ function memStore() {
   return { getItem: (k: string) => m.get(k) ?? null, setItem: (k: string, v: string) => void m.set(k, v), removeItem: (k: string) => void m.delete(k) };
 }
 
+const YB_ALSO = ["aeb508d6-6447-4fb5-8468-636924520f82", "6cb979ce-3b76-4851-a0ba-3f100fddfcb3"];
+
 describe("signature flight — who flies", () => {
-  it("only Yellow Bird", () => {
-    expect(Object.keys(SIGNATURE_FLIGHTS)).toEqual([YB]);
+  it("only the Yellow Birds (all three wear the same emblem)", () => {
+    expect(Object.keys(SIGNATURE_FLIGHTS)).toEqual([YB, ...YB_ALSO]);
+    for (const id of YB_ALSO) expect(signatureFlightFor(id)).toBe(signatureFlightFor(YB));
     expect(signatureFlightFor(YB)?.name).toBe("Yellow Bird");
     expect(prof?.name).toBe("Yellow Bird");
-    for (const id of Object.keys(PARTICLE_PROFILES)) if (id !== YB) expect(signatureFlightFor(id)).toBeNull();
+    for (const id of Object.keys(PARTICLE_PROFILES)) if (id !== YB && !YB_ALSO.includes(id)) expect(signatureFlightFor(id)).toBeNull();
   });
   it("flies the way the emblem faces (left, up)", () => {
     expect(yb.dir).toEqual({ x: -1, y: 1 });

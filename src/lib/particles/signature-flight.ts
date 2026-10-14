@@ -84,7 +84,7 @@ export interface SignatureFlight {
 }
 
 /** Per-journey signature flights (extend here). */
-export const SIGNATURE_FLIGHTS: Readonly<Record<string, SignatureFlight>> = {
+const SIGNATURE_FLIGHTS_BASE: Readonly<Record<string, SignatureFlight>> = {
   // emblems/feathery/yellow-bird.jpg (1024²): a SIDE VIEW facing LEFT — beak
   // (0.31, 0.43), head (0.41, 0.45), body down-right to the tail base (0.64,
   // 0.61), tail tip (0.79, 0.70), feet below (0.58, 0.62). Both wings rise from
@@ -96,6 +96,15 @@ export const SIGNATURE_FLIGHTS: Readonly<Record<string, SignatureFlight>> = {
     dir: { x: -1, y: 1 },
     wing: { view: "side", head: [0.41, 0.45], tail: [0.64, 0.61], tailTip: [0.79, 0.7], shoulder: [0.51, 0.465], tip: [0.79, 0.21], aMin: -0.1, aMax: 0.2, soft: 0.035 },
   },
+};
+// …and EVERY Yellow Bird flies (Karel 2026-10-14: "why didnt the yellow bird fly
+// away? it should in all yellow birds") — Yellow Bird 6 and Yellow Bird 3 wear the
+// same emblem (emblems/feathery/yellow-bird.jpg), so the same anatomy flies them.
+const YELLOW_BIRD_FLIGHT = SIGNATURE_FLIGHTS_BASE["c80a89bc-2c88-4bde-bec8-4be6916acb62"];
+export const SIGNATURE_FLIGHTS: Readonly<Record<string, SignatureFlight>> = {
+  ...SIGNATURE_FLIGHTS_BASE,
+  "aeb508d6-6447-4fb5-8468-636924520f82": YELLOW_BIRD_FLIGHT, // Yellow Bird 6
+  "6cb979ce-3b76-4851-a0ba-3f100fddfcb3": YELLOW_BIRD_FLIGHT, // Yellow Bird 3 (parking lot)
 };
 
 export const FLIGHT = {
