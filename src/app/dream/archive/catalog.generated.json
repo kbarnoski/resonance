@@ -1,5 +1,13 @@
 [
  {
+  "slug": "20640-mouthvalve",
+  "cycle": 20640,
+  "name": "Sing the Shape, Not the Note",
+  "status": "demoable",
+  "description": "The lab's first mouth-driven piece. Karel's real piano loops; the shape of your mouth is the conductor — you sing the shape, not the note.",
+  "category": "local"
+ },
+ {
   "slug": "20480-earwell",
   "cycle": 20480,
   "name": "Earwell",
