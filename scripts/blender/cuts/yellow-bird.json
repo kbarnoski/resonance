@@ -1,0 +1,569 @@
+{
+ "name": "cut82",
+ "title": "Yellow Bird",
+ "about": "~83 s: 0:00-0:41.8 + 1:34.8-2:17.4. The music edit lands on the 0:41 cadence: the 1.2 s equal-power crossfade is centred so the next phrase's downbeat (0:41.2) becomes the B-flat lift (1:35.4) - both sides sit on the F pedal. Keeps both songbird flights (0:08 and 2:07 -> film 72.8) and the 1:40 climax (film 45).",
+ "segments": [
+  {
+   "src": [
+    0,
+    41.8
+   ]
+  },
+  {
+   "src": [
+    94.783,
+    137.449
+   ],
+   "xfade": 1.2
+  }
+ ],
+ "fadeIn": 3.5,
+ "fadeOut": 4.0,
+ "paletteEase": 5.0,
+ "flow": {
+  "base": 0.35,
+  "bass": 1.1,
+  "mid": 0.7
+ },
+ "swirls": {
+  "minStrength": 0.7,
+  "angle": 0.35,
+  "radius": 0.12,
+  "rise": 0.6,
+  "decay": 2.4
+ },
+ "dof": {
+  "range": 0.4,
+  "aperture": 0.035
+ },
+ "look": {
+  "fog": 0.006,
+  "fogColor": "key",
+  "anisotropy": 0.6,
+  "glow": 0.35,
+  "glowThreshold": 0.55,
+  "glowSize": 8,
+  "moteGain": 1.5,
+  "haze": 0.005,
+  "hazeBox": [
+   [
+    -60,
+    -10,
+    -35
+   ],
+   [
+    60,
+    95,
+    45
+   ]
+  ],
+  "hazeColor": [
+   0.75,
+   0.68,
+   0.55
+  ]
+ },
+ "camera": {
+  "lens": 40,
+  "sway": {
+   "yaw": 0.35,
+   "roll": 0.3,
+   "pitch": 0.15
+  },
+  "keys": [
+   [
+    0,
+    [
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   [
+    14,
+    [
+     0.1,
+     3.0,
+     0.05
+    ],
+    [
+     0,
+     0.4,
+     0
+    ]
+   ],
+   [
+    23,
+    [
+     0.25,
+     6.0,
+     0.1
+    ],
+    [
+     0.5,
+     0.6,
+     0
+    ]
+   ],
+   [
+    33,
+    [
+     0.15,
+     9.8,
+     0.65
+    ],
+    [
+     3.0,
+     0.2,
+     0
+    ]
+   ],
+   [
+    41,
+    [
+     0.0,
+     12.6,
+     0.75
+    ],
+    [
+     2.0,
+     -0.3,
+     0
+    ]
+   ],
+   [
+    46,
+    [
+     -0.1,
+     14.0,
+     1.05
+    ],
+    [
+     1.5,
+     -0.4,
+     0
+    ]
+   ],
+   [
+    52,
+    [
+     -0.15,
+     15.6,
+     1.15
+    ],
+    [
+     0.5,
+     -0.2,
+     0
+    ]
+   ],
+   [
+    64,
+    [
+     -0.05,
+     19.4,
+     1.15
+    ],
+    [
+     0,
+     0.3,
+     0
+    ]
+   ],
+   [
+    "end",
+    [
+     0.15,
+     23.2,
+     1.0
+    ],
+    [
+     -1.0,
+     0.5,
+     0
+    ]
+   ]
+  ]
+ },
+ "focusPull": 1.8,
+ "focus": [
+  [
+   0,
+   "soul:bird"
+  ],
+  [
+   13.5,
+   "plate:leaf",
+   2.2
+  ],
+  [
+   "src:23",
+   "plate:tree"
+  ],
+  [
+   "src:30",
+   "plate:rise"
+  ],
+  [
+   "src:41",
+   "plate:galaxy"
+  ],
+  [
+   "src:106",
+   "plate:spark"
+  ],
+  [
+   "src:117.45",
+   "soul:bird",
+   2.4
+  ],
+  [
+   "src:132.95",
+   "plate:dusk",
+   2.2
+  ]
+ ],
+ "plates": [
+  {
+   "id": "leaf",
+   "image": "images/gen-000.jpg",
+   "depth": "images/depth/gen-000.png",
+   "relief": 0.9,
+   "in": 3.5,
+   "out": 23,
+   "fade_in": 4.0,
+   "fade_out": 5,
+   "at": 13.5,
+   "dist": 6.5,
+   "cover": 0.95,
+   "offset": [
+    0.2,
+    -0.1
+   ],
+   "lumaKey": true,
+   "feather": 0.16,
+   "ellipse": 0.5
+  },
+  {
+   "id": "tree",
+   "image": "images/gen-002.jpg",
+   "depth": "images/depth/gen-002.png",
+   "relief": 1.1,
+   "in": 18,
+   "out": 30,
+   "fade_in": 5,
+   "fade_out": 4,
+   "at": "src:23",
+   "dist": 6.8,
+   "cover": 1.0,
+   "offset": [
+    0.0,
+    0.0
+   ],
+   "lumaKey": true,
+   "feather": 0.16,
+   "ellipse": 0.5
+  },
+  {
+   "id": "rise",
+   "image": "images/gen-003.jpg",
+   "depth": "images/depth/gen-003.png",
+   "relief": 0.8,
+   "in": 26,
+   "out": 41.5,
+   "fade_in": 4,
+   "fade_out": 4.0,
+   "at": "src:30",
+   "dist": 6.5,
+   "cover": 0.95,
+   "offset": [
+    0.1,
+    0.4
+   ],
+   "lumaKey": true,
+   "feather": 0.16,
+   "ellipse": 0.4
+  },
+  {
+   "id": "galaxy",
+   "image": "images/gen-014.jpg",
+   "depth": "images/depth/gen-014.png",
+   "relief": 0.9,
+   "in": 37.5,
+   "out": 52.5,
+   "fade_in": 4.0,
+   "fade_out": 4.0,
+   "at": "src:99",
+   "dist": 7.6,
+   "cover": 1.0,
+   "offset": [
+    0.0,
+    0.0
+   ],
+   "lumaKey": true,
+   "feather": 0.16,
+   "ellipse": 0.6,
+   "exposure": 0.7
+  },
+  {
+   "id": "spark",
+   "image": "images/gen-015.jpg",
+   "depth": "images/depth/gen-015.png",
+   "relief": 0.9,
+   "in": 48.5,
+   "out": 62.5,
+   "fade_in": 4.0,
+   "fade_out": 4.5,
+   "at": "src:106",
+   "dist": 6.5,
+   "cover": 0.95,
+   "offset": [
+    0.0,
+    0.0
+   ],
+   "lumaKey": true,
+   "feather": 0.16,
+   "ellipse": 0.5
+  },
+  {
+   "id": "ripple",
+   "image": "images/gen-016.jpg",
+   "depth": "images/depth/gen-016.png",
+   "relief": 0.7,
+   "in": 58,
+   "out": 73,
+   "fade_in": 4.5,
+   "fade_out": 5,
+   "at": "src:117.45",
+   "dist": 7.0,
+   "cover": 1.15,
+   "offset": [
+    0.0,
+    -0.4
+   ],
+   "lumaKey": true,
+   "feather": 0.18,
+   "ellipse": 0.5
+  },
+  {
+   "id": "shaft",
+   "image": "images/gen-018.jpg",
+   "depth": "images/depth/gen-018.png",
+   "relief": 0.6,
+   "in": 68,
+   "out": 80,
+   "fade_in": 5,
+   "fade_out": 5,
+   "at": "src:127",
+   "dist": 7.0,
+   "cover": 1.0,
+   "offset": [
+    -0.2,
+    0.2
+   ],
+   "lumaKey": true,
+   "feather": 0.18,
+   "ellipse": 0.5
+  },
+  {
+   "id": "dusk",
+   "image": "images/gen-019.jpg",
+   "depth": "images/depth/gen-019.png",
+   "relief": 1.0,
+   "in": 75,
+   "out": "end",
+   "fade_in": 5,
+   "fade_out": 0.5,
+   "at": "src:132.95",
+   "dist": 7.5,
+   "cover": 1.15,
+   "offset": [
+    0.0,
+    0.6
+   ],
+   "lumaKey": true,
+   "feather": 0.18,
+   "ellipse": 0.4
+  }
+ ],
+ "souls": [
+  {
+   "id": "bird",
+   "kind": "emblem",
+   "image": "images/emblems/yellow-bird.jpg",
+   "count": 7000,
+   "size": 0.0065,
+   "alpha": 0.42,
+   "depth": 4.5,
+   "center": [
+    0.12,
+    -0.08
+   ],
+   "scale": 1.9,
+   "threshold": 0.1,
+   "gamma": 1.0,
+   "colorGain": 1.0,
+   "flight": true,
+   "wing": "bundle",
+   "form": "curve",
+   "scatter": 2.2,
+   "swirl": 0.0,
+   "in": 0,
+   "out": "end",
+   "fade": 0.5
+  },
+  {
+   "id": "pollen",
+   "kind": "drift",
+   "count": 2600,
+   "size": 0.01,
+   "alpha": 0.32,
+   "near": 1.5,
+   "far": 16,
+   "spread": [
+    1.3,
+    1.1
+   ],
+   "rise": 0.03,
+   "wander": 0.15,
+   "color": "phase",
+   "in": 2,
+   "out": "end",
+   "fade": 6
+  },
+  {
+   "id": "murmuration",
+   "kind": "flock",
+   "count": 5000,
+   "size": 0.009,
+   "alpha": 0.45,
+   "depth": 8.0,
+   "center": [
+    0.05,
+    0.18
+   ],
+   "radii": [
+    2.6,
+    0.9,
+    1.6
+   ],
+   "turbulence": 0.2,
+   "rotate": 0.07,
+   "color": "phase",
+   "in": 24.5,
+   "out": 43,
+   "fade_in": 4,
+   "fade_out": 5
+  },
+  {
+   "id": "vortex",
+   "kind": "vortex",
+   "count": 6000,
+   "size": 0.008,
+   "alpha": 0.42,
+   "depth": 7.4,
+   "radius": 2.7,
+   "arms": 2,
+   "tilt": 58,
+   "speed": 0.22,
+   "center": [
+    0.02,
+    0.0
+   ],
+   "color": "phase",
+   "in": 39,
+   "out": "src:110",
+   "fade_in": 5,
+   "fade_out": 6
+  },
+  {
+   "id": "fireflies",
+   "kind": "drift",
+   "count": 220,
+   "size": 0.011,
+   "alpha": 0.45,
+   "near": 2.0,
+   "far": 11,
+   "spread": [
+    1.1,
+    0.9
+   ],
+   "rise": 0.004,
+   "wander": 0.3,
+   "dart": 0.25,
+   "dart_pitch": 0.45,
+   "color": "glow",
+   "in": "src:120",
+   "out": "end",
+   "fade_in": 6,
+   "fade_out": 3
+  }
+ ],
+ "lights": [
+  {
+   "id": "sun",
+   "type": "SPOT",
+   "pos": [
+    -7,
+    4,
+    5.5
+   ],
+   "aim": [
+    1,
+    16,
+    -0.5
+   ],
+   "spot": 30,
+   "blend": 1.0,
+   "color": "glow",
+   "volume": 1.0,
+   "energy": [
+    [
+     0,
+     0
+    ],
+    [
+     5,
+     0
+    ],
+    [
+     16,
+     10080
+    ],
+    [
+     30,
+     15120
+    ],
+    [
+     39,
+     16800
+    ],
+    [
+     "src:99",
+     31920
+    ],
+    [
+     "src:104",
+     28560
+    ],
+    [
+     "src:116",
+     15120
+    ],
+    [
+     "src:128",
+     7560
+    ],
+    [
+     "end",
+     4200
+    ]
+   ]
+  }
+ ]
+}

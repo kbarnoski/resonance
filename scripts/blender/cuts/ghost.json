@@ -1,0 +1,826 @@
+{
+ "name": "arc98",
+ "title": "Ghost",
+ "about": "~98 s arc cut, forward only through the 8 stages (room -> tunnel entrance -> depths -> flower pool -> light above / emerge -> flight to the tree -> union -> light amidst the cosmos; never back to the room). Music: 0:00-0:39 | 1:24.2-1:40 | 2:43.2-3:05.8 | 3:12.6-3:39.4, equal-power crossfades centred on 0:38=1:25.2 (the 1:25 gathering), the 1:39 cadence = 2:44.2, and 3:04.6 = 3:13.8 (after the 3:04 cadence). NO literal figure: every still is a figure-free crop of the pack still, or (cosmos) has the tiny figure inpainted away; the angel exists only as particle wings. No flashes: the kiosk's bass flashes become slow push-ins; the amber shaft eases in over 6 s to the 2:58 climax (film 65.6).",
+ "segments": [
+  {
+   "src": [
+    0,
+    39.0
+   ]
+  },
+  {
+   "src": [
+    84.2,
+    100.0
+   ],
+   "xfade": 2.0
+  },
+  {
+   "src": [
+    163.2,
+    185.8
+   ],
+   "xfade": 2.0
+  },
+  {
+   "src": [
+    192.6,
+    219.392
+   ],
+   "xfade": 2.4
+  }
+ ],
+ "fadeIn": 4.0,
+ "fadeOut": 5.0,
+ "paletteEase": 6.0,
+ "flow": {
+  "base": 0.3,
+  "bass": 1.0,
+  "mid": 0.6
+ },
+ "swirls": {
+  "minStrength": 0.75,
+  "angle": 0.3,
+  "radius": 0.12,
+  "rise": 0.8,
+  "decay": 3.0
+ },
+ "dof": {
+  "range": 0.4,
+  "aperture": 0.03
+ },
+ "look": {
+  "fog": 0.008,
+  "fogColor": "#4a5566",
+  "anisotropy": 0.5,
+  "glow": 0.3,
+  "glowThreshold": 0.6,
+  "glowSize": 8,
+  "moteGain": 1.4,
+  "mist": {
+   "box": [
+    [
+     -60,
+     -10,
+     -35
+    ],
+    [
+     60,
+     95,
+     45
+    ]
+   ],
+   "density": 0.028,
+   "scale": 0.16,
+   "speed": 0.025,
+   "color": [
+    0.55,
+    0.6,
+    0.7
+   ]
+  },
+  "plateExposure": 0.72,
+  "haze": 0.006,
+  "hazeBox": [
+   [
+    -60,
+    -10,
+    -35
+   ],
+   [
+    60,
+    95,
+    45
+   ]
+  ]
+ },
+ "camera": {
+  "lens": 38,
+  "sway": {
+   "yaw": 0.3,
+   "roll": 0.25,
+   "pitch": 0.12
+  },
+  "keys": [
+   [
+    0,
+    [
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   [
+    22,
+    [
+     0.05,
+     5.0,
+     0.1
+    ],
+    [
+     0.5,
+     0.2,
+     0
+    ]
+   ],
+   [
+    39,
+    [
+     0.0,
+     9.5,
+     -0.2
+    ],
+    [
+     -1.0,
+     -0.2,
+     0
+    ]
+   ],
+   [
+    52,
+    [
+     0.2,
+     12.5,
+     -0.8
+    ],
+    [
+     -3.0,
+     0.3,
+     0
+    ]
+   ],
+   [
+    58,
+    [
+     0.1,
+     14.0,
+     -0.6
+    ],
+    [
+     0,
+     0.2,
+     0
+    ]
+   ],
+   [
+    66,
+    [
+     0.0,
+     15.8,
+     0.3
+    ],
+    [
+     3.0,
+     0,
+     0
+    ]
+   ],
+   [
+    75,
+    [
+     0.0,
+     18.0,
+     0.6
+    ],
+    [
+     1.0,
+     -0.2,
+     0
+    ]
+   ],
+   [
+    86,
+    [
+     0.0,
+     20.0,
+     0.6
+    ],
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   [
+    "end",
+    [
+     0.0,
+     21.5,
+     0.6
+    ],
+    [
+     0,
+     0,
+     0
+    ]
+   ]
+  ]
+ },
+ "focusPull": 2.0,
+ "focus": [
+  [
+   0,
+   "plate:room"
+  ],
+  [
+   29,
+   "plate:roots"
+  ],
+  [
+   "src:37",
+   "plate:ring"
+  ],
+  [
+   43,
+   "plate:depths"
+  ],
+  [
+   "src:99",
+   "plate:pool"
+  ],
+  [
+   58.5,
+   "plate:tunnel"
+  ],
+  [
+   63,
+   "plate:opening"
+  ],
+  [
+   "src:184",
+   "plate:tree"
+  ],
+  [
+   80,
+   "soul:blossom"
+  ],
+  [
+   86,
+   "plate:beam"
+  ],
+  [
+   92,
+   "soul:wings",
+   2.5
+  ]
+ ],
+ "plates": [
+  {
+   "id": "room",
+   "image": "images/gen-000.jpg",
+   "crop": [
+    0.08,
+    0.0,
+    0.92,
+    0.38
+   ],
+   "depth": "radial",
+   "relief": 0.8,
+   "in": 0.5,
+   "fade_in": 4.5,
+   "out": 29,
+   "fade_out": 5.0,
+   "at": 12,
+   "dist": 8.5,
+   "cover": 1.05,
+   "offset": [
+    0,
+    0.3
+   ],
+   "feather": 0.16,
+   "ellipse": 0.45
+  },
+  {
+   "id": "roots",
+   "image": "images/gen-008.jpg",
+   "crop": [
+    0.0,
+    0.0,
+    1.0,
+    0.57
+   ],
+   "depth": "radial",
+   "relief": 1.2,
+   "in": 24,
+   "fade_in": 5.0,
+   "out": 37,
+   "fade_out": 5.0,
+   "at": 29,
+   "dist": 6.5,
+   "cover": 1.0,
+   "offset": [
+    0,
+    0.1
+   ],
+   "feather": 0.16,
+   "ellipse": 0.45
+  },
+  {
+   "id": "ring",
+   "image": "images/gen-007.jpg",
+   "crop": [
+    0.0,
+    0.0,
+    1.0,
+    0.48
+   ],
+   "depth": "radial",
+   "relief": 1.2,
+   "in": 32,
+   "fade_in": 5.0,
+   "out": 43,
+   "fade_out": 4.0,
+   "at": "src:37",
+   "dist": 6.5,
+   "cover": 1.0,
+   "offset": [
+    0,
+    0.1
+   ],
+   "feather": 0.16,
+   "ellipse": 0.45
+  },
+  {
+   "id": "depths",
+   "image": "images/gen-016.jpg",
+   "crop": [
+    0.0,
+    0.0,
+    1.0,
+    0.48
+   ],
+   "depth": "radial",
+   "relief": 1.4,
+   "in": 39,
+   "fade_in": 4.0,
+   "out": "src:99",
+   "fade_out": 4.3,
+   "at": 43,
+   "dist": 6.5,
+   "cover": 1.0,
+   "offset": [
+    0,
+    0.0
+   ],
+   "feather": 0.16,
+   "ellipse": 0.45
+  },
+  {
+   "id": "pool",
+   "image": "images/gen-024.jpg",
+   "crop": [
+    0.0,
+    0.0,
+    1.0,
+    0.43
+   ],
+   "depth": "ground",
+   "relief": 0.9,
+   "in": 47.5,
+   "fade_in": 4.3,
+   "out": 58.5,
+   "fade_out": 3.5,
+   "at": "src:99",
+   "dist": 6.5,
+   "cover": 1.0,
+   "offset": [
+    0,
+    0.1
+   ],
+   "feather": 0.16,
+   "ellipse": 0.45
+  },
+  {
+   "id": "tunnel",
+   "image": "images/gen-064.jpg",
+   "crop": [
+    0.0,
+    0.0,
+    1.0,
+    0.62
+   ],
+   "depth": "radial",
+   "relief": 1.2,
+   "in": 55,
+   "fade_in": 3.5,
+   "out": 63,
+   "fade_out": 4.0,
+   "at": 58.5,
+   "dist": 6.5,
+   "cover": 1.0,
+   "offset": [
+    0,
+    0.2
+   ],
+   "feather": 0.16,
+   "ellipse": 0.45,
+   "exposure": 1.1
+  },
+  {
+   "id": "opening",
+   "image": "images/gen-060.jpg",
+   "crop": [
+    0.0,
+    0.0,
+    1.0,
+    0.82
+   ],
+   "depth": "radial",
+   "relief": 1.2,
+   "in": 59,
+   "fade_in": 4.0,
+   "out": 70.5,
+   "fade_out": 4.0,
+   "at": 63,
+   "dist": 6.5,
+   "cover": 0.95,
+   "offset": [
+    0,
+    0.4
+   ],
+   "feather": 0.16,
+   "ellipse": 0.45,
+   "exposure": 0.9,
+   "exclude": [
+    [
+     0.5,
+     0.78,
+     0.13,
+     0.3
+    ],
+    [
+     0.5,
+     0.6,
+     0.21,
+     0.11
+    ]
+   ]
+  },
+  {
+   "id": "cosmos",
+   "image": "images/gen-089.jpg",
+   "exclude": [
+    [
+     0.5,
+     0.5,
+     0.03,
+     0.05
+    ]
+   ],
+   "depth": null,
+   "in": 80,
+   "fade_in": 6.0,
+   "out": "end",
+   "fade_out": 0.5,
+   "at": 88,
+   "dist": 16,
+   "cover": 1.6,
+   "offset": [
+    0,
+    0.5
+   ],
+   "exposure": 0.55,
+   "feather": 0.12,
+   "ellipse": 0.5
+  },
+  {
+   "id": "tree",
+   "image": "images/gen-075.jpg",
+   "crop": [
+    0.57,
+    0.0,
+    1.0,
+    0.78
+   ],
+   "depth": null,
+   "in": 66.5,
+   "fade_in": 4.0,
+   "out": 78,
+   "fade_out": 4.0,
+   "at": "src:184",
+   "dist": 7.0,
+   "cover": 0.42,
+   "offset": [
+    0.6,
+    0.5
+   ],
+   "feather": 0.16,
+   "ellipse": 0.45,
+   "exposure": 0.8
+  },
+  {
+   "id": "bloom",
+   "image": "images/gen-080.jpg",
+   "crop": [
+    0.1,
+    0.0,
+    0.9,
+    0.46
+   ],
+   "depth": "dome",
+   "relief": 0.4,
+   "in": 74,
+   "fade_in": 4.0,
+   "out": 86,
+   "fade_out": 4.0,
+   "at": 80,
+   "dist": 10.5,
+   "cover": 0.75,
+   "offset": [
+    0,
+    0.6
+   ],
+   "feather": 0.18,
+   "ellipse": 0.45,
+   "exposure": 0.4
+  },
+  {
+   "id": "beam",
+   "image": "images/gen-085.jpg",
+   "crop": [
+    0.0,
+    0.0,
+    1.0,
+    0.52
+   ],
+   "depth": null,
+   "in": 82,
+   "fade_in": 4.0,
+   "out": 94,
+   "fade_out": 4.0,
+   "at": 86,
+   "dist": 7.5,
+   "cover": 1.0,
+   "offset": [
+    0,
+    0.7
+   ],
+   "feather": 0.16,
+   "exposure": 0.4,
+   "ellipse": 0.45
+  },
+  {
+   "id": "galaxy",
+   "image": "images/gen-087.jpg",
+   "exclude": [
+    [
+     0.535,
+     0.515,
+     0.05,
+     0.075
+    ]
+   ],
+   "depth": null,
+   "in": 90,
+   "fade_in": 4.0,
+   "out": "end",
+   "fade_out": 0.5,
+   "at": 94,
+   "dist": 8.5,
+   "cover": 1.0,
+   "offset": [
+    0,
+    0.5
+   ],
+   "feather": 0.14,
+   "ellipse": 0.5,
+   "exposure": 0.6
+  }
+ ],
+ "souls": [
+  {
+   "id": "dust",
+   "kind": "drift",
+   "count": 1800,
+   "size": 0.008,
+   "alpha": 0.28,
+   "near": 1.5,
+   "far": 14,
+   "spread": [
+    1.2,
+    1.0
+   ],
+   "rise": 0.012,
+   "wander": 0.12,
+   "color": "#c8cdd6",
+   "in": 1,
+   "out": 46,
+   "fade_in": 5,
+   "fade_out": 6
+  },
+  {
+   "id": "murmur",
+   "kind": "flock",
+   "count": 4500,
+   "size": 0.008,
+   "alpha": 0.3,
+   "depth": 9.0,
+   "center": [
+    0.0,
+    0.12
+   ],
+   "radii": [
+    2.8,
+    0.9,
+    1.6
+   ],
+   "turbulence": 0.18,
+   "rotate": 0.06,
+   "foldPeriod": 44,
+   "color": "#b9c4d0",
+   "in": 21,
+   "out": 52,
+   "fade_in": 5,
+   "fade_out": 6
+  },
+  {
+   "id": "poolflowers",
+   "kind": "drift",
+   "count": 1600,
+   "size": 0.01,
+   "alpha": 0.35,
+   "near": 2.0,
+   "far": 12,
+   "spread": [
+    1.4,
+    0.18
+   ],
+   "lift": -1.1,
+   "rise": 0.0,
+   "wander": 0.06,
+   "flutter": 0.03,
+   "color": "#e07a9a",
+   "in": 47,
+   "out": 59,
+   "fade_in": 4.5,
+   "fade_out": 4
+  },
+  {
+   "id": "stream",
+   "kind": "drift",
+   "count": 2200,
+   "size": 0.009,
+   "alpha": 0.32,
+   "near": 1.0,
+   "far": 18,
+   "spread": [
+    1.3,
+    1.1
+   ],
+   "rise": 0.004,
+   "wander": 0.1,
+   "forward": 0.6,
+   "flutter": 0.05,
+   "color": "#f0a3bb",
+   "in": 60,
+   "out": 80,
+   "fade_in": 5,
+   "fade_out": 5
+  },
+  {
+   "id": "stars",
+   "kind": "drift",
+   "count": 2600,
+   "size": 0.006,
+   "alpha": 0.45,
+   "near": 3.0,
+   "far": 30,
+   "spread": [
+    1.4,
+    1.2
+   ],
+   "rise": 0.0,
+   "wander": 0.04,
+   "color": "#d6defa",
+   "in": 63,
+   "out": "end",
+   "fade_in": 6,
+   "fade_out": 1
+  },
+  {
+   "id": "blossom",
+   "kind": "emblem",
+   "image": "images/emblems/ghost-blossoms-1.jpg",
+   "count": 9000,
+   "size": 0.0065,
+   "alpha": 0.36,
+   "depth": 6.2,
+   "center": [
+    0.0,
+    -0.02
+   ],
+   "scale": 3.1,
+   "threshold": 0.1,
+   "gamma": 1.0,
+   "form": [
+    [
+     74,
+     0
+    ],
+    [
+     80,
+     1
+    ],
+    [
+     83,
+     1
+    ],
+    [
+     87.5,
+     0
+    ]
+   ],
+   "release": "fall",
+   "scatter": 3.0,
+   "swirl": 0.6,
+   "in": 72,
+   "out": 99,
+   "fade": 2.0
+  },
+  {
+   "id": "wings",
+   "kind": "emblem",
+   "image": "images/emblems/ghost-wings-1.jpg",
+   "count": 9000,
+   "size": 0.0065,
+   "alpha": 0.36,
+   "depth": 6.6,
+   "center": [
+    0.0,
+    0.06
+   ],
+   "scale": 3.3,
+   "threshold": 0.1,
+   "gamma": 1.0,
+   "form": [
+    [
+     85,
+     0
+    ],
+    [
+     92,
+     1
+    ],
+    [
+     "end",
+     1
+    ]
+   ],
+   "release": "scatter",
+   "scatter": 3.2,
+   "swirl": 0.5,
+   "in": 84,
+   "out": "end",
+   "fade_in": 3,
+   "fade_out": 0.5
+  }
+ ],
+ "lights": [
+  {
+   "id": "amber",
+   "type": "SPOT",
+   "pos": [
+    1.0,
+    21.5,
+    8.0
+   ],
+   "aim": [
+    0.8,
+    21.3,
+    -3.0
+   ],
+   "spot": 9,
+   "blend": 1.0,
+   "color": "#ffbf6b",
+   "volume": 1.0,
+   "energy": [
+    [
+     0,
+     0
+    ],
+    [
+     59.6,
+     0
+    ],
+    [
+     "src:178",
+     110000
+    ],
+    [
+     70,
+     95000
+    ],
+    [
+     77,
+     0
+    ]
+   ]
+  }
+ ]
+}
