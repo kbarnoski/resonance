@@ -77,14 +77,16 @@ const TS_PASSES = ["integrate", "sprites", "govern", "composite"] as const;
 const SIM_SOUL_B = SIM_PORT.fields.find((f) => f[0] === "uSoulB")![2];
 const SIM_PASSES = SIM_PORT.fields.find((f) => f[0] === "uPasses")![2];
 
-/** `?splat=1` turns on the phase B splat path (default off until Karel sees film). */
-/** Record quads are the default sprite path; `?quads=port` runs the ported vertex program per corner. */
+/** Record quads are the sprite path when the splat is off; `?quads=port` runs the ported vertex program per corner. */
 export function recordsRequested(search?: string): boolean {
   try { return new URLSearchParams(search ?? (typeof location !== "undefined" ? location.search : "")).get("quads") !== "port"; } catch { return true; }
 }
 
+/** The phase B splat path is the DEFAULT (real-GPU matrix 2026-10-14: 120 fps
+ *  at 10⁶ motes where raster quads ran ~55; film parity + flicker gate pass);
+ *  `?splat=0` falls back to record quads. */
 export function splatRequested(search?: string): boolean {
-  try { return new URLSearchParams(search ?? (typeof location !== "undefined" ? location.search : "")).get("splat") === "1"; } catch { return false; }
+  try { return new URLSearchParams(search ?? (typeof location !== "undefined" ? location.search : "")).get("splat") !== "0"; } catch { return true; }
 }
 
 export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebGPUEngineOptions = {}): PortedParticleEngine {

@@ -7,7 +7,7 @@
  *   collide: no push in front of the surface; a capped, eased push toward the
  *          camera behind it; into-surface velocity damped, never amplified;
  *          continuity as the weight → 0.
- *   engine: both are off by default (the show + the mastered cases unchanged);
+ *   engine: the fluid is on by default (fluid souls only), collisions off;
  *          on, their passes run right after the simulation.
  */
 import { describe, it, expect, beforeEach, vi } from "vitest";
@@ -164,8 +164,8 @@ async function port(opts: Record<string, unknown>) {
 const passes = (calls: { name: string; args: unknown[] }[]) => calls.filter((c) => c.name === "beginComputePass" || c.name === "beginRenderPass").map((c) => c.args[0]);
 
 describe("phases C + D in the parity engine", () => {
-  it("off by default: no fluid, no collide pass (the show and the mastered cases unchanged)", async () => {
-    const { e, calls } = await port({ soul: "smoke" });
+  it("defaults: no collide pass; no fluid pass for a non-fluid soul (Snowflake / Ghost untouched)", async () => {
+    const { e, calls } = await port({ soul: "murmuration" });
     e.start();
     step(30);
     const p = passes(calls);

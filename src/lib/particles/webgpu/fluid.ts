@@ -72,9 +72,11 @@ export function fluidWeightFor(soul: SoulId | null | undefined): number {
   return soul ? FLUID_SOULS[soul] ?? 0 : 0;
 }
 
-/** `?fluid=1` turns the fluid on (default off until Karel sees film). */
+/** The fluid is ON by default (filmed 2026-10-14: the smoke souls roll and
+ *  billow where curl noise only drifted; flicker gate pass; only the fluid
+ *  souls take part — Snowflake / Ghost untouched); `?fluid=0` turns it off. */
 export function fluidRequested(search?: string): boolean {
-  try { return new URLSearchParams(search ?? (typeof location !== "undefined" ? location.search : "")).get("fluid") === "1"; } catch { return false; }
+  try { return new URLSearchParams(search ?? (typeof location !== "undefined" ? location.search : "")).get("fluid") !== "0"; } catch { return true; }
 }
 
 /** Eased follower (exponential, frame-rate independent). */

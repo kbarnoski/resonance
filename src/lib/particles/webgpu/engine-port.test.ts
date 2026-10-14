@@ -57,8 +57,8 @@ async function makePort(o: Parameters<typeof fakeGpu>[0] = {}, opts: Record<stri
 const offsetOf = (fields: readonly (readonly [string, string, number])[], name: string) => fields.find((f) => f[0] === name)![2];
 
 describe("the parity engine: conductor → ported passes", () => {
-  it("one conductor frame = init (once) → sim → fade + sprites → govern → composite", async () => {
-    const { engine, calls } = await makePort();
+  it("one conductor frame (record-quad path, ?splat=0) = init (once) → sim → fade + sprites → govern → composite", async () => {
+    const { engine, calls } = await makePort({}, { splat: false });
     // seeds + the boot cloud, each once (the conductor warms them as two steps)
     const init = calls.filter((c) => c.name === "compute.setPipeline" && c.args[0] === "init");
     expect(init.length).toBe(2);

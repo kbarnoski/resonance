@@ -151,9 +151,9 @@ beforeEach(() => {
 });
 
 describe("the splat path in the parity engine (?splat=1)", () => {
-  it("off by default; ?splat=1 turns it on", () => {
-    expect(splatRequestedForTest("")).toBe(false);
-    expect(splatRequestedForTest("?splat=1")).toBe(true);
+  it("on by default; ?splat=0 turns it off", () => {
+    expect(splatRequestedForTest("")).toBe(true);
+    expect(splatRequestedForTest("?splat=0")).toBe(false);
   });
 
   it("a frame: sim → motes → splat (clear, classify, scan, scatter, tile) → hdr (fade, splat layer, large motes indirect) → taa → govern → composite", async () => {
