@@ -57,6 +57,8 @@ const PERF = flag("--perf");
 // — the stutter study (Karel 2026-10-08: "studder stepping where it moves
 // slower a bit than catches up faster")
 const MOTION = flag("--motion");
+// --query k=v[&k=v]: extra URL params for the review page (e.g. gpu=webgl2 for a backend A/B)
+const EXTRA_QUERY = arg("--query", "");
 const PARALLEL = PERF ? 1 : Math.max(1, Number(arg("--parallel", "1")));
 const TAIL = Number(arg("--tail", "20"));
 const FRAME_EVERY = Number(arg("--frames-every", PERF ? "10" : "2"));
@@ -248,7 +250,7 @@ async function playSlice(slot, ids, log) {
   });
 
   const tGo = Date.now();
-  await page.goto(`${BASE}/room/installation?loop=1&kiosk=1&start=${encodeURIComponent(first)}`, { waitUntil: "domcontentloaded", timeout: 120000 });
+  await page.goto(`${BASE}/room/installation?loop=1&kiosk=1&start=${encodeURIComponent(first)}${EXTRA_QUERY ? `&${EXTRA_QUERY}` : ""}`, { waitUntil: "domcontentloaded", timeout: 120000 });
   const t0 = Date.now();
   log(`slot ${slot}: page loaded in ${t0 - tGo} ms`);
   const budgetS = ids.reduce((s, id) => s + (DUR[id]?.dur ?? 300), 0) + 120 + TAIL + 60 * ids.length;
