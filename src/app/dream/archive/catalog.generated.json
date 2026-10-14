@@ -1,5 +1,13 @@
 [
  {
+  "slug": "20480-earwell",
+  "cycle": 20480,
+  "name": "Earwell",
+  "status": "demoable",
+  "description": "Earwell lets you walk through the harmony of one of Karel's piano recordings by ear alone. A ring of resonant \"stations\" surrounds a cursor; each station is a distinct chord region",
+  "category": "local"
+ },
+ {
   "slug": "20400-lenticule",
   "cycle": 20400,
   "name": "Lenticule",
