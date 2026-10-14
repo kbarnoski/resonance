@@ -1,7 +1,14 @@
-// Dump every registered shader (+ its prepass: <mode>::pre / ::scale / ::size / ::nearest) to JSON for shader-ab.mjs.
-import { SHADERS, SHADER_PREPASS, UPSAMPLE_FRAG } from "../../src/lib/shaders/index";
+// Dump every registered shader AS THE VISUALIZER RUNS IT to JSON for the perf
+// rigs: { mode: { main, prepass } } — `main` is the program the layer
+// compiles (the upsampler for a whole-shader prepass), `prepass` its stages.
+//   npx esbuild scripts/perf/dump-shaders.ts --bundle --platform=node --format=esm --outfile=/tmp/dump.mjs && node /tmp/dump.mjs out.json
+import { SHADERS, prepassFor, UPSAMPLE_FRAG } from "../../src/lib/shaders/index";
 import fs from "node:fs";
-const out: Record<string, unknown> = { ...SHADERS };
-for (const [k, v] of Object.entries(SHADER_PREPASS)) if (v) { out[`${k}::pre`] = v.frag; out[`${k}::scale`] = v.scale; out[`${k}::size`] = v.size ?? null; out[`${k}::nearest`] = !!v.nearest; out[`${k}::float`] = !!v.float; out[`${k}::extraRows`] = v.extraRows ?? 0; out[`${k}::blocks`] = v.blocks ?? 1; out[`${k}::whole`] = !!v.whole; out[`${k}::columns`] = v.columns ?? 0; if (v.whole) out[k] = UPSAMPLE_FRAG; }
+const out: Record<string, { main: string; prepass: unknown }> = {};
+for (const [mode, frag] of Object.entries(SHADERS)) {
+  if (!frag) continue;
+  const p = prepassFor(frag);
+  out[mode] = { main: p?.whole ? UPSAMPLE_FRAG : frag, prepass: p ?? null };
+}
 fs.writeFileSync(process.argv[2] ?? "/tmp/shaders.json", JSON.stringify(out));
-console.log(Object.keys(SHADERS).length);
+console.log(Object.keys(out).length);

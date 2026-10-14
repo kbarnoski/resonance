@@ -1,13 +1,15 @@
 import { U, SMOOTH_NOISE, VISIONARY_PALETTE, ROT2, SMIN } from "./shared";
-import { deriveFrag } from "./prepass-pack";
+import { deriveFrag, tiledStages, LIGHT_PRE } from "./prepass-pack";
 
-// PERF (2026-10-13, the 120 fps law): everything about the ten organisms
+// PERF (2026-10-13/14, the 120 fps law): everything about the ten organisms
 // that depends only on time — their paths, sizes, three palettes, the 240
 // filament points and the 20 drifting particles — is computed once per frame
-// into a float table (PRE, the identical math); the main pass reads it. The
-// soft bodies' shape (atan + wobble) still runs per pixel, but only within
-// reach of a body (it is exactly 0 beyond radius x 1.23). ORIG is the
-// reference and the no-float fallback. A/B: scripts/perf/shader-ab.mjs.
+// into a float light table (PRE, the identical math), and the 260 glows are
+// TILED (prepass-pack.ts tiledStages): a pixel sums only the lights near its
+// screen tile, the rest come from a smooth far-field grid. The soft bodies'
+// shape (atan + wobble) still runs per pixel, but only within reach of a body
+// (it is exactly 0 beyond radius x 1.23). ORIG is the reference and the
+// no-float fallback. A/B: scripts/perf/shader-ab.mjs.
 export const ORIG =
   U +
   SMOOTH_NOISE +
@@ -141,110 +143,93 @@ void main() {
 }
 `;
 
-/** Row 0: filament point k of organism i's filament f at x = i*24 + f*12 + k
- *  (x, y, brightness * 0.002). Row 1: organism i at x = i (centre, radius),
- *  its colours at x = 10+i (body), 20+i (core), 30+i (filaments). Row 2:
- *  particle i (x, y, glow gain). */
-export const PRE_SIZE = [240, 3] as const;
-export const PRE =
-  U +
-  SMOOTH_NOISE +
-  VISIONARY_PALETTE +
-  `
-void main() {
-  float x = floor(gl_FragCoord.x);
-  float row = floor(gl_FragCoord.y);
-  float t = u_time * 0.08;
-  float bass = u_bass * 0.3;
-  float mid = u_mid * 0.2;
-  float treble = u_treble * 0.15;
-  gl_FragColor = vec4(0.0);
-  if (row < 0.5) {
-    float fi = floor((x + 0.5) / 24.0);
-    float rest = x - fi * 24.0;
-    float fil = floor((rest + 0.5) / 12.0);
-    float k = rest - fil * 12.0;
-    float seed = fi * 1.618;
-    vec2 center = vec2(
-      sin(t * 0.3 + seed * 2.7) * 0.6 + cos(t * 0.17 + seed * 4.1) * 0.2,
-      sin(t * 0.22 + seed * 3.3) * 0.5 + cos(t * 0.14 + seed * 1.9) * 0.15
-    );
-    vec2 pos = fil < 0.5 ? center - vec2(0.01, 0.0) : center + vec2(0.01, 0.0);
-    float fseed = fil < 0.5 ? seed : seed + 3.14;
-    for (int i = 0; i < 12; i++) {
-      float fj = float(i);
-      if (fj > k) break;
-      pos += vec2(
-        sin(fj * 0.8 + fseed * 3.0 + t * 0.8) * 0.015,
-        -0.02 - 0.005 * fj * 0.3
-      );
-    }
-    float brightness = 1.0 - k / 12.0;
-    gl_FragColor = vec4(pos, brightness * 0.002, 1.0);
-  } else if (row < 1.5) {
-    float i = mod(x, 10.0);
-    float which = floor((x + 0.5) / 10.0);
-    if (which > 3.5) return;
-    float seed = i * 1.618;
-    float colorT = i * 0.1 + t * 0.02 + u_amplitude * 0.15;
-    if (which < 0.5) {
+/** Light table (LIGHT_PRE layout): 0-239 filament points (organism i,
+ *  filament f, step k at i*24 + f*12 + k), 240-259 the drifting particles,
+ *  then the organisms' own data with gain 0 (never summed): 260+i = centre +
+ *  radius (softening slot) + body colour, 270+i = core colour. Filament glows
+ *  use 1/(d + 0.003) — flagged by a negative softening. */
+const N = 280;
+const LIGHT = `
+    float t = u_time * 0.08;
+    float bass = u_bass * 0.3;
+    float mid = u_mid * 0.2;
+    float treble = u_treble * 0.15;
+    if (fi < 239.5) {
+      float oi = floor((fi + 0.5) / 24.0);
+      float rest = fi - oi * 24.0;
+      float fil = floor((rest + 0.5) / 12.0);
+      float k = rest - fil * 12.0;
+      float seed = oi * 1.618;
       vec2 center = vec2(
         sin(t * 0.3 + seed * 2.7) * 0.6 + cos(t * 0.17 + seed * 4.1) * 0.2,
         sin(t * 0.22 + seed * 3.3) * 0.5 + cos(t * 0.14 + seed * 1.9) * 0.15
       );
-      float radius = 0.04 + 0.02 * sin(seed * 5.0) + bass * 0.02;
-      gl_FragColor = vec4(center, radius, 1.0);
-    } else if (which < 1.5) {
-      gl_FragColor = vec4(palette(
-        colorT,
-        vec3(0.1, 0.3, 0.5),
-        vec3(0.2, 0.3, 0.4),
-        vec3(0.5, 0.8, 1.0),
-        vec3(0.0, 0.15, 0.4)
-      ), 1.0);
-    } else if (which < 2.5) {
-      gl_FragColor = vec4(palette(
-        colorT + 0.3,
-        vec3(0.3, 0.6, 0.7),
-        vec3(0.3, 0.4, 0.5),
-        vec3(0.6, 0.9, 1.0),
-        vec3(0.1, 0.2, 0.5)
-      ), 1.0);
-    } else {
-      gl_FragColor = vec4(palette(
+      vec2 pos = fil < 0.5 ? center - vec2(0.01, 0.0) : center + vec2(0.01, 0.0);
+      float fseed = fil < 0.5 ? seed : seed + 3.14;
+      for (int i = 0; i < 12; i++) {
+        float fj = float(i);
+        if (fj > k) break;
+        pos += vec2(
+          sin(fj * 0.8 + fseed * 3.0 + t * 0.8) * 0.015,
+          -0.02 - 0.005 * fj * 0.3
+        );
+      }
+      float brightness = 1.0 - k / 12.0;
+      float colorT = oi * 0.1 + t * 0.02 + u_amplitude * 0.15;
+      lp = pos;
+      lt = palette(
         colorT + 0.5 + treble,
         vec3(0.1, 0.4, 0.5),
         vec3(0.15, 0.3, 0.4),
         vec3(0.4, 0.9, 0.8),
         vec3(0.0, 0.2, 0.5)
-      ), 1.0);
+      );
+      lw = brightness * 0.002 * 0.6;
+      le = -0.003;
+    } else if (fi < 259.5) {
+      float pi = fi - 240.0;
+      vec2 ppos = hash2(vec2(pi * 7.3, pi * 11.1));
+      ppos = ppos * 2.0 - 1.0;
+      ppos += vec2(sin(t * 0.2 + pi), cos(t * 0.15 + pi * 1.3)) * 0.3;
+      lp = ppos;
+      lt = vec3(0.1, 0.3, 0.5);
+      lw = 0.0005 * (0.5 + 0.5 * sin(t * 1.5 + pi * 2.0 + mid * 3.0));
+      le = 0.001;
+    } else {
+      float oi = fi < 269.5 ? fi - 260.0 : fi - 270.0;
+      float seed = oi * 1.618;
+      float colorT = oi * 0.1 + t * 0.02 + u_amplitude * 0.15;
+      lp = vec2(
+        sin(t * 0.3 + seed * 2.7) * 0.6 + cos(t * 0.17 + seed * 4.1) * 0.2,
+        sin(t * 0.22 + seed * 3.3) * 0.5 + cos(t * 0.14 + seed * 1.9) * 0.15
+      );
+      le = 0.04 + 0.02 * sin(seed * 5.0) + bass * 0.02;
+      lw = 0.0;
+      lt = fi < 269.5 ? palette(
+        colorT,
+        vec3(0.1, 0.3, 0.5),
+        vec3(0.2, 0.3, 0.4),
+        vec3(0.5, 0.8, 1.0),
+        vec3(0.0, 0.15, 0.4)
+      ) : palette(
+        colorT + 0.3,
+        vec3(0.3, 0.6, 0.7),
+        vec3(0.3, 0.4, 0.5),
+        vec3(0.6, 0.9, 1.0),
+        vec3(0.1, 0.2, 0.5)
+      );
     }
-  } else {
-    if (x > 19.5) return;
-    float fi = x;
-    vec2 ppos = hash2(vec2(fi * 7.3, fi * 11.1));
-    ppos = ppos * 2.0 - 1.0;
-    ppos += vec2(sin(t * 0.2 + fi), cos(t * 0.15 + fi * 1.3)) * 0.3;
-    float g = 0.5 + 0.5 * sin(t * 1.5 + fi * 2.0 + mid * 3.0);
-    gl_FragColor = vec4(ppos, g, 1.0);
-  }
-}
 `;
+export const PRE = LIGHT_PRE(SMOOTH_NOISE + VISIONARY_PALETTE, LIGHT, "0.0");
+export const PRE_SIZE = [N, 2] as const;
+const TILED = tiledStages(N, {
+  px: 64, k: 40, r1: 0.03, r2: 0.06, far: 8, uv: "half",
+  glow: "a.w < 0.0 ? a.z / (sqrt(d2) - a.w) : a.z / (d2 + a.w)",
+});
+export const PRE_THEN = TILED.THEN;
 
 export const FRAG = deriveFrag(ORIG, [
-  ["void main() {", `uniform sampler2D u_pre;
-vec4 pelT(float x, float row) { return texture2D(u_pre, vec2((x + 0.5) / 240.0, (row + 0.5) / 3.0)); }
-// one filament from the table: the same 12 terms, in the same order
-float filamentT(vec2 uv, float base) {
-  float total = 0.0;
-  for (int i = 0; i < 12; i++) {
-    vec4 q = pelT(base + float(i), 0.0);
-    float d = length(uv - q.xy);
-    total += q.z / (d + 0.003);
-  }
-  return total;
-}
-void main() {`],
+  ["void main() {", TILED.SUM + "\nvoid main() {"],
   [`  // 10 floating organisms
   for (int i = 0; i < 10; i++) {
     float fi = float(i);
@@ -298,24 +283,21 @@ void main() {`],
     color += filColor * (fil1 + fil2) * 0.6;
   }
 
-`, `  // 10 floating organisms (PRE: paths, sizes, palettes, filament points)
+`, `  // 10 floating organisms: bodies here; their filaments + the particles in plSum (PRE)
   for (int i = 0; i < 10; i++) {
     float fi = float(i);
-    vec4 o = pelT(fi, 1.0);
+    vec4 o = plLight(260.0 + fi);
     vec2 center = o.xy;
-    float radius = o.z;
+    float radius = o.w;
     float phase = fi * 1.618 * 6.28;
     // the body is exactly 0 beyond radius * 1.23 (wobble <= 1.23)
     float body = length(uv - center) < radius * 1.24 ? organism(uv, center, radius, phase, t) : 0.0;
-    vec3 orgColor = pelT(10.0 + fi, 1.0).rgb;
+    vec3 orgColor = plTint(260.0 + fi);
     float core = smoothstep(0.6, 1.0, body);
-    vec3 coreColor = pelT(20.0 + fi, 1.0).rgb;
+    vec3 coreColor = plTint(270.0 + fi);
     color += orgColor * body * 0.3 + coreColor * core * 0.5;
-    float fil1 = filamentT(uv, fi * 24.0);
-    float fil2 = filamentT(uv, fi * 24.0 + 12.0);
-    vec3 filColor = pelT(30.0 + fi, 1.0).rgb;
-    color += filColor * (fil1 + fil2) * 0.6;
   }
+  color += plSum(uv);
 
 `],
   [`  // Ambient floating particles
@@ -330,14 +312,5 @@ void main() {`],
     color += vec3(0.1, 0.3, 0.5) * glow;
   }
 
-`, `  // Ambient floating particles (PRE)
-  for (int i = 0; i < 20; i++) {
-    vec4 q = pelT(float(i), 2.0);
-    float d = length(uv - q.xy);
-    float glow = 0.0005 / (d * d + 0.001);
-    glow *= q.z;
-    color += vec3(0.1, 0.3, 0.5) * glow;
-  }
-
-`],
+`, ``],
 ], "pelagic");

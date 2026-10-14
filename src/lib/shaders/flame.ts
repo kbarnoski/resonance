@@ -209,11 +209,12 @@ float flickerNoise(vec2 p, float time) {
   return fbm(p * 2.0 + q * 0.35 + vec2(0.0, -time * 3.5));
 }
 `;
-const GRID = fieldGrid(2, 0);
+const GRID = fieldGrid(3, 0);
 export const PRE_SCALE = 1 / 3;
 
 /** Block 0 = (flame 1, flame 2, flicker 1 octaves 1-4, flicker 2 octaves 1-4);
- *  block 1 = (ember bed octaves 1-4, smoke). */
+ *  block 1 = (ember bed octaves 1-4, smoke); block 2 = the two flickers' warp
+ *  q (smooth: noise cells ~130 px). */
 export const PRE =
   U +
   SMOOTH_NOISE +
@@ -221,13 +222,15 @@ export const PRE =
   HELPERS +
   GRID.pre +
   `
-// flickerNoise's own steps, the final fbm cut after octave 4
-float flickerLow(vec2 p, float time) {
-  vec2 q = vec2(
+// flickerNoise's own steps: its warp q, and the final fbm cut after octave 4
+vec2 flickerQ(vec2 p, float time) {
+  return vec2(
     snoise(p * 3.0 + vec2(time * 1.5, 0.0)),
     snoise(p * 2.8 + vec2(0.0, time * 1.2) + 7.1)
   );
-  return fbmLow(p * 2.0 + q * 0.35 + vec2(0.0, -time * 3.5));
+}
+float flickerLow(vec2 p, float time) {
+  return fbmLow(p * 2.0 + flickerQ(p, time) * 0.35 + vec2(0.0, -time * 3.5));
 }
 void main() {
   float block, row;
@@ -243,6 +246,8 @@ void main() {
     o.z = flickerLow(vec2(uv.x * 1.8, above * 1.3) * 2.0, t * 1.3);
     o.w = flickerLow(vec2(uv.x * 2.5, above * 1.5) * 2.5 + 3.0, t * 1.8);
     gl_FragColor = o;
+  } else if (block > 1.5) {
+    gl_FragColor = vec4(flickerQ(vec2(uv.x * 1.8, above * 1.3) * 2.0, t * 1.3), flickerQ(vec2(uv.x * 2.5, above * 1.5) * 2.5 + 3.0, t * 1.8));
   } else {
     float emberLow = fbmLow(vec2(uv.x * 5.0 + t * 0.4, t * 0.3));
     float smokeY = above - 0.5;
@@ -255,21 +260,19 @@ void main() {
 /** The two-pass main shader: ORIG with its smooth parts read from PRE. */
 export const FRAG = deriveFrag(ORIG, [
   ["void main() {", FBM_SPLIT + GRID.main + `
-// flickerNoise = its low octaves (PRE) + octaves 5-6 here, at the same point
-float flickerSplit(float low, vec2 p, float time) {
-  vec2 q = vec2(
-    snoise(p * 3.0 + vec2(time * 1.5, 0.0)),
-    snoise(p * 2.8 + vec2(0.0, time * 1.2) + 7.1)
-  );
+// flickerNoise = its low octaves (PRE) + octaves 5-6 here, at the same
+// point, warped by its q (PRE, interpolated — pass 3)
+float flickerSplit(float low, vec2 q, vec2 p, float time) {
   return low + fbmHigh(p * 2.0 + q * 0.35 + vec2(0.0, -time * 3.5));
 }
 void main() {
   vec4 field0 = preField(0.0);
-  vec4 field1 = preField(1.0);`],
+  vec4 field1 = preField(1.0);
+  vec4 field2 = preField(2.0);`],
   ["float n = flameNoise(fp * 1.8, t * 0.6);", "float n = field0.x;"],
   ["float n = flameNoise(fp * 2.2, t * 1.0);", "float n = field0.y;"],
-  ["float n = flickerNoise(fp * 2.0, t * 1.3);", "float n = above >= 0.85 ? 0.0 : flickerSplit(field0.z, fp * 2.0, t * 1.3); // 0 where the mask is 0"],
-  ["float n = flickerNoise(fp * 2.5 + 3.0, t * 1.8);", "float n = above >= 0.5 ? 0.0 : flickerSplit(field0.w, fp * 2.5 + 3.0, t * 1.8); // 0 where the mask is 0"],
+  ["float n = flickerNoise(fp * 2.0, t * 1.3);", "float n = above >= 0.85 ? 0.0 : flickerSplit(field0.z, field2.xy, fp * 2.0, t * 1.3); // 0 where the mask is 0"],
+  ["float n = flickerNoise(fp * 2.5 + 3.0, t * 1.8);", "float n = above >= 0.5 ? 0.0 : flickerSplit(field0.w, field2.zw, fp * 2.5 + 3.0, t * 1.8); // 0 where the mask is 0"],
   ["float emberN = fbm(vec2(uv.x * 5.0 + t * 0.4, t * 0.3)) * 0.5 + 0.5;", "float emberN = above >= 0.08 ? 0.0 : (field1.x + fbmHigh(vec2(uv.x * 5.0 + t * 0.4, t * 0.3))) * 0.5 + 0.5;"],
   ["float smokeN = fbm(vec2(uv.x * 1.8, smokeY * 2.5 - t * 0.4)) * 0.5 + 0.5;", "float smokeN = field1.y;"],
 ], "flame");

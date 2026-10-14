@@ -61,6 +61,10 @@ void main() {
 
     vec2 gp = uv - grainCenter;
     float gpLen = length(gp);
+    // PERF (pass 3, exact): |spikes| <= 0.75, so the spiky radius stays
+    // within grainRadius x 1.135 — beyond 0.04 of that every grain term
+    // (glow, edge, interior, rim, tips) is exactly 0
+    if (gpLen - grainRadius * 1.135 >= 0.04) continue;
     float gpAngle = atan(gp.y, gp.x);
 
     // ── Spiky surface profile ──
@@ -153,6 +157,8 @@ void main() {
     );
 
     float debrisDist = length(uv - debrisPos);
+    // (pass 3: beyond 0.15 the gaussian is < 2e-10 — skip its palette)
+    if (debrisDist > 0.15) continue;
     float debrisGlow = exp(-debrisDist * debrisDist / (0.0005 + s1 * 0.0005));
 
     vec3 debrisColor = palette(

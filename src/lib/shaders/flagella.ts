@@ -76,6 +76,10 @@ void main() {
       cos(t * 0.25 * (0.5 + seed2) + seed2 * 15.0) * 0.5
     );
 
+    // PERF (pass 3): beyond 0.45 of the body every term is 0 (body glow,
+    // flagella — reach <= 0.43) or below 2e-8 (the aura gaussian) — skip
+    if (length(uv - orgPos) > 0.45) continue;
+
     // Cell body
     float bodySize = 0.03 + seed3 * 0.02;
     float bodyDist = length(uv - orgPos) - bodySize;

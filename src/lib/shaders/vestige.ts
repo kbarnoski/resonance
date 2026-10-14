@@ -2,11 +2,13 @@ import { U, SMOOTH_NOISE, VISIONARY_PALETTE, ROT2 } from "./shared";
 
 // Ancient light traces: ghost-like luminous trails of something that passed
 // long ago — fading afterimages, spectral echoes, temporal residue.
-import { deriveFrag, lightTable } from "./prepass-pack";
+import { deriveFrag, tiledStages, LIGHT_PRE } from "./prepass-pack";
 
-// PERF (2026-10-13, the 120 fps law): the five trails' 40 echoes (each a
-// palette + path trig per pixel) come from a per-frame light table
-// (prepass-pack.ts lightTable — the identical per-echo math, once per frame).
+// PERF (2026-10-13/14, the 120 fps law): the five trails' 40 echoes (each a
+// palette + path trig per pixel) come from a per-frame light table (the
+// identical per-echo math, once per frame) and — broad gaussians, smooth at
+// pixel scale — are summed on a 1/6-resolution far-field grid
+// (prepass-pack.ts tiledStages), interpolated per pixel.
 // ORIG is the reference and the no-float fallback. A/B: scripts/perf/shader-ab.mjs.
 export const ORIG =
   U +
@@ -100,11 +102,8 @@ void main() {
 }
 `;
 
-const LIGHTS = lightTable({
-  n: 40,
-  header: VISIONARY_PALETTE,
-  // light fi = trail ft x 8 + echo fe
-  light: `
+// light fi = trail ft x 8 + echo fe; its gaussian rate (40 + fe x 20) rides the softening slot
+const LIGHT = `
     float ft = floor((fi + 0.5) / 8.0);
     float fe = fi - ft * 8.0;
     float t = u_time * 0.07;
@@ -125,11 +124,14 @@ const LIGHTS = lightTable({
     );
     float ageShift = fe * 0.03;
     lt = mix(echoCol, vec3(0.4, 0.3, 0.6), ageShift);
-    lw = exp(-fe * 0.4); // older echoes dimmer`,
-  glow: "w * exp(-dd2 * (40.0 + mod(fi, 8.0) * 20.0))",
-});
-export const PRE = LIGHTS.PRE;
-export const PRE_SIZE = LIGHTS.SIZE;
+    lw = exp(-fe * 0.4); // older echoes dimmer
+    le = 40.0 + fe * 20.0;`;
+export const PRE = LIGHT_PRE(VISIONARY_PALETTE, LIGHT, "0.0");
+export const PRE_SIZE = [40, 2] as const;
+// The echoes are broad gaussians (smooth on a ~80 px+ scale): ALL of them go
+// to the far-field grid (no near lights — r1/r2 below every distance).
+const LIGHTS = tiledStages(40, { px: 128, k: 1, r1: -1, r2: -0.5, far: 6, uv: "half", glow: "a.z * exp(-d2 * a.w)" });
+export const PRE_THEN = LIGHTS.THEN;
 
 export const FRAG = deriveFrag(ORIG, [
   ["void main() {", LIGHTS.SUM + "\nvoid main() {"],

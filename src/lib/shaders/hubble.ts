@@ -227,7 +227,9 @@ export const FRAG = deriveFrag(ORIG, [
 `, `  for (int i = 0; i < 30; i++) {
     float fi = float(i);
     vec4 q = preTable(fi, 0.0); // (x, y, brightness) — PRE
-    float glow = exp(-length(uv - q.xy) * (40.0 + fi * 2.0)) * q.z;
+    float k = length(uv - q.xy) * (40.0 + fi * 2.0);
+    if (k > 25.0) continue; // (pass 3) exp(-25) x 0.3 = 4e-12: nothing to add
+    float glow = exp(-k) * q.z;
     vec3 dotCol = preTable(fi, 1.0).rgb;
     color += dotCol * glow * (0.6 + u_bass * 0.2);
   }
