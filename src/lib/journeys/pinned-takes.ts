@@ -132,6 +132,8 @@ export const PINNED_TAKES: Record<string, number | number[]> = {
   "4cd35ec2-bc13-4b9a-b26c-9e38e956fb80": 391401299,
   // Karel 2026-10-12 (pass 7): "the current journey playing is a big time keeper" — No question 7
   "19acdb4c-5a52-4532-99bd-a59652c7ff8e": 1643832524,
+  // Karel 2026-10-14: "otherwise its a keeper take" — Redwoods Sway 2 (session 0a7gtm); its ember slot (p0.271, the "amber web") re-picks via the pick-time ban in shader-balance.ts
+  "99b7ad2c-a212-440e-85fa-0c670c1e4296": 995886728,
 };
 
 /** Resolve tonight's take for a journey: a pinned one (or a random
@@ -155,6 +157,8 @@ export const TAKE_STILL_SCRIPTS: Record<string, readonly (readonly [number, stri
   "87e106f9-4d74-4886-b944-fd625a827b02": [[11, "gen-001.jpg"], [24, "gen-004.jpg"], [34, "gen-005.jpg"], [39, "gen-006.jpg"], [53, "gen-010.jpg"], [67, "gen-012.jpg"], [81, "gen-015.jpg"], [95, "gen-017.jpg"], [108, "gen-019.jpg"], [123, "gen-034.jpg"], [137, "gen-024.jpg"]],
   // The First (Expanded) — Karel 2026-10-13: "i love this take of the first" (session 8zjg63)
   "f0362f24-75f1-4717-8487-cc9cf12c7bcc": [[11, "gen-001.jpg"], [21, "gen-002.jpg"], [30, "gen-003.jpg"], [38, "gen-004.jpg"], [47, "gen-005.jpg"], [62, "gen-010.jpg"], [74, "gen-013.jpg"], [83, "gen-014.jpg"], [99, "gen-002.jpg"]],
+  // Redwoods Sway 2 — Karel 2026-10-14: "otherwise its a keeper take" (session 0a7gtm)
+  "99b7ad2c-a212-440e-85fa-0c670c1e4296": [[2, "gen-000.jpg"], [17, "gen-002.jpg"], [26, "gen-003.jpg"], [34, "gen-004.jpg"], [43, "gen-005.jpg"], [52, "gen-006.jpg"], [61, "gen-007.jpg"], [71, "gen-008.jpg"], [80, "gen-009.jpg"], [86, "gen-010.jpg"], [99, "gen-013.jpg"], [114, "gen-000.jpg"], [125, "gen-016.jpg"], [130, "gen-017.jpg"]],
   "first-snow": [[16, "gen-102.jpg"], [30, "gen-103.jpg"], [46, "gen-102.jpg"], [61, "gen-103.jpg"], [72, "gen-017.jpg"], [78, "gen-104.jpg"], [92, "gen-105.jpg"], [100, "gen-031.jpg"], [116, "gen-042.jpg"], [130, "gen-124.jpg"], [142, "gen-120.jpg"], [152, "gen-116.jpg"], [163, "gen-113.jpg"], [171, "gen-114.jpg"]],
 };
 /** The scripted still for a journey at time t (seconds), or null. */

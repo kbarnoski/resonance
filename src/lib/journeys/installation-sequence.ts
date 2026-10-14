@@ -187,7 +187,6 @@ const EXPANSION = [
   "3814f116-5c54-499c-9d9b-355201700fdc", // 46. Rattler 2 · 3:54
   "4d17da19-6834-4005-a944-34c27a88a320", // 47. Amboise 2 · 3:21
   "8ca69280-944c-4ccb-9f7f-692f3f7f7a6f", // 48. Singular 4 · 1:46
-  "6cb979ce-3b76-4851-a0ba-3f100fddfcb3", // 49. Yellow Bird 3 · 2:26
   "061528d4-e9a3-49c3-ad3c-f23cf9cf2251", // Rolling 2 — upgraded to the Archetype + joined the Expansion (Karel 2026-10-11: "once upgraded no need for a kinetic lab set")
 ] as const;
 /** The featured journeys (verified session-take pairings). */
@@ -290,7 +289,6 @@ const RISE_ABOVE = [
   "99b7ad2c-a212-440e-85fa-0c670c1e4296", // 40. Redwoods Sway 2 — the feel-good finale
   "79e33115-7f1e-44bc-b950-7adf5055dd55", // 41. Welcome Home
   "inferno", // 42. Realized
-  "6cb979ce-3b76-4851-a0ba-3f100fddfcb3", // 43. Yellow Bird 3 — the last track (Karel 2026-10-09; replaced Yellow Bird 6)
 ] as const;
 
 /** Main loop (Karel 2026-10-09): Rise Above → March Light → Surrounded by
@@ -329,6 +327,7 @@ export const PARKING_LOT: readonly string[] = [
   "21448504-ec00-48c3-8b0a-c92da2cf216a", // Surrounded by Light 19 — from the Expansion (2026-10-09)
   "d8705068-f8a9-4dd7-95a5-c6f1160fed22", // Roll Away 8 — from the Expansion and Rise Above (2026-10-09)
   "666436a4-eabf-4b0a-b6bc-665520daa687", // Tranquility 3 — from the Expansion (Karel 2026-10-12, pass 7: "that version isnt strong so id parking lot it")
+  "6cb979ce-3b76-4851-a0ba-3f100fddfcb3", // Yellow Bird 3 — from Rise Above (its last track) and the Expansion (Karel 2026-10-14: "this yellow bird should be in parking lot"); Rise Above now closes on Realized
 ];
 
 /**

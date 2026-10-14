@@ -74,6 +74,8 @@ export const SHADER_JOURNEY_BANS: Readonly<Record<string, readonly string[]>> = 
   // "no ember 3d plane moving shader in bath" (2026-10-13; the kiosk log had
   // Bath's finale on ember, finale-forced) — ember and parsec both out
   [BATH_ID]: ["ember", "parsec"],
+  // Redwoods Sway 2 — "amber web shader in this current journey not good so remoive" (2026-10-14)
+  "99b7ad2c-a212-440e-85fa-0c670c1e4296": ["ember"],
 };
 
 export const AFTERGLOW_ID = "fb56b19e-ee23-43c6-ad41-5714e7969aad";

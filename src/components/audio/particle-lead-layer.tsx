@@ -1193,6 +1193,7 @@ export function ParticleLeadLayer({
     // the forms THIS phase's imagery calls for (vision-tagged) — else the cycle
     const phaseIdxAt = (t: number) => (cast.phaseBounds ?? []).filter((b) => b <= t).length;
     const charAt = (t: number) => cast.phaseChars?.[Math.min(phaseIdxAt(t), (cast.phaseChars?.length ?? 1) - 1)];
+    const motionPeak = cast.motion * Math.max(1e-3, ...(cast.phaseChars ?? []).map((c) => c?.motion ?? 1), cast.phaseChars?.length ? 0 : 1) * CALM_TEMPO;
     const formsNow = (t: number): SoulId[] => { const f = charAt(t)?.forms; return f && f.length ? f : cast.formCycle; };
     const switchForm = (soul: SoulId, t: number) => {
       const quiet = shown < 0.05;
@@ -1969,7 +1970,11 @@ export function ParticleLeadLayer({
         // …and ONE pace for the whole journey (Karel 2026-10-14: the wisp cloud in the
         // second section "seems slowed compared to first time" — it dropped 0.85 → 0.65
         // at the opening's end): every section moves like the opening
-        engine.setMotion(journeyId === "ghost" ? Math.max(mo, 0.85) : mo);
+        // …and the same for every other journey (Karel 2026-10-14: "ensure a slow down
+        // like we had in ghost aint in others" — 58 of 99 show journeys dropped ×0.66
+        // into a section): a section may calm, but never below 85% of the journey's
+        // own fastest section, and never down at the engine floor
+        engine.setMotion(journeyId === "ghost" ? Math.max(mo, 0.85) : Math.max(mo, motionPeak * 0.85, 0.5));
         // a shader with its own moving particles: follow + trail them
         // OFF until a non-blocking read exists: snapshotting the WebGL1 shader
         // canvas cost ~90 ms per sample on the kiosk (murmuration, 2026-10-06)

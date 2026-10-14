@@ -1248,73 +1248,6 @@
    "shaderBalance": "2026-10-13"
   },
   {
-   "id": "6cb979ce-3b76-4851-a0ba-3f100fddfcb3",
-   "title": "Yellow Bird 3",
-   "lead": "dark-nebula",
-   "leadHue": "blue",
-   "leadFit": 2,
-   "leadCoverage": 0.14,
-   "energy": [
-    0.62,
-    0.76,
-    0.87,
-    0.79,
-    0.86,
-    0.77
-   ],
-   "intensity": [
-    0.6,
-    0.82,
-    1,
-    0.87,
-    0.98,
-    0.84
-   ],
-   "crests": true,
-   "peakPhase": "transcendence",
-   "supports": [
-    "drift",
-    "zenith",
-    "magma",
-    "monsoon",
-    "diatom",
-    "flagella",
-    "r2-spiralgal",
-    "chrysalis",
-    "binary-stars",
-    "typhoon",
-    "meteor-rain"
-   ],
-   "cast": {
-    "threshold": [
-     "drift"
-    ],
-    "expansion": [
-     "zenith",
-     "magma"
-    ],
-    "transcendence": [
-     "dark-nebula",
-     "monsoon"
-    ],
-    "illumination": [
-     "diatom",
-     "flagella",
-     "r2-spiralgal",
-     "chrysalis",
-     "binary-stars"
-    ],
-    "return": [
-     "typhoon"
-    ],
-    "integration": [
-     "meteor-rain"
-    ]
-   },
-   "mvStandard": "2026-10-10T14-49-51",
-   "shaderBalance": "2026-10-13"
-  },
-  {
    "id": "8ca69280-944c-4ccb-9f7f-692f3f7f7a6f",
    "title": "Singular 4",
    "lead": "maelstrom-dark",
@@ -1363,7 +1296,7 @@
      "r3-fernunfurl"
     ],
     "transcendence": [
-     "jubilee",
+     "zenith",
      "stigmata"
     ],
     "illumination": [
@@ -1899,7 +1832,7 @@
      "volcanic",
      "plankton",
      "furnace",
-     "ember",
+     "r2-pixie",
      "photon",
      "kelp"
     ],
@@ -3640,6 +3573,73 @@
     ]
    },
    "mvStandard": "2026-10-10T14-49-51"
+  },
+  {
+   "id": "6cb979ce-3b76-4851-a0ba-3f100fddfcb3",
+   "title": "Yellow Bird 3",
+   "lead": "dark-nebula",
+   "leadHue": "blue",
+   "leadFit": 2,
+   "leadCoverage": 0.14,
+   "energy": [
+    0.62,
+    0.76,
+    0.87,
+    0.79,
+    0.86,
+    0.77
+   ],
+   "intensity": [
+    0.6,
+    0.82,
+    1,
+    0.87,
+    0.98,
+    0.84
+   ],
+   "crests": true,
+   "peakPhase": "transcendence",
+   "supports": [
+    "drift",
+    "zenith",
+    "magma",
+    "monsoon",
+    "diatom",
+    "flagella",
+    "r2-spiralgal",
+    "chrysalis",
+    "binary-stars",
+    "typhoon",
+    "meteor-rain"
+   ],
+   "cast": {
+    "threshold": [
+     "drift"
+    ],
+    "expansion": [
+     "zenith",
+     "magma"
+    ],
+    "transcendence": [
+     "dark-nebula",
+     "monsoon"
+    ],
+    "illumination": [
+     "diatom",
+     "flagella",
+     "r2-spiralgal",
+     "chrysalis",
+     "binary-stars"
+    ],
+    "return": [
+     "typhoon"
+    ],
+    "integration": [
+     "meteor-rain"
+    ]
+   },
+   "mvStandard": "2026-10-10T14-49-51",
+   "shaderBalance": "2026-10-13"
   }
  ]
 }
