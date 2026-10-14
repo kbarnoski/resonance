@@ -203,6 +203,259 @@ a VJ desk.
 In TD: use an OSC Out CHOP (or DAT) at `127.0.0.1:7001`. For example, a Button
 COMP → CHOP Execute that sends `/resonance/cue/next 1`.
 
+## The show patch: `ResonanceShow.toe`
+
+A finished TouchDesigner show, driven live by this bridge. It is a GPU
+particle field with feedback trails. Every journey has its own look, and the
+music moves it.
+
+- **Patch:** `~/Documents/Resonance/touchdesigner/ResonanceShow.toe`
+- **Built from:** `scripts/touchdesigner/`, all in the repo, so the patch can be rebuilt any time.
+
+### Install (once per machine)
+
+TouchDesigner 2025.33230 (Apple Silicon) is installed at
+`~/Applications/TouchDesigner.app`. To install it on another Mac:
+
+```sh
+curl -L -o ~/Downloads/TouchDesigner.2025.33230.arm64.dmg \
+  https://download.derivative.ca/TouchDesigner.2025.33230.arm64.dmg
+hdiutil attach -nobrowse -readonly ~/Downloads/TouchDesigner.2025.33230.arm64.dmg
+ditto "/Volumes/TouchDesigner 2025.33230/TouchDesigner.app" ~/Applications/TouchDesigner.app
+hdiutil detach "/Volumes/TouchDesigner 2025.33230"
+```
+
+The current build is listed at derivative.ca/download. The Mac links follow
+the pattern `https://download.derivative.ca/TouchDesigner.<build>.arm64.dmg`
+(use `.intel.dmg` for Intel Macs).
+
+**Licence.** On first launch TouchDesigner opens the **Key Manager**. Sign in
+with a free Derivative account and choose **Non-Commercial**. This Mac is
+already licensed Non-Commercial (done 2026-10-13).
+
+Non-Commercial caps every TOP at **1280 × 1280**, so the patch defaults to
+1280 × 720 output. A paid Commercial or Educational key removes the cap. With
+one, set `Outw`/`Outh` to 1920 × 1080 or the projector's native size.
+
+### Launch
+
+```sh
+open -a ~/Applications/TouchDesigner.app ~/Documents/Resonance/touchdesigner/ResonanceShow.toe
+```
+
+The shipped `.toe` is already built: TouchDesigner made it and saved it, and the
+self-test below ran against it.
+
+If you regenerate it with `make_toe.mjs`:
+
+- The first start builds `/project1/show` from the embedded `build_show` DAT
+  (about 2 s).
+- It then saves the result. TouchDesigner's incremental save writes
+  `ResonanceShow.1.toe` next to it, so open that file from then on, or rename it.
+- Each build appends to `ResonanceShow.build.log` next to the `.toe`. A failed
+  build leaves its traceback there.
+
+To rebuild from the Textport:
+
+```python
+op('/project1/boot').module.rebuild()
+```
+
+### Show day
+
+1. **Kiosk:** start the relay (`node scripts/osc-relay.mjs`), and add `?osc=1`
+   once to the kiosk URL. Nothing else changes on the kiosk.
+2. **TD on the same Mac:** open the patch. The OSC In CHOP `osc_in` and the OSC
+   In DAT `osc_dat` both listen on UDP **7000**.
+3. **TD on another machine:** start the relay with
+   `--osc-host <TD machine IP>`.
+4. **Projector:**
+   1. On `/project1/show`, open the **Show** page.
+   2. Set `Display` to the projector's index (0 = main), and set `Outw`/`Outh`.
+   3. Pulse **Open output window**.
+
+   The output window is borderless, always on top and has no cursor. You can
+   also use **F1** perform mode, which shows `/project1/show/out`. Esc returns
+   to the editor.
+5. **Check it's live:** `osc_in` should show about 70 channels moving. The
+   `brain` DAT's `show.fetch('look')` names the look in use.
+6. **Hands off:** looks follow the kiosk's journey changes on their own. Nothing
+   needs touching during the show.
+
+AirPlay Receiver (Control Center) also listens on port 7000, but on **TCP**.
+OSC is UDP, so the two don't clash. If anything else ever holds UDP 7000, run
+the relay with `--osc-port 7002` and set both OSC In ports to match.
+
+If TD runs on the kiosk Mac, it shares the GPU with the show. Keep
+`Particleres` at 128 (16k motes, the default). On a dedicated machine, 256
+(65k) is comfortable.
+
+### Rehearsal (no kiosk)
+
+Toggle **Show > Rehearsal**. The `brain` then plays the recorded OSC log in
+`/project1/rehearsal_log` into the patch's own OSC In, through `osc_out` to
+127.0.0.1:7000, one bundle per frame like the relay. It loops at the end.
+
+The bundled log is 76 s long:
+
+- Snowflake, Yellow Bird and Chenin 5, each 16 s around a phase boundary near
+  its climax;
+- a 3 s title-hold silence before each one;
+- one **uncatalogued** journey id, which exercises the fallback look.
+
+Stop the relay while rehearsing: both would feed port 7000.
+
+The log comes from the real journey data, not from random noise. Each segment
+uses that journey's deep-analysis energy curve, section onset rates,
+brightness and harmony, its phase bounds and tempo, and its per-phase stills
+palettes. It all goes through the relay's own `frameToOsc` map, so addresses,
+types, pulses and keyframes match what the relay sends.
+
+Make another log, record a real session, or replay a file without TD:
+
+```sh
+node scripts/touchdesigner/osc-show.mjs synth --journeys ghost,first-snow --out my.oscl.jsonl
+node scripts/touchdesigner/osc-show.mjs record --seconds 120 --out show.oscl.jsonl   # relay → :7000, TD closed
+node scripts/touchdesigner/osc-show.mjs replay show.oscl.jsonl --loop                 # → TD :7000
+node scripts/touchdesigner/make_toe.mjs --log show.oscl.jsonl                         # embed it in a fresh .toe
+```
+
+### Looks: one per journey
+
+`scripts/touchdesigner/build-looks.mjs` writes `looks.json`, which holds
+**119 looks**: every journey id that has stills palettes or a deep analysis
+in the repo. Each look comes from the journey's own data
+(the founding law: never from the title).
+
+| Look field | Comes from |
+|---|---|
+| `palette` and 6 `phases` palettes (5 stops, dark → light) | its pack stills (`journey-palettes.generated.ts`), or its theme palette |
+| `form`: 0 drift, 1 rise, 2 vortex, 3 fall, 4 orbit | mood arousal + valence, section trends, tempo steadiness |
+| `speed`, `turbulence`, `emission`, `size`, `trail` | energy curve, dynamics, onset rate, voice character (quiet / middle / energetic) |
+| `warmth`, `sparkle` | major/minor balance × valence, spectral brightness |
+
+Palettes are made seizure-safe at generation: no saturated red, and the
+brightest stop is at most 0.85 luminance.
+
+**Selecting a look:**
+
+- `/resonance/event/journey` (and the `journey/id` keyframe) selects the look
+  by **id**, falling back to the journey **name**.
+- `/resonance/event/phase` and `journey/phase/index` move to that phase's
+  palette.
+- A journey change is a **smoothstep crossfade** of every control over `Xfade`
+  (8 s). While it runs, trails lengthen and emission dips, so one world
+  dissolves into the next.
+- A phase change crossfades over `Phasexfade` (6 s).
+- **Fallback:** an id that isn't in `looks.json` gets a palette-derived default
+  look: a calm drift/orbit field coloured live from the journey's own
+  `/resonance/palette/*` channels.
+- Empty ids between journeys are ignored, so the look holds through the title
+  card.
+
+After the journey catalogue changes, regenerate the looks and the patch:
+
+```sh
+node scripts/touchdesigner/build-looks.mjs && node scripts/touchdesigner/make_toe.mjs
+```
+
+### The network (`/project1/show`)
+
+```
+osc_in  (OSC In CHOP :7000) ─┐
+osc_dat (OSC In DAT  :7000) ─┴→ brain (Execute DAT, every frame)
+        osc_cb → event queue      ├ normalise channels, look select + crossfade
+                                  ├ music → MOTION: speed, turbulence, emission, size
+                                  └ rehearsal player → osc_out (127.0.0.1:7000)
+raw (Constant CHOP) → ease (Lag 0.15 s up / 0.6 s down) → calm (Filter 0.3 s) → ctl (Null)
+                                                    every shader uniform reads ctl ↓
+seed → sim_fb → sim (GLSL, RGBA32F: xyz + life; curl flow × form blend; respawn = emission)
+             sim → pcol (GLSL: palette colour, life fade-in 0.9 s / fade-out 1.6 s, presence)
+sprite (GLSL soft mote) → mote_mat (Constant MAT, additive, premultiplied)
+geo (instancing: translate ← sim r/g/b, colour ← pcol rgba) + cam → render
+render ─→ trail (GLSL: advected feedback, max-blend, bounded) ←─ trail_fb
+trail  ─→ safe  (GLSL: palette ground, master, luminance cap, red guard, per-pixel slew) ←─ safe_fb
+safe → out (Null TOP) → window (Window COMP, projector) · rec (Movie File Out, self-test)
+```
+
+**Music → motion map:**
+
+- level, bass and onsets drive flow **speed**;
+- harmonic tension, onsets and treble drive **turbulence**;
+- onsets and sections drive **emission bursts**;
+- bass and cadences drive mote **size**;
+- breath moves the field **in and out**;
+- journey progress drives emission density (sparse → build → cosmic);
+- silence and title holds fade presence to 25 % over about 2 s.
+
+### Seizure law, enforced in the patch
+
+- Audio never touches brightness. `master` is a fixed parameter (0.3–0.9,
+  default 0.85, clamped) with no audio term.
+- Every control is eased three times: the brain's envelopes and smoothstep
+  crossfades, then the Lag CHOP, then the Filter CHOP.
+- New motes fade in over at least 0.9 s. Trails use max-blend, so light can
+  never accumulate.
+- The `safe` stage enforces the limits for every frame:
+  - luminance soft-capped at 0.8;
+  - saturated red pulled back;
+  - **every pixel slew-limited to 2.4/s**, so no input whatsoever can make
+    the output flash.
+
+### Tests
+
+These run without a TouchDesigner licence:
+
+```sh
+python3 scripts/touchdesigner/test_show.py --track /tmp/track.json        # build + brain + 119 looks
+node scripts/touchdesigner/render_check.mjs /tmp/track.json --out /tmp/td.mp4 --from 16 --seconds 20
+node scripts/flicker-meter.mjs /tmp/td.mp4
+```
+
+- **`test_show.py`** builds the patch against a mock TD API, which checks
+  every operator type and parameter name against the installed TD's
+  `TDParameterHelp.json` and every menu value against its offline help. It
+  runs the brain's TD glue and replays the rehearsal log through the real
+  brain at 60 fps, checking:
+  - look selection;
+  - continuity;
+  - that `master` is constant;
+  - that all 119 looks resolve by id and by name.
+- **`render_check.mjs`** renders the same GLSL in headless WebGL2 and writes an
+  MP4 for the flicker meter.
+
+In TouchDesigner itself, the self-test does the following:
+
+1. builds the patch;
+2. turns rehearsal on;
+3. records `out` for 24 s with `rec`;
+4. writes `td-selftest.json` (errors, warnings, OSC channel count, look
+   switches, TOP statistics);
+5. quits.
+
+```sh
+RESONANCE_TD_SELFTEST=/tmp/tdtest ~/Applications/TouchDesigner.app/Contents/MacOS/TouchDesigner \
+  /path/to/a/copy/of/ResonanceShow.toe
+node scripts/flicker-meter.mjs /tmp/tdtest/td-show.mov
+```
+
+A scripted launch once sat on the splash screen at 0 % CPU. Stop that PID and
+launch again; the next launch finished in 42 s.
+
+The evidence from the run below is kept in
+`~/Documents/Resonance/touchdesigner/selftest-2026-10-13/`: `td-selftest.json`
+and the 24 s `td-show.mov`.
+
+Results on 2026-10-13, TD 2025.33230 Non-Commercial on this Mac:
+
+| Run | What | Result |
+|---|---|---|
+| Real TD self-test | Build | 49 ops, 0 build warnings, 0 errors |
+| | OSC | 71 channels live |
+| | Looks | palette default → Snowflake → Yellow Bird |
+| | Flicker meter | **0 flashes, 0 red flashes, 0 % local flicker (PASS)** |
+| WebGL render of the full 76 s log | 4 journeys, including the fallback | **0 flashes (PASS)** |
+
 ## Starter network (text recipes)
 
 The base for every recipe:
@@ -286,3 +539,10 @@ The base for every recipe:
 | `src/lib/vj-bridge/bridge-core.ts` | Send loop, socket lifecycle, derived events (dependency-injected) |
 | `src/lib/vj-bridge/client.ts` / `use-vj-bridge.ts` | Browser wiring, mounted from `useKioskRemote` (all kiosk contexts + /room) |
 | `src/lib/vj-bridge/tap.ts` | Where the particle lead layer leaves its signals |
+| `scripts/touchdesigner/build_show.py` | Builds `/project1/show` inside TD: brain (looks, crossfades, music → motion, rehearsal), GLSL, self-test |
+| `scripts/touchdesigner/build-looks.mjs` → `looks.json` | One look per journey from its stills palettes + deep analysis |
+| `scripts/touchdesigner/make_toe.mjs` | Writes `ResonanceShow.toe` with TD's `toecollapse` (no licence needed); embeds build_show, looks, rehearsal log |
+| `scripts/touchdesigner/osc-show.mjs` | Rehearsal logs: `synth` (from real journey data), `record`, `replay` |
+| `scripts/touchdesigner/rehearsal.oscl.jsonl` | The 76 s rehearsal log (generated, seeded and deterministic, by `make_toe.mjs` / `test_show.py` when missing; not committed) |
+| `scripts/touchdesigner/test_show.py` | Offline tests: mock-TD build validation, brain replay, control track |
+| `scripts/touchdesigner/render_check.mjs` | Headless WebGL2 render of the same shaders → MP4 for the flicker meter |
