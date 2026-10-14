@@ -1338,6 +1338,10 @@ export function ParticleLeadLayer({
     // big"): as the angel releases, the camera glides back so the dissolving field
     // recedes instead of billowing toward the viewer; the dolly resumes from there
     const GHOST_RECEDE_K = 1.35;
+    // …and the angel itself CONTRACTS as it dissolves (filmed 2026-10-14: the camera
+    // alone left the released angel filling the screen's height — the image plane
+    // keeps its own size): it shrinks toward ~60 % on the engine's glide
+    const GHOST_RELEASE_SCALE = 0.6;
     let prevFlashTail = 0, ghostReceding = false;
     let fastRelease = false;
     let imgLoaded: "angel" | "emblem" | "moment" | "motif" | "echo" | null = null;
@@ -1718,7 +1722,7 @@ export function ParticleLeadLayer({
         // a flash is full-frame (it matches the flash image); the emblem is
         // centred and generous; the signature angel smaller, off-centre
         // emblems smaller (Karel 2026-10-07: "a bit too big"); an ECHO aligns with the still (full frame)
-        engine.setImageScale(flashing || imgLoaded === "echo" ? 1 : (imgLoaded === "emblem" ? (calm ? 0.43 : 0.5 - 0.14 * emAge) : imgLoaded === "moment" ? 0.95 : imgLoaded === "motif" ? 0.72 : 0.62) * imgVar.scale);
+        engine.setImageScale(flashing || imgLoaded === "echo" ? (ghostReceding ? GHOST_RELEASE_SCALE : 1) : (imgLoaded === "emblem" ? (calm ? 0.43 : 0.5 - 0.14 * emAge) : imgLoaded === "moment" ? 0.95 : imgLoaded === "motif" ? 0.72 : 0.62) * imgVar.scale);
         // a motif design turns slowly while it is held
         if (imgLoaded === "motif" && motifAt >= 0) engine.setImageVariant(imgVar.mirror, imgVar.tilt + 0.35 * Math.sin((t - motifAt) * 0.09));
         // a TAD less literal (Karel 2026-10-06): never fully snapped to the

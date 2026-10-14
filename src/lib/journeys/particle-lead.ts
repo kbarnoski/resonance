@@ -187,6 +187,13 @@ export function buildParticleLeads(removals: FormRemovals = FORM_REMOVALS): Read
     // 2026-10-13: "keeping the cloud small until the tunnel section"): phase 1
     // (the misty hall, 26-66 s) was petals / blossom
     if (id === "ghost" && chars[1]) chars[1] = { ...chars[1], forms: ["murmuration"], floral: false };
+    // …and the TUNNEL / flower pool (phase 2, 66-167 s) trades its PETALS for that
+    // same soft wisp (Karel 2026-10-14: after the angel flash the petal field "gets
+    // big again" — a hard-edged block of bright petals popping in over the dark
+    // tunnel; "use a different pattern too to avoid the perceived abrupt particles
+    // showing up in that sequence"): the blossom stays, petals return for the
+    // closing blossoms → wings scatter only
+    if (id === "ghost" && chars[2]) chars[2] = { ...chars[2], forms: ["blossom", "murmuration"] };
     // fire FORMS only where the imagery really burns — same rule as fire colours
     // (2026-10-08: the vision tags call cool phases "fire"; embers then rose
     // over ice and night water)
