@@ -9,7 +9,7 @@
  *   SUMMARY.md in the output root.
  *
  *   node scripts/export-set.mjs [--set=all|rise-above] [--root=~/Documents/Resonance/exports]
- *        [--port=3200] [--workers=3] [--only=id,id] [--from-index=N] [--redo] [--no-verify]
+ *        [--port=3200] [--workers=1] [--only=id,id] [--from-index=N] [--redo] [--no-verify]
  *
  * Resumable: a journey whose mp4 + sidecar + flicker report exist is skipped
  * (unless --redo). One journey failing never stops the batch — it's
@@ -34,7 +34,9 @@ const arg = (name, dflt) => {
 const SET = arg("set", "all"); // all (every main-loop journey) | rise-above
 const ROOT = resolve(String(arg("root", join(homedir(), "Documents/Resonance/exports"))).replace(/^~/, homedir()));
 const PORT = String(arg("port", "3200"));
-const WORKERS = String(arg("workers", "3"));
+// 1 worker: on the shared Mac the GPU/compositor is the bottleneck — 3 workers
+// gave the same aggregate ~10 frames/s and a step hang (2026-10-13 Ghost run)
+const WORKERS = String(arg("workers", "1"));
 const ONLY = arg("only", "") ? String(arg("only")).split(",") : null;
 const FROM_INDEX = Number(arg("from-index", 1));
 const REDO = !!arg("redo", false);

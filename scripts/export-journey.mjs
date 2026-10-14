@@ -323,13 +323,15 @@ async function renderRange(o, { videoOut, lossless, label = "", probe = false })
       }
     }
 
+    let lastFrameSeen = 0;
+    let lastTrackT = 0;
     async function step() {
       if (crashed) die("the page CRASHED (GPU process / out of memory?)");
       const call = (fn) => {
         let timer;
         return Promise.race([
           page.evaluate(fn),
-          new Promise((_, rej) => { timer = setTimeout(() => rej(new ExportError(`a frame step hung for ${stepTimeoutMs / 1000}s`)), stepTimeoutMs); }),
+          new Promise((_, rej) => { timer = setTimeout(() => rej(new ExportError(`a frame step hung for ${stepTimeoutMs / 1000}s (after virtual frame ${lastFrameSeen}, track ${lastTrackT.toFixed(2)}s) — the page's main thread or GPU stalled`)), stepTimeoutMs); }),
         ]).finally(() => clearTimeout(timer));
       };
       let d = await call(() => window.__resonanceExport.step());
@@ -337,6 +339,8 @@ async function renderRange(o, { videoOut, lossless, label = "", probe = false })
         await loadPcm(d.needPcm); // the frame is held before its rAF meanwhile
         d = await call(() => window.__resonanceExport.resume());
       }
+      lastFrameSeen = d.frame ?? lastFrameSeen;
+      lastTrackT = d.main?.t ?? lastTrackT;
       if (navigatedAway) die(`the page navigated away mid-export (${navigatedAway}) — the loop reloaded or jumped`);
       for (const w of d.warnings) { meta.warnings.push(w); if (shownWarnings++ < 25) warnLine(`${tag}${w}`); }
       if (d.errors.length && meta.pageErrors < 15) for (const e of d.errors.slice(0, 3)) say(`${tag}callback error: ${String(e).split("\n")[0].slice(0, 200)}`);
