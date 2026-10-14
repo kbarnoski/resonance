@@ -1,13 +1,13 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // backend.ts — which particle engine runs: WebGL2 (the show) or WebGPU.
 //
-// `?gpu=webgpu` opts in (default OFF — with the flag off nothing here changes
-// what the show runs). Fallback to WebGL2 whenever navigator.gpu is missing or
-// the adapter probe fails. The probe must happen BEFORE the canvas is touched:
+// WebGPU is the DEFAULT (2026-10-14, certified on the kiosk GPU — plan §8b);
+// `?gpu=webgl2` keeps the WebGL2 engine. Fallback to WebGL2 whenever
+// navigator.gpu is missing or the adapter probe fails. The probe must happen BEFORE the canvas is touched:
 // a canvas that has handed out a "webgpu" context can never give a "webgl2"
 // one, so the decision is made on a probed adapter, never by trying.
 //
-// Not wired into shared-engine.ts yet (phase A exit criterion, plan §A.7).
+// shared-engine.ts primes the probe at import and upgrades in place (plan §3.2).
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { createParticleEngine, type ParticleEngine, type ParticleEngineOptions } from "../particle-engine";

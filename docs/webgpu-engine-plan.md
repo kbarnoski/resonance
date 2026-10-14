@@ -234,18 +234,20 @@ stays as the phase B renderer's test bed (`/lab/webgpu?engine=native`).
   `isWarm()`, so that contract carries over unchanged.
 - **Failure semantics** match WebGL, so `shared-engine.ts` needs no new paths:
   - `navigator.gpu` missing → `ParticleEngineUnsupported` thrown synchronously.
-  - Adapter, device or WGSL failure → `opts.watchdog.onStall(why)`.
-  - Device loss → `opts.onContextLost`.
+  - Adapter, device or WGSL failure, or device loss → `opts.onGpuFailure(why)`. The shared
+    engine falls back to WebGL2 in place (`webgpu/switchable.ts`). Without that hook these
+    failures go to `watchdog.onStall` / `onContextLost` instead.
 - **Backend selection** (`webgpu/backend.ts`):
-  - `?gpu=webgpu` opts in. The default is off: the show runs WebGL2.
+  - WebGPU is the default since 2026-10-14 (§8b). `?gpu=webgl2` overrides.
   - `probeWebGPU()` requests an adapter **without touching a canvas**. A canvas that has given
     out a `webgpu` context can never give a `webgl2` one, so the decision is made on the probe,
     never by trying.
-  - `chooseParticleBackend()` falls back to WebGL2 when the flag is off, the probe hasn't run,
-    or the probe failed.
-- **Wiring** (phase A exit, §A.7): `shared-engine.ts` kicks `probeWebGPU()` at boot and creates
-  via `createParticleEngineFor(...)`. Until then nothing in the show imports the WebGPU code,
-  and a test asserts it.
+  - `chooseParticleBackend()` falls back to WebGL2 on the override or a failed probe.
+- **Wiring (done):** `shared-engine.ts` primes the probe and loads the WebGPU chunk at import.
+  - Acquiring after the probe has landed creates the parity engine directly.
+  - Acquiring earlier (the kiosk's boot warm-up does) starts on WebGL2 and **upgrades in
+    place** as soon as the probe lands while the field is off screen; every re-acquire retries.
+  - The layers keep one engine object throughout (`switchable.ts`).
 
 ## 4. Parity ledger
 
@@ -500,6 +502,85 @@ pairing passes:
   validated by naga.
 - **Regenerate the port** after any change to the sim or draw GLSL:
   `NAGA_BIN=… node scripts/gen-webgpu-port.mjs`.
+
+## 8b. Real-GPU certification (2026-10-14, kiosk Mac, M4 Pro)
+
+Method: a production build (own dist dir, `OFFLINE_PACK=1 RESONANCE_KIOSK=1`), headed
+Chrome at kiosk size (1512×982 @2×, the 120 Hz panel). Scripts:
+`scripts/perf/webgpu-lab-fps.mjs` for the lab and `scripts/perf/journey-fps.mjs` for
+journeys. Timing ran under the shared GPU lock. The Mac was shared with the live kiosk and
+render jobs, so run-to-run noise on journeys was about ±25 fps, and only paired rounds
+mean anything.
+
+**What the real GPU changed:**
+
+- **Pipelines.** Dawn caught an inter-stage mismatch that naga can't see (my record-quad
+  stage parsed the fragment signature wrongly). It's fixed, and a test now holds every vertex
+  stage's outputs to the ported fragment inputs.
+- **Per-soul simulation.** The all-souls union pipeline cost 6 ms at 10⁶ motes. `SOUL` is now
+  a pipeline-overridable constant (`@id(0)`), giving one specialised pipeline per soul
+  (≈ 650 ms each, built async; the union runs meanwhile). The simulation now costs 0.4–0.8 ms
+  at 10⁶.
+- **Sprites.** Raster quads were the bottleneck at 10⁶: ~15 ms, 30–55 fps, while WebGL points
+  reached 120 when the GPU was quiet. The tile-binned splat path draws the same per-pixel
+  fragment at 0.7 ms and is now the default. Record quads remain the fallback (`?splat=0`).
+- **Default flip.** The kiosk's boot warm-up acquired the engine before the async adapter
+  probe landed, so every journey stayed on WebGL2. The shared engine now upgrades in place
+  (cloned canvas, state replayed) while the field is off screen.
+
+**Lab: fps with the GPU quiet (3 × 3 s windows at 120 Hz)**
+
+| Case | WebGL2 | WebGPU (defaults) |
+|---|---|---|
+| 160k (show load) | 120 / 120 / 120 | 120 / 120 / 120 |
+| 1M | 120 / 120 / 120 (50–91 under load) | 120 / 120 / 120 (sim 0.37, sprites 0.68, govern 0.40, composite 1.1 ms) |
+| 1M, stable sprites | 120 | 120 |
+| 250k | n/a | 120 |
+| Snowflake emblems | 120 | 120 |
+| Snowflake calm | 120 | 120 |
+| Ghost opening | 120 | 120 / 120 / 94 (one window) |
+| Ghost angel flash | 120 | 120 |
+| Ghost blossom → wings | 120 | 120 |
+| Fluid smoke, 160k / 1M | 120 | 120 / 120 |
+| Depth collisions | n/a | 120 |
+| OT emblems / OT blossom → wings | n/a | 120 / 120 |
+
+**Journeys, paired rounds (GL, GPU), opening average fps**
+
+| Journey | WebGL2 | WebGPU |
+|---|---|---|
+| Welcome Home | 97.6 / 62.8 | 112.1 / 84.2 |
+| Chenin 5 (the peak; shader-bound end of the opening) | 112.3 | 108.7 |
+| Yellow Bird (signature flight) | 119.1 | 120.0 |
+
+The unpaired sweep (each journey's own opening + 5 tour points) ran on WebGPU for all 10
+journeys: Ghost, Snowflake, Chenin 5, Bells 1, Yellow Bird, Welcome Home, Bath, Singular 4,
+Chemiluminescence, Realized. It reported "webgpu (upgraded)" every time. The dips track
+the shader casts (kairos + hubble, stigmata) on both backends.
+
+**Parity (film contact sheets, the same lab script on both engines):** forms, Ghost's angel
+flash and outline, and Snowflake's emblem gather / hold / release read identically: same
+figures, colours, brightness and motion.
+
+**Flicker gate (`scripts/flicker-gate.mjs`):** all lab films PASS on both engines (general
+≤ 0.5 flashes/s, which is the page fade-in; red 0; local flicker 0).
+
+**Default on now:**
+
+- WebGPU parity engine (WebGL2 fallback on adapter / WGSL / device failure; `?gpu=webgl2`
+  overrides);
+- splat path plus temporal resolve;
+- per-soul pipelines;
+- spatial pairing as compute;
+- fluid for the fluid souls only (Snowflake's and Ghost's souls never flow).
+
+**Kept off, and why:**
+
+- **Depth collisions:** no visible effect in the lab without the journey's depth slots, which
+  only the occlusion branch feeds (not merged).
+- **Optimal transport:** its targets are continuous, so final emblems read softer than spatial
+  pairing's exact samples. It needs a snap-to-samples step first.
+- **Bloom:** off in the show anyway.
 
 ## 9. Risks and open questions
 
