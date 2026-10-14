@@ -3,7 +3,7 @@ import { FRAG as OCEAN_FRAG } from "./ocean";
 import { FRAG as FLUX_FRAG } from "./flux";
 // Elemental (new)
 import { FRAG as MONSOON_FRAG } from "./monsoon";
-import { FRAG as MAGMA_FRAG } from "./magma";
+import { FRAG as MAGMA_FRAG, PRE as MAGMA_PRE, PRE_SIZE as MAGMA_PRE_SIZE } from "./magma";
 import { FRAG as TYPHOON_FRAG } from "./typhoon";
 
 
@@ -12,7 +12,7 @@ import { FRAG as EMBER_FRAG } from "./ember";
 import { FRAG as TIDE_FRAG } from "./tide";
 import { FRAG as UMBRA_FRAG } from "./umbra";
 import { FRAG as INFERNO_FRAG } from "./inferno";
-import { FRAG as PLASMA_FRAG } from "./plasma";
+import { FRAG as PLASMA_FRAG, PRE as PLASMA_PRE, PRE_SIZE as PLASMA_PRE_SIZE } from "./plasma";
 import { FRAG as PULSAR_FRAG } from "./pulsar";
 import { FRAG as SUPERNOVA_FRAG } from "./supernova";
 // nebula removed from registry — appeared in Ghost despite blocklist + caused
@@ -123,18 +123,18 @@ import { FRAG as DELUGE_FRAG } from "./deluge";
 import { FRAG as SPARKLER_FRAG } from "./sparkler";
 import { FRAG as COMET_SWARM_FRAG } from "./comet-swarm";
 import { FRAG as EMBER_FOUNTAIN_FRAG } from "./ember-fountain";
-import { FRAG as FIREFLY_FIELD_FRAG } from "./firefly-field";
-import { FRAG as RIBBON_OF_LIGHT_FRAG } from "./ribbon-of-light";
-import { FRAG as ORBIT_WEAVER_FRAG } from "./orbit-weaver";
-import { FRAG as METEOR_RAIN_FRAG } from "./meteor-rain";
-import { FRAG as MURMURATION_FRAG } from "./murmuration";
+import { FRAG as FIREFLY_FIELD_FRAG, PRE as FIREFLY_FIELD_PRE, PRE_SIZE as FIREFLY_FIELD_PRE_SIZE } from "./firefly-field";
+import { FRAG as RIBBON_OF_LIGHT_FRAG, PRE as RIBBON_OF_LIGHT_PRE, PRE_SIZE as RIBBON_OF_LIGHT_PRE_SIZE } from "./ribbon-of-light";
+import { FRAG as ORBIT_WEAVER_FRAG, PRE as ORBIT_WEAVER_PRE, PRE_SIZE as ORBIT_WEAVER_PRE_SIZE } from "./orbit-weaver";
+import { FRAG as METEOR_RAIN_FRAG, PRE as METEOR_RAIN_PRE, PRE_SIZE as METEOR_RAIN_PRE_SIZE } from "./meteor-rain";
+import { FRAG as MURMURATION_FRAG, PRE as MURMURATION_PRE, PRE_SIZE as MURMURATION_PRE_SIZE } from "./murmuration";
 import { FRAG as WILL_O_WISP_FRAG } from "./will-o-wisp";
 import { FRAG as GALAXY_SEED_FRAG } from "./galaxy-seed";
-import { FRAG as PENDULUM_DUST_FRAG } from "./pendulum-dust";
+import { FRAG as PENDULUM_DUST_FRAG, PRE as PENDULUM_DUST_PRE, PRE_SIZE as PENDULUM_DUST_PRE_SIZE } from "./pendulum-dust";
 import { FRAG as HELIX_STREAM_FRAG } from "./helix-stream";
 import { FRAG as FRACTURE_LIGHT_FRAG } from "./fracture-light";
 import { FRAG as ROSE_WINDOW_FRAG } from "./rose-window";
-import { FRAG as CASCADE_VEIL_FRAG } from "./cascade-veil";
+import { FRAG as CASCADE_VEIL_FRAG, PRE as CASCADE_VEIL_PRE, PRE_SIZE as CASCADE_VEIL_PRE_SIZE } from "./cascade-veil";
 import { FRAG as BINARY_STARS_FRAG } from "./binary-stars";
 import { FRAG as RESONANT_RINGS_FRAG } from "./resonant-rings";
 import { FRAG as RIPPLE_FRAG } from "./ripple";
@@ -146,7 +146,7 @@ import { FRAG as AURORA_BOREALIS_FRAG } from "./aurora-borealis";
 // Nature (fire / cellular / light)
 import { FRAG as FLAME_FRAG } from "./flame";
 // Nature (smooth motion)
-import { FRAG as STARFIELD_FRAG } from "./starfield";
+import { FRAG as STARFIELD_FRAG, PRE as STARFIELD_PRE } from "./starfield";
 import { FRAG as RADIANCE_FRAG } from "./radiance";
 // Dark (new)
 // Dark (new batch)
@@ -526,6 +526,45 @@ export const SHADERS: Partial<Record<VisualizerMode, string>> = {
  *  promoted on Karel's keep of all six; they are cast in the light journeys
  *  (SUN_SHADER_PINS in src/lib/journeys/shader-balance.ts). */
 export const LAB_SHADERS: ReadonlySet<string> = new Set<string>([]);
+
+/**
+ * LOW-RESOLUTION PREPASSES (2026-10-13, the 120 fps law — Karel: "poor 60 fps
+ * compared to 120 is not [perfection]"). A shader whose cost is dominated by a
+ * smooth field (fbm nebulae, haze) renders that field at `scale` of its
+ * canvas into a texture first; its FRAG then samples it (`uniform sampler2D
+ * u_pre`, at gl_FragCoord.xy / u_resolution) and adds its fine detail at full
+ * resolution. PRE receives the usual uniforms (u_resolution = the MAIN
+ * canvas) plus `u_preres` (its own target size). The picture is the same —
+ * each split is A/B'd against its single-pass original (scripts/perf/
+ * shader-ab.mjs); only the GPU cost changes. The visualizer runs it.
+ */
+/** `size` + `nearest`: a fixed-size TABLE instead of a scaled image — point-
+ *  light shaders compute each light's position + colour once per frame there
+ *  (the identical GPU math, packed 16-bit — shaders/prepass-pack.ts) instead
+ *  of once per light per PIXEL. */
+export interface ShaderPrepass { frag: string; scale: number; size?: readonly [number, number]; nearest?: boolean }
+export const SHADER_PREPASS: Partial<Record<VisualizerMode, ShaderPrepass>> = {
+  starfield: { frag: STARFIELD_PRE, scale: 0.25 },
+  magma: { frag: MAGMA_PRE, scale: 0, size: MAGMA_PRE_SIZE, nearest: true },
+  plasma: { frag: PLASMA_PRE, scale: 0, size: PLASMA_PRE_SIZE, nearest: true },
+  "cascade-veil": { frag: CASCADE_VEIL_PRE, scale: 0, size: CASCADE_VEIL_PRE_SIZE, nearest: true },
+  "orbit-weaver": { frag: ORBIT_WEAVER_PRE, scale: 0, size: ORBIT_WEAVER_PRE_SIZE, nearest: true },
+  "pendulum-dust": { frag: PENDULUM_DUST_PRE, scale: 0, size: PENDULUM_DUST_PRE_SIZE, nearest: true },
+  murmuration: { frag: MURMURATION_PRE, scale: 0, size: MURMURATION_PRE_SIZE, nearest: true },
+  "firefly-field": { frag: FIREFLY_FIELD_PRE, scale: 0, size: FIREFLY_FIELD_PRE_SIZE, nearest: true },
+  "meteor-rain": { frag: METEOR_RAIN_PRE, scale: 0, size: METEOR_RAIN_PRE_SIZE, nearest: true },
+  "ribbon-of-light": { frag: RIBBON_OF_LIGHT_PRE, scale: 0, size: RIBBON_OF_LIGHT_PRE_SIZE, nearest: true },
+};
+const PREPASS_BY_FRAG = new Map<string, ShaderPrepass>();
+for (const [mode, pre] of Object.entries(SHADER_PREPASS)) {
+  const frag = SHADERS[mode as VisualizerMode];
+  if (frag && pre) PREPASS_BY_FRAG.set(frag, pre);
+}
+/** The prepass a fragment shader needs, if any (keyed by the FRAG itself, so
+ *  every layer that renders a registered shader gets it). */
+export function prepassFor(frag: string): ShaderPrepass | null {
+  return PREPASS_BY_FRAG.get(frag) ?? null;
+}
 
 export interface ModeMeta {
   mode: VisualizerMode;

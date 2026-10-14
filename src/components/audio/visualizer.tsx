@@ -45,9 +45,10 @@ import type { Visualizer3DMode } from "./visualizer-3d";
 const Visualizer3D = dynamic(() => import("./visualizer-3d").then((m) => m.Visualizer3D), {
   ssr: false,
 });
+import { isMasteredJourneyLike } from "@/lib/journeys/mastered";
 import { isFullKineticJourney, isAudioReactiveJourney, driveOnlyRate, BAND_PROFILES, journeyLayerGain, isSteadyClockShader, journeyResponse, boostedProfile } from "@/lib/journeys/kinetic";
 import { useAudioStore } from "@/lib/audio/audio-store";
-import { SHADERS, MODE_META, MODE_CATEGORIES, MODES_3D, MODES_AI } from "@/lib/shaders";
+import { SHADERS, MODE_META, MODE_CATEGORIES, MODES_3D, MODES_AI, prepassFor } from "@/lib/shaders";
 import { fadeMsFor } from "@/lib/shaders/shader-fade";
 import { morphShaderOn, takeMorphArrivalFade } from "@/lib/journeys/morph-shader";
 import { getDeviceTier } from "@/lib/audio/device-tier";
@@ -437,7 +438,30 @@ export function ShaderVisualizer({
     const program: WebGLProgram | null = gl.createProgram();
     gl.attachShader(program, vs);
     gl.attachShader(program, fs);
+    gl.bindAttribLocation(program!, 0, "a_position"); // shared with a prepass
     gl.linkProgram(program);
+    // LOW-RES PREPASS (SHADER_PREPASS, shaders/index.ts — the 120 fps law): a
+    // shader's smooth field rendered at a fraction of the canvas into a
+    // texture its FRAG samples. Compiled + linked with the main program (same
+    // async path, same single sync frame); drawn every frame before it.
+    const prepass = prepassFor(fragShader);
+    let preFs: WebGLShader | null = null;
+    let preProg: WebGLProgram | null = null;
+    if (prepass) {
+      preFs = gl.createShader(gl.FRAGMENT_SHADER)!;
+      gl.shaderSource(preFs, prepass.frag);
+      gl.compileShader(preFs);
+      preProg = gl.createProgram();
+      gl.attachShader(preProg!, vs);
+      gl.attachShader(preProg!, preFs);
+      gl.bindAttribLocation(preProg!, 0, "a_position");
+      gl.linkProgram(preProg!);
+    }
+    let preTex: WebGLTexture | null = null;
+    let preFbo: WebGLFramebuffer | null = null;
+    let preW = 0, preH = 0;
+    const preU: Record<string, WebGLUniformLocation | null> = {};
+    let uPre: WebGLUniformLocation | null = null;
     gl.flush();
     const linkIssuedAt = performance.now();
     let nextSyncAt = linkIssuedAt + SYNC_DELAY_MS;
@@ -492,11 +516,21 @@ export function ShaderVisualizer({
     // still upload or shader switch dropped visible frames (80-108 ms). A
     // 60 fps cap leaves headroom to absorb those spikes; the slow shader
     // motion reads the same. ?fpscap=0 disables, =60 caps every journey.
+    // EVERY journey since 2026-10-13 (the 120 fps law — Karel: "poor 60 fps
+    // compared to 120 is not [perfection] … ensure all journeys are 120"):
+    // the cap only ever covered the kinetic journeys, so the two mastered
+    // takes (Snowflake, Ghost — not kinetic) were the only ones drawing their
+    // full-screen shaders on every 120 Hz frame — on top of the catalogue's
+    // heaviest openers (plasma, starfield). That is why only they fell to
+    // ~60-75 fps on the kiosk. The page, particles and imagery still run at
+    // 120; the shader layers' slow motion redraws at 60, as on every other
+    // journey.
     const fpsCapQ = typeof location !== "undefined" ? new URLSearchParams(location.search).get("fpscap") : null;
     const headroomCapMs = () => {
       if (fpsCapQ === "0") return 0;
       if (fpsCapQ === "60") return 1000 / 60 - 2;
-      return isFullKineticJourney(useAudioStore.getState().activeJourney) ? 1000 / 60 - 2 : 0;
+      const j = useAudioStore.getState().activeJourney;
+      return isFullKineticJourney(j) || isMasteredJourneyLike(j) ? 1000 / 60 - 2 : 0;
     };
 
     // EQ persistent state — EFFECT scope, NOT per-frame (2026-09-30:
@@ -614,7 +648,7 @@ export function ShaderVisualizer({
         }
         // Still compiling after the delay (cold GPU, rare): one cheap poll
         // per ~250 ms rather than a blocking status read.
-        if (ext && tSync - linkIssuedAt < 3000 && !gl.getProgramParameter(program!, ext.COMPLETION_STATUS_KHR)) {
+        if (ext && tSync - linkIssuedAt < 3000 && (!gl.getProgramParameter(program!, ext.COMPLETION_STATUS_KHR) || (preProg && !gl.getProgramParameter(preProg, ext.COMPLETION_STATUS_KHR)))) {
           nextSyncAt = tSync + 250;
           syncNote("poll-link", tSync);
           animId = requestAnimationFrame(render);
@@ -626,6 +660,11 @@ export function ShaderVisualizer({
           if (!gl.getShaderParameter(vs, gl.COMPILE_STATUS)) console.warn("[shader] Vertex compile failed:", gl.getShaderInfoLog(vs));
           else if (!gl.getShaderParameter(fs, gl.COMPILE_STATUS)) console.warn("[shader] Fragment compile failed:", gl.getShaderInfoLog(fs));
           else console.error("Program link:", gl.getProgramInfoLog(program!));
+          onReadyRef.current?.(false);
+          return;
+        }
+        if (preProg && !gl.getProgramParameter(preProg, gl.LINK_STATUS)) {
+          console.warn("[shader] prepass link failed:", gl.getShaderInfoLog(preFs!) || gl.getProgramInfoLog(preProg));
           onReadyRef.current?.(false);
           return;
         }
@@ -643,6 +682,10 @@ export function ShaderVisualizer({
         uMid = gl.getUniformLocation(program!, "u_mid");
         uTreble = gl.getUniformLocation(program!, "u_treble");
         uAmplitude = gl.getUniformLocation(program!, "u_amplitude");
+        if (preProg) {
+          uPre = gl.getUniformLocation(program!, "u_pre");
+          for (const k of ["u_time", "u_resolution", "u_preres", "u_bass", "u_mid", "u_treble", "u_amplitude"]) preU[k] = gl.getUniformLocation(preProg, k);
+        }
         syncNote("linked", tSync);
         compilePhase = "ready";
       }
@@ -778,7 +821,43 @@ export function ShaderVisualizer({
       const scaleTarget = bandActive ? 1 + mix.band * calmToward(0.5, eqLv, driveGain) * boostedProfile(BAND_PROFILES[lastBand!], journeyResponse(useAudioStore.getState().activeJourney)).scale : 1;
       shown = slewVisibleDrive(shown, { bass: s.bass, mid: s.mid, treble: s.treble, amplitude: s.amplitude, scale: scaleTarget }, dt, driveGain);
 
+      if (preProg) {
+        const pw = prepass!.size ? prepass!.size[0] : Math.max(1, Math.round(canvas.width * prepass!.scale));
+        const ph = prepass!.size ? prepass!.size[1] : Math.max(1, Math.round(canvas.height * prepass!.scale));
+        if (!preTex || pw !== preW || ph !== preH) {
+          // first frame / resize only: a small target (1/16 of the pixels, or
+          // a fixed per-particle table)
+          if (!preTex) preTex = gl.createTexture();
+          gl.bindTexture(gl.TEXTURE_2D, preTex);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, prepass!.nearest ? gl.NEAREST : gl.LINEAR);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, prepass!.nearest ? gl.NEAREST : gl.LINEAR);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+          gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, pw, ph, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+          if (!preFbo) preFbo = gl.createFramebuffer();
+          gl.bindFramebuffer(gl.FRAMEBUFFER, preFbo);
+          gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, preTex, 0);
+          preW = pw;
+          preH = ph;
+        }
+        gl.bindFramebuffer(gl.FRAMEBUFFER, preFbo);
+        gl.viewport(0, 0, pw, ph);
+        gl.useProgram(preProg);
+        gl.uniform1f(preU.u_time, time);
+        gl.uniform2f(preU.u_resolution, canvas.width, canvas.height);
+        gl.uniform2f(preU.u_preres, pw, ph);
+        gl.uniform1f(preU.u_bass, shown.bass * REACTIVITY);
+        gl.uniform1f(preU.u_mid, shown.mid * REACTIVITY);
+        gl.uniform1f(preU.u_treble, shown.treble * REACTIVITY);
+        gl.uniform1f(preU.u_amplitude, shown.amplitude * REACTIVITY);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        gl.viewport(0, 0, canvas.width, canvas.height);
+        gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D, preTex);
+      }
       gl.useProgram(program!);
+      if (uPre) gl.uniform1i(uPre, 0);
       gl.uniform1f(uTime, time);
       gl.uniform2f(uRes, canvas.width, canvas.height);
       gl.uniform1f(uBass, shown.bass * REACTIVITY);
@@ -839,6 +918,10 @@ export function ShaderVisualizer({
       if (posLoc >= 0) gl.disableVertexAttribArray(posLoc);
       if (buffer) gl.deleteBuffer(buffer);
       if (program) gl.deleteProgram(program);
+      if (preProg) gl.deleteProgram(preProg);
+      if (preFs) gl.deleteShader(preFs);
+      if (preTex) gl.deleteTexture(preTex);
+      if (preFbo) gl.deleteFramebuffer(preFbo);
       gl.deleteShader(vs);
       gl.deleteShader(fs);
       // No canvas.width=0 — React unmounts the canvas element on mode change

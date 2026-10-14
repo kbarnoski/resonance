@@ -1,11 +1,36 @@
 import { U, SMOOTH_NOISE, VISIONARY_PALETTE, VORONOI } from "./shared";
+import { PACK16 } from "./prepass-pack";
+
+// PERF (2026-10-13, Ghost's amber web — the 120 fps law): the six sparks'
+// positions and ages depend only on time, yet cost 12 noise calls per pixel.
+// PRE computes them once per frame — the identical math — into a 6×2 table
+// (16-bit); FRAG reads it. A/B vs the original: scripts/perf/shader-ab.mjs.
+export const PRE = U + SMOOTH_NOISE + PACK16 + `
+void main() {
+  float fi = floor(gl_FragCoord.x);
+  // one continuous life per spark: re-seeded only when its age wraps
+  float sparkLife = u_time * 0.3 + fi * 0.167;
+  vec2 sparkPos = vec2(
+    snoise(vec2(fi * 13.7, floor(sparkLife))),
+    snoise(vec2(fi * 29.3, floor(sparkLife) + 50.0))
+  ) * 0.6;
+  float sparkAge = fract(sparkLife);
+  sparkPos.y += sparkAge * 0.3; // rise
+  gl_FragColor = gl_FragCoord.y < 1.0
+    ? vec4(pack16(sparkPos.x, -2.0, 2.0), pack16(sparkPos.y, -2.0, 2.0))
+    : vec4(pack16(sparkAge, 0.0, 1.0), 0.0, 1.0);
+}
+`;
+export const PRE_SIZE = [6, 2] as const;
 
 export const FRAG =
   U +
   SMOOTH_NOISE +
   VISIONARY_PALETTE +
   VORONOI +
+  PACK16 +
   `
+uniform sampler2D u_pre;
 // Calmed 2026-10-13 (Karel: "that amber shared web responds too much to
 // sound and over jiggles") — the amber web breathes slowly: the heat warp,
 // crack pulse and shimmer clocks run ~3x slower, the palette barely follows
@@ -111,15 +136,10 @@ void main() {
   // Treble-reactive sparks — small bright embers popping
   float sparkle = 0.0;
   for (int i = 0; i < 6; i++) {
-    float fi = float(i);
-    // one continuous life per spark: re-seeded only when its age wraps
-    float sparkLife = u_time * 0.3 + fi * 0.167;
-    vec2 sparkPos = vec2(
-      snoise(vec2(fi * 13.7, floor(sparkLife))),
-      snoise(vec2(fi * 29.3, floor(sparkLife) + 50.0))
-    ) * 0.6;
-    float sparkAge = fract(sparkLife);
-    sparkPos.y += sparkAge * 0.3; // rise
+    float u = (float(i) + 0.5) / 6.0;
+    vec4 sp = texture2D(u_pre, vec2(u, 0.25));
+    vec2 sparkPos = vec2(unpack16(sp.xy, -2.0, 2.0), unpack16(sp.zw, -2.0, 2.0)); // PRE: one life per spark, rising
+    float sparkAge = unpack16(texture2D(u_pre, vec2(u, 0.75)).xy, 0.0, 1.0);
     float sparkDist = length(uv - sparkPos);
     float spark = smoothstep(0.015, 0.0, sparkDist) * sin(sparkAge * 3.14159); // fades in and out — never pops
     sparkle += spark;
