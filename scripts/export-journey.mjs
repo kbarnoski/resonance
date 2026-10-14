@@ -104,6 +104,9 @@ function frameSize(buf) {
   return pngSize(buf) ?? jpegSize(buf);
 }
 
+/** A pause this close to the track's end is the loop's outro, not an error. */
+const TAIL_PAUSE_S = 5;
+
 function pngSize(buf) {
   if (buf.length < 24 || buf.readUInt32BE(0) !== 0x89504e47) return null;
   return { width: buf.readUInt32BE(16), height: buf.readUInt32BE(20) };
@@ -434,6 +437,13 @@ async function renderRange(o, { videoOut, lossless, label = "", probe = false })
       const m = d.main;
       if (!m || m.src !== src || m.generation !== gen) die(`frame ${i}: the track changed under the export (now ${short(m?.src)}) — the loop moved on`);
       const expected = t0 + i / fps;
+      // the loop pauses each track a beat before its natural end (the outro /
+      // hand-off) — the track is over: end the export cleanly there
+      if (!m.playing && !m.ended && m.t >= duration - TAIL_PAUSE_S) {
+        warnLine(`the app paused the track at ${m.t.toFixed(3)}s, ${(duration - m.t).toFixed(2)}s before its end (the loop's outro) — the export ends after ${frames} frames`);
+        meta.endedByOutroPause = m.t;
+        break;
+      }
       if (!onGrid(m.t, expected, fps)) {
         if (m.ended) { warnLine(`track ended at ${m.t.toFixed(3)}s — stopping after ${frames} frames`); break; }
         die(`frame ${i}: track time ${m.t.toFixed(4)}s ≠ expected ${expected.toFixed(4)}s — the app seeked or paused the track mid-range; the audio would desync`);
