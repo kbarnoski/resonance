@@ -36,10 +36,12 @@ const LIGHT = `
     }
 `;
 
-const T = pointLightTableF({ n: 36, header: LIGHT_HEADER, light: LIGHT });
+// (pass 4) tiled: lights binned per 64 px tile, far field on a 1/8 grid
+const T = pointLightTableF({ n: 36, header: LIGHT_HEADER, light: LIGHT, tiled: { px: 64, k: 32, r1: 0.06, r2: 0.12, far: 8 } });
 export const FRAG = T.FRAG;
 export const PRE = T.PRE;
 export const PRE_SIZE = T.SIZE;
+export const PRE_THEN = T.THEN;
 
 /** The original single-pass shader — the fallback without float render
  *  targets, and the reference the table is A/B'd against. */

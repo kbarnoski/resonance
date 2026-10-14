@@ -6,6 +6,8 @@
 
 import { U, SMOOTH_NOISE, VORONOI, ROT2, VISIONARY_PALETTE } from "./shared";
 import { withAngleSeamBlend } from "./angle-seam";
+import { LIGHT_PRE, tiledStages } from "./prepass-pack";
+import { deriveFrag, fieldGrid, FBM_SPLIT, FBM_SPLIT3 } from "./prepass-pack";
 
 const HEAD = U + SMOOTH_NOISE + VORONOI + ROT2 + VISIONARY_PALETTE;
 
@@ -20,7 +22,8 @@ void main() {
   vec2 flow = vec2(b, -a);
   p += flow * 0.4;
   float n = fbm(p * 3.0 + t * 0.5);
-  vec3 col = palette(n + t * 0.1, vec3(0.5), vec3(0.5), vec3(1.0), vec3(0.0, 0.3, 0.7));
+  // (PERF 2026-10-14, exact: the colour is x smoothstep(0, 0.6, n) = 0 for n <= 0)
+  vec3 col = n <= 0.0 ? vec3(0.0) : palette(n + t * 0.1, vec3(0.5), vec3(0.5), vec3(1.0), vec3(0.0, 0.3, 0.7));
   col *= smoothstep(0.0, 0.6, n);
   gl_FragColor = vec4(col, 1.0);
 }
@@ -179,7 +182,13 @@ void main() {
 `;
 
 // 12. Heatmap thermal pulse
-export const R2_THERMAL = HEAD + `
+// PERF (2026-10-14, the 120 fps law, pass 4): the two fbm fields' smooth low
+// octaves (1-4 of the broad one, 1-3 of the fine one) are computed once per
+// 3x3 pixels in a float prepass (R2_THERMAL_PRE, the same code at the same
+// points) and interpolated; the high octaves stay per pixel (FBM_SPLIT /
+// FBM_SPLIT3: low + high = the same six terms). R2_THERMAL_ORIG is the
+// reference and the no-float fallback. A/B: scripts/perf/shader-ab.mjs.
+export const R2_THERMAL_ORIG = HEAD + `
 void main() {
   vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution) / u_resolution.y;
   float t = u_time * 0.2;
@@ -195,6 +204,23 @@ void main() {
   gl_FragColor = vec4(col, 1.0);
 }
 `;
+const R2_THERMAL_GRID = fieldGrid(1, 0);
+export const R2_THERMAL_PRE_SCALE = 1 / 3;
+/** Field = (octaves 1-4 of fbm(uv * 2 + t), octaves 1-3 of fbm(uv * 6 - t / 2)). */
+export const R2_THERMAL_PRE = U + SMOOTH_NOISE + FBM_SPLIT + FBM_SPLIT3 + R2_THERMAL_GRID.pre + `
+void main() {
+  float block, row;
+  vec2 fc = preTexel(block, row);
+  vec2 uv = (fc - 0.5 * u_resolution) / u_resolution.y;
+  float t = u_time * 0.2;
+  gl_FragColor = vec4(fbmLow(uv * 2.0 + t), fbmLow3(uv * 6.0 - t * 0.5), 0.0, 1.0);
+}
+`;
+export const R2_THERMAL = deriveFrag(R2_THERMAL_ORIG, [
+  ["void main() {", FBM_SPLIT + FBM_SPLIT3 + R2_THERMAL_GRID.main + "\nvoid main() {\n  vec4 field = preField(0.0);"],
+  ["  float h = fbm(uv * 2.0 + t);\n  h += 0.3 * fbm(uv * 6.0 - t * 0.5);",
+   "  float h = field.x + fbmHigh(uv * 2.0 + t);\n  h += 0.3 * (field.y + fbmHigh3(uv * 6.0 - t * 0.5));"],
+], "r2-thermal");
 
 // 13. Magnetic field lines
 export const R2_MAGNETIC = HEAD + `
@@ -692,7 +718,9 @@ void main() {
 `;
 
 // 39. Pixie dust sparkles trailing
-export const R2_PIXIE = HEAD + `
+/** The original single-pass Pixie Dust — the no-float fallback and the A/B
+ *  reference for R2_PIXIE (tiled lights, below). */
+export const R2_PIXIE_ORIG = HEAD + `
 void main() {
   vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution) / u_resolution.y;
   float t = u_time * 0.4;
@@ -710,6 +738,37 @@ void main() {
     float glow = 0.0008 / (d * d + 0.0008);
     col += glow * vec3(1.0, 0.9, 0.6) * twink * fade;
   }
+  gl_FragColor = vec4(col, 1.0);
+}
+`;
+
+// PERF (2026-10-14, the 120 fps law, pass 4): Pixie Dust's 28 motes depend
+// on time only — their position / twinkle / fade (~5 trig + a pow each, per
+// pixel before) go into a per-frame light table, and the motes are binned
+// into 64 px tiles with the far field on a 1/8 grid (prepass-pack.ts
+// tiledStages): a pixel sums only its tile's near motes. Same glow
+// (gain / (d² + 0.0008)); A/B vs R2_PIXIE_ORIG: scripts/perf/shader-ab.mjs.
+const PIXIE_LIGHT = `
+    float t = u_time * 0.4;
+    float life = mod(t * 0.5 + fi * 0.13, 1.0);
+    vec2 origin = vec2(sin(t * 0.3 + fi * 0.7) * 0.5, cos(t * 0.4 + fi * 1.1) * 0.3);
+    vec2 vel = vec2(cos(fi), sin(fi)) * life * 0.3;
+    lp = origin + vel;
+    float twink = 0.5 + 0.5 * sin(t * 4.0 + fi * 3.0);
+    twink = pow(twink, 8.0);
+    float fade = (1.0 - life) * smoothstep(0.0, 0.08, life); // fade in at birth (time-wrap audit 2026-10-10)
+    lt = vec3(1.0, 0.9, 0.6);
+    lw = 0.0008 * twink * fade;
+    le = 0.0008;
+`;
+const PIXIE_TILED = tiledStages(28, { px: 64, k: 32, r1: 0.06, r2: 0.12, far: 8, uv: "halfH" });
+export const R2_PIXIE_PRE = LIGHT_PRE("", PIXIE_LIGHT, "0.0008");
+export const R2_PIXIE_THEN = PIXIE_TILED.THEN;
+export const R2_PIXIE = U + PIXIE_TILED.SUM + `
+void main() {
+  vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution) / u_resolution.y;
+  vec3 col = vec3(0.04, 0.03, 0.08);
+  col += plSum(uv);
   gl_FragColor = vec4(col, 1.0);
 }
 `;

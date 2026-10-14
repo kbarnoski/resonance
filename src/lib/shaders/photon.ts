@@ -1,6 +1,13 @@
 import { U, SMOOTH_NOISE, VISIONARY_PALETTE, ROT2 } from "./shared";
+import { deriveFrag, fieldGrid } from "./prepass-pack";
 
-export const FRAG =
+// PERF (2026-10-14, the 120 fps law, pass 4): the probability cloud's fbm is
+// smooth at a 3-pixel scale and weighted <= 0.15 — computed once per 3x3
+// pixels in a float prepass (PRE, the same code at the same points) and
+// interpolated; a photon whose flash is off this frame (exactly 0) skips its
+// gaussian, and the particle palette only runs where a particle lights.
+// ORIG is the reference and the no-float fallback. A/B: scripts/perf/shader-ab.mjs.
+export const ORIG =
   U +
   SMOOTH_NOISE +
   VISIONARY_PALETTE +
@@ -119,3 +126,40 @@ void main() {
   gl_FragColor = vec4(color, 1.0);
 }
 `;
+
+const GRID = fieldGrid(1, 0);
+export const PRE_SCALE = 1 / 3;
+
+/** Field = (fbm of the probability cloud). */
+export const PRE =
+  U +
+  SMOOTH_NOISE +
+  GRID.pre +
+  `
+void main() {
+  float block, row;
+  vec2 fc = preTexel(block, row);
+  vec2 uv = (fc - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y);
+  float t = u_time * 0.2;
+  gl_FragColor = vec4(fbm(uv * 4.0 + vec2(t * 0.3, t * 0.2)), 0.0, 0.0, 1.0);
+}
+`;
+
+export const FRAG = deriveFrag(ORIG, [
+  ["void main() {", GRID.main + "\nvoid main() {"],
+  ["    particles += particle(uv, pos, 0.02 + u_bass * 0.01) * flash;", "    if (flash > 0.0) particles += particle(uv, pos, 0.02 + u_bass * 0.01) * flash; // exact: 0 * finite"],
+  ["  float probCloud = fbm(uv * 4.0 + vec2(t * 0.3, t * 0.2)) * 0.5 + 0.5;", "  float probCloud = preField(0.0).x * 0.5 + 0.5;"],
+  [`  vec3 particleCol = palette(
+    particles + t * 0.1 + paletteShift + 0.4,
+    vec3(0.9, 0.8, 0.5),
+    vec3(0.2, 0.2, 0.3),
+    vec3(0.5, 0.4, 0.2),
+    vec3(0.0, 0.05, 0.1)
+  );`, `  vec3 particleCol = particles > 0.0 ? palette(
+    particles + t * 0.1 + paletteShift + 0.4,
+    vec3(0.9, 0.8, 0.5),
+    vec3(0.2, 0.2, 0.3),
+    vec3(0.5, 0.4, 0.2),
+    vec3(0.0, 0.05, 0.1)
+  ) : vec3(0.0); // exact: only ever multiplied by particles`],
+], "photon");

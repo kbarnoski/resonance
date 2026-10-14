@@ -1,6 +1,7 @@
 import { U, SMOOTH_NOISE, VISIONARY_PALETTE, VORONOI } from "./shared";
+import { deriveFrag, fieldGrid, FBM_SPLIT, FBM_SPLIT3 } from "./prepass-pack";
 
-export const FRAG =
+export const ORIG =
   U +
   SMOOTH_NOISE +
   VISIONARY_PALETTE +
@@ -137,3 +138,46 @@ void main() {
   gl_FragColor = vec4(cellColor, 1.0);
 }
 `;
+
+// PERF (2026-10-14, the 120 fps law, pass 4). ORIG (above) is the reference
+// and the no-float fallback. A float prepass at 1/3 resolution (PRE, the same
+// math at the same points) holds the smooth low octaves of two fbms:
+//  - the smoke's octaves 1-4 (screen-space, periods >= ~20 grid texels);
+//  - the coal heat's octaves 1-3 — the field is in perspective, so only on
+//    the near field (uv.y < HEAT_Y) where it is still smooth; farther up the
+//    pixel runs the whole fbm as before.
+// Both are skipped where they are not read. A/B: scripts/perf/shader-ab.mjs.
+const HEAT_Y = "0.3";
+const GRID = fieldGrid(1, 0);
+export const PRE_SCALE = 1 / 3;
+export const PRE =
+  U +
+  SMOOTH_NOISE +
+  FBM_SPLIT +
+  FBM_SPLIT3 +
+  GRID.pre +
+  `
+void main() {
+  float block, row;
+  vec2 fc = preTexel(block, row);
+  vec2 uv = (fc - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y);
+  float t = u_time * 0.08;
+  float tilt = 0.6;
+  float depth = tilt / max(0.5 - uv.y * 0.8, 0.01);
+  vec2 fieldUV = vec2(uv.x * depth * 0.5, depth + t * 3.0);
+  // (a margin of several texels around each region a pixel reads)
+  float heatLow = uv.y < ${HEAT_Y} + 0.02 ? fbmLow3(fieldUV * 0.8 + vec2(t * 0.2, 0.0)) : 0.0;
+  float smokeLow = uv.y > -0.02 ? fbmLow(vec2(uv.x * 2.0 + t * 0.5, uv.y * 3.0 - t * 0.8)) : 0.0;
+  gl_FragColor = vec4(heatLow, smokeLow, 0.0, 1.0);
+}
+`;
+
+export const FRAG = deriveFrag(ORIG, [
+  ["void main() {", FBM_SPLIT + FBM_SPLIT3 + GRID.main + `
+void main() {
+  vec4 field = preField(0.0);`],
+  ["float heatNoise = fbm(fieldUV * 0.8 + vec2(t * 0.2, 0.0));",
+   `float heatNoise = uv.y < ${HEAT_Y} ? field.x + fbmHigh3(fieldUV * 0.8 + vec2(t * 0.2, 0.0)) : fbm(fieldUV * 0.8 + vec2(t * 0.2, 0.0));`],
+  ["float smoke = uv.y > 0.0 ? fbm(vec2(uv.x * 2.0 + t * 0.5, uv.y * 3.0 - t * 0.8)) * 0.5 + 0.5 : 0.0;",
+   "float smoke = uv.y > 0.0 ? (field.y + fbmHigh(vec2(uv.x * 2.0 + t * 0.5, uv.y * 3.0 - t * 0.8))) * 0.5 + 0.5 : 0.0;"],
+], "ember");

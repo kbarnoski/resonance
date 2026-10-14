@@ -1,6 +1,13 @@
 import { U, SMOOTH_NOISE, VISIONARY_PALETTE } from "./shared";
+import { deriveFrag, fieldGrid } from "./prepass-pack";
 
-export const FRAG =
+// PERF (2026-10-14, the 120 fps law, pass 4): the background's fbm and the
+// deep-water swell (smooth: their finest octave spans ~23 px) are computed
+// once per 3x3 pixels in a float prepass (PRE, the same code at the same
+// points) and interpolated; the ripple colours skip exactly where no ring
+// reaches (every ripple term is multiplied by totalRipple = 0 there). ORIG is
+// the reference and the no-float fallback. A/B: scripts/perf/shader-ab.mjs.
+export const ORIG =
   U +
   SMOOTH_NOISE +
   VISIONARY_PALETTE +
@@ -100,6 +107,10 @@ void main() {
   // Clamp total ripple to avoid blowout
   totalRipple = min(totalRipple, 2.0);
 
+  vec3 color = bgColor;
+  // (exact: with no ring here every term below adds 0 / mixes by 0)
+  if (totalRipple > 0.0) {
+
   // ── Interference pattern — where ripples overlap, create moiré-like shimmer ──
   float interference = pow(totalRipple, 1.5) * 0.3;
   float interferenceShimmer = sin(totalRipple * 12.0 + t * 0.5) * 0.5 + 0.5;
@@ -128,7 +139,6 @@ void main() {
   vec3 interColor = vec3(0.70, 0.75, 0.85);
 
   // ── Composite ──
-  vec3 color = bgColor;
 
   // Ripple light
   color += silverColor * totalRipple * 0.35;
@@ -140,6 +150,7 @@ void main() {
   // Faint outer glow around the ripple edges
   float glow = pow(max(totalRipple, 0.0), 0.5) * 0.08;
   color += vec3(0.15, 0.20, 0.35) * glow;
+  }
 
   // Very subtle audio — amplitude barely shifts the palette warmth
   color *= 1.0 + u_amplitude * 0.05;
@@ -151,3 +162,30 @@ void main() {
   gl_FragColor = vec4(color, 1.0);
 }
 `;
+
+const GRID = fieldGrid(1, 0);
+export const PRE_SCALE = 1 / 3;
+
+/** Field = (bgNoise, deepWater). */
+export const PRE =
+  U +
+  SMOOTH_NOISE +
+  GRID.pre +
+  `
+void main() {
+  float block, row;
+  vec2 fc = preTexel(block, row);
+  vec2 uv = (fc - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y);
+  float t = u_time * 0.18;
+  gl_FragColor = vec4(
+    fbm(uv * 2.0 + vec2(t * 0.02)) * 0.5 + 0.5,
+    snoise(uv * 1.5 + vec2(t * 0.05, t * 0.03)) * 0.3,
+    0.0, 1.0);
+}
+`;
+
+export const FRAG = deriveFrag(ORIG, [
+  ["void main() {", GRID.main + "\nvoid main() {\n  vec4 field = preField(0.0);"],
+  ["float bgNoise = fbm(uv * 2.0 + vec2(t * 0.02)) * 0.5 + 0.5;", "float bgNoise = field.x;"],
+  ["float deepWater = snoise(uv * 1.5 + vec2(t * 0.05, t * 0.03)) * 0.3;", "float deepWater = field.y;"],
+], "ripple");

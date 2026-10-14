@@ -37,19 +37,21 @@ void main() {
   // High wispy layer — very thin, fast
   vec2 w1UV = uv * 1.5 + vec2(t * 1.2, 0.0);
   w1UV = rot2(0.05) * w1UV;
-  float wisp1 = wisp(w1UV, 0.3, 0.06);
-  wisp1 *= smoothstep(-0.5, 0.0, uv.y) * smoothstep(0.6, 0.3, uv.y);
+  // PERF (2026-10-14, exact): each layer's 4-octave wisp is multiplied by its
+  // altitude band — exactly 0 outside it, so the noise is skipped there.
+  float band1 = smoothstep(-0.5, 0.0, uv.y) * smoothstep(0.6, 0.3, uv.y);
+  float wisp1 = band1 > 0.0 ? wisp(w1UV, 0.3, 0.06) * band1 : 0.0;
 
   // Mid wispy layer — moderate
   vec2 w2UV = uv * 2.0 + vec2(t * 0.8, 0.2);
   w2UV = rot2(-0.03) * w2UV;
-  float wisp2 = wisp(w2UV + vec2(30.0), 0.25, 0.04);
-  wisp2 *= smoothstep(-0.3, 0.1, uv.y) * smoothstep(0.5, 0.1, uv.y);
+  float band2 = smoothstep(-0.3, 0.1, uv.y) * smoothstep(0.5, 0.1, uv.y);
+  float wisp2 = band2 > 0.0 ? wisp(w2UV + vec2(30.0), 0.25, 0.04) * band2 : 0.0;
 
   // Low detail layer — slower, broader
   vec2 w3UV = uv * 0.8 + vec2(t * 0.5, -0.1);
-  float wisp3 = wisp(w3UV + vec2(60.0), 0.35, 0.03);
-  wisp3 *= smoothstep(-0.2, 0.15, uv.y);
+  float band3 = smoothstep(-0.2, 0.15, uv.y);
+  float wisp3 = band3 > 0.0 ? wisp(w3UV + vec2(60.0), 0.35, 0.03) * band3 : 0.0;
 
   // Combined cloud density
   float clouds = wisp1 * 0.5 + wisp2 * 0.35 + wisp3 * 0.3;
@@ -57,8 +59,12 @@ void main() {
   clouds *= (0.7 + u_mid * 0.4);
 
   // Ice crystal shimmer within clouds
-  float shimmer = snoise(uv * 20.0 + vec2(t * 3.0, t * 1.5));
-  shimmer = pow(max(shimmer, 0.0), 5.0) * clouds * u_treble * 0.4;
+  // (exact: multiplied by clouds * treble — 0 in clear sky or silence)
+  float shimmer = 0.0;
+  if (clouds * u_treble != 0.0) {
+    shimmer = snoise(uv * 20.0 + vec2(t * 3.0, t * 1.5));
+    shimmer = pow(max(shimmer, 0.0), 5.0) * clouds * u_treble * 0.4;
+  }
 
   // Subtle iridescence — thin-film interference colors in ice crystals
   float iridescence = sin(clouds * 8.0 + uv.x * 5.0 + t * 2.0) * 0.5 + 0.5;

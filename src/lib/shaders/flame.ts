@@ -243,15 +243,20 @@ void main() {
     vec4 o;
     o.x = flameNoise(vec2(uv.x * 0.8, above * 0.9) * 1.8, t * 0.6);
     o.y = flameNoise(vec2(uv.x * 1.2, above * 1.1) * 2.2, t * 1.0);
-    o.z = flickerLow(vec2(uv.x * 1.8, above * 1.3) * 2.0, t * 1.3);
-    o.w = flickerLow(vec2(uv.x * 2.5, above * 1.5) * 2.5 + 3.0, t * 1.8);
+    // (pass 4, exact) each field only where the main pass reads it — the
+    // flickers below above 0.85 / 0.5, the embers below 0.08, the smoke above
+    // 0.5 — plus a margin of ~10 grid steps for the bilinear footprint
+    o.z = above < 0.87 ? flickerLow(vec2(uv.x * 1.8, above * 1.3) * 2.0, t * 1.3) : 0.0;
+    o.w = above < 0.52 ? flickerLow(vec2(uv.x * 2.5, above * 1.5) * 2.5 + 3.0, t * 1.8) : 0.0;
     gl_FragColor = o;
   } else if (block > 1.5) {
-    gl_FragColor = vec4(flickerQ(vec2(uv.x * 1.8, above * 1.3) * 2.0, t * 1.3), flickerQ(vec2(uv.x * 2.5, above * 1.5) * 2.5 + 3.0, t * 1.8));
+    gl_FragColor = vec4(
+      above < 0.87 ? flickerQ(vec2(uv.x * 1.8, above * 1.3) * 2.0, t * 1.3) : vec2(0.0),
+      above < 0.52 ? flickerQ(vec2(uv.x * 2.5, above * 1.5) * 2.5 + 3.0, t * 1.8) : vec2(0.0));
   } else {
-    float emberLow = fbmLow(vec2(uv.x * 5.0 + t * 0.4, t * 0.3));
+    float emberLow = above < 0.10 ? fbmLow(vec2(uv.x * 5.0 + t * 0.4, t * 0.3)) : 0.0;
     float smokeY = above - 0.5;
-    float smokeN = fbm(vec2(uv.x * 1.8, smokeY * 2.5 - t * 0.4)) * 0.5 + 0.5;
+    float smokeN = smokeY > -0.02 ? fbm(vec2(uv.x * 1.8, smokeY * 2.5 - t * 0.4)) * 0.5 + 0.5 : 0.0;
     gl_FragColor = vec4(emberLow, smokeN, 0.0, 1.0);
   }
 }

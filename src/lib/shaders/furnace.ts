@@ -160,4 +160,8 @@ export const FRAG = deriveFrag(ORIG, [
 void main() {
   vec4 field = preField(0.0);`],
   [`  float heatField = fbm4(distortedUV * 1.5 + vec2(t * 0.1, -t * 0.2));`, "  float heatField = field.z;"],
+  // (pass 4, exact) the wall and streak colours are only ever multiplied by
+  // walls / streaks — skip their palettes where those are exactly 0
+  [`  vec3 wallColor = palette(`, `  vec3 wallColor = walls <= 0.0 ? vec3(0.0) : palette(`],
+  [`  vec3 streakColor = palette(`, `  vec3 streakColor = streaks <= 0.0 ? vec3(0.0) : palette(`],
 ], "furnace");

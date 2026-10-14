@@ -278,4 +278,12 @@ void main() {
   ["float texA2 = fbm(uvA * 8.0 + vec2(t * 0.3, -t * 0.15));", "float texA2 = field1.y + (distA < 0.02 ? fbmHigh3(uvA * 8.0 + vec2(t * 0.3, -t * 0.15)) : 0.0);"],
   ["float texB = fbm(uvB * 6.0 + warpB * 1.5 - t * 0.15);", "float texB = field1.z + fbmHigh3(uvB * 6.0 + warpB * 1.5 - t * 0.15);"],
   ["float texB2 = fbm(uvB * 10.0 + vec2(-t * 0.2, t * 0.25));", "float texB2 = field1.w + (distB < 0.02 ? fbmHigh3(uvB * 10.0 + vec2(-t * 0.2, t * 0.25)) : 0.0);"],
+  // (pass 4, exact: colA2 / colB2 only colour the flow / structure lines, which
+  // are multiplied by their organism's fill — 0 beyond dist 0.02)
+  [`  vec3 colA2 = palette(
+    texA2 * 0.4 + t * 0.06 + paletteShift + 0.3,`, `  vec3 colA2 = distA >= 0.02 ? vec3(0.0) : palette(
+    texA2 * 0.4 + t * 0.06 + paletteShift + 0.3,`],
+  [`  vec3 colB2 = palette(
+    texB2 * 0.4 + t * 0.06 + paletteShift + 0.7,`, `  vec3 colB2 = distB >= 0.02 ? vec3(0.0) : palette(
+    texB2 * 0.4 + t * 0.06 + paletteShift + 0.7,`],
 ], "symbiosis"));

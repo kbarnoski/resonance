@@ -19,7 +19,7 @@ const ctx = await br.newContext({ viewport: { width: 1512, height: 982 }, device
 const p = await ctx.newPage();
 await p.setContent(`<body style="margin:0;background:#000"><canvas style="position:fixed;inset:0;width:100vw;height:100vh"></canvas></body>`);
 await p.addScriptTag({ path: runtime });
-const res = await p.evaluate(async ({ specs, W, H, FRAMES, ROUNDS }) => {
+const res = await p.evaluate(async ({ specs, W, H, FRAMES, ROUNDS, STAT }) => {
   const c = document.querySelector("canvas"); c.width = W; c.height = H;
   const gl = c.getContext("webgl");
   const tq = gl.getExtension("EXT_disjoint_timer_query");
@@ -44,12 +44,14 @@ const res = await p.evaluate(async ({ specs, W, H, FRAMES, ROUNDS }) => {
       }
     }
     ms.sort((a, b) => a - b);
-    return ms.length ? ms[Math.floor(ms.length / 2)] : NaN;
+    // STAT=min: the fastest frame — the shader's own cost with the least
+    // interference from other GPU work on a shared machine (the live kiosk)
+    return ms.length ? (STAT === "min" ? ms[0] : ms[Math.floor(ms.length / 2)]) : NaN;
   };
   for (const it of items) if (!it.err) await measure(it);
   for (let r = 0; r < ROUNDS; r++) for (const it of items) if (!it.err) { const m = await measure(it); if (m < it.best) it.best = m; }
   return items.map((it) => [it.n, it.err ?? +it.best.toFixed(2)]);
-}, { specs: names.map((n) => [n, norm(M[n])]), W, H, FRAMES, ROUNDS });
+}, { specs: names.map((n) => [n, norm(M[n])]), W, H, FRAMES, ROUNDS, STAT: process.env.STAT ?? "median" });
 const out = {};
 for (const [n, v] of res) { out[n] = v; console.log(n.padEnd(22), v); }
 if (process.env.OUT) fs.writeFileSync(process.env.OUT, JSON.stringify(out, null, 1));

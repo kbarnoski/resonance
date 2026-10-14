@@ -8,7 +8,7 @@ import { FRAG as TYPHOON_FRAG } from "./typhoon";
 
 
 import { FRAG as ASTRAL_FRAG } from "./astral";
-import { FRAG as EMBER_FRAG } from "./ember";
+import { FRAG as EMBER_FRAG, PRE as EMBER_PRE, PRE_SCALE as EMBER_PRE_SCALE, ORIG as EMBER_ORIG } from "./ember";
 import { FRAG as TIDE_FRAG } from "./tide";
 import { FRAG as UMBRA_FRAG } from "./umbra";
 import { FRAG as INFERNO_FRAG } from "./inferno";
@@ -40,7 +40,7 @@ import { FRAG as LICHEN_FRAG } from "./lichen";
 // Organic (new)
 import { FRAG as ENZYME_FRAG } from "./enzyme";
 
-import { FRAG as POLLEN_FRAG } from "./pollen";
+import { FRAG as POLLEN_FRAG, PRE as POLLEN_PRE, PRE_SIZE as POLLEN_PRE_SIZE, ORIG as POLLEN_ORIG, PRE_THEN as POLLEN_PRE_THEN } from "./pollen";
 import { FRAG as SYMBIOSIS_FRAG, PRE as SYMBIOSIS_PRE, PRE_SCALE as SYMBIOSIS_PRE_SCALE, ORIG as SYMBIOSIS_ORIG } from "./symbiosis";
 
 // Organic (biological)
@@ -48,11 +48,11 @@ import { FRAG as SYMBIOSIS_FRAG, PRE as SYMBIOSIS_PRE, PRE_SCALE as SYMBIOSIS_PR
 
 import { FRAG as KELP_FRAG, PRE as KELP_PRE, PRE_COLUMNS as KELP_PRE_COLUMNS, ORIG as KELP_ORIG } from "./kelp";
 // Organic (new batch)
-import { FRAG as FLAGELLA_FRAG } from "./flagella";
+import { FRAG as FLAGELLA_FRAG, PRE as FLAGELLA_PRE, PRE_SCALE as FLAGELLA_PRE_SCALE, ORIG as FLAGELLA_ORIG } from "./flagella";
 import { FRAG as MYCELIUM_FRAG, PRE as MYCELIUM_PRE, PRE_SCALE as MYCELIUM_PRE_SCALE, ORIG as MYCELIUM_ORIG } from "./mycelium";
 import { FRAG as CORAL_FRAG } from "./coral";
 import { FRAG as SYNAPSE_FRAG } from "./synapse";
-import { FRAG as DIATOM_FRAG } from "./diatom";
+import { FRAG as DIATOM_FRAG, PRE as DIATOM_PRE, PRE_SCALE as DIATOM_PRE_SCALE, ORIG as DIATOM_ORIG } from "./diatom";
 
 // Geometry
 
@@ -84,10 +84,10 @@ import { FRAG as SOMA_FRAG } from "./soma";
 import { FRAG as NADIR_FRAG } from "./nadir";
 import { FRAG as PARSEC_FRAG, PRE as PARSEC_PRE, PRE_SCALE as PARSEC_PRE_SCALE, ORIG as PARSEC_ORIG } from "./parsec";
 import { FRAG as NOVA_FRAG } from "./nova";
-import { FRAG as PHOTON_FRAG } from "./photon";
+import { FRAG as PHOTON_FRAG, PRE as PHOTON_PRE, PRE_SCALE as PHOTON_PRE_SCALE, ORIG as PHOTON_ORIG } from "./photon";
 import { FRAG as SELENE_FRAG } from "./selene";
 import { FRAG as KEPLER_FRAG } from "./kepler";
-import { FRAG as HUBBLE_FRAG, PRE as HUBBLE_PRE, PRE_SCALE as HUBBLE_PRE_SCALE, ORIG as HUBBLE_ORIG } from "./hubble";
+import { FRAG as HUBBLE_FRAG, PRE as HUBBLE_PRE, PRE_SIZE as HUBBLE_PRE_SIZE, ORIG as HUBBLE_ORIG, PRE_THEN as HUBBLE_PRE_THEN } from "./hubble";
 // Cosmic (new batch)
 import { FRAG as AURORA_WAVE_FRAG } from "./aurora-wave";
 import { FRAG as ZENITH_FRAG } from "./zenith";
@@ -128,16 +128,16 @@ import { FRAG as RIBBON_OF_LIGHT_FRAG, PRE as RIBBON_OF_LIGHT_PRE, PRE_SIZE as R
 import { FRAG as ORBIT_WEAVER_FRAG, PRE as ORBIT_WEAVER_PRE, PRE_SIZE as ORBIT_WEAVER_PRE_SIZE, ORIG as ORBIT_WEAVER_ORIG, PRE_THEN as ORBIT_WEAVER_PRE_THEN } from "./orbit-weaver";
 import { FRAG as METEOR_RAIN_FRAG, PRE as METEOR_RAIN_PRE, PRE_SIZE as METEOR_RAIN_PRE_SIZE, ORIG as METEOR_RAIN_ORIG, PRE_THEN as METEOR_RAIN_PRE_THEN } from "./meteor-rain";
 import { FRAG as MURMURATION_FRAG, PRE as MURMURATION_PRE, PRE_SIZE as MURMURATION_PRE_SIZE, ORIG as MURMURATION_ORIG, PRE_THEN as MURMURATION_PRE_THEN } from "./murmuration";
-import { FRAG as WILL_O_WISP_FRAG, PRE as WILL_O_WISP_PRE, PRE_SIZE as WILL_O_WISP_PRE_SIZE, ORIG as WILL_O_WISP_ORIG } from "./will-o-wisp";
+import { FRAG as WILL_O_WISP_FRAG, PRE as WILL_O_WISP_PRE, PRE_SIZE as WILL_O_WISP_PRE_SIZE, ORIG as WILL_O_WISP_ORIG, PRE_THEN as WILL_O_WISP_PRE_THEN } from "./will-o-wisp";
 import { FRAG as GALAXY_SEED_FRAG } from "./galaxy-seed";
-import { FRAG as PENDULUM_DUST_FRAG, PRE as PENDULUM_DUST_PRE, PRE_SIZE as PENDULUM_DUST_PRE_SIZE, ORIG as PENDULUM_DUST_ORIG } from "./pendulum-dust";
+import { FRAG as PENDULUM_DUST_FRAG, PRE as PENDULUM_DUST_PRE, PRE_SIZE as PENDULUM_DUST_PRE_SIZE, ORIG as PENDULUM_DUST_ORIG, PRE_THEN as PENDULUM_DUST_PRE_THEN } from "./pendulum-dust";
 import { FRAG as HELIX_STREAM_FRAG } from "./helix-stream";
 import { FRAG as FRACTURE_LIGHT_FRAG, PRE as FRACTURE_LIGHT_PRE, PRE_SIZE as FRACTURE_LIGHT_PRE_SIZE, ORIG as FRACTURE_LIGHT_ORIG, PRE_THEN as FRACTURE_LIGHT_PRE_THEN } from "./fracture-light";
 import { FRAG as ROSE_WINDOW_FRAG, PRE as ROSE_WINDOW_PRE, PRE_SIZE as ROSE_WINDOW_PRE_SIZE, ORIG as ROSE_WINDOW_ORIG, PRE_THEN as ROSE_WINDOW_PRE_THEN } from "./rose-window";
 import { FRAG as CASCADE_VEIL_FRAG, PRE as CASCADE_VEIL_PRE, PRE_SIZE as CASCADE_VEIL_PRE_SIZE, ORIG as CASCADE_VEIL_ORIG, PRE_THEN as CASCADE_VEIL_PRE_THEN } from "./cascade-veil";
-import { FRAG as BINARY_STARS_FRAG, PRE as BINARY_STARS_PRE, PRE_SIZE as BINARY_STARS_PRE_SIZE, ORIG as BINARY_STARS_ORIG } from "./binary-stars";
+import { FRAG as BINARY_STARS_FRAG, PRE as BINARY_STARS_PRE, PRE_SIZE as BINARY_STARS_PRE_SIZE, ORIG as BINARY_STARS_ORIG, PRE_THEN as BINARY_STARS_PRE_THEN } from "./binary-stars";
 import { FRAG as RESONANT_RINGS_FRAG } from "./resonant-rings";
-import { FRAG as RIPPLE_FRAG } from "./ripple";
+import { FRAG as RIPPLE_FRAG, PRE as RIPPLE_PRE, PRE_SCALE as RIPPLE_PRE_SCALE, ORIG as RIPPLE_ORIG } from "./ripple";
 // Elemental (new batch)
 import { FRAG as RIME_FRAG } from "./rime";
 import { FRAG as CIRRUS_FRAG } from "./cirrus";
@@ -212,15 +212,16 @@ import {
   R_KALEIDO, R_BLACKHOLE,
   R_MOLTEN, R_SMOKERINGS,
   R_GROWTH, R_SILK, R_DROPLETS, R_PETALS,
+  R_STARDUST_PRE, R_STARDUST_PRE_SIZE, R_STARDUST_ORIG, R_STARDUST_PRE_THEN,
 } from "./review-pack";
 // Pack #2 survivors only — deleted entries removed from import list.
 import {
   R2_CURLSWARM, R2_SPIRALGAL, R2_INTERFERENCE,
   R2_FIBERS,
-  R2_THERMAL, R2_MAGNETIC,
+  R2_THERMAL, R2_THERMAL_ORIG, R2_THERMAL_PRE, R2_THERMAL_PRE_SCALE, R2_MAGNETIC,
   R2_CORAL,
   R2_PHOTON,
-  R2_PIXIE,
+  R2_PIXIE, R2_PIXIE_ORIG, R2_PIXIE_PRE, R2_PIXIE_THEN,
   R2_INFRARED,
   R2_PORTALRIM, R2_SPORE, R2_SUNSETCASCADE,
 } from "./review-pack-2";
@@ -544,8 +545,13 @@ import type { ShaderPrepass } from "./prepass-gl";
 export type { ShaderPrepass, PrepassStage } from "./prepass-gl";
 export const SHADER_PREPASS: Partial<Record<VisualizerMode, ShaderPrepass>> = {
   starfield: { frag: STARFIELD_PRE, scale: 0.25 },
+  photon: { frag: PHOTON_PRE, scale: PHOTON_PRE_SCALE, float: true, fallback: PHOTON_ORIG },
+  diatom: { frag: DIATOM_PRE, scale: DIATOM_PRE_SCALE, float: true, fallback: DIATOM_ORIG },
+  "r2-thermal": { frag: R2_THERMAL_PRE, scale: R2_THERMAL_PRE_SCALE, float: true, fallback: R2_THERMAL_ORIG },
   furnace: { frag: FURNACE_PRE, scale: FURNACE_PRE_SCALE, float: true, fallback: FURNACE_ORIG },
+  "r2-pixie": { frag: R2_PIXIE_PRE, scale: 0, size: [28, 2], nearest: true, float: true, fallback: R2_PIXIE_ORIG, then: R2_PIXIE_THEN },
   monsoon: { frag: MONSOON_PRE, scale: MONSOON_PRE_SCALE, extraRows: 1, float: true, fallback: MONSOON_ORIG },
+  ripple: { frag: RIPPLE_PRE, scale: RIPPLE_PRE_SCALE, float: true, fallback: RIPPLE_ORIG },
   mycelium: { frag: MYCELIUM_PRE, scale: MYCELIUM_PRE_SCALE, float: true, fallback: MYCELIUM_ORIG },
   lightyear: { frag: LIGHTYEAR_PRE, scale: LIGHTYEAR_PRE_SCALE, blocks: 2, float: true, fallback: LIGHTYEAR_ORIG },
   "molten-vein": { frag: MOLTEN_VEIN_PRE, scale: MOLTEN_VEIN_PRE_SCALE, float: true, fallback: MOLTEN_VEIN_ORIG },
@@ -553,16 +559,20 @@ export const SHADER_PREPASS: Partial<Record<VisualizerMode, ShaderPrepass>> = {
   parsec: { frag: PARSEC_PRE, scale: PARSEC_PRE_SCALE, float: true, fallback: PARSEC_ORIG },
   kelp: { frag: KELP_PRE, scale: 0, columns: KELP_PRE_COLUMNS, nearest: true, float: true, fallback: KELP_ORIG },
   "iron-forge": { frag: IRON_FORGE_PRE, scale: IRON_FORGE_PRE_SCALE, blocks: 3, float: true, fallback: IRON_FORGE_ORIG },
-  hubble: { frag: HUBBLE_PRE, scale: HUBBLE_PRE_SCALE, extraRows: 2, float: true, fallback: HUBBLE_ORIG },
+  hubble: { frag: HUBBLE_PRE, scale: 0, size: HUBBLE_PRE_SIZE, nearest: true, float: true, fallback: HUBBLE_ORIG, then: HUBBLE_PRE_THEN },
+  flagella: { frag: FLAGELLA_PRE, scale: FLAGELLA_PRE_SCALE, float: true, fallback: FLAGELLA_ORIG },
+  pollen: { frag: POLLEN_PRE, scale: 0, size: POLLEN_PRE_SIZE, nearest: true, float: true, fallback: POLLEN_ORIG, then: POLLEN_PRE_THEN },
+  ember: { frag: EMBER_PRE, scale: EMBER_PRE_SCALE, float: true, fallback: EMBER_ORIG },
   pelagic: { frag: PELAGIC_PRE, scale: 0, size: PELAGIC_PRE_SIZE, nearest: true, float: true, fallback: PELAGIC_ORIG, then: PELAGIC_PRE_THEN },
+  "r-stardust": { frag: R_STARDUST_PRE, scale: 0, size: R_STARDUST_PRE_SIZE, nearest: true, float: true, fallback: R_STARDUST_ORIG, then: R_STARDUST_PRE_THEN },
   vestige: { frag: VESTIGE_PRE, scale: 0, size: VESTIGE_PRE_SIZE, nearest: true, float: true, fallback: VESTIGE_ORIG, then: VESTIGE_PRE_THEN },
   symbiosis: { frag: SYMBIOSIS_PRE, scale: SYMBIOSIS_PRE_SCALE, blocks: 3, float: true, fallback: SYMBIOSIS_ORIG },
   "sun-veil": { frag: SUN_VEIL_PRE, scale: SUN_VEIL_PRE_SCALE, float: true, fallback: SUN_VEIL_ORIG },
   "fracture-light": { frag: FRACTURE_LIGHT_PRE, scale: 0, size: FRACTURE_LIGHT_PRE_SIZE, nearest: true, float: true, fallback: FRACTURE_LIGHT_ORIG, then: FRACTURE_LIGHT_PRE_THEN },
-  "binary-stars": { frag: BINARY_STARS_PRE, scale: 0, size: BINARY_STARS_PRE_SIZE, nearest: true, float: true, fallback: BINARY_STARS_ORIG },
-  "will-o-wisp": { frag: WILL_O_WISP_PRE, scale: 0, size: WILL_O_WISP_PRE_SIZE, nearest: true, float: true, fallback: WILL_O_WISP_ORIG },
+  "binary-stars": { frag: BINARY_STARS_PRE, scale: 0, size: BINARY_STARS_PRE_SIZE, nearest: true, float: true, fallback: BINARY_STARS_ORIG, then: BINARY_STARS_PRE_THEN },
+  "will-o-wisp": { frag: WILL_O_WISP_PRE, scale: 0, size: WILL_O_WISP_PRE_SIZE, nearest: true, float: true, fallback: WILL_O_WISP_ORIG, then: WILL_O_WISP_PRE_THEN },
   "rose-window": { frag: ROSE_WINDOW_PRE, scale: 0, size: ROSE_WINDOW_PRE_SIZE, nearest: true, float: true, fallback: ROSE_WINDOW_ORIG, then: ROSE_WINDOW_PRE_THEN },
-  "pendulum-dust": { frag: PENDULUM_DUST_PRE, scale: 0, size: PENDULUM_DUST_PRE_SIZE, nearest: true, float: true, fallback: PENDULUM_DUST_ORIG },
+  "pendulum-dust": { frag: PENDULUM_DUST_PRE, scale: 0, size: PENDULUM_DUST_PRE_SIZE, nearest: true, float: true, fallback: PENDULUM_DUST_ORIG, then: PENDULUM_DUST_PRE_THEN },
   "cascade-veil": { frag: CASCADE_VEIL_PRE, scale: 0, size: CASCADE_VEIL_PRE_SIZE, nearest: true, float: true, fallback: CASCADE_VEIL_ORIG, then: CASCADE_VEIL_PRE_THEN },
   "orbit-weaver": { frag: ORBIT_WEAVER_PRE, scale: 0, size: ORBIT_WEAVER_PRE_SIZE, nearest: true, float: true, fallback: ORBIT_WEAVER_ORIG, then: ORBIT_WEAVER_PRE_THEN },
   "ribbon-of-light": { frag: RIBBON_OF_LIGHT_PRE, scale: 0, size: RIBBON_OF_LIGHT_PRE_SIZE, nearest: true, float: true, fallback: RIBBON_OF_LIGHT_ORIG, then: RIBBON_OF_LIGHT_PRE_THEN },

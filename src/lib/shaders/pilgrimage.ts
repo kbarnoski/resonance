@@ -43,9 +43,12 @@ void main() {
     // Brightness increases toward vanishing point
     float brightness = exp(-distToVanish * 2.0) + 0.2;
 
-    // Noise modulation along line
-    float n = fbm3(vec2(vanishAngle * 3.0 + fi, distToVanish * 4.0 - t));
-    line *= (0.6 + n * 0.4);
+    // Noise modulation along line — only where the line is lit (PERF
+    // 2026-10-14: off the line it multiplies 0; 48 noise taps -> ~3)
+    if (line > 0.0) {
+      float n = fbm3(vec2(vanishAngle * 3.0 + fi, distToVanish * 4.0 - t));
+      line *= (0.6 + n * 0.4);
+    }
 
     // Moving particles along lines (sense of walking)
     float particle = sin(distToVanish * 30.0 - t * 3.0 + fi * 2.0) * 0.5 + 0.5;

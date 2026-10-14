@@ -60,12 +60,17 @@ void main() {
 
   // Lightning bolt — jagged line from top, position held per cycle
   float boltX = snoise(vec2(boltSeed, 0.0)) * 0.3;
-  float boltDist = abs(uv.x - boltX - snoise(vec2(uv.y * 8.0, boltSeed)) * 0.08);
-  float bolt = smoothstep(0.015, 0.0, boltDist) * smoothstep(-0.2, 0.8, uv.y);
-  float boltGlow = smoothstep(0.15, 0.0, boltDist) * smoothstep(-0.2, 0.8, uv.y) * 0.3;
-  vec3 boltColor = palette(0.65 + paletteShift, vec3(0.7, 0.7, 0.9), vec3(0.3, 0.3, 0.2),
-    vec3(1.0, 1.0, 1.0), vec3(0.0, 0.1, 0.3));
-  color += (bolt + boltGlow) * boltColor * lightning;
+  // PERF (2026-10-14, pass 4, exact): the bolt + its glow are 0 below uv.y
+  // -0.2, between strikes (lightning 0), and farther than 0.15 + the jag's
+  // reach (|snoise| x 0.08 < 0.09) from boltX — the jag noise runs only there
+  if (lightning * smoothstep(-0.2, 0.8, uv.y) > 0.0 && abs(uv.x - boltX) < 0.24) {
+    float boltDist = abs(uv.x - boltX - snoise(vec2(uv.y * 8.0, boltSeed)) * 0.08);
+    float bolt = smoothstep(0.015, 0.0, boltDist) * smoothstep(-0.2, 0.8, uv.y);
+    float boltGlow = smoothstep(0.15, 0.0, boltDist) * smoothstep(-0.2, 0.8, uv.y) * 0.3;
+    vec3 boltColor = palette(0.65 + paletteShift, vec3(0.7, 0.7, 0.9), vec3(0.3, 0.3, 0.2),
+      vec3(1.0, 1.0, 1.0), vec3(0.0, 0.1, 0.3));
+    color += (bolt + boltGlow) * boltColor * lightning;
+  }
 
   // Localized illumination — soft glow around the bolt, not full-frame
   float sceneGlow = smoothstep(0.6, 0.0, abs(uv.x - boltX)) * smoothstep(-0.4, 0.6, uv.y);

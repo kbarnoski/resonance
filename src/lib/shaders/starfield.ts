@@ -176,11 +176,16 @@ float starLayer(vec2 uv, float scale, float seed, float threshold, out vec3 star
 
       // Star properties from hash
       float sizeSeed = starHash(cellId * 3.1 + seed + 100.0);
-      float colorSeed = starHash(cellId * 5.7 + seed + 200.0);
-      float twinkleSeed = starHash(cellId * 11.3 + seed + 300.0);
 
       // Star size — most are tiny, few are large
       float starSize = 0.02 + pow(sizeSeed, 4.0) * 0.12;
+
+      // PERF (2026-10-14, pass 4): beyond 3.4 star sizes the star adds
+      // < 3e-7 (glow 0.4·e^-14.4; spikes <= 0.6·e^-80·d/size) — skip its
+      // colour/twinkle hashes, three twinkle sines and the exps there.
+      if (d > starSize * 3.4) continue;
+      float colorSeed = starHash(cellId * 5.7 + seed + 200.0);
+      float twinkleSeed = starHash(cellId * 11.3 + seed + 300.0);
 
       // Twinkle — slow variation in brightness
       float twinkle = 0.7 + 0.3 * sin(u_time * (0.5 + twinkleSeed * 2.0) + twinkleSeed * 100.0);

@@ -1,6 +1,8 @@
 import { U, SMOOTH_NOISE, VISIONARY_PALETTE, ROT2 } from "./shared";
+import { deriveFrag, fieldGrid, FBM_SPLIT } from "./prepass-pack";
 
-export const FRAG =
+/** The original single pass — the reference and the no-float fallback. */
+export const ORIG =
   U +
   SMOOTH_NOISE +
   VISIONARY_PALETTE +
@@ -16,10 +18,29 @@ float tendrilDist(vec2 uv, vec2 origin, float baseAngle, float len, float t, flo
   float prevX = origin.x;
   float prevY = origin.y;
 
+  // PERF (pass 4, exact): every tail point is origin + dir*s + v*w with |v| = 1
+  // and |w| <= B(s) = fj*0.08 + fj^2*0.04 (rising toward the tip). A segment
+  // whose distance lower bound exceeds 0.027 (max width 0.012 + the 0.015 glow
+  // reach) can never light this pixel: it is not tested, and its end point is
+  // only traced when the next segment needs it as a start.
+  vec2 rsDir = vec2(cos(baseAngle), sin(baseAngle));
+  vec2 rsRel = uv - origin;
+  float rsP = dot(rsRel, rsDir);
+  float rsQ = abs(dot(rsRel, vec2(-rsDir.y, rsDir.x)));
+  float rsStep = len / 20.0;
+
   // Trace the tendril in segments
   for (int j = 1; j <= 20; j++) {
     float fj = float(j) / 20.0;
     float s = fj * len;
+    float rsB = fj * 0.08 + fj * fj * 0.04;
+    float rsGap = max(max(s - rsStep - rsP, rsP - s), 0.0);
+    bool rsNeed = length(vec2(max(rsGap - rsB, 0.0), max(rsQ - rsB, 0.0))) <= 0.0275;
+    float rsFj2 = min(fj + 0.05, 1.0);
+    float rsB2 = rsFj2 * 0.08 + rsFj2 * rsFj2 * 0.04;
+    float rsGap2 = max(max(s - rsP, rsP - s - rsStep), 0.0);
+    bool rsNeedNext = j < 20 && length(vec2(max(rsGap2 - rsB2, 0.0), max(rsQ - rsB2, 0.0))) <= 0.0275;
+    if (!rsNeed && !rsNeedNext) continue;
 
     // Whip-like undulation — amplitude increases toward tip
     float wave = sin(s * 12.0 - t * 4.0 + seed * 6.28) * fj * 0.08;
@@ -27,6 +48,7 @@ float tendrilDist(vec2 uv, vec2 origin, float baseAngle, float len, float t, flo
 
     float cx = origin.x + cos(baseAngle) * s + sin(baseAngle + 1.57) * (wave + wave2);
     float cy = origin.y + sin(baseAngle) * s + cos(baseAngle + 1.57) * (wave + wave2);
+    if (!rsNeed) { prevX = cx; prevY = cy; continue; }
 
     // Distance to line segment
     vec2 pa = uv - vec2(prevX, prevY);
@@ -177,3 +199,44 @@ void main() {
   gl_FragColor = vec4(color, 1.0);
 }
 `;
+
+// PERF (pass 4): the background's 4 smooth low octaves (wavelength >= 25 grid
+// cells) come from a 1/3-resolution float prepass; the two fine octaves stay
+// per pixel (fbmLow + fbmHigh = fbm, prepass-pack FBM_SPLIT).
+const GRID = fieldGrid(1, 0);
+export const PRE_SCALE = 1 / 3;
+export const PRE =
+  U +
+  SMOOTH_NOISE +
+  FBM_SPLIT +
+  GRID.pre +
+  `
+void main() {
+  float block, row;
+  vec2 fc = preTexel(block, row);
+  vec2 uv = (fc - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y);
+  float t = u_time * 0.12;
+  gl_FragColor = vec4(fbmLow(uv * 2.5 + vec2(t * 0.06, -t * 0.04)), 0.0, 0.0, 1.0);
+}
+`;
+
+export const FRAG = deriveFrag(ORIG, [
+  ["void main() {", FBM_SPLIT + GRID.main + "\nvoid main() {"],
+  ["float bgN = fbm(uv * 2.5 + vec2(t * 0.06, -t * 0.04));", "float bgN = preField(0.0).x + fbmHigh(uv * 2.5 + vec2(t * 0.06, -t * 0.04));"],
+  // (pass 4) between 0.36 and 0.45 of a body only its tails can show: the body
+  // glow is exactly 0 beyond 0.08 and the aura gaussian adds < 1e-5 (at most
+  // exp(-0.36^2 / 0.012) x 0.3) — the body colour and aura are skipped there
+  [`    vec3 bodyColor = palette(
+      fi * 0.15 + t * 0.04 + paletteShift,`, `    bool rsNear = length(uv - orgPos) < 0.36;
+    vec3 bodyColor = !rsNear ? vec3(0.0) : palette(
+      fi * 0.15 + t * 0.04 + paletteShift,`],
+  [`    float auraDist = length(uv - orgPos);
+    float aura = exp(-auraDist * auraDist / (0.008 + u_bass * 0.004));
+    float auraPulse = 0.5 + 0.5 * sin(t * 2.5 + fi * 1.7);
+    color += bodyColor * aura * auraPulse * 0.3;`, `    if (rsNear) {
+      float auraDist = length(uv - orgPos);
+      float aura = exp(-auraDist * auraDist / (0.008 + u_bass * 0.004));
+      float auraPulse = 0.5 + 0.5 * sin(t * 2.5 + fi * 1.7);
+      color += bodyColor * aura * auraPulse * 0.3;
+    }`],
+], "flagella");

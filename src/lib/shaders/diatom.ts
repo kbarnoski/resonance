@@ -1,8 +1,15 @@
 import { U, SMOOTH_NOISE, VISIONARY_PALETTE, ROT2 } from "./shared";
 import { withAngleSeamBlend } from "./angle-seam";
+import { deriveFrag, fieldGrid } from "./prepass-pack";
 
 // Angle seam-blended (atan branch cut — see ./angle-seam).
-export const FRAG = withAngleSeamBlend(
+// PERF (2026-10-14, the 120 fps law, pass 4): the microscope field's fbm
+// (gain < 0.01) is smooth on a ~3-pixel scale — computed once per 3x3 pixels
+// in a float prepass (PRE, the same code at the same points) and interpolated;
+// the chloroplast and sparkle noise only run where their weights (inside the
+// shell / on the shell or inside with treble) are non-zero — exactly 0
+// elsewhere. ORIG is the reference and the no-float fallback.
+const RAW =
   U +
   SMOOTH_NOISE +
   VISIONARY_PALETTE +
@@ -159,4 +166,30 @@ void main() {
 
   gl_FragColor = vec4(color, 1.0);
 }
-`);
+`;
+export const ORIG = withAngleSeamBlend(RAW);
+
+const GRID = fieldGrid(1, 0);
+export const PRE_SCALE = 1 / 3;
+
+/** Field = (bgN). */
+export const PRE =
+  U +
+  SMOOTH_NOISE +
+  GRID.pre +
+  `
+void main() {
+  float block, row;
+  vec2 fc = preTexel(block, row);
+  vec2 uv = (fc - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y);
+  float t = u_time * 0.06;
+  gl_FragColor = vec4(fbm(uv * 1.5 + vec2(t * 0.03, -t * 0.02)), 0.0, 0.0, 1.0);
+}
+`;
+
+export const FRAG = withAngleSeamBlend(deriveFrag(RAW, [
+  ["void main() {", GRID.main + "\nvoid main() {"],
+  ["  float bgN = fbm(uv * 1.5 + vec2(t * 0.03, -t * 0.02));", "  float bgN = preField(0.0).x;"],
+  ["  float chloroN = snoise(duv * 8.0 + t * 0.3);", "  float chloroN = insideShell > 0.0 ? snoise(duv * 8.0 + t * 0.3) : 0.0;"],
+  ["  float sparkle = snoise(duv * 40.0 + t * 2.0);", "  float sparkle = u_treble * (shellGlow + insideShell * 0.3) != 0.0 ? snoise(duv * 40.0 + t * 2.0) : 0.0;"],
+], "diatom"));

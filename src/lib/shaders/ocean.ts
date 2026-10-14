@@ -71,7 +71,9 @@ void main() {
   // ── Caustic light from above ──
   vec2 causticUV = surfaceUV * 1.8 + surfaceNormal;
   float c1 = caustic(causticUV);
-  float c2 = caustic(causticUV * 1.6 + vec2(50.0, 30.0));
+  // PERF (2026-10-14, exact): the second network only multiplies the first's
+  // (1 - smoothstep(0, 0.18, c1)) — exactly 0 from c1 >= 0.18 on.
+  float c2 = c1 < 0.18 ? caustic(causticUV * 1.6 + vec2(50.0, 30.0)) : 1.0;
   float causticBright = (1.0 - smoothstep(0.0, 0.18, c1))
                       * (1.0 - smoothstep(0.0, 0.12, c2));
   causticBright = pow(causticBright, 1.4) * upFraction * upFraction;
@@ -125,16 +127,23 @@ void main() {
   color += vec3(0.6, 0.85, 0.9) * lightShaft * 0.25;
 
   // Bioluminescent particles in the deep
-  float bio = snoise(uv * 8.0 + vec2(t * 1.5, 0.0));
-  bio = pow(max(-bio, 0.0), 4.0) * (1.0 - upFraction) * u_treble * 0.6;
-  vec3 bioCol = palette(
-    bio + paletteShift + 0.5,
-    vec3(0.2, 0.4, 0.5),
-    vec3(0.2, 0.4, 0.5),
-    vec3(0.3, 0.9, 0.8),
-    vec3(0.1, 0.3, 0.5)
-  );
-  color += bioCol * bio * 0.4;
+  // (exact, pass 4) the particles are scaled by treble and depth: no noise in
+  // silence, and no palette where the noise is >= 0 (bio is exactly 0 there)
+  float bio = 0.0;
+  if ((1.0 - upFraction) * u_treble != 0.0) {
+    bio = snoise(uv * 8.0 + vec2(t * 1.5, 0.0));
+    bio = pow(max(-bio, 0.0), 4.0) * (1.0 - upFraction) * u_treble * 0.6;
+  }
+  if (bio != 0.0) {
+    vec3 bioCol = palette(
+      bio + paletteShift + 0.5,
+      vec3(0.2, 0.4, 0.5),
+      vec3(0.2, 0.4, 0.5),
+      vec3(0.3, 0.9, 0.8),
+      vec3(0.1, 0.3, 0.5)
+    );
+    color += bioCol * bio * 0.4;
+  }
 
   // Vignette
   float vignette = 1.0 - smoothstep(0.45, 1.35, length(uv));

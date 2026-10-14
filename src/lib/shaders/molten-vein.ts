@@ -242,4 +242,11 @@ void main() {
   float wy = field.y;`],
   [`  float surfNoise = fbm3(warped * 6.0 + t * 0.05);`, "  float surfNoise = field.z;"],
   [`  float hotSpot = snoise(warped * 10.0 + vec2(u_time * 0.8, 0.0));`, "  float hotSpot = vein > 0.0 ? snoise(warped * 10.0 + vec2(u_time * 0.8, 0.0)) : 0.0;"],
+  // (pass 4, bit-identical) the nearest cell's hash once, after the search —
+  // not once per closer cell found (up to 9 sin per pixel per network)
+  [`  float cellHash = 0.0;
+  for (int j = -1; j <= 1; j++) {`, `  vec2 bestCell = vec2(0.0);
+  for (int j = -1; j <= 1; j++) {`],
+  [`        cellHash = fract(sin(dot(cell, vec2(41.7, 89.3))) * 2745.3);`, `        bestCell = cell;`],
+  [`  return vec3(sqrt(md1), sqrt(md2), cellHash);`, `  return vec3(sqrt(md1), sqrt(md2), fract(sin(dot(bestCell, vec2(41.7, 89.3))) * 2745.3));`],
 ], "molten-vein");

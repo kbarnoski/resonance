@@ -48,6 +48,9 @@ void main() {
 
     // Interference pattern inside the vesica
     float inside = smoothstep(0.02, -0.02, vesica);
+    // PERF (2026-10-14, exact): every term below is multiplied by an edge or
+    // by inside — all exactly 0 away from this layer's circles and almond
+    if (inside == 0.0 && edge1 + edge2 + vesicaEdge == 0.0) continue;
     float interference = sin((d1 - d2) * 60.0 / scale + t * 2.0 + u_treble * 3.0);
     interference = interference * 0.5 + 0.5;
     float interGlow = inside * interference * 0.6;
@@ -100,9 +103,13 @@ void main() {
   color += almondCol * almondGlow * 0.5;
 
   // FBM texture overlay for depth
-  float noiseField = fbm(uv * 4.0 + t * 0.2);
-  float noiseAccent = smoothstep(0.0, 0.4, abs(noiseField)) * 0.12;
-  color += almondCol * noiseAccent * smoothstep(1.0, 0.2, length(uv));
+  // (exact: the overlay's mask is 0 from length(uv) 1.0 out)
+  float noiseMask = smoothstep(1.0, 0.2, length(uv));
+  if (noiseMask > 0.0) {
+    float noiseField = fbm(uv * 4.0 + t * 0.2);
+    float noiseAccent = smoothstep(0.0, 0.4, abs(noiseField)) * 0.12;
+    color += almondCol * noiseAccent * noiseMask;
+  }
 
   // Treble-driven fine shimmer at intersection edges
   float shimmer = u_treble * 0.25 * sin(pd1 * 80.0 + t * 5.0) * smoothstep(0.02, 0.0, abs(primaryVesica));

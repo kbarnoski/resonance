@@ -1,6 +1,8 @@
 import { U, SMOOTH_NOISE, VISIONARY_PALETTE, ROT2, VORONOI } from "./shared";
+import { deriveFrag, tiledStages, LIGHT_PRE, FBM_SPLIT } from "./prepass-pack";
 
-export const FRAG =
+/** The original single pass — the reference and the no-float fallback. */
+export const ORIG =
   U +
   SMOOTH_NOISE +
   VISIONARY_PALETTE +
@@ -118,8 +120,12 @@ void main() {
     // beyond 0.04 of the grain (glow, edge, rim and tips all fade by then) —
     // the surface fbm and its colours only run where they can show.
     if (grainDist < 0.04) {
-      float surfaceNoise = fbm((gp / grainRadius) * 8.0 + vec2(seed * 5.0, tumble * 0.2));
-      float surfaceBump = surfaceNoise * 0.5 + 0.5;
+      // (pass 4, exact: the bump only shades grainEdge, 0 from grainDist 0.01)
+      float surfaceBump = 0.0;
+      if (grainDist < 0.01) {
+        float surfaceNoise = fbm((gp / grainRadius) * 8.0 + vec2(seed * 5.0, tumble * 0.2));
+        surfaceBump = surfaceNoise * 0.5 + 0.5;
+      }
 
       // Rim lighting — strong at edges like in microscopy
       float rimLight = smoothstep(spikyRadius * 0.7, spikyRadius, gpLen);
@@ -189,3 +195,74 @@ void main() {
   gl_FragColor = vec4(color, 1.0);
 }
 `;
+
+// PERF (pass 4, the 120 fps law): the 15 floating debris motes are a per-frame
+// light table (PRE — the identical position / width / colour math) binned into
+// 64 px tiles (prepass-pack tiledStages): a pixel sums only the motes within
+// 0.15 of its tile, where the original's own cut-off already was. The
+// background's 4 smooth low octaves ride the far grid's spare channel; its two
+// fine octaves stay per pixel (fbmLow + fbmHigh = fbm).
+const LIGHT = `
+    float t = u_time * 0.07;
+    float paletteShift = u_amplitude * 0.3;
+    float s1 = hash1(fi * 37.1 + 100.0);
+    float s2 = hash1(fi * 53.7 + 200.0);
+    lp = vec2(
+      sin(t * (0.4 + s1 * 0.3) + s1 * 20.0) * 0.7,
+      cos(t * (0.35 + s2 * 0.25) + s2 * 20.0) * 0.5
+    );
+    lw = 0.2 + u_treble * 0.3;
+    le = 0.0005 + s1 * 0.0005;
+    lt = palette(
+      s1 + t * 0.05 + paletteShift + 0.6,
+      vec3(0.5, 0.45, 0.3),
+      vec3(0.3, 0.25, 0.2),
+      vec3(0.8, 0.7, 0.5),
+      vec3(0.0, 0.1, 0.15)
+    );
+`;
+const N = 15;
+export const PRE = LIGHT_PRE(VISIONARY_PALETTE + `
+float hash1(float n) {
+  return fract(sin(n) * 43758.5453);
+}
+`, LIGHT, "0.0");
+export const PRE_SIZE = [N, 2] as const;
+const TILED = tiledStages(N, {
+  px: 64, k: 32, r1: 0.12, r2: 0.15, far: 8, uv: "half",
+  glow: "a.z * exp(-d2 / a.w)",
+  farHeader: SMOOTH_NOISE + FBM_SPLIT,
+  farA: "fbmLow(uv * 1.8 + vec2(u_time * 0.07 * 0.08, u_time * 0.07 * 0.05))",
+});
+export const PRE_THEN = TILED.THEN;
+
+export const FRAG = deriveFrag(ORIG, [
+  ["void main() {", FBM_SPLIT + TILED.SUM + "\nvoid main() {"],
+  ["float bgN = fbm(uv * 1.8 + vec2(t * 0.08, t * 0.05));", "float bgN = plFarA() + fbmHigh(uv * 1.8 + vec2(t * 0.08, t * 0.05));"],
+  [`  for (int i = 0; i < 15; i++) {
+    float fi = float(i);
+    float s1 = hash1(fi * 37.1 + 100.0);
+    float s2 = hash1(fi * 53.7 + 200.0);
+
+    vec2 debrisPos = vec2(
+      sin(t * (0.4 + s1 * 0.3) + s1 * 20.0) * 0.7,
+      cos(t * (0.35 + s2 * 0.25) + s2 * 20.0) * 0.5
+    );
+
+    float debrisDist = length(uv - debrisPos);
+    // (pass 3: beyond 0.15 the gaussian is < 2e-10 — skip its palette)
+    if (debrisDist > 0.15) continue;
+    float debrisGlow = exp(-debrisDist * debrisDist / (0.0005 + s1 * 0.0005));
+
+    vec3 debrisColor = palette(
+      s1 + t * 0.05 + paletteShift + 0.6,
+      vec3(0.5, 0.45, 0.3),
+      vec3(0.3, 0.25, 0.2),
+      vec3(0.8, 0.7, 0.5),
+      vec3(0.0, 0.1, 0.15)
+    );
+    color += debrisColor * debrisGlow * (0.2 + u_treble * 0.3);
+  }
+`, `  color += plSum(uv); // the 15 debris motes — tiled (PRE)
+`],
+], "pollen");

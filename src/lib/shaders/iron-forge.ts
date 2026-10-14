@@ -167,7 +167,9 @@ void main() {
 `;
 
 const GRID = fieldGrid(3, 0);
-export const PRE_SCALE = 1 / 3;
+// (pass 4) 1/4: the same max-2 envelope as 1/3 vs ORIG (pre-existing at the hot
+// spots' rims), 44 % fewer prepass texels (18 noise evaluations each).
+export const PRE_SCALE = 1 / 4;
 
 /** Block 0 = (metalGrain, metalGrain2, brushed, oxide noise); blocks 1-2 =
  *  the six spots' shape noise. */

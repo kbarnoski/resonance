@@ -1,12 +1,13 @@
 import { U, SMOOTH_NOISE, VISIONARY_PALETTE, ROT2 } from "./shared";
-import { deriveFrag, fieldGrid } from "./prepass-pack";
+import { deriveFrag, tiledStages, LIGHT_PRE } from "./prepass-pack";
 
-// PERF (2026-10-13, the 120 fps law): the 30 distant galaxies (a palette
-// each, per pixel) come from a per-frame table and the faint background glow
-// from a 1/4-resolution field (it adds at most 0.01) — both computed in a
-// float prepass (PRE, the identical math). Galaxies skip their arm/palette
-// math where they are exactly 0 (outside r 1.5 / 1.0). ORIG is the reference
-// and the no-float fallback. A/B: scripts/perf/shader-ab.mjs.
+// PERF (the 120 fps law): the 30 distant galaxies are a per-frame light table
+// (PRE, the identical math: position, brightness x bass, colour) binned into
+// 64 px screen tiles (prepass-pack tiledStages, pass 4 2026-10-14): a pixel
+// sums only the dots within 0.32 of its tile — beyond that a dot adds
+// < 2e-6. The faint background glow (it adds at most 0.015) rides the far
+// grid's spare channel. Galaxies skip their arm/palette math where they are
+// exactly 0. ORIG is the reference and the no-float fallback.
 export const ORIG =
   U +
   SMOOTH_NOISE +
@@ -145,51 +146,41 @@ void main() {
 }
 `;
 
-const GRID = fieldGrid(1, 2);
-export const PRE_SCALE = 1 / 4;
-
-/** Field = (bgGlow); table row 0 = dot i (x, y, brightness), row 1 = its colour. */
-export const PRE =
-  U +
-  SMOOTH_NOISE +
-  VISIONARY_PALETTE +
-  GRID.pre +
-  `
-void main() {
-  float block, row;
-  vec2 fc = preTexel(block, row);
-  float t = u_time * 0.1;
-  float paletteShift = u_amplitude * 0.2;
-  if (block >= 0.0) {
-    vec2 uv = (fc - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y);
-    gl_FragColor = vec4(fbm(uv * 3.0 + t * 0.02) * 0.5 + 0.5, 0.0, 0.0, 1.0);
-    return;
-  }
-  float fi = fc.x;
-  if (fi > 29.5) { gl_FragColor = vec4(0.0); return; }
-  float seed = fi * 5.37 + 200.0;
-  if (row < 0.5) {
-    vec2 pos = vec2(
+/** Light table (LIGHT_PRE layout): dot i = (x, y, brightness x bass drive,
+ *  falloff 40 + 2i), colour = its redshift palette. */
+const LIGHT = `
+    float t = u_time * 0.1;
+    float paletteShift = u_amplitude * 0.2;
+    float seed = fi * 5.37 + 200.0;
+    lp = vec2(
       fract(sin(seed * 127.1) * 43758.5) * 1.4 - 0.7,
       fract(sin(seed * 311.7) * 43758.5) * 1.0 - 0.5
     );
     float brightness = 0.1 + fract(seed * 0.71) * 0.2;
-    gl_FragColor = vec4(pos, brightness, 1.0);
-  } else {
+    lw = brightness * (0.6 + u_bass * 0.2);
+    le = 40.0 + fi * 2.0;
     float redshift = fract(seed * 0.31);
-    gl_FragColor = vec4(palette(
+    lt = palette(
       redshift + paletteShift + 0.5,
       vec3(0.5, 0.4, 0.4),
       vec3(0.2, 0.15, 0.2),
       vec3(0.5, 0.3, 0.4),
       vec3(0.1 + redshift * 0.3, 0.05, 0.1)
-    ), 1.0);
-  }
-}
+    );
 `;
+const N = 30;
+export const PRE = LIGHT_PRE(VISIONARY_PALETTE, LIGHT, "0.0");
+export const PRE_SIZE = [N, 2] as const;
+const TILED = tiledStages(N, {
+  px: 64, k: 32, r1: 0.3, r2: 0.32, far: 8, uv: "half",
+  glow: "a.z * exp(-sqrt(d2) * a.w)",
+  farHeader: SMOOTH_NOISE,
+  farA: "fbm(uv * 3.0 + u_time * 0.1 * 0.02) * 0.5 + 0.5",
+});
+export const PRE_THEN = TILED.THEN;
 
 export const FRAG = deriveFrag(ORIG, [
-  ["void main() {", GRID.main + "\nvoid main() {"],
+  ["void main() {", TILED.SUM + "\nvoid main() {"],
   [`  float r = length(p);
   float angle = atan(p.y, p.x);
   float arms = sin(angle * 2.0 - r * 8.0 + t * spin) * 0.5 + 0.5;`, `  float r = length(p);
@@ -200,7 +191,16 @@ export const FRAG = deriveFrag(ORIG, [
   return exp(-r * 3.0) * smoothstep(1.0, 0.0, r);`, `  float r = length(p);
   if (r >= 1.0) return 0.0; // exactly 0 outside
   return exp(-r * 3.0) * smoothstep(1.0, 0.0, r);`],
-  ["float bgGlow = fbm(uv * 3.0 + t * 0.02) * 0.5 + 0.5;", "float bgGlow = preField(0.0).x;"],
+  ["float bgGlow = fbm(uv * 3.0 + t * 0.02) * 0.5 + 0.5;", "float bgGlow = plFarA();"],
+  // a galaxy that is exactly 0 here adds nothing — skip its palette
+  [`    float gal = spiralGalaxy(uv, pos, size, tilt, spin, t);
+`, `    float gal = spiralGalaxy(uv, pos, size, tilt, spin, t);
+    if (gal <= 0.0) continue;
+`],
+  [`    float gal = ellipticalGalaxy(uv, pos, size, ratio, ang);
+`, `    float gal = ellipticalGalaxy(uv, pos, size, ratio, ang);
+    if (gal <= 0.0) continue;
+`],
   [`  for (int i = 0; i < 30; i++) {
     float fi = float(i);
     float seed = fi * 5.37 + 200.0;
@@ -222,17 +222,6 @@ export const FRAG = deriveFrag(ORIG, [
     );
     color += dotCol * glow * (0.6 + u_bass * 0.2);
   }
-
-  // Foreground star spikes — a few bright stars with diffraction
-`, `  for (int i = 0; i < 30; i++) {
-    float fi = float(i);
-    vec4 q = preTable(fi, 0.0); // (x, y, brightness) — PRE
-    float k = length(uv - q.xy) * (40.0 + fi * 2.0);
-    if (k > 25.0) continue; // (pass 3) exp(-25) x 0.3 = 4e-12: nothing to add
-    float glow = exp(-k) * q.z;
-    vec3 dotCol = preTable(fi, 1.0).rgb;
-    color += dotCol * glow * (0.6 + u_bass * 0.2);
-  }
-
+`, `  color += plSum(uv); // the 30 distant galaxies — tiled (PRE)
 `],
 ], "hubble");

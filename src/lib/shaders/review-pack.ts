@@ -8,6 +8,7 @@
 
 import { U, SMOOTH_NOISE, VORONOI, ROT2, VISIONARY_PALETTE } from "./shared";
 import { withAngleSeamBlend } from "./angle-seam";
+import { LIGHT_PRE, tiledStages } from "./prepass-pack";
 
 const HEAD = U + SMOOTH_NOISE + VORONOI + ROT2 + VISIONARY_PALETTE;
 
@@ -71,7 +72,7 @@ void main() {
 `;
 
 // 4. Stardust river streaming across the frame
-export const R_STARDUST = HEAD + `
+export const R_STARDUST_ORIG = HEAD + `
 void main() {
   vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution) / u_resolution.y;
   float t = u_time * 0.4;
@@ -88,6 +89,38 @@ void main() {
     vec3 hue = palette(fract(fi * 0.07), vec3(0.6), vec3(0.4), vec3(1.0), vec3(0.0, 0.2, 0.5));
     col += star * hue * 0.6;
   }
+  gl_FragColor = vec4(col, 1.0);
+}
+`;
+
+// PERF (2026-10-14, the 120 fps law, pass 4): the 32 stars' positions and
+// colours depend on time only — computed once per frame into a float light
+// table (prepass-pack.ts LIGHT_PRE, the identical math), binned per 64 px
+// tile (tiledStages): a pixel sums its tile's near stars + a 1/8-res far
+// field instead of all 32. R_STARDUST_ORIG is the reference + no-float
+// fallback. A/B: scripts/perf/shader-ab.mjs.
+const STARDUST_LIGHT = `
+    float t = u_time * 0.4;
+    float lane = (fract(fi * 0.13) - 0.5) * 1.4;
+    float speed = 0.3 + fract(fi * 0.27) * 0.5;
+    float x = mod(fi * 0.31 - t * speed, 2.4) - 1.2;
+    float wob = sin(t + fi) * 0.05;
+    lp = vec2(x, lane + wob);
+    lt = palette(fract(fi * 0.07), vec3(0.6), vec3(0.4), vec3(1.0), vec3(0.0, 0.2, 0.5)) * 0.6;
+    lw = 0.003;
+    le = 0.003;
+`;
+export const R_STARDUST_PRE = LIGHT_PRE(VISIONARY_PALETTE, STARDUST_LIGHT, "0.0");
+export const R_STARDUST_PRE_SIZE = [32, 2] as const;
+const STARDUST_TILED = tiledStages(32, {
+  px: 64, k: 32, r1: 0.06, r2: 0.12, far: 8, uv: "halfH",
+  glow: "a.z / (sqrt(d2) + a.w)", // star = 0.003 / (d + 0.003)
+});
+export const R_STARDUST_PRE_THEN = STARDUST_TILED.THEN;
+export const R_STARDUST = U + STARDUST_TILED.SUM + `
+void main() {
+  vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution) / u_resolution.y;
+  vec3 col = plSum(uv);
   gl_FragColor = vec4(col, 1.0);
 }
 `;

@@ -171,8 +171,13 @@ export interface TiledLights {
   /** one light's glow in terms of `a` (x, y, gain, softening) and `d2`
    *  (squared distance) — default `a.z / (d2 + a.w)` */
   glow?: string;
-  /** the shader's uv: "full" (default) = (fc·2 − res) / min(res), "half" = (fc − res/2) / min(res) */
-  uv?: "full" | "half";
+  /** the shader's uv: "full" (default) = (fc·2 − res) / min(res), "half" = (fc − res/2) / min(res), "halfH" = (fc − res/2) / res.y */
+  uv?: "full" | "half" | "halfH";
+  /** (optional) a smooth scalar field computed on the far grid too, read back
+   *  with plFarA(): `farA` is a GLSL float expression of `uv`, `farHeader` its
+   *  helper code (pelagic's background fbm, pass 4) */
+  farA?: string;
+  farHeader?: string;
 }
 
 /**
@@ -192,7 +197,10 @@ export function tiledStages(n: number, t: TiledLights) {
   const N = `${n}.0`, T = t.px.toFixed(1), K = t.k, ROWS = (1 + 2 * t.k).toFixed(1);
   const R1 = t.r1.toFixed(4), R2 = t.r2.toFixed(4);
   const GLOW = t.glow ?? "a.z / (d2 + a.w)";
-  const UVF = t.uv === "half" ? "(p - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y)" : "(p * 2.0 - u_resolution) / min(u_resolution.x, u_resolution.y)";
+  // "halfH" = (fc − res/2) / res.y (the review packs)
+  const UVF = t.uv === "half" ? "(p - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y)"
+    : t.uv === "halfH" ? "(p - 0.5 * u_resolution) / u_resolution.y"
+    : "(p * 2.0 - u_resolution) / min(u_resolution.x, u_resolution.y)";
   const FARW = `
 vec2 plUv(vec2 p) { return ${UVF}; }
 float plGlow(vec4 a, float d2) { return ${GLOW}; }
@@ -228,7 +236,7 @@ void main() {
   gl_FragColor = vec4(c, 0.0, 0.0, 1.0); // the count (row 0), or an unused slot
 }
 `;
-  const FAR = U + `
+  const FAR = U + (t.farHeader ?? "") + `
 uniform sampler2D u_pre;
 uniform vec2 u_preres2;
 ` + FARW + `
@@ -245,7 +253,7 @@ void main() {
     float d2 = dot(dd, dd);
     col += plTint(fi) * plGlow(a, d2) * farW(sqrt(d2));
   }
-  gl_FragColor = vec4(col, 1.0);
+  gl_FragColor = vec4(col, ${t.farA ?? "1.0"});
 }
 `;
   // the main pass: the far field + the tile's near lights
@@ -256,6 +264,10 @@ uniform sampler2D u_pre2;
 uniform vec2 u_preres1;
 uniform vec2 u_preres2;
 ` + FARW + `
+float plFarA() {
+  vec2 g = (gl_FragCoord.xy - 0.5) * (u_preres2 - 1.0) / (u_resolution - 1.0) + 0.5;
+  return texture2D(u_pre2, g / u_preres2).a;
+}
 vec3 plSum(vec2 uv) {
   vec2 g = (gl_FragCoord.xy - 0.5) * (u_preres2 - 1.0) / (u_resolution - 1.0) + 0.5;
   vec3 col = texture2D(u_pre2, g / u_preres2).rgb;
@@ -269,6 +281,8 @@ vec3 plSum(vec2 uv) {
       if (a.z <= 0.0) continue;
       vec2 dd = uv - a.xy;
       float d2 = dot(dd, dd);
+      // (exact) 1 - farW is 0 from r2 on: no tint fetch, nothing to add
+      if (sqrt(d2) >= ${R2}) continue;
       col += plTint(fi) * plGlow(a, d2) * (1.0 - farW(sqrt(d2)));
     }
   } else {
@@ -276,9 +290,11 @@ vec3 plSum(vec2 uv) {
       float fs = float(s);
       if (fs >= cnt) break;
       vec4 a = texture2D(u_pre1, (vec2(tile.x, base + 1.0 + 2.0 * fs) + 0.5) / u_preres1);
-      vec3 tint = texture2D(u_pre1, (vec2(tile.x, base + 2.0 + 2.0 * fs) + 0.5) / u_preres1).rgb;
       vec2 dd = uv - a.xy;
       float d2 = dot(dd, dd);
+      // (exact) listed for the tile but r2+ from this pixel: 1 - farW = 0
+      if (sqrt(d2) >= ${R2}) continue;
+      vec3 tint = texture2D(u_pre1, (vec2(tile.x, base + 2.0 + 2.0 * fs) + 0.5) / u_preres1).rgb;
       col += tint * plGlow(a, d2) * (1.0 - farW(sqrt(d2)));
     }
   }

@@ -29,7 +29,9 @@ void main() {
 
   // Turbulent water surface
   vec2 spiralUV = vec2(spiralAngle, r * 5.0);
-  float waterTurb = fbm(spiralUV + vec2(t * 0.3, -t * 0.5)) * 0.5 + 0.5;
+  // PERF (2026-10-14, pass 4, exact): beyond r 0.8 the calm outer water
+  // replaces everything (mix weight 1) — the turbulence fbm is skipped there
+  float waterTurb = r < 0.8 ? fbm(spiralUV + vec2(t * 0.3, -t * 0.5)) * 0.5 + 0.5 : 0.5;
 
   // Foam/debris trails spiraling inward
   float foam = 0.0;
@@ -76,7 +78,8 @@ void main() {
   );
 
   // Outer calm — darker, less turbulent
-  vec3 outerColor = palette(
+  // (exact: only mixed in where outerCalm > 0, i.e. beyond r 0.5)
+  vec3 outerColor = outerCalm <= 0.0 ? vec3(0.0) : palette(
     snoise(uv * 2.0 + t * 0.05) * 0.2 + paletteShift + 0.6,
     vec3(0.04, 0.08, 0.14),
     vec3(0.03, 0.06, 0.1),
@@ -93,7 +96,7 @@ void main() {
   color = mix(color, outerColor, outerCalm);
 
   // Mid: underwater light caustics
-  float caustic = snoise(vec2(spiralAngle * 2.0, r * 8.0 - t * 1.5));
+  float caustic = u_mid * (1.0 - voidMask) != 0.0 ? snoise(vec2(spiralAngle * 2.0, r * 8.0 - t * 1.5)) : 0.0; // (exact: scaled by both)
   caustic = pow(max(caustic, 0.0), 3.0) * u_mid * 0.3 * (1.0 - voidMask);
   color += vec3(0.05, 0.15, 0.2) * caustic;
 

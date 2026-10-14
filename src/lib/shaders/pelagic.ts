@@ -225,11 +225,23 @@ export const PRE_SIZE = [N, 2] as const;
 const TILED = tiledStages(N, {
   px: 64, k: 40, r1: 0.03, r2: 0.06, far: 8, uv: "half",
   glow: "a.w < 0.0 ? a.z / (sqrt(d2) - a.w) : a.z / (d2 + a.w)",
+  // (pass 4) the background fbm rides the far grid (1/8): it moves the
+  // backdrop palette by < 0.03 per unit, so its interpolation is < 1e-4
+  farHeader: SMOOTH_NOISE + `
+float fbm3(vec2 p) {
+  float v = 0.0, a = 0.5;
+  mat2 r = mat2(0.8, 0.6, -0.6, 0.8);
+  for (int i = 0; i < 3; i++) { v += a * snoise(p); p = r * p * 2.0; a *= 0.5; }
+  return v;
+}
+`,
+  farA: "fbm3(uv * 2.0 + u_time * 0.08 * 0.05)",
 });
 export const PRE_THEN = TILED.THEN;
 
 export const FRAG = deriveFrag(ORIG, [
   ["void main() {", TILED.SUM + "\nvoid main() {"],
+  ["  float bgNoise = fbm3(uv * 2.0 + t * 0.05);", "  float bgNoise = plFarA();"],
   [`  // 10 floating organisms
   for (int i = 0; i < 10; i++) {
     float fi = float(i);
@@ -292,6 +304,8 @@ export const FRAG = deriveFrag(ORIG, [
     float phase = fi * 1.618 * 6.28;
     // the body is exactly 0 beyond radius * 1.23 (wobble <= 1.23)
     float body = length(uv - center) < radius * 1.24 ? organism(uv, center, radius, phase, t) : 0.0;
+    // (pass 4, exact) no body here (body = core = 0): no colour fetches
+    if (body <= 0.0) continue;
     vec3 orgColor = plTint(260.0 + fi);
     float core = smoothstep(0.6, 1.0, body);
     vec3 coreColor = plTint(270.0 + fi);
