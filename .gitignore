@@ -88,3 +88,6 @@ scripts/journey-review/runs/
 # perf harness output
 .next-perf/
 scripts/.perf/
+
+# offline 4K exports (scripts/export-journey.mjs) — multi-GB renders, never committed
+/exports/

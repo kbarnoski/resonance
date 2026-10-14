@@ -1,5 +1,6 @@
 import { SHADER_SUPPORT_GAIN, SHADER_LEAD_GAIN, EXPANSION_LEADS } from "@/lib/shaders/shader-gain.generated";
 import { isMasteredJourneyLike } from "./mastered";
+import { isExportMode } from "@/lib/export/export-mode";
 
 /**
  * KINETIC journeys (Karel 2026-09-29): a second species alongside the
@@ -302,6 +303,8 @@ export function imageryDprCeil(
   journey?: { id?: string | null; name?: string | null } | null,
   dpr: number = typeof devicePixelRatio !== "undefined" ? devicePixelRatio : 1,
 ): number {
+  // offline export (?export=1): native DPR, no realtime pixel budget
+  if (isExportMode()) return Math.max(1, Math.min(dpr, 2));
   if (isMasteredJourneyLike(journey)) return 1.5;
   const native = Math.min(dpr, 2);
   if (native <= 1.5) return 1.5;

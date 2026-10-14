@@ -63,6 +63,6 @@ describe("shader prepasses", () => {
 describe("shader redraw headroom cap", () => {
   it("covers the mastered journeys too (not only the kinetic ones)", () => {
     expect(vis).toMatch(/return isFullKineticJourney\(j\) \|\| isMasteredJourneyLike\(j\) \? 1000 \/ 60 - 2 : 0;/);
-    expect(vis).toMatch(/if \(fpsCapQ === "0"\) return 0;/); // the lab override still exists
+    expect(vis).toMatch(/if \(fpsCapQ === "0"( \|\| isExportMode\(\))?\) return 0;/); // the lab override still exists
   });
 });
