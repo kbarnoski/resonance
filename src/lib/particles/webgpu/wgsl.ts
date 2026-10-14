@@ -21,6 +21,7 @@ import { buildPairWGSL, PAIR_ENTRIES } from "./pair-wgsl";
 import { buildSplatWGSL, buildAddSplatWGSL, SPLAT_ENTRIES } from "./splat-wgsl";
 import { buildFluidWGSL, FLUID_ENTRIES } from "./fluid-wgsl";
 import { buildCollideWGSL } from "./collide-wgsl";
+import { buildOtWGSL, OT_ENTRIES } from "./ot-wgsl";
 
 export const SPEC_BINS = 128;
 
@@ -484,6 +485,7 @@ export function allModules(): Record<string, string> {
     addSplat: buildAddSplatWGSL(),
     fluid: buildFluidWGSL(),
     collide: buildCollideWGSL(),
+    ot: buildOtWGSL(),
   };
 }
 
@@ -500,6 +502,7 @@ export const ENTRY_POINTS: Record<string, readonly string[]> = {
   addSplat: ["vsTri", "fsAdd"],
   fluid: FLUID_ENTRIES,
   collide: ["collide"],
+  ot: OT_ENTRIES,
 };
 
 /** TEMPORAL RESOLVE (?stable=1): port of shaders.ts TAA_FS — the HDR layer

@@ -448,8 +448,29 @@ so the two agree on where the surface is:
 
 ### E: optimal-transport form changes
 
-Sliced OT re-assignment per form change (GPU radix sort), straight-line travel on the existing
-springs. It retires spatial pairing.
+**Built (behind `?ot=1` on the parity engine; `webgpu/ot.ts` + `ot-wgsl.ts`).** When an image
+form arrives, the conductor's pairing draw now starts a **transport job** instead of the five
+pairing passes:
+
+- **Targets start at the motes themselves** (their image-plane NDC) and move by iterated 1-D
+  optimal transport along 32 golden-angle directions.
+- **Each slice is sort-free.** Instead of the planned GPU radix sort, each slice uses
+  histogram CDFs: a 4,096-bin atomic histogram of the motes and of the image samples along θ,
+  one-workgroup scans, and then each mote's quantile (plus a hashed rank within its bin) is
+  matched to the image's inverse CDF, linear within the bin.
+- **Spread over frames:** 8 slices per frame, so the job takes 4 frames and never lands in one
+  frame's budget. Each frame's targets go back to uv (the inverse of the sim's own `coverNdc`)
+  and the image spring reads them in that same frame. The form gathers from where the field
+  is, and the pull already eases in.
+- **Laws (`ot.test.ts`):**
+  - a translated form moves every mote by exactly the translation (worst error < 0.05; the
+    shortest path, nothing crosses);
+  - the targets take the image's distribution (moments match);
+  - the transport costs < 35 % of index pairing (the old contract/expand);
+  - it is deterministic and the coverNdc inverse is exact;
+  - off by default, the spatial pairing runs exactly as before (Snowflake and Ghost unchanged).
+- **Next:** film `?case=snowflake-emblems&ot=1` and `?case=ghost-blossom-wings&ot=1` side by
+  side with the default. If Karel prefers OT, it retires the pairing passes.
 
 ## 8. What to run
 
@@ -463,7 +484,8 @@ springs. It retires spatial pairing.
     - `?dpr=2` runs at the full panel;
     - `?timing=0` turns timestamps off;
     - `?splat=1` turns on phase B (tile-binned fixed-point splat plus temporal resolve);
-    - `?fluid=1` turns on phase C (fluid souls), `?collide=1` phase D (depth collisions);
+    - `?fluid=1` turns on phase C (fluid souls), `?collide=1` phase D (depth collisions),
+      `?ot=1` phase E (optimal-transport image forms);
       their samples are `?case=fluid-smoke` and `?case=depth-snowflake`;
     - the show's own particle flags apply (`?stable=1`, `?cine=0`, …);
     - `?case=snowflake-emblems|snowflake-calm|ghost-opening|ghost-angel|ghost-blossom-wings`

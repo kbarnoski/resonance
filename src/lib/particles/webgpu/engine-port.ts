@@ -42,6 +42,8 @@ import { FLUID_LAWS, fluidWeightFor, fluidRequested, glide } from "./fluid";
 import { buildCollideWGSL, COLLIDE_LAYOUT, COLLIDE_BINDINGS } from "./collide-wgsl";
 import { COLLIDE_LAWS, DEFAULT_CAL, collideRequested, type Rect } from "./depth-collide";
 import { SOUL_IDS } from "../souls";
+import { buildOtWGSL, OT_LAYOUT, OT_BINDINGS, OT_ENTRIES } from "./ot-wgsl";
+import { OT_LAWS, otRequested, sliceDir } from "./ot";
 import { buildPairWGSL, PAIR_LAYOUT, PAIR_BINDINGS, PAIR_ENTRIES, PAIR_SECTORS, PAIR_RINGS } from "./pair-wgsl";
 import type { WebGPUEngineOptions, WebGPUInfo, GpuTimings } from "./engine";
 
@@ -55,6 +57,8 @@ export interface PortedParticleEngine extends ParticleEngine {
   portStale(): string | null;
   /** phase B: the tile-binned splat path is on and built */
   splatting(): boolean;
+  /** phase E: optimal transport compiled in; a job running (slice k of SLICES) */
+  otState(): { on: boolean; running: boolean; slice: number };
   /** phase C: the fluid is compiled in, and its (glided) weight now */
   fluidState(): { on: boolean; weight: number };
   /** phase D: collisions compiled in, and the two slots' shown weights */
@@ -95,7 +99,7 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
   } | null = null;
   let L: {
     sim: WBindGroupLayout; draw: WBindGroupLayout; drawInd: WBindGroupLayout; drawMote: WBindGroupLayout; splat: WBindGroupLayout; addSplat: WBindGroupLayout;
-    fluid: WBindGroupLayout; collide: WBindGroupLayout;
+    fluid: WBindGroupLayout; collide: WBindGroupLayout; ot: WBindGroupLayout;
     govern: WBindGroupLayout; composite: WBindGroupLayout; taa: WBindGroupLayout; pair: WBindGroupLayout;
   } | null = null;
   // the splat path (phase B)
@@ -105,7 +109,7 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
   const splatU = new UniformBlock(SPLAT_LAYOUT);
   let splatBG: WBindGroup | null = null;
   // the conductor's sim + draw values the fluid / collisions need (this frame)
-  const cap2 = { soul: -1, dt: 1 / 60, bass: 0, imgGate: 1, eye: [0, 0, 1] as number[], vp: null as number[] | null, focal: 3 };
+  const cap2 = { imgAspect: 16 / 9, scrAspect: 16 / 9, soul: -1, dt: 1 / 60, bass: 0, imgGate: 1, eye: [0, 0, 1] as number[], vp: null as number[] | null, focal: 3 };
   // phase C — the fluid
   let FP: Record<(typeof FLUID_ENTRIES)[number], WComputePipeline> | null = null;
   let FB: { u: WBuffer; acc: WBuffer; uA: WBuffer; uB: WBuffer; aux: WBuffer; pA: WBuffer; pB: WBuffer } | null = null;
@@ -119,6 +123,11 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
   let collideK = 1;
   const slots = [0, 1].map(() => ({ tex: null as WTexture | null, w: 0, h: 0, rect: [0, 0, 1, 1] as Rect, target: 0, shown: 0 }));
   const collideU = new UniformBlock(COLLIDE_LAYOUT);
+  // phase E — the transport job (one per image, a few slices per frame)
+  let OP: Record<(typeof OT_ENTRIES)[number], WComputePipeline> | null = null;
+  let OB: { y: WBuffer; t: WBuffer; hist: WBuffer; cdf: WBuffer; us: WBuffer[]; n: number } | null = null;
+  let otJob: null | { k: number; bgs: WBindGroup[] } = null;
+  const otU = new UniformBlock(OT_LAYOUT);
   let pairPipes: Record<(typeof PAIR_ENTRIES)[number], WComputePipeline> | null = null;
   let pairBufs: { u: WBuffer; stats: WBuffer; hist: WBuffer; cdf: WBuffer } | null = null;
   // float data textures (image uv, sorted pairing samples, paired uv) → storage buffers
@@ -189,6 +198,8 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
   // PHASE C (fluid souls) and D (depth collisions): off unless asked for
   const fluidOn = opts.fluid ?? fluidRequested();
   const collideOn = opts.collide ?? collideRequested();
+  // PHASE E: sliced optimal transport replaces the spatial-pairing assignment
+  const otOn = opts.ot ?? otRequested();
 
   const fail = (why: string) => {
     if (failed) return;
@@ -236,6 +247,7 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
       addSplat: splatOn ? mod(buildAddSplatWGSL(), "port-add-splat") : null,
       fluid: fluidOn ? mod(buildFluidWGSL(), "port-fluid") : null,
       collide: collideOn ? mod(buildCollideWGSL(), "port-collide") : null,
+      ot: otOn ? mod(buildOtWGSL(), "port-ot") : null,
       govern: mod(buildGovernWGSL(), "port-govern"),
       composite: mod(buildCompositeWGSL(), "port-composite"),
       pair: mod(buildPairWGSL(), "port-pair"),
@@ -268,6 +280,11 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
         label: "port-fluid",
         entries: [ub(FLUID_BINDINGS.uniforms, C), sb(FLUID_BINDINGS.pos, C, true), sb(FLUID_BINDINGS.vel, C), sb(FLUID_BINDINGS.acc, C),
           sb(FLUID_BINDINGS.uA, C), sb(FLUID_BINDINGS.uB, C), sb(FLUID_BINDINGS.aux, C), sb(FLUID_BINDINGS.pIn, C), sb(FLUID_BINDINGS.pOut, C)],
+      }),
+      ot: dev.createBindGroupLayout({
+        label: "port-ot",
+        entries: [ub(OT_BINDINGS.uniforms, C), sb(OT_BINDINGS.pos, C, true), sb(OT_BINDINGS.samples, C, true), sb(OT_BINDINGS.y, C),
+          sb(OT_BINDINGS.t, C), sb(OT_BINDINGS.hist, C), sb(OT_BINDINGS.cdf, C), sb(OT_BINDINGS.out, C)],
       }),
       collide: dev.createBindGroupLayout({
         label: "port-collide",
@@ -340,6 +357,11 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
         pA: dev.createBuffer({ size: cells * 4, usage: B0.STORAGE, label: "fluid-pA" }),
         pB: dev.createBuffer({ size: cells * 4, usage: B0.STORAGE, label: "fluid-pB" }),
       };
+    }
+    if (otOn && m.ot) {
+      const list = await Promise.all(OT_ENTRIES.map((e) => dev.createComputePipelineAsync({ label: `port-${e}`, layout: pl([L!.ot]), compute: { module: m.ot!, entryPoint: e } })));
+      if (disposed) return false;
+      OP = Object.fromEntries(OT_ENTRIES.map((e, i) => [e, list[i]])) as Record<(typeof OT_ENTRIES)[number], WComputePipeline>;
     }
     if (collideOn && m.collide) {
       CP = await dev.createComputePipelineAsync({ label: "port-collide", layout: pl([L!.collide]), compute: { module: m.collide, entryPoint: "collide" } });
@@ -464,6 +486,18 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
     fbufs.clear();
     fluidBGs = null;
     collideBG = null;
+    otJob = null;
+    if (otOn) {
+      if (OB) for (const b of [OB.y, OB.t, OB.hist, OB.cdf, ...OB.us]) b.destroy();
+      OB = {
+        y: dev.createBuffer({ size: n * 8, usage: B.STORAGE, label: "ot-y" }),
+        t: dev.createBuffer({ size: n * 8, usage: B.STORAGE, label: "ot-t" }),
+        hist: dev.createBuffer({ size: 2 * OT_LAWS.BINS * 4, usage: B.STORAGE, label: "ot-hist" }),
+        cdf: dev.createBuffer({ size: 2 * OT_LAWS.BINS * 4, usage: B.STORAGE, label: "ot-cdf" }),
+        us: Array.from({ length: OT_LAWS.SLICES_PER_FRAME }, (_, k) => dev.createBuffer({ size: OT_LAYOUT.size, usage: B.UNIFORM | B.COPY_DST, label: `ot-u${k}` })),
+        n,
+      };
+    }
     drawBGs.clear();
     simBGs.clear();
     pairBGs.clear();
@@ -636,6 +670,8 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
           const v = d.prog.values;
           cap2.soul = v.get("uSoulB")?.[0] ?? -1;
           cap2.dt = v.get("uDt")?.[0] ?? 1 / 60;
+          cap2.imgAspect = v.get("uImgAspect")?.[0] || cap2.imgAspect;
+          cap2.scrAspect = v.get("uScrAspect")?.[0] || cap2.scrAspect;
           cap2.bass = v.get("uBands")?.[0] ?? 0;
           cap2.imgGate = 1 - Math.max(0, Math.min(1, Math.max(v.get("uImgForm")?.[0] ?? 0, v.get("uImgShow")?.[0] ?? 0)));
           const e = v.get("uCurEye");
@@ -701,6 +737,36 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
 
   function tsWrites(k: number): WTimestampWrites | undefined {
     return ts && !ts.pending ? { querySet: ts.q, beginningOfPassWriteIndex: k * 2, endOfPassWriteIndex: k * 2 + 1 } : undefined;
+  }
+
+  /** Phase E: SLICES_PER_FRAME slices of the running transport job, then the
+   *  targets → uv (the sim's image spring reads them this very frame). */
+  function encodeOt(enc: ReturnType<WDevice["createCommandEncoder"]>, n: number) {
+    const dev = device!;
+    const job = otJob!;
+    const v = pairU; // the pairing pass's own plane (captured with the image)
+    const [px, py] = dispatchSize(n);
+    const pass = enc.beginComputePass({ label: "ot" });
+    const per = OT_LAWS.SLICES_PER_FRAME;
+    for (let s = 0; s < per; s++) {
+      otU.set("planeR", v.f32.slice(0, 3)).set("planeU", v.f32.slice(4, 7))
+        .set("imgAspect", cap2.imgAspect).set("scrAspect", cap2.scrAspect)
+        .set("dir", sliceDir(job.k + s)).set("n", n);
+      dev.queue.writeBuffer(OB!.us[s], 0, otU.data);
+    }
+    if (job.k === 0) { pass.setBindGroup(0, job.bgs[0]); pass.setPipeline(OP!.otInit); pass.dispatchWorkgroups(px, py); }
+    const bins = Math.ceil((2 * OT_LAWS.BINS) / 256);
+    for (let s = 0; s < per && job.k < OT_LAWS.SLICES; s++, job.k++) {
+      pass.setBindGroup(0, job.bgs[s]);
+      pass.setPipeline(OP!.otClear); pass.dispatchWorkgroups(bins);
+      pass.setPipeline(OP!.otHist); pass.dispatchWorkgroups(px, py);
+      pass.setPipeline(OP!.otScan); pass.dispatchWorkgroups(1);
+      pass.setPipeline(OP!.otUpdate); pass.dispatchWorkgroups(px, py);
+    }
+    pass.setBindGroup(0, job.bgs[0]);
+    pass.setPipeline(OP!.otWrite); pass.dispatchWorkgroups(px, py);
+    pass.end();
+    if (job.k >= OT_LAWS.SLICES) otJob = null;
   }
 
   /** Phase C: the fluid step (only while a fluid soul holds the stage). */
@@ -828,7 +894,23 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
     frames++;
     const enc = dev.createCommandEncoder({ label: "port-frame" });
     const n = P.side * P.side;
-    if (want.pair && pairPipes && pairBufs) {
+    if (want.pair && otOn && OP && OB) {
+      // PHASE E: a new image → a new transport job (replaces the pairing assignment)
+      const samples = fbuf(want.pair.sorted), out = fbuf(want.pair.target, true);
+      if (samples && out) {
+        const bgs = OB.us.map((u) => dev.createBindGroup({ layout: L!.ot, label: "port-ot", entries: [
+          { binding: OT_BINDINGS.uniforms, resource: { buffer: u } },
+          { binding: OT_BINDINGS.pos, resource: { buffer: P!.pos } },
+          { binding: OT_BINDINGS.samples, resource: { buffer: samples } },
+          { binding: OT_BINDINGS.y, resource: { buffer: OB!.y } },
+          { binding: OT_BINDINGS.t, resource: { buffer: OB!.t } },
+          { binding: OT_BINDINGS.hist, resource: { buffer: OB!.hist } },
+          { binding: OT_BINDINGS.cdf, resource: { buffer: OB!.cdf } },
+          { binding: OT_BINDINGS.out, resource: { buffer: out } },
+        ] }));
+        otJob = { k: 0, bgs };
+      }
+    } else if (want.pair && pairPipes && pairBufs) {
       const sorted = fbuf(want.pair.sorted), out = fbuf(want.pair.target, true);
       if (sorted && out) {
         dev.queue.writeBuffer(pairBufs.u, 0, pairU.data);
@@ -860,6 +942,7 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
         pass.end();
       }
     }
+    if (otJob && OP && OB) encodeOt(enc, n);
     if (want.sim) {
       dev.queue.writeBuffer(U.sim, 0, simBlock.data);
       const pass = enc.beginComputePass({ label: "sim", timestampWrites: tsWrites(0) });
@@ -987,6 +1070,7 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
     portStale: () => stale,
     splatting: () => splatOn && !!SP,
     fluidState: () => ({ on: fluidOn && !!FP, weight: fluidW }),
+    otState: () => ({ on: otOn && !!OP, running: !!otJob, slice: otJob?.k ?? 0 }),
     collideState: () => ({ on: collideOn && !!CP, weights: slots.map((s) => s.shown) }),
     setCollideStrength: (k: number) => { collideK = Math.max(0, Math.min(1, Number.isFinite(k) ? k : 0)); },
     setDepthField: (slot: 0 | 1, field: Uint8Array | null, w: number, h: number, rect: Rect, weight: number): boolean => {
@@ -1025,6 +1109,7 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
       if (ST) { for (const b of [ST.count, ST.offs, ST.fill]) b.destroy(); ST.tex.destroy(); }
       if (FB) for (const b of Object.values(FB)) b.destroy();
       CB?.destroy();
+      if (OB) for (const b of [OB.y, OB.t, OB.hist, OB.cdf, ...OB.us]) b.destroy();
       for (const sl of slots) sl.tex?.destroy();
       if (T) { T.hdr.destroy(); for (const t of T.taa) t.destroy(); }
       for (const g of gpuTex.values()) g.tex.destroy();
