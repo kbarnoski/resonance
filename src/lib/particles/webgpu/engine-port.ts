@@ -28,7 +28,7 @@ import { STABLE_LAWS, taaKeep } from "../stable-motes";
 import {
   BufferUsage, TextureUsage, ShaderStage, MapMode, navigatorGpu,
   type WDevice, type WBuffer, type WTexture, type WBindGroup, type WBindGroupLayout, type WCanvasContext,
-  type WComputePipeline, type WRenderPipeline, type WQuerySet, type WTextureFormat, type WTimestampWrites, type WSampler,
+  type WComputePipeline, type WRenderPipeline, type WQuerySet, type WTextureFormat, type WTimestampWrites, type WSampler, type WShaderModule, type WPipelineLayout,
 } from "./gpu-types";
 import { SIM_LAYOUT, GOVERNOR_LAYOUT, UniformBlock, dispatchSize } from "./layout";
 import { buildSimWGSL, buildFadeWGSL, buildGovernWGSL, buildCompositeWGSL, buildTaaWGSL, SIM_BINDINGS, GOVERN_BINDINGS, SPEC_BINS } from "./wgsl";
@@ -37,6 +37,7 @@ import { SIM_PORT, DRAW_PORT } from "./port.generated";
 import { createGLCapture, packUniforms, type CapDraw, type CapTexture } from "./gl-capture";
 import { buildSplatWGSL, buildAddSplatWGSL, SPLAT_LAYOUT, SPLAT_BINDINGS, SPLAT_ENTRIES, SPLAT_MAX_PX, SPLAT_MAX_TILES, tileGrid } from "./splat-wgsl";
 import { MOTE_STRIDE } from "./gl-port";
+import { buildRecordQuadWGSL } from "./record-raster";
 import { buildFluidWGSL, FLUID_LAYOUT, FLUID_BINDINGS, FLUID_ENTRIES } from "./fluid-wgsl";
 import { FLUID_LAWS, fluidWeightFor, fluidRequested, glide } from "./fluid";
 import { buildCollideWGSL, COLLIDE_LAYOUT, COLLIDE_BINDINGS } from "./collide-wgsl";
@@ -73,8 +74,15 @@ export interface PortedParticleEngine extends ParticleEngine {
 }
 
 const TS_PASSES = ["integrate", "sprites", "govern", "composite"] as const;
+const SIM_SOUL_B = SIM_PORT.fields.find((f) => f[0] === "uSoulB")![2];
+const SIM_PASSES = SIM_PORT.fields.find((f) => f[0] === "uPasses")![2];
 
 /** `?splat=1` turns on the phase B splat path (default off until Karel sees film). */
+/** Record quads are the default sprite path; `?quads=port` runs the ported vertex program per corner. */
+export function recordsRequested(search?: string): boolean {
+  try { return new URLSearchParams(search ?? (typeof location !== "undefined" ? location.search : "")).get("quads") !== "port"; } catch { return true; }
+}
+
 export function splatRequested(search?: string): boolean {
   try { return new URLSearchParams(search ?? (typeof location !== "undefined" ? location.search : "")).get("splat") === "1"; } catch { return false; }
 }
@@ -99,7 +107,7 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
   } | null = null;
   let L: {
     sim: WBindGroupLayout; draw: WBindGroupLayout; drawInd: WBindGroupLayout; drawMote: WBindGroupLayout; splat: WBindGroupLayout; addSplat: WBindGroupLayout;
-    fluid: WBindGroupLayout; collide: WBindGroupLayout; ot: WBindGroupLayout;
+    fluid: WBindGroupLayout; collide: WBindGroupLayout; ot: WBindGroupLayout; recQuad: WBindGroupLayout;
     govern: WBindGroupLayout; composite: WBindGroupLayout; taa: WBindGroupLayout; pair: WBindGroupLayout;
   } | null = null;
   // the splat path (phase B)
@@ -108,8 +116,12 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
   let ST: { tilesX: number; tilesY: number; count: WBuffer; offs: WBuffer; fill: WBuffer; tex: WTexture; addBG: WBindGroup } | null = null;
   const splatU = new UniformBlock(SPLAT_LAYOUT);
   let splatBG: WBindGroup | null = null;
+  let motesPipe: WComputePipeline | null = null;
+  let recQuadPipe: WRenderPipeline | null = null;
+  let recU: WBuffer | null = null;
+  let recBG: WBindGroup | null = null;
   // the conductor's sim + draw values the fluid / collisions need (this frame)
-  const cap2 = { imgAspect: 16 / 9, scrAspect: 16 / 9, soul: -1, dt: 1 / 60, bass: 0, imgGate: 1, eye: [0, 0, 1] as number[], vp: null as number[] | null, focal: 3 };
+  const cap2 = { trail: 0, imgAspect: 16 / 9, scrAspect: 16 / 9, soul: -1, dt: 1 / 60, bass: 0, imgGate: 1, eye: [0, 0, 1] as number[], vp: null as number[] | null, focal: 3 };
   // phase C — the fluid
   let FP: Record<(typeof FLUID_ENTRIES)[number], WComputePipeline> | null = null;
   let FB: { u: WBuffer; acc: WBuffer; uA: WBuffer; uB: WBuffer; aux: WBuffer; pA: WBuffer; pB: WBuffer } | null = null;
@@ -150,6 +162,22 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
   let texSeq = 0;
   const texId = (t: WTexture) => { let k = texIds.get(t); if (k === undefined) { k = ++texSeq; texIds.set(t, k); } return k; };
   let lastSubmit = 0;
+  // PER-SOUL SIM PIPELINES (the WebGL engine's one-program-per-soul, as a
+  // pipeline-overridable constant): built async on demand / at prepare(); the
+  // union pipeline (SOUL = −1) runs any soul meanwhile
+  const soulPipes = new Map<number, WComputePipeline | "pending">();
+  let simModule: WShaderModule | null = null;
+  let simLayout: WPipelineLayout | null = null;
+  const preparedSouls = new Set<number>();
+  const wantSoulPipe = (idx: number) => {
+    if (!Number.isInteger(idx) || idx < 0) return;
+    preparedSouls.add(idx);
+    if (soulPipes.has(idx) || !device || !simModule || !simLayout || disposed) return;
+    soulPipes.set(idx, "pending");
+    device.createComputePipelineAsync({ label: `port-sim-soul${idx}`, layout: simLayout, compute: { module: simModule, entryPoint: "main", constants: { "0": idx } } /* @id(0) override SOUL */ })
+      .then((p) => { if (!disposed) soulPipes.set(idx, p); })
+      .catch(() => { soulPipes.delete(idx); });
+  };
   const bufIds = new WeakMap<WBuffer, number>();
   const uvKey = (b: WBuffer) => { let k = bufIds.get(b); if (k === undefined) { k = ++texSeq; bufIds.set(b, k); } return k; };
   let wantSide = 0;
@@ -194,6 +222,10 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
   const drawPort = DRAW_PORT[stableOn ? "stable" : "plain"];
   // PHASE B: tile-binned fixed-point splatting (+ the temporal resolve always)
   const splatOn = opts.splat ?? splatRequested();
+  // the draw program runs ONCE per mote (records) and quads read the records —
+  // instead of the ported vertex program running 4× per mote (?quads=port: the latter)
+  const recordsOn = opts.records ?? recordsRequested();
+  const motesOn = splatOn || recordsOn;
   const taaOn = stableOn || splatOn;
   // PHASE C (fluid souls) and D (depth collisions): off unless asked for
   const fluidOn = opts.fluid ?? fluidRequested();
@@ -245,7 +277,8 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
       drawF: mod(drawPort.fragment, "port-draw-fs"),
       fade: mod(buildFadeWGSL(), "port-fade"),
       taa: taaOn ? mod(buildTaaWGSL(STABLE_LAWS.TAA_CLAMP_SLACK), "port-taa") : null,
-      motes: splatOn ? mod(drawPort.motes, "port-motes") : null,
+      motes: motesOn ? mod(drawPort.motes, "port-motes") : null,
+      recQuad: recordsOn ? mod(buildRecordQuadWGSL(drawPort.fragment), "port-rec-quad") : null,
       drawInd: splatOn ? mod(drawPort.vertexIndirect, "port-draw-ind") : null,
       splat: splatOn ? mod(buildSplatWGSL(), "port-splat") : null,
       addSplat: splatOn ? mod(buildAddSplatWGSL(), "port-add-splat") : null,
@@ -280,6 +313,7 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
         ],
       }),
       addSplat: dev.createBindGroupLayout({ label: "port-add-splat", entries: [tb(0, F)] }),
+      recQuad: dev.createBindGroupLayout({ label: "port-rec-quad", entries: [ub(0, V), sb(1, V, true)] }),
       fluid: dev.createBindGroupLayout({
         label: "port-fluid",
         entries: [ub(FLUID_BINDINGS.uniforms, C), sb(FLUID_BINDINGS.pos, C, true), sb(FLUID_BINDINGS.vel, C), sb(FLUID_BINDINGS.acc, C),
@@ -302,6 +336,8 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
     };
     const pl = (l: WBindGroupLayout[]) => dev.createPipelineLayout({ bindGroupLayouts: l });
     const simPL = pl([L.sim]);
+    simModule = m.sim;
+    simLayout = simPL;
     const additive = { color: { srcFactor: "one", dstFactor: "one", operation: "add" }, alpha: { srcFactor: "one", dstFactor: "one", operation: "add" } };
     const decay = { color: { srcFactor: "zero", dstFactor: "constant", operation: "add" }, alpha: { srcFactor: "zero", dstFactor: "constant", operation: "add" } };
     const checks = Object.entries(m).map(async ([name, sm]) => {
@@ -372,6 +408,21 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
       if (disposed) return false;
       CB = dev.createBuffer({ size: COLLIDE_LAYOUT.size, usage: BufferUsage.UNIFORM | BufferUsage.COPY_DST, label: "collide-u" });
     }
+    if (motesOn && m.motes) {
+      motesPipe = await dev.createComputePipelineAsync({ label: "port-motes", layout: pl([L!.drawMote]), compute: { module: m.motes, entryPoint: "main" } });
+      if (disposed) return false;
+    }
+    if (recordsOn && m.recQuad) {
+      const additiveR = { color: { srcFactor: "one", dstFactor: "one", operation: "add" }, alpha: { srcFactor: "one", dstFactor: "one", operation: "add" } };
+      recQuadPipe = await dev.createRenderPipelineAsync({
+        label: "port-rec-quad", layout: pl([L!.recQuad]),
+        vertex: { module: m.recQuad, entryPoint: "vsRec" },
+        fragment: { module: m.drawF, entryPoint: "main", targets: [{ format: "rgba16float", blend: additiveR }] },
+        primitive: { topology: "triangle-list" },
+      });
+      if (disposed) return false;
+      recU = dev.createBuffer({ size: 16, usage: BufferUsage.UNIFORM | BufferUsage.COPY_DST, label: "rec-u" });
+    }
     if (splatOn && m.motes && m.drawInd && m.splat && m.addSplat) {
       const additiveB = { color: { srcFactor: "one", dstFactor: "one", operation: "add" }, alpha: { srcFactor: "one", dstFactor: "one", operation: "add" } };
       const [motesP, drawIndP, addP, ...steps] = await Promise.all([
@@ -439,6 +490,7 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
       compileMs: Math.round(performance.now() - t0),
     };
     ready = true;
+    for (const k of preparedSouls) wantSoulPipe(k);
     runInit();
     opts.onReady?.(info);
     return true;
@@ -472,7 +524,8 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
     // (the init module shares the binding table: SIM_BINDINGS == SIM_PORT_BINDINGS)
     void SIM_BINDINGS;
     void group;
-    if (splatOn) {
+    recBG = null;
+    if (motesOn) {
       if (SB) for (const b of [SB.motes, SB.list, SB.large, SB.args, SB.u]) b.destroy();
       const cap = n * SPLAT_MAX_TILES;
       SB = {
@@ -696,6 +749,7 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
       case "draw":
         cap2.vp = d.prog.values.get("uVP") ?? cap2.vp;
         cap2.focal = d.prog.values.get("uFocal")?.[0] ?? cap2.focal;
+        cap2.trail = d.prog.values.get("uTrail")?.[0] ?? 0;
         packUniforms(d.prog, drawPort.fields, drawF, drawI, { uPortVp: [canvas.width, canvas.height] });
         fr.draw = { count: d.count, tex: d.textures };
         return;
@@ -850,6 +904,17 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
     pass.end();
   }
 
+  /** The draw program as compute: one record per mote (splat + record quads). */
+  function encodeMotes(enc: ReturnType<WDevice["createCommandEncoder"]>, tex: Map<string, CapTexture | null>, n: number) {
+    if (!motesPipe) return;
+    const [gx, gy] = dispatchSize(n);
+    const a = enc.beginComputePass({ label: "motes" });
+    a.setPipeline(motesPipe);
+    a.setBindGroup(0, drawGroup(tex, "mote"));
+    a.dispatchWorkgroups(gx, gy);
+    a.end();
+  }
+
   /** Phase B: mote records → classify → scan → scatter → per-tile fixed-point splat. */
   function encodeSplat(enc: ReturnType<WDevice["createCommandEncoder"]>, tex: Map<string, CapTexture | null>, n: number) {
     const dev = device!;
@@ -873,11 +938,7 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
     }
     const [gx, gy] = dispatchSize(n);
     const tiles = ST.tilesX * ST.tilesY;
-    const a = enc.beginComputePass({ label: "motes" });
-    a.setPipeline(SP.motes);
-    a.setBindGroup(0, drawGroup(tex, "mote"));
-    a.dispatchWorkgroups(gx, gy);
-    a.end();
+    encodeMotes(enc, tex, n);
     const b = enc.beginComputePass({ label: "splat" });
     b.setBindGroup(0, splatBG);
     b.setPipeline(SP.steps.splatClear); b.dispatchWorkgroups(Math.max(1, Math.ceil(tiles / 256)));
@@ -950,7 +1011,12 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
     if (want.sim) {
       dev.queue.writeBuffer(U.sim, 0, simBlock.data);
       const pass = enc.beginComputePass({ label: "sim", timestampWrites: tsWrites(0) });
-      pass.setPipeline(pipes.sim);
+      // the soul's own specialised pipeline when built (single-soul frames), else the union
+      const one = simI[SIM_SOUL_B / 4] | 0;
+      const passes = simI[SIM_PASSES / 4] | 0;
+      const sp = passes <= 1 ? soulPipes.get(one) : undefined;
+      if (passes <= 1 && sp === undefined) wantSoulPipe(one);
+      pass.setPipeline(sp && sp !== "pending" ? sp : pipes.sim);
       pass.setBindGroup(0, simBGFor(uvOf(want.simUv)));
       const [gx, gy] = dispatchSize(n);
       pass.dispatchWorkgroups(gx, gy);
@@ -964,6 +1030,13 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
     const splatting = !!(want.draw && SP && SB && ST);
     if (want.draw) dev.queue.writeBuffer(U.draw, 0, drawBlock, 0, drawPort.size);
     if (splatting && want.draw) encodeSplat(enc, want.draw.tex, n);
+    // record quads: the heavy vertex program once per mote (trails need the full port)
+    const recording = !splatting && !!(want.draw && recQuadPipe && recU && motesPipe && SB && cap2.trail <= 0);
+    if (recording && want.draw) {
+      encodeMotes(enc, want.draw.tex, n);
+      dev.queue.writeBuffer(recU!, 0, new Float32Array([T.w, T.h, 0, 0]));
+      recBG ??= dev.createBindGroup({ layout: L!.recQuad, label: "rec-quad", entries: [{ binding: 0, resource: { buffer: recU! } }, { binding: 1, resource: { buffer: SB!.motes } }] });
+    }
     {
       const pass = enc.beginRenderPass({
         label: "hdr",
@@ -982,6 +1055,10 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
         pass.setPipeline(SP.drawInd);
         pass.setBindGroup(0, drawGroup(want.draw.tex, "ind"));
         pass.drawIndirect(SB.args, 0);
+      } else if (want.draw && recording && recQuadPipe && recBG) {
+        pass.setPipeline(recQuadPipe);
+        pass.setBindGroup(0, recBG);
+        pass.draw(6 * Math.min(want.draw.count, n), 1);
       } else if (want.draw) {
         pass.setPipeline(pipes.draw);
         pass.setBindGroup(0, drawGroup(want.draw.tex));
@@ -1098,6 +1175,10 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
     conductor: () => conductor,
     gpuTimings: () => (ts && timings.samples > 0 ? { ...timings } : null),
     isWarm: () => ready && !failed && seeded && placed && conductor.isWarm(),
+    prepare: (souls: Parameters<ParticleEngine["prepare"]>[0]) => {
+      conductor.prepare(souls);
+      for (const id of souls) wantSoulPipe(SOUL_IDS.indexOf(id));
+    },
     warmBurst: (maxSteps?: number) => { conductor.warmBurst(maxSteps); runInit(); return engine.isWarm(); },
     prewarm: () => { conductor.prewarm(); runInit(); },
     start: () => { if (!failed && !disposed) conductor.start(); },

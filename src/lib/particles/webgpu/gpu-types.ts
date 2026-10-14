@@ -162,7 +162,7 @@ export interface WDevice {
   createBindGroup(desc: { layout: WBindGroupLayout; entries: WBindGroupEntry[]; label?: string }): WBindGroup;
   createBindGroupLayout(desc: { entries: WBindGroupLayoutEntry[]; label?: string }): WBindGroupLayout;
   createPipelineLayout(desc: { bindGroupLayouts: WBindGroupLayout[]; label?: string }): WPipelineLayout;
-  createComputePipelineAsync(desc: { layout: "auto" | WPipelineLayout; compute: { module: WShaderModule; entryPoint: string }; label?: string }): Promise<WComputePipeline>;
+  createComputePipelineAsync(desc: { layout: "auto" | WPipelineLayout; compute: { module: WShaderModule; entryPoint: string; constants?: Record<string, number> }; label?: string }): Promise<WComputePipeline>;
   createRenderPipelineAsync(desc: object): Promise<WRenderPipeline>;
   createCommandEncoder(desc?: { label?: string }): WCommandEncoder;
   createQuerySet(desc: { type: "timestamp"; count: number }): WQuerySet;

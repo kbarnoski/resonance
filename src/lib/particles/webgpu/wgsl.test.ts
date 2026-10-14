@@ -7,6 +7,7 @@ import {
   allModules, buildSimWGSL, ENTRY_POINTS, FORCES, DEFAULT_FORCES, FORM_NAMES, SIM_BINDINGS, RENDER_BINDINGS, GOVERN_BINDINGS, FORMS_WGSL,
 } from "./wgsl";
 import { SIM_PORT, DRAW_PORT } from "./port.generated";
+import { buildRecordQuadWGSL } from "./record-raster";
 import { SIM_LAYOUT, RENDER_LAYOUT, GOVERNOR_LAYOUT, structWGSL, WORKGROUP } from "./layout";
 
 const balanced = (s: string) => {
@@ -81,7 +82,7 @@ describe("WGSL generation", () => {
   it.runIf(!!process.env.NAGA_BIN && existsSync(process.env.NAGA_BIN ?? ""))("validates with naga", () => {
     const dir = mkdtempSync(join(tmpdir(), "wgsl-"));
     const all: Record<string, string> = { ...mods, portSim: SIM_PORT.wgsl };
-    for (const [v, d] of Object.entries(DRAW_PORT)) { all[`portDrawV-${v}`] = d.vertex; all[`portDrawVI-${v}`] = d.vertexIndirect; all[`portDrawF-${v}`] = d.fragment; all[`portMotes-${v}`] = d.motes; }
+    for (const [v, d] of Object.entries(DRAW_PORT)) { all[`portDrawV-${v}`] = d.vertex; all[`portDrawVI-${v}`] = d.vertexIndirect; all[`portDrawF-${v}`] = d.fragment; all[`portMotes-${v}`] = d.motes; all[`recQuad-${v}`] = buildRecordQuadWGSL(d.fragment); }
     for (const [name, src] of Object.entries(all)) {
       const f = join(dir, `${name}.wgsl`);
       writeFileSync(f, src);
@@ -89,4 +90,33 @@ describe("WGSL generation", () => {
       expect(out, name).toMatch(/Validation successful/);
     }
   });
+});
+
+describe("per-soul specialisation", () => {
+  it("the ported sim carries SOUL as override @id(0) (the engine keys its constants by \"0\")", async () => {
+    expect(SIM_PORT.wgsl).toMatch(/@id\(0\) override SOUL: i32 = -1i;/);
+    const { readFileSync } = await import("fs");
+    expect(readFileSync(join(__dirname, "engine-port.ts"), "utf8")).toContain('constants: { "0": idx }');
+  });
+});
+
+// naga validates modules one at a time; the inter-stage interface (vertex
+// outputs ↔ fragment inputs) is only checked when a pipeline is built — the
+// real-GPU lab caught a mismatch here once, so it is held here too.
+describe("vertex outputs match the ported fragment inputs", () => {
+  const outputs = (vs: string) => {
+    const m = /struct (?:VertexOutput|VOut) \{([\s\S]*?)\n\}/.exec(vs);
+    return new Set([...(m?.[1] ?? "").matchAll(/@location\((\d+)\)\s*(@interpolate\(flat\))?/g)].map((x) => `${x[1]}${x[2] ? "f" : ""}`));
+  };
+  for (const v of ["plain", "stable"] as const) {
+    it(v, async () => {
+      const { fragmentInputs } = await import("./record-raster");
+      const ins = fragmentInputs(DRAW_PORT[v].fragment);
+      expect(ins.length).toBeGreaterThanOrEqual(6);
+      for (const vs of [DRAW_PORT[v].vertex, DRAW_PORT[v].vertexIndirect, buildRecordQuadWGSL(DRAW_PORT[v].fragment)]) {
+        const o = outputs(vs);
+        for (const i of ins) expect(o.has(`${i.loc}${i.flat ? "f" : ""}`), `${v} location ${i.loc}`).toBe(true);
+      }
+    });
+  }
 });

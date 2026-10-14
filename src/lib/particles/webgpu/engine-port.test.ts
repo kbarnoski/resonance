@@ -69,7 +69,8 @@ describe("the parity engine: conductor → ported passes", () => {
     const side = engine.stats().texSide;
     const [gx, gy] = dispatchSize(side * side);
     expect(f).toContainEqual({ name: "dispatchWorkgroups", args: ["sim", gx, gy, 1] });
-    expect(f).toContainEqual({ name: "draw", args: ["hdr", 4, side * side] });
+    // record quads: one non-instanced triangle list, 6 vertices per mote
+    expect(f).toContainEqual({ name: "draw", args: ["hdr", 6 * side * side, 1] });
     expect(f).toContainEqual({ name: "dispatchWorkgroups", args: ["govern", 1, 1, 1] });
     expect(f).toContainEqual({ name: "draw", args: ["composite", 3, 1] });
     const order = ["sim", "hdr", "govern", "composite"].map((l) => f.findIndex((c) => (c.name === "beginComputePass" || c.name === "beginRenderPass") && c.args[0] === l));
@@ -154,7 +155,11 @@ describe("the parity engine: conductor → ported passes", () => {
     step(60);
     expect(calls.filter((c) => c.name.startsWith("missing:"))).toEqual([]);
     expect(calls.filter((c) => c.name === "mapAsync")).toEqual([]);
-    expect(calls.slice(startIdx).filter((c) => /^create(Shader|BindGroupLayout|.*Pipeline|Buffer|Texture)/.test(c.name))).toEqual([]);
+    // (the per-soul specialised sim pipelines are the one exception: built
+    // ASYNC in the background, the union pipeline runs the soul meanwhile)
+    const late = calls.slice(startIdx).filter((c) => /^create(Shader|BindGroupLayout|.*Pipeline|Buffer|Texture)/.test(c.name));
+    expect(late.filter((c) => !(c.name === "createComputePipelineAsync" && /^port-sim-soul\d+$/.test(String(c.args[0]))))).toEqual([]);
+    expect(calls.filter((c) => /^create(Compute|Render)Pipeline$/.test(c.name))).toEqual([]); // never synchronous
     engine.dispose();
   });
 
