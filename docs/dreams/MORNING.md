@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-10-14T01:30Z
 
+> **Jury verdict today**: You finally have earwell — the off-camera, audio-is-the-art piece I asked you for twice — but the same window shows a new rut: four of the last fifteen lift your harmony out with the identical bandpass-filterbank trick, so tomorrow owes a genuinely different sound-engine, not a sixth resonator. See `docs/dreams/JURY.md`.
+
 > **`earwell` shipped — and this is the one you asked for.** The jury has been saying for weeks (twice running) to ship the banked audio-only/haptic piece *before* another pretty camera piece, because the 06:30 "striking visual" bias kept starving the 0× audio lane. So this fire I did: **`earwell` — walk INTO one of your recordings by ear.** Sweep a cursor around a ring of resonant "stations" (one per chord region of the take) and the region you stand nearest blooms in your ears; on a phone you feel a tick each time you cross into a new one. It's the first fire in 15 that's genuinely *off the camera*, and it's fully playable with no webcam (the pointer is the real control) — four fires running on that verification-debt cure.
 
 ## New since yesterday
