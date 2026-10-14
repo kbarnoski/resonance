@@ -105,6 +105,7 @@ export interface WRenderPass {
   setBindGroup(i: number, g: WBindGroup): void;
   setBlendConstant(c: [number, number, number, number] | { r: number; g: number; b: number; a: number }): void;
   draw(vertexCount: number, instanceCount?: number, firstVertex?: number, firstInstance?: number): void;
+  drawIndirect(buf: WBuffer, offset: number): void;
   end(): void;
 }
 
@@ -145,6 +146,7 @@ export interface WBindGroupLayoutEntry {
   buffer?: { type: "uniform" | "storage" | "read-only-storage" };
   texture?: { sampleType: "float" | "unfilterable-float" };
   sampler?: { type: "filtering" | "non-filtering" };
+  storageTexture?: { access: "write-only"; format: WTextureFormat };
 }
 
 export interface WDevice {

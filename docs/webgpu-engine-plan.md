@@ -366,9 +366,31 @@ watching).
 
 ### B: 250k–1M
 
-Tile binning, the atomic compute splat for tiny motes, sorted raster for large ones, compute
-TAA, then the cinematic look (DOF via footprint, colour drift) with bloom only as a temporally
-filtered pass. Velocity streaks are rebuilt as stretched quads.
+**Built (behind `?splat=1` on the parity engine, `webgpu/splat-wgsl.ts`):**
+
+1. **Mote records.** The show's draw vertex program, ported a third way (`portMote`), runs as
+   compute. It writes one 80-byte record per mote: window px, size, defocus, colour, the stable
+   gaussians. The same code as the raster sprite, so the look can't drift.
+2. **Classify.** Sprites ≤ 6 px with no trail count into the 16×16-px tiles they touch (≤ 4).
+   Everything else (near or defocused motes, trails) goes on a large list.
+3. **Scan, scatter.** One workgroup computes tile offsets, then each small mote writes its
+   index into its tiles' lists.
+4. **Tile splat.** One workgroup per tile sums its motes into shared memory with fixed-point
+   atomics (1/16384). It evaluates the show's own fragment program at each pixel centre (GL
+   point rasterisation; plain and stable shapes and the bokeh mix, held to `DRAW_FS`'s text by
+   `splat.test.ts`). Integer sums are exact and order-free, so the frame is bit-identical
+   however the GPU schedules it: no blend-order shimmer.
+5. **Compose.** Fade, then the splat layer, then the large motes as raster quads via
+   `drawIndirect` (an indirect variant of the draw port). The **temporal resolve** (the TAA
+   port) always runs on this path, with the conductor's keep when `?stable=1`, else
+   `taaKeep(dt)`. Then the governor and composite.
+
+A CPU mirror of the algorithm proves exact light conservation against a direct per-mote
+raster, and order independence.
+
+**Still to do in B:** measure on the kiosk (`/lab/webgpu?splat=1` against the default raster
+path, 250k / 1M), then tune `SPLAT_MAX_PX` and the tile size from the numbers. Streaks stay on
+the raster path, as now. Bloom (temporally filtered) only after Karel sees film.
 
 **Exit:** 1M motes at 60 fps on the kiosk with the shaders running, fpsLow ≥ 58, filmed with
 zero shimmer.
@@ -399,6 +421,7 @@ springs. It retires spatial pairing.
     - `?form=knot` holds one figure;
     - `?dpr=2` runs at the full panel;
     - `?timing=0` turns timestamps off;
+    - `?splat=1` turns on phase B (tile-binned fixed-point splat plus temporal resolve);
     - the show's own particle flags apply (`?stable=1`, `?cine=0`, …);
     - `?case=snowflake-emblems|snowflake-calm|ghost-opening|ghost-angel|ghost-blossom-wings`
       runs a mastered-journey moment.

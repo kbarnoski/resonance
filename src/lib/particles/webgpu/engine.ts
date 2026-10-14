@@ -55,6 +55,9 @@ export interface WebGPUEngineOptions extends ParticleEngineOptions {
   adapter?: WAdapter | null;
   /** GPU timestamp queries per pass (lab / measurement runs): async, one in flight. */
   gpuTiming?: boolean;
+  /** PHASE B (parity engine): tile-binned fixed-point splatting + temporal
+   *  resolve instead of one raster quad per mote. Default: ?splat=1. */
+  splat?: boolean;
   /** The force stack compiled into `integrate` (default: all phase A forces). */
   forces?: readonly ForceId[];
   /** Smallest drawn sprite in device px (energy-conserving floor). Default 1.5. */

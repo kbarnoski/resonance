@@ -30,7 +30,10 @@ export const PORT_WORKGROUP = 256;
 /** Group-0 bindings of the ported simulation. */
 export const SIM_PORT_BINDINGS = { uniforms: 0, pos: 1, vel: 2, seed: 3, uv: 4, spec: 5 } as const;
 /** Group-0 bindings of the ported draw program. */
-export const DRAW_PORT_BINDINGS = { uniforms: 0, pos: 1, vel: 2, seed: 3, uv: 4, imgA: 5, imgB: 6, bridgeA: 7, bridgeB: 8, sampler: 9 } as const;
+export const DRAW_PORT_BINDINGS = { uniforms: 0, pos: 1, vel: 2, seed: 3, uv: 4, imgA: 5, imgB: 6, bridgeA: 7, bridgeB: 8, sampler: 9, large: 10, motes: 10 } as const;
+
+/** vec4s per mote record (splat path): [px.xy, size, coc] [rgb, flags] [stA] [stB] [stC.xy, 0, 0]. flags: 0 hidden, 1 sprite, 2 trail. */
+export const MOTE_STRIDE = 5;
 
 export interface PortedProgram {
   /** GLSL 4.50 per stage (naga input) */
@@ -163,13 +166,29 @@ void main(){
 const DRAW_TEXTURES = ["uImgA", "uImgB", "uBridgeA", "uBridgeB"] as const;
 const DRAW_BUFFERS = ["uPos", "uVel", "uSeed", "uImgUv"] as const;
 
-/** Vertex + fragment GLSL 4.50 from the WebGL draw program (DRAW_VS / DRAW_FS,
- *  with whatever withTrails / withStable the engine compiled). */
-export function portDraw(webglVs: string, webglFs: string): PortedProgram {
-  const sourceHash = fnv1a(`${webglVs}\n//--fs--\n${webglFs}`);
-  const B = DRAW_PORT_BINDINGS;
+interface EditedVs {
+  body: string;
+  defines: string[];
+  uniforms: StructLayout;
+  /** each varying, with the #ifdef it is declared under (null = always) */
+  varyings: { name: string; type: string; flat: boolean; guard: string | null }[];
+}
 
-  // vertex
+/** The innermost #ifdef open at `at` in `src` (null = none). */
+function guardAt(src: string, at: number): string | null {
+  const stack: string[] = [];
+  for (const m of src.slice(0, at).matchAll(/^#(ifdef|ifndef|if|endif)\b\s*(\w*)/gm)) {
+    if (m[1] === "endif") stack.pop();
+    else stack.push(m[1] === "ifdef" ? m[2] : "");
+  }
+  return stack.length ? stack[stack.length - 1] || null : null;
+}
+
+/** The draw vertex program, edited for GLSL 4.50 (shared by the raster quad
+ *  port and the splat port): textures → texture2D + one sampler (explicit LOD),
+ *  particle textures → buffers, gl_* → private globals, main → drawMain. */
+function editDrawVs(webglVs: string): EditedVs {
+  const B = DRAW_PORT_BINDINGS;
   const vs = editor(webglVs, "draw-vs");
   vs.must("vs: version", /^#version 300 es\s*\n/, "");
   const defines = [...vs.src.matchAll(/^#define \w+[^\n]*$/gm)].map((m) => m[0]);
@@ -177,9 +196,9 @@ export function portDraw(webglVs: string, webglFs: string): PortedProgram {
   vs.src = vs.src.replace(/^precision\s+\w+\s+\w+;\s*$/gm, "");
   for (const t of DRAW_TEXTURES) vs.must(`vs: sampler ${t}`, new RegExp(`^uniform sampler2D ${t};[^\\n]*$`, "m"), `layout(set = 0, binding = ${B[t === "uImgA" ? "imgA" : t === "uImgB" ? "imgB" : t === "uBridgeA" ? "bridgeA" : "bridgeB"]}) uniform texture2D ${t}_t;`);
   const fields = extractUniforms(vs, [...DRAW_BUFFERS]);
-  fields.push({ name: "uPortVp", type: "vec2f", doc: "render target size (px) — quad expansion" });
+  fields.push({ name: "uPortVp", type: "vec2f", doc: "render target size (px) — quad expansion / splat" });
   const uniforms = layoutStruct("DrawPortU", fields);
-  // vertex-stage sampling has no derivatives: explicit level 0
+  // vertex/compute-stage sampling has no derivatives: explicit level 0
   for (const t of DRAW_TEXTURES) vs.may(new RegExp(`\\btexture\\(${t},\\s*([^;]*?)\\)(\\.\\w+)`, "g"), `textureLod(sampler2D(${t}_t, uLin), $1, 0.0)$2`);
   if (/\btexture\(u(ImgA|ImgB|BridgeA|BridgeB)\b/.test(vs.src)) throw new Error("gl-port(draw-vs): a texture() call was not rewritten");
   vs.must("vs: vertex id", "int id = gl_VertexID;", "int id = int(gVid);");
@@ -190,33 +209,50 @@ export function portDraw(webglVs: string, webglFs: string): PortedProgram {
   vs.must("vs: position", /\bgl_Position\b/g, "gPos");
   vs.must("vs: point size", /\bgl_PointSize\b/g, "gPtSize");
   vs.must("vs: main", /\nvoid main\(\)\{\n/, "\nvoid drawMain(){\n");
-  // varyings get explicit locations, in declaration order (the FS matches by name)
-  const varyings: string[] = [];
-  vs.src = vs.src.replace(/^((?:flat\s+)?)out\s+((?:highp\s+|mediump\s+|lowp\s+)?)(\w+)\s+(\w+)\s*;/gm, (_m, flat: string, _p: string, t: string, n: string) => {
-    varyings.push(n);
-    return `layout(location = ${varyings.length - 1}) ${flat}out ${t} ${n};`;
+  const varyings: EditedVs["varyings"] = [];
+  const pre = vs.src;
+  vs.src = vs.src.replace(/^((?:flat\s+)?)out\s+((?:highp\s+|mediump\s+|lowp\s+)?)(\w+)\s+(\w+)\s*;/gm, (_m, flat: string, _p: string, t: string, n: string, off: number) => {
+    varyings.push({ name: n, type: t, flat: !!flat.trim(), guard: guardAt(pre, off) });
+    return `@@VARYING ${varyings.length - 1}@@`;
   });
-  const LP = varyings.length; // the port's own varyings follow
-  const vertex = `#version 450
+  return { body: vs.src, defines, uniforms, varyings };
+}
+
+const drawHeader = (e: EditedVs, sourceHash: string, what: string) => `#version 450
 // GENERATED by src/lib/particles/webgpu/gl-port.ts from the WebGL draw program
-// (shaders.ts DRAW_VS) — source hash ${sourceHash}. Do not edit.
-${defines.join("\n")}
-layout(std140, set = 0, binding = ${B.uniforms}) uniform DrawPortU {
-${uniforms.fields.map(glslDecl).join("\n")}
+// (shaders.ts DRAW_VS) — ${what} — source hash ${sourceHash}. Do not edit.
+${e.defines.join("\n")}
+layout(std140, set = 0, binding = ${DRAW_PORT_BINDINGS.uniforms}) uniform DrawPortU {
+${e.uniforms.fields.map(glslDecl).join("\n")}
 };
-layout(std430, set = 0, binding = ${B.pos}) readonly buffer PosB { vec4 posB[]; };
-layout(std430, set = 0, binding = ${B.vel}) readonly buffer VelB { vec4 velB[]; };
-layout(std430, set = 0, binding = ${B.seed}) readonly buffer SeedB { vec4 seedB[]; };
-layout(std430, set = 0, binding = ${B.uv}) readonly buffer UvB { vec2 uvB[]; };
-layout(set = 0, binding = ${B.sampler}) uniform sampler uLin;
+layout(std430, set = 0, binding = ${DRAW_PORT_BINDINGS.pos}) readonly buffer PosB { vec4 posB[]; };
+layout(std430, set = 0, binding = ${DRAW_PORT_BINDINGS.vel}) readonly buffer VelB { vec4 velB[]; };
+layout(std430, set = 0, binding = ${DRAW_PORT_BINDINGS.seed}) readonly buffer SeedB { vec4 seedB[]; };
+layout(std430, set = 0, binding = ${DRAW_PORT_BINDINGS.uv}) readonly buffer UvB { vec2 uvB[]; };
+layout(set = 0, binding = ${DRAW_PORT_BINDINGS.sampler}) uniform sampler uLin;
 uint gVid;
 vec4 gPos;
 float gPtSize;
-layout(location = ${LP}) out vec2 vPtc;
+`;
+
+/** Vertex + fragment GLSL 4.50 from the WebGL draw program (DRAW_VS / DRAW_FS,
+ *  with whatever withTrails / withStable the engine compiled). `indirect`:
+ *  instance k draws mote largeIdx[k] (the splat path's large-mote list). */
+export function portDraw(webglVs: string, webglFs: string, opts: { indirect?: boolean } = {}): PortedProgram {
+  const sourceHash = fnv1a(`${webglVs}\n//--fs--\n${webglFs}`);
+  const e = editDrawVs(webglVs);
+  const varyings = e.varyings.map((v) => v.name);
+  const body = e.body.replace(/@@VARYING (\d+)@@/g, (_m, k: string) => {
+    const v = e.varyings[Number(k)];
+    return `layout(location = ${k}) ${v.flat ? "flat " : ""}out ${v.type} ${v.name};`;
+  });
+  const uniforms = e.uniforms;
+  const LP = varyings.length; // the port's own varyings follow
+  const vertex = `${drawHeader(e, sourceHash, opts.indirect ? "raster quads, indirect" : "raster quads")}${opts.indirect ? `layout(std430, set = 0, binding = ${DRAW_PORT_BINDINGS.large}) readonly buffer LargeB { uint largeIdx[]; };\n` : ""}layout(location = ${LP}) out vec2 vPtc;
 layout(location = ${LP + 1}) flat out float vFlipH;
-${vs.src}
+${body}
 void main(){
-  gVid = uint(gl_InstanceIndex);
+  gVid = ${opts.indirect ? "largeIdx[gl_InstanceIndex]" : "uint(gl_InstanceIndex)"};
   gPtSize = 1.0;
   drawMain();
   // the GL point sprite as a quad: corner offset in px, gl_PointCoord y-down
@@ -248,11 +284,49 @@ void main(){
   const fragment = `#version 450
 // GENERATED by src/lib/particles/webgpu/gl-port.ts from the WebGL draw program
 // (shaders.ts DRAW_FS) — source hash ${sourceHash}. Do not edit.
-${defines.join("\n")}
+${e.defines.join("\n")}
 layout(location = ${LP}) in vec2 vPtc;
 layout(location = ${LP + 1}) flat in float vFlipH;
 ${fs.src}`;
   return { stages: { vertex, fragment }, uniforms, sourceHash };
+}
+
+/** MOTE RECORDS for the splat path (phase B): the draw vertex program as a
+ *  compute kernel — one record of MOTE_STRIDE vec4 per mote with everything
+ *  the fragment program needs (window-px centre, size, defocus, colour, the
+ *  stable gaussians). Same uniform block as portDraw. */
+export function portMote(webglVs: string): PortedProgram {
+  const sourceHash = fnv1a(webglVs);
+  const e = editDrawVs(webglVs);
+  const body = e.body.replace(/@@VARYING (\d+)@@/g, (_m, k: string) => {
+    const v = e.varyings[Number(k)];
+    return `${v.type} ${v.name};`;
+  });
+  const g = (v: { guard: string | null }, line: string) => (v.guard ? `#ifdef ${v.guard}\n${line}\n#endif` : line);
+  const zero = e.varyings.map((v) => g(v, `  ${v.name} = ${v.type}(0.0);`)).join("\n");
+  const vy = (n: string) => e.varyings.find((v) => v.name === n);
+  const has = (n: string) => !!vy(n);
+  const guarded = (n: string, line: string) => { const v = vy(n); return v ? g(v, line) + "\n" : ""; };
+  const compute = `${drawHeader(e, sourceHash, "mote records (compute)")}layout(local_size_x = ${PORT_WORKGROUP}) in;
+layout(std430, set = 0, binding = ${DRAW_PORT_BINDINGS.motes}) buffer MoteB { vec4 moteB[]; };
+${body}
+void main(){
+  uint i = gl_GlobalInvocationID.x + gl_GlobalInvocationID.y * gl_NumWorkGroups.x * ${PORT_WORKGROUP}u;
+  if (i >= uint(uTexW * uTexW)) return;
+  gVid = i;
+  gPtSize = 1.0;
+  gPos = vec4(0.0);
+${zero}
+  drawMain();
+  bool vis = gPos.w > 0.0 && gPtSize > 0.0 && abs(gPos.z) <= gPos.w;
+  vec2 px = (gPos.xy / max(gPos.w, 1e-6) * 0.5 + 0.5) * uPortVp; // GL window px (y up)
+  float flags = vis ? 1.0 : 0.0;
+${guarded("vTrail", "  if (vis && vTrail.z > 0.0) flags = 2.0;")}  uint o = i * ${MOTE_STRIDE}u;
+  moteB[o] = vec4(px, gPtSize, ${has("vCoc") ? "vCoc" : "0.0"});
+  moteB[o + 1u] = vec4(vCol, flags);
+${guarded("vStA", "  moteB[o + 2u] = vStA;\n  moteB[o + 3u] = vStB;\n  moteB[o + 4u] = vec4(vStC, 0.0, 0.0);")}}
+`;
+  return { stages: { compute }, uniforms: e.uniforms, sourceHash };
 }
 
 /** The draw-program variants the engine may compile (trails always on — its

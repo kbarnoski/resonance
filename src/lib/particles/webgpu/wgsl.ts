@@ -18,6 +18,7 @@
 
 import { SIM_LAYOUT, RENDER_LAYOUT, GOVERNOR_LAYOUT, WORKGROUP, structWGSL } from "./layout";
 import { buildPairWGSL, PAIR_ENTRIES } from "./pair-wgsl";
+import { buildSplatWGSL, buildAddSplatWGSL, SPLAT_ENTRIES } from "./splat-wgsl";
 
 export const SPEC_BINS = 128;
 
@@ -477,6 +478,8 @@ export function allModules(): Record<string, string> {
     composite: buildCompositeWGSL(),
     taa: buildTaaWGSL(0.05),
     pair: buildPairWGSL(),
+    splat: buildSplatWGSL(),
+    addSplat: buildAddSplatWGSL(),
   };
 }
 
@@ -489,6 +492,8 @@ export const ENTRY_POINTS: Record<string, readonly string[]> = {
   composite: ["vsTri", "fsComp"],
   taa: ["vsTri", "fsTaa"],
   pair: PAIR_ENTRIES,
+  splat: SPLAT_ENTRIES,
+  addSplat: ["vsTri", "fsAdd"],
 };
 
 /** TEMPORAL RESOLVE (?stable=1): port of shaders.ts TAA_FS — the HDR layer

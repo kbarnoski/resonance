@@ -14,6 +14,8 @@
  *   ?cycle=10                        seconds per figure while cycling
  *   ?dpr=1                           device-pixel-ratio cap (kiosk show = 1)
  *   ?timing=0                        GPU timestamp queries off
+ *   ?splat=1                         PHASE B: tile-binned fixed-point splatting +
+ *                                    temporal resolve (parity engine)
  *   ?stable=1 / ?cine=0 / …          the show's own particle flags apply
  *   ?case=ghost-angel                a mastered-journey moment (lab-cases.ts):
  *                                    snowflake-emblems · snowflake-calm ·
@@ -38,7 +40,7 @@ import { runCase, CASE_NOTES } from "./lab-cases";
 // the show-engine figures cycled by the parity engine and the WebGL A/B
 const SOULS: SoulId[] = ["torus", "knot", "rose", "nebula", "lissajous"];
 
-type Gpu = { info(): WebGPUInfo | null; gpuTimings(): GpuTimings | null; failure(): string | null; portStale?: () => string | null };
+type Gpu = { info(): WebGPUInfo | null; gpuTimings(): GpuTimings | null; failure(): string | null; portStale?: () => string | null; splatting?: () => boolean };
 
 export default function WebGPULab() {
   const host = useRef<HTMLDivElement>(null);
@@ -145,7 +147,7 @@ export default function WebGPULab() {
       const s = sn.stats;
       const g = sn.gpu;
       const lines = [
-        backendLine,
+        backendLine + (gpu?.splatting?.() ? " · splat (phase B)" : ""),
         sn.info ? `adapter ${sn.info.adapter} · ${sn.info.format} · pipelines ${sn.info.compileMs} ms (async)` : "",
         s ? `${s.count.toLocaleString()} motes · ${s.width}×${s.height} @ dpr ${s.dpr} · soul ${s.soul}` : "",
         s ? `fps ${s.fps.toFixed(1)} · p5 ${s.fpsLow.toFixed(1)} · frame ${s.frameMs.toFixed(2)} ms` : "",

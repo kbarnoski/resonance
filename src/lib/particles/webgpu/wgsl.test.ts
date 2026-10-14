@@ -81,7 +81,7 @@ describe("WGSL generation", () => {
   it.runIf(!!process.env.NAGA_BIN && existsSync(process.env.NAGA_BIN ?? ""))("validates with naga", () => {
     const dir = mkdtempSync(join(tmpdir(), "wgsl-"));
     const all: Record<string, string> = { ...mods, portSim: SIM_PORT.wgsl };
-    for (const [v, d] of Object.entries(DRAW_PORT)) { all[`portDrawV-${v}`] = d.vertex; all[`portDrawF-${v}`] = d.fragment; }
+    for (const [v, d] of Object.entries(DRAW_PORT)) { all[`portDrawV-${v}`] = d.vertex; all[`portDrawVI-${v}`] = d.vertexIndirect; all[`portDrawF-${v}`] = d.fragment; all[`portMotes-${v}`] = d.motes; }
     for (const [name, src] of Object.entries(all)) {
       const f = join(dir, `${name}.wgsl`);
       writeFileSync(f, src);

@@ -57,6 +57,7 @@ export function fakeGpu(o: FakeGpuOptions = {}) {
       dispatchWorkgroups: (x: number, y = 1, z = 1) => rec("dispatchWorkgroups", label, x, y, z),
       setBlendConstant: (c: unknown) => rec("setBlendConstant", label, c),
       draw: (v: number, inst = 1) => rec("draw", label, v, inst),
+      drawIndirect: (b: { label: string }, off: number) => rec("drawIndirect", label, b.label, off),
       end: () => rec(`${kind}.end`, label),
     });
   const queue = trap("queue", {
