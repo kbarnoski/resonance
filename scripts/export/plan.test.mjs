@@ -78,7 +78,7 @@ describe("frame plan", () => {
 describe("ffmpeg arguments", () => {
   const base = { ...DEFAULTS, journey: "x" };
   it("h264: PNG pipe in, x264 high, bt709 tags", () => {
-    const a = encodeArgs(base, { width: 3840, height: 2160, fps: 60, durationS: 10, out: "o.mkv" });
+    const a = encodeArgs({ ...base, capture: "png" }, { width: 3840, height: 2160, fps: 60, durationS: 10, out: "o.mkv" });
     const s = a.join(" ");
     expect(s).toMatch(/-f image2pipe -framerate 60 -c:v png -i pipe:0/);
     expect(s).toMatch(/libx264 .*-crf 14/);
