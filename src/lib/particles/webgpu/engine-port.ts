@@ -205,7 +205,10 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
     if (failed) return;
     failed = why;
     conductor.stop();
-    opts.watchdog?.onStall(why);
+    // a GPU failure falls back to WebGL2 when the owner can (shared-engine);
+    // otherwise it switches the session's particles off like a failed program
+    if (opts.onGpuFailure) opts.onGpuFailure(why);
+    else opts.watchdog?.onStall(why);
   };
 
   // ── init: device, context, pipelines (all async, before anything draws) ──
@@ -223,7 +226,8 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
     dev.lost.then((l) => {
       if (disposed || l.reason === "destroyed") return;
       conductor.stop();
-      opts.onContextLost?.();
+      if (opts.onGpuFailure) { failed = failed ?? `device lost: ${l.message}`; opts.onGpuFailure(failed); }
+      else opts.onContextLost?.();
     });
     dev.onuncapturederror = (e) => fail(`webgpu error: ${e.error.message}`.slice(0, 400));
     const c = canvas.getContext("webgpu") as unknown as WCanvasContext | null;

@@ -17,14 +17,18 @@ import { createPortedParticleEngine } from "./engine-port";
 
 export type ParticleBackend = "webgl2" | "webgpu";
 
-/** The backend the URL asks for: `?gpu=webgpu` → webgpu; anything else → webgl2. */
+/** WebGPU is the default (2026-10-13); WebGL2 is the fallback and the override. */
+export const WEBGPU_DEFAULT = true;
+
+/** The backend the URL asks for: `?gpu=webgl2` → webgl2, `?gpu=webgpu` → webgpu,
+ *  otherwise the default. */
 export function requestedParticleBackend(search?: string): ParticleBackend {
   try {
-    const q = new URLSearchParams(search ?? (typeof location !== "undefined" ? location.search : ""));
-    return q.get("gpu") === "webgpu" ? "webgpu" : "webgl2";
-  } catch {
-    return "webgl2";
-  }
+    const g = new URLSearchParams(search ?? (typeof location !== "undefined" ? location.search : "")).get("gpu");
+    if (g === "webgl2") return "webgl2";
+    if (g === "webgpu") return "webgpu";
+  } catch { /* default */ }
+  return WEBGPU_DEFAULT ? "webgpu" : "webgl2";
 }
 
 export interface WebGPUProbe {
@@ -70,7 +74,7 @@ export function __resetWebGPUProbeForTest(): void {
 
 /** Pure decision: what to run, and why. */
 export function chooseParticleBackend(requested: ParticleBackend, probe: Pick<WebGPUProbe, "available" | "why"> | null): { backend: ParticleBackend; why: string } {
-  if (requested !== "webgpu") return { backend: "webgl2", why: "default (flag off)" };
+  if (requested !== "webgpu") return { backend: "webgl2", why: "?gpu=webgl2" };
   if (!probe) return { backend: "webgl2", why: "webgpu requested but not probed yet" };
   if (!probe.available) return { backend: "webgl2", why: `webgpu requested, falling back: ${probe.why ?? "unavailable"}` };
   return { backend: "webgpu", why: "webgpu requested and available" };
@@ -81,7 +85,7 @@ export function chooseParticleBackend(requested: ParticleBackend, probe: Pick<We
  *  cached probe is cleared so a later engine probes afresh). */
 export function createParticleEngineFor(
   canvas: HTMLCanvasElement,
-  opts: ParticleEngineOptions & Pick<WebGPUEngineOptions, "gpuTiming" | "minPx" | "onReady">,
+  opts: ParticleEngineOptions & Pick<WebGPUEngineOptions, "gpuTiming" | "minPx" | "onReady" | "onGpuFailure">,
   backend: ParticleBackend,
   probe?: WebGPUProbe | null,
 ): ParticleEngine {

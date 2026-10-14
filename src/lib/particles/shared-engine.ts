@@ -13,7 +13,8 @@
  * frame ever takes > 50 ms or the page stalls > 400 ms while they run, or the
  * context is lost. The show never stops for particles.
  */
-import { createParticleEngine, type ParticleEngine } from "./particle-engine";
+import { createParticleEngine, type ParticleEngine, type ParticleEngineOptions } from "./particle-engine";
+import { createSwitchableEngine, type Switchable } from "./webgpu/switchable";
 import type { SpectrumFrame } from "./spectrum";
 import { setParticlePresent } from "@/lib/journeys/particle-presence";
 
@@ -30,6 +31,32 @@ let statementHold = false;
 const listeners = new Set<() => void>();
 /** test hook: how many engines (= WebGL contexts) this module ever created */
 export let sharedEnginesCreated = 0;
+
+// ── WEBGPU BY DEFAULT (2026-10-13, Karel: "every other epic upgrade implemented
+// for all"): the parity engine (webgpu/engine-port.ts — the show engine
+// conducting, its own GLSL ported to WebGPU) runs when the adapter probe
+// succeeds; `?gpu=webgl2` keeps the WebGL2 engine. Any WebGPU failure (adapter,
+// WGSL, device loss) falls back to WebGL2 in place — same engine object for
+// the layers, the state replayed (webgpu/switchable.ts). The WebGPU code is
+// loaded on demand (its own chunk), primed at import so it is ready long
+// before the first journey acquires the engine.
+type BackendModule = typeof import("./webgpu/backend");
+let gpuReady: { mod: BackendModule; adapter: unknown } | null = null;
+let priming: Promise<void> | null = null;
+export function primeParticleBackend(): Promise<void> {
+  if (priming) return priming;
+  if (typeof window === "undefined" || typeof navigator === "undefined") return Promise.resolve();
+  priming = (async () => {
+    const mod = await import("./webgpu/backend");
+    if (mod.requestedParticleBackend() !== "webgpu") return;
+    const probe = await mod.probeWebGPU();
+    if (probe.available && probe.adapter) gpuReady = { mod, adapter: probe.adapter };
+  })().catch(() => { gpuReady = null; });
+  return priming;
+}
+if (typeof window !== "undefined" && typeof navigator !== "undefined" && (navigator as unknown as { gpu?: unknown }).gpu) void primeParticleBackend();
+let switchable: Switchable | null = null;
+const setBackendDiag = (v: string) => { if (typeof window !== "undefined") (window as unknown as Record<string, unknown>).__resonanceParticleBackend = v; };
 
 function measuring(): boolean {
   try { return window.localStorage.getItem("resonance-particle-tripwire") === "1"; } catch { return false; }
@@ -113,8 +140,7 @@ export function acquireSharedParticleEngine(budget: { count: number; dpr: number
   canvas.dataset.particleLead = "1";
   const hooks: SharedParticleEngine["hooks"] = { audio: null };
   const probe = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("particleprobe") === "1";
-  try {
-    const engine = createParticleEngine(canvas, {
+  const common: ParticleEngineOptions = {
       count: budget.count,
       dpr: budget.dpr,
       trailScale: budget.trailScale,
@@ -132,9 +158,42 @@ export function acquireSharedParticleEngine(budget: { count: number; dpr: number
       // it, or it switches the field off and the run measures nothing
       // (2026-10-08 A/B: Snowflake tripped at 2.8 s with the read-back, never without)
       watchdog: { cpuMs: measuring() ? 1000 : 50, gapMs: 1000, onStall: (why) => disableParticlesForSession(`watchdog: ${why}`) },
-    });
+  };
+  const gpu = gpuReady;
+  gpuReady = null; // an adapter serves one device
+  if (gpu) {
+    // WebGPU, with an in-place WebGL2 fallback on any GPU failure
+    const fallBack = (why: string) => {
+      const sh = shared, sw = switchable;
+      if (!sh || !sw || sw.backend() === "webgl2" || disabledWhy) return;
+      const c2 = sh.canvas.cloneNode(false) as HTMLCanvasElement; // same style, data, size
+      try {
+        const e2 = createParticleEngine(c2, common);
+        sharedEnginesCreated++;
+        if (sh.canvas.parentElement) sh.canvas.replaceWith(c2);
+        sh.canvas = c2;
+        sw.fallBack(e2);
+        setBackendDiag(`webgl2 (fallback: ${why})`);
+      } catch (e) {
+        disableParticlesForSession(`webgpu failed (${why}); webgl2 unavailable: ${e instanceof Error ? e.message : String(e)}`);
+      }
+    };
+    try {
+      const first = gpu.mod.createParticleEngineFor(canvas, { ...common, onGpuFailure: (why: string) => fallBack(why) }, "webgpu", { available: true, adapter: gpu.adapter as never });
+      switchable = createSwitchableEngine(first, "webgpu");
+      sharedEnginesCreated++;
+      shared = { canvas, engine: switchable.engine, hooks };
+      setBackendDiag("webgpu");
+      return shared;
+    } catch {
+      /* navigator.gpu vanished: WebGL2 below */
+    }
+  }
+  try {
+    const engine = createParticleEngine(canvas, common);
     sharedEnginesCreated++;
     shared = { canvas, engine, hooks };
+    setBackendDiag("webgl2");
     return shared;
   } catch (e) {
     disableParticlesForSession(`engine unavailable: ${e instanceof Error ? e.message : String(e)}`);
@@ -145,6 +204,9 @@ export function acquireSharedParticleEngine(budget: { count: number; dpr: number
 /** test hook */
 export function __resetSharedParticleEngineForTest(): void {
   shared = null;
+  switchable = null;
+  gpuReady = null;
+  priming = null;
   disabledWhy = null;
   sharedEnginesCreated = 0;
   listeners.clear();

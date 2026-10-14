@@ -62,6 +62,9 @@ export interface WebGPUEngineOptions extends ParticleEngineOptions {
   fluid?: boolean;
   /** PHASE D (parity engine): collisions with the still's depth. Default: ?collide=1. */
   collide?: boolean;
+  /** Called (once) on a WebGPU failure — adapter, WGSL, device loss — so the
+   *  owner can fall back to WebGL2. Without it: watchdog.onStall / onContextLost. */
+  onGpuFailure?: (why: string) => void;
   /** PHASE E (parity engine): sliced optimal-transport image forms. Default: ?ot=1. */
   ot?: boolean;
   /** The force stack compiled into `integrate` (default: all phase A forces). */
