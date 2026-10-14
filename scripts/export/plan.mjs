@@ -24,7 +24,9 @@ export const DEFAULTS = Object.freeze({
   tier: "high",
   seed: 1,
   epoch: "2026-10-13T20:00:00Z",
-  capture: "png", // png | jpeg
+  // jpeg q95: 0.10 s/frame flat at 4K vs PNG's 0.1-1.0 s (Chrome's PNG encode
+  // scales with content); 51 dB PSNR vs the PNG path after x264 (2026-10-13)
+  capture: "jpeg", // jpeg | png
   jpegQuality: 95,
   warm: "simulate", // simulate (play from 0, capture from --from) | seek
   preroll: 3, // seconds simulated before --from in seek mode
@@ -44,9 +46,11 @@ export const DEFAULTS = Object.freeze({
   out: null,
   extraParams: "",
   allowKioskPort: false,
+  workers: 1, // parallel browsers, each rendering a contiguous chunk
+  expectName: null, // the journey title that must appear (wrong-journey guard)
 });
 
-const NUMERIC = new Set(["from", "fps", "crf", "port", "dpr", "seed", "jpegQuality", "preroll", "maxWaitStart", "settleMs", "fade", "verifySeconds", "verifyMinPsnr", "analyserLead"]);
+const NUMERIC = new Set(["from", "fps", "crf", "port", "dpr", "seed", "jpegQuality", "preroll", "maxWaitStart", "settleMs", "fade", "verifySeconds", "verifyMinPsnr", "analyserLead", "workers"]);
 const BOOLEAN = new Set(["headed", "verify", "allowLiveImagery", "keepIntermediate", "dryRun", "allowKioskPort"]);
 const ALIASES = { "i-know-3000-is-the-live-kiosk": "allowKioskPort", params: "extraParams" };
 
@@ -72,13 +76,16 @@ Offline 4K export — deterministic, frame-perfect render of a Resonance journey
   --warm=simulate|seek  simulate: play from track start, capture from --from (faithful, default)
                         seek: jump to --from minus --preroll seconds (fast)
   --fade=<s>            fade video+audio in/out
-  --capture=png|jpeg    frame grab format                    (default png, lossless)
+  --capture=jpeg|png    frame grab format: jpeg q95 (default, ~5-10x faster) or png (lossless)
   --gl=metal|swiftshader|default                             (default metal — the real GPU)
   --headed              show the browser window (default headless)
   --verify              determinism check: render [from, from+3s] twice, compare frame hashes
   --dry-run             no browser: print the plan + commands; with --audio=<file> also
                         decode it and run the analyser math over the range
   --params=a=1&b=2      extra URL params for the installation page
+  --expect-name=<name>  fail fast unless this journey title appears by 25 s of track time
+  --workers=<n>         parallel browsers, each rendering a contiguous chunk (simulate mode;
+                        seams are exact continuations), joined losslessly   (default 1)
 `;
 
 /** Parse argv → { opts, errors }. */
@@ -146,6 +153,8 @@ function validate(o, errors) {
       `(Override only on a non-kiosk machine: --i-know-3000-is-the-live-kiosk)`);
   }
   if (o.fade < 0) errors.push("--fade must be >= 0");
+  if (!Number.isInteger(o.workers) || o.workers < 1 || o.workers > 8) errors.push("--workers must be an integer 1..8");
+  if (o.workers > 1 && o.fade > 0) errors.push("--fade with --workers is not supported (each chunk would fade) — fade in an editor or use --workers=1");
   if (isNaN(Date.parse(o.epoch))) errors.push(`--epoch is not a date: ${o.epoch}`);
 }
 

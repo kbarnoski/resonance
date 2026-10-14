@@ -33,7 +33,9 @@ first-frame time, warnings and timing.
 | `--fade` | `0` | Fades video and audio in and out (trailers). |
 | `--headed` | off | Shows the window. Use it if headless reports a software renderer. |
 | `--gl` | `metal` | `swiftshader` gives a software render (slow, but it works anywhere). |
-| `--capture` | `png` | `jpeg` is faster and lossy. |
+| `--capture` | `jpeg` | JPEG q95: about 0.10 s per 4K frame, and 51 dB PSNR against the PNG path after x264. `png` is lossless but 0.1–1 s per frame, because Chrome's PNG encode scales with image content. |
+| `--workers` | `1` | Parallel browsers. Each renders a contiguous chunk in simulate mode, so the seams are exact continuations; the chunks are joined losslessly. |
+| `--expect-name` | | Fails fast unless this journey title appears in the opening 25 s. An unresolved `?start=` silently falls back to the loop's first journey. |
 | `--params` | | Extra page params, e.g. `--params=cine=1&dust=1` to export a lab variant. |
 
 ## How it works

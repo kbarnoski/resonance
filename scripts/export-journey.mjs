@@ -88,6 +88,25 @@ async function decodeMono(file, sampleRate) {
   return downmixInterleaved(inter, 2);
 }
 
+function jpegSize(buf) {
+  if (buf.length < 4 || buf[0] !== 0xff || buf[1] !== 0xd8) return null;
+  let i = 2;
+  while (i + 9 < buf.length) {
+    if (buf[i] !== 0xff) { i++; continue; }
+    const m = buf[i + 1];
+    if (m >= 0xc0 && m <= 0xcf && m !== 0xc4 && m !== 0xc8 && m !== 0xcc) return { width: buf.readUInt16BE(i + 7), height: buf.readUInt16BE(i + 5) };
+    i += 2 + buf.readUInt16BE(i + 2);
+  }
+  return null;
+}
+
+function frameSize(buf) {
+  return pngSize(buf) ?? jpegSize(buf);
+}
+
+/** A pause this close to the track's end is the loop's outro, not an error. */
+const TAIL_PAUSE_S = 5;
+
 function pngSize(buf) {
   if (buf.length < 24 || buf.readUInt32BE(0) !== 0x89504e47) return null;
   return { width: buf.readUInt32BE(16), height: buf.readUInt32BE(20) };
@@ -125,7 +144,7 @@ async function checkServer(o) {
  * Launch a fresh browser, run the journey on the virtual clock, capture
  * frames [from, to) of TRACK time into `videoOut` (video only).
  */
-async function renderRange(o, { videoOut, lossless, label = "" }) {
+async function renderRange(o, { videoOut, lossless, label = "", probe = false }) {
   const { chromium } = await import("playwright");
   const res = parseRes(o.res);
   const viewport = { width: res.width / o.dpr, height: res.height / o.dpr };
@@ -289,13 +308,33 @@ async function renderRange(o, { videoOut, lossless, label = "" }) {
       }
     }
 
+    // --expect-name: the journey's title must appear on the page early in the
+    // track. An unknown ?start= silently falls back to the first journey of the
+    // loop (Ghost), so this is what proves we're rendering the right one.
+    const expect = o.expectName ? String(o.expectName).toLowerCase().replace(/\s+/g, " ").trim() : null;
+    let titleSeen = !expect;
+    let earlyFrames = 0;
+    async function checkTitle(d) {
+      if (titleSeen || d.frame % 15) return;
+      const seen = await page.evaluate((n) => (document.body?.innerText ?? "").toLowerCase().replace(/\s+/g, " ").includes(n), expect);
+      if (seen) { titleSeen = true; meta.titleSeenAtFrame = d.frame; return; }
+      const m = d.main;
+      if (m && m.playing && m.src && !isPlaceholderSrc(m.src) && m.t <= 25) earlyFrames += 15;
+      // only judge once we have WATCHED the track's opening (a seek skips it)
+      if (m && m.playing && m.src && !isPlaceholderSrc(m.src) && m.t > 25 && earlyFrames >= 20 * o.fps) {
+        die(`the title "${o.expectName}" never appeared by track ${m.t.toFixed(1)}s — wrong journey (unresolved ?start= falls back to the loop's first journey)?`);
+      }
+    }
+
+    let lastFrameSeen = 0;
+    let lastTrackT = 0;
     async function step() {
       if (crashed) die("the page CRASHED (GPU process / out of memory?)");
       const call = (fn) => {
         let timer;
         return Promise.race([
           page.evaluate(fn),
-          new Promise((_, rej) => { timer = setTimeout(() => rej(new ExportError(`a frame step hung for ${stepTimeoutMs / 1000}s`)), stepTimeoutMs); }),
+          new Promise((_, rej) => { timer = setTimeout(() => rej(new ExportError(`a frame step hung for ${stepTimeoutMs / 1000}s (after virtual frame ${lastFrameSeen}, track ${lastTrackT.toFixed(2)}s) — the page's main thread or GPU stalled`)), stepTimeoutMs); }),
         ]).finally(() => clearTimeout(timer));
       };
       let d = await call(() => window.__resonanceExport.step());
@@ -303,6 +342,8 @@ async function renderRange(o, { videoOut, lossless, label = "" }) {
         await loadPcm(d.needPcm); // the frame is held before its rAF meanwhile
         d = await call(() => window.__resonanceExport.resume());
       }
+      lastFrameSeen = d.frame ?? lastFrameSeen;
+      lastTrackT = d.main?.t ?? lastTrackT;
       if (navigatedAway) die(`the page navigated away mid-export (${navigatedAway}) — the loop reloaded or jumped`);
       for (const w of d.warnings) { meta.warnings.push(w); if (shownWarnings++ < 25) warnLine(`${tag}${w}`); }
       if (d.errors.length && meta.pageErrors < 15) for (const e of d.errors.slice(0, 3)) say(`${tag}callback error: ${String(e).split("\n")[0].slice(0, 200)}`);
@@ -313,6 +354,7 @@ async function renderRange(o, { videoOut, lossless, label = "" }) {
       meta.settleTimeouts = d.totals.settleTimeouts;
       meta.seekTimeouts = d.totals.seekTimeouts;
       if (d.wantedPcm.length) await loadPcm(d.wantedPcm);
+      if (!probe) await checkTitle(d);
       return d;
     }
 
@@ -342,6 +384,7 @@ async function renderRange(o, { videoOut, lossless, label = "" }) {
     const src = d.main.src;
     const gen = d.main.generation;
     const duration = d.main.duration;
+    if (probe) return { probe: true, src, duration, tmp };
     if (!d.main.analysed) warnLine("the playing audio is not wired to an AnalyserNode — audio-reactive layers will read silence");
     say(`${tag}track started at virtual ${(d.nowMs / 1000).toFixed(2)}s: ${short(src)} (${duration.toFixed(2)} s)`);
     if (o.to !== null && o.to > duration) warnLine(`--to=${o.to} is past the end of the track (${duration.toFixed(2)} s) — clamped`);
@@ -385,35 +428,53 @@ async function renderRange(o, { videoOut, lossless, label = "" }) {
     const capStart = Date.now();
     let frames = 0;
     lastPrint = 0;
+    const tm = { step: 0, grab: 0, write: 0 }; // where a frame's time goes (ms totals)
+    let tq = Date.now();
     for (let i = 0; i < plan.count; i++) {
+      tq = Date.now();
       if (i > 0) d = await step();
+      tm.step += Date.now() - tq;
       const m = d.main;
       if (!m || m.src !== src || m.generation !== gen) die(`frame ${i}: the track changed under the export (now ${short(m?.src)}) — the loop moved on`);
       const expected = t0 + i / fps;
+      // the loop pauses each track a beat before its natural end (the outro /
+      // hand-off) — the track is over: end the export cleanly there
+      if (!m.playing && !m.ended && m.t >= duration - TAIL_PAUSE_S) {
+        warnLine(`the app paused the track at ${m.t.toFixed(3)}s, ${(duration - m.t).toFixed(2)}s before its end (the loop's outro) — the export ends after ${frames} frames`);
+        meta.endedByOutroPause = m.t;
+        break;
+      }
       if (!onGrid(m.t, expected, fps)) {
         if (m.ended) { warnLine(`track ended at ${m.t.toFixed(3)}s — stopping after ${frames} frames`); break; }
         die(`frame ${i}: track time ${m.t.toFixed(4)}s ≠ expected ${expected.toFixed(4)}s — the app seeked or paused the track mid-range; the audio would desync`);
       }
       if (!m.playing && !m.ended) die(`frame ${i}: the track is paused at ${m.t.toFixed(3)}s`);
+      tq = Date.now();
       const img = await grab();
-      if (i === 0 && o.capture === "png") {
-        const sz = pngSize(img);
+      tm.grab += Date.now() - tq;
+      if (i === 0) {
+        const sz = frameSize(img);
         if (!sz || sz.width !== res.width || sz.height !== res.height) {
-          die(`captured frame is ${sz ? `${sz.width}x${sz.height}` : "not a PNG"}, expected ${res.width}x${res.height} — deviceScaleFactor not applied?`);
+          die(`captured frame is ${sz ? `${sz.width}x${sz.height}` : "unreadable"}, expected ${res.width}x${res.height} — deviceScaleFactor not applied?`);
         }
       }
+      tq = Date.now();
       await encoder.write(img);
+      tm.write += Date.now() - tq;
       frames++;
       if (Date.now() - lastPrint > 5000 || i === plan.count - 1) {
         lastPrint = Date.now();
         const per = (Date.now() - capStart) / 1000 / frames;
-        say(`${tag}frame ${frames}/${plan.count} (${((100 * frames) / plan.count).toFixed(1)}%) · track ${m.t.toFixed(2)}s · ${per.toFixed(2)} s/frame · ETA ${fmtDuration(per * (plan.count - frames))} · settle timeouts ${d.totals.settleTimeouts}`);
+        say(`${tag}frame ${frames}/${plan.count} (${((100 * frames) / plan.count).toFixed(1)}%) · track ${m.t.toFixed(2)}s · ${per.toFixed(2)} s/frame · ETA ${fmtDuration(per * (plan.count - frames))} · step/grab/encode ${(tm.step / frames / 1000).toFixed(2)}/${(tm.grab / frames / 1000).toFixed(2)}/${(tm.write / frames / 1000).toFixed(2)} s · settle timeouts ${d.totals.settleTimeouts}`);
       }
       if (interrupted) { warnLine(`interrupted after ${frames} frames`); break; }
     }
     await encoder.close();
     encoder = null;
     meta.frames = frames;
+    if (expect && !titleSeen) warnLine(`the title "${o.expectName}" was not seen (range ended before 25 s of track) — journey identity unverified`);
+    meta.titleVerified = titleSeen && !!expect;
+    meta.secondsPerFrame = { total: (Date.now() - capStart) / 1000 / Math.max(1, frames), step: tm.step / 1000 / Math.max(1, frames), grab: tm.grab / 1000 / Math.max(1, frames), encodeWait: tm.write / 1000 / Math.max(1, frames) };
     meta.firstFrameTrackTime = t0;
     meta.trackSrc = src;
     meta.trackDuration = duration;
@@ -447,7 +508,7 @@ async function exportMode(o) {
   await checkServer(o);
   let r;
   try {
-    r = await renderRange(o, { videoOut: intermediate });
+    r = o.workers > 1 ? await renderParallel(o, intermediate) : await renderRange(o, { videoOut: intermediate });
   } catch (e) {
     if (existsSync(intermediate)) warnLine(`partial video (no audio) left at ${intermediate}`);
     throw e;
@@ -467,6 +528,57 @@ async function exportMode(o) {
   } finally {
     rmSync(r.tmp, { recursive: true, force: true });
   }
+}
+
+/**
+ * --workers=N: split the range into N contiguous frame chunks, each rendered
+ * by its own browser in SIMULATE mode (pre-rolled from the track start, so a
+ * chunk's first frame is the exact continuation of the previous chunk's
+ * last — the runs are deterministic), then concatenated losslessly.
+ */
+async function renderParallel(o, intermediate) {
+  const fps = o.fps;
+  if (o.warm !== "simulate") warnLine("--workers forces --warm=simulate (seek pre-roll would show at the chunk seams)");
+  const pr = await renderRange(o, { probe: true, label: "probe" });
+  rmSync(pr.tmp, { recursive: true, force: true });
+  const plan = planFrames({ from: o.from, to: o.to, fps, duration: pr.duration });
+  const n = Math.max(1, Math.min(o.workers, Math.floor(plan.count / (fps * 2)))); // ≥ 2 s per chunk
+  const edges = Array.from({ length: n + 1 }, (_, k) => plan.startFrame + Math.round((k * plan.count) / n));
+  say(`parallel: ${plan.count} frames in ${n} chunks (${edges.slice(0, -1).map((a, k) => `${(a / fps).toFixed(2)}–${(edges[k + 1] / fps).toFixed(2)}s`).join(", ")})`);
+  const parts = edges.slice(0, -1).map((a, k) => ({ a, b: edges[k + 1], file: `${intermediate}.part${k}.nut` }));
+  let results;
+  try {
+    results = await Promise.all(parts.map((p, k) =>
+      // stagger the launches a little so n browsers don't hydrate at once
+      new Promise((res) => setTimeout(res, k * 4000)).then(() =>
+        renderRange({ ...o, warm: "simulate", from: p.a / fps, to: p.b / fps }, { videoOut: p.file, label: `w${k + 1}/${n}` }))));
+  } catch (e) {
+    for (const p of parts) rmSync(p.file, { force: true });
+    throw e;
+  }
+  results.forEach((r, k) => {
+    const want = parts[k].b - parts[k].a;
+    if (r.frames !== want && !r.interrupted) die(`chunk ${k + 1} captured ${r.frames} frames, expected ${want}`);
+    if (!onGrid(r.t0, parts[k].a / fps, fps)) die(`chunk ${k + 1} started at track ${r.t0.toFixed(4)}s, expected ${(parts[k].a / fps).toFixed(4)}s — seams would desync`);
+  });
+  const list = `${intermediate}.concat.txt`;
+  writeFileSync(list, parts.map((p) => `file '${p.file.replace(/'/g, "'\\''")}'`).join("\n") + "\n");
+  await runFfmpeg(["-hide_banner", "-loglevel", "error", "-y", "-f", "concat", "-safe", "0", "-i", list, "-c", "copy", intermediate]);
+  rmSync(list, { force: true });
+  for (const p of parts) rmSync(p.file, { force: true });
+  for (const r of results.slice(1)) rmSync(r.tmp, { recursive: true, force: true });
+  const frames = results.reduce((s, r) => s + r.frames, 0);
+  const r0 = results[0];
+  const meta = {
+    ...r0.meta,
+    frames,
+    workers: n,
+    chunks: results.map((r, k) => ({ from: parts[k].a / fps, to: parts[k].b / fps, frames: r.frames, secondsPerFrame: r.meta.secondsPerFrame, settleTimeouts: r.meta.settleTimeouts, seekTimeouts: r.meta.seekTimeouts, warnings: r.meta.warnings.length })),
+    settleTimeouts: results.reduce((s, r) => s + r.meta.settleTimeouts, 0),
+    seekTimeouts: results.reduce((s, r) => s + r.meta.seekTimeouts, 0),
+    pageErrors: results.reduce((s, r) => s + r.meta.pageErrors, 0),
+  };
+  return { frames, t0: r0.t0, durationS: frames / fps, audioFile: r0.audioFile, meta, tmp: r0.tmp, interrupted: results.some((r) => r.interrupted) };
 }
 
 async function verifyMode(o) {
