@@ -83,7 +83,8 @@ void main() {
   speed = 0.5 + 0.5 * speed;
 
   // Splash particles
-  float splash = snoise(distorted * 10.0 + vec2(t * 8.0));
+  // (pass 3, exact: the splash is multiplied by the foam — skip its noise where there is none)
+  float splash = foam > 0.0 ? snoise(distorted * 10.0 + vec2(t * 8.0)) : 0.0;
   splash = pow(max(splash, 0.0), 6.0) * foam * u_treble * 0.5;
 
   // ── Color ──

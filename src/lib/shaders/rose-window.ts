@@ -7,7 +7,8 @@ import { pointLightTableF, LIGHT_HEADER } from "./prepass-pack";
 // PERF (2026-10-13, the 120 fps law): rendered from a per-frame light table
 // (prepass-pack.ts pointLightTableF — 32-bit, one fetch per light): the
 // identical per-light math, computed once per frame instead of once per
-// light per pixel. ORIG (below) is the reference and the no-float fallback.
+// light per pixel — and tiled (pass 3): a pixel sums only the lights near its
+// screen tile, the rest come from a smooth far-field grid. ORIG (below) is the reference and the no-float fallback.
 const LIGHT = `
 
     vec2 c = vec2(-0.08, 0.05);
@@ -22,10 +23,11 @@ const LIGHT = `
     lw = 0.00038 * tw * 0.3;
 `;
 
-const T = pointLightTableF({ n: 64, header: LIGHT_HEADER, light: LIGHT, eConst: "0.00012" });
+const T = pointLightTableF({ n: 64, header: LIGHT_HEADER, light: LIGHT, eConst: "0.00012", tiled: { px: 64, k: 32, r1: 0.06, r2: 0.12, far: 8 } });
 export const FRAG = T.FRAG;
 export const PRE = T.PRE;
 export const PRE_SIZE = T.SIZE;
+export const PRE_THEN = T.THEN;
 
 /** The original single-pass shader — the fallback without float render
  *  targets, and the reference the table is A/B'd against. */

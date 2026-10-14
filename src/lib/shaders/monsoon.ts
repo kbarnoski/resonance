@@ -1,6 +1,14 @@
 import { U, SMOOTH_NOISE, VISIONARY_PALETTE, ROT2 } from "./shared";
+import { deriveFrag, fieldGrid, FBM_SPLIT } from "./prepass-pack";
 
-export const FRAG =
+// PERF (2026-10-14, the 120 fps law, pass 3): the clouds' and the mist's
+// fbm octaves 1-4 (smooth: ~30 px+) are computed once per 3x3 pixels in a
+// float prepass (PRE, the same code at the same points) and interpolated —
+// octaves 5-6 stay per pixel; the eight splash centres depend on time only
+// (a table row). ORIG — the single-pass shader, which skips each noise
+// exactly where its mask is 0 — is the reference and the no-float fallback.
+// A/B: scripts/perf/shader-ab.mjs.
+export const ORIG =
   U +
   SMOOTH_NOISE +
   VISIONARY_PALETTE +
@@ -145,3 +153,50 @@ void main() {
   gl_FragColor = vec4(color, 1.0);
 }
 `;
+
+const GRID = fieldGrid(1, 1);
+export const PRE_SCALE = 1 / 3;
+
+/** Field = octaves 1-4 of (cloud1, cloud2, mist); table row 0 = splash i (x, y). */
+export const PRE =
+  U +
+  SMOOTH_NOISE +
+  FBM_SPLIT +
+  GRID.pre +
+  `
+void main() {
+  float block, row;
+  vec2 fc = preTexel(block, row);
+  float t = u_time * 0.1;
+  if (block < 0.0) {
+    float fs = fc.x;
+      vec2 center = vec2(
+        snoise(vec2(fs * 17.3, floor(u_time * 3.0 + fs))) * 3.0,
+        snoise(vec2(fs * 31.7, floor(u_time * 3.0 + fs) + 100.0)) * 0.5
+      );
+    gl_FragColor = vec4(center, 0.0, 1.0);
+    return;
+  }
+  vec2 uv = (fc - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y);
+  vec2 cloudUV = uv * 2.0 + vec2(t * 0.5, 0.0);
+  gl_FragColor = vec4(
+    fbmLow(cloudUV * 1.5 + vec2(0.0, t * 0.2)),
+    fbmLow(cloudUV * 2.5 + vec2(t * 0.3, -t * 0.1)),
+    fbmLow(vec2(uv.x * 3.0 + t, uv.y * 2.0) * 2.0),
+    1.0);
+}
+`;
+
+export const FRAG = deriveFrag(ORIG, [
+  ["void main() {", FBM_SPLIT + GRID.main + `
+void main() {
+  vec4 field = preField(0.0);`],
+  [`    cloud1 = fbm(cloudUV * 1.5 + vec2(0.0, t * 0.2));
+    cloud2 = fbm(cloudUV * 2.5 + vec2(t * 0.3, -t * 0.1));`, `    cloud1 = field.x + fbmHigh(cloudUV * 1.5 + vec2(0.0, t * 0.2));
+    cloud2 = field.y + fbmHigh(cloudUV * 2.5 + vec2(t * 0.3, -t * 0.1));`],
+  [`  float mistNoise = uv.y < 0.1 ? fbm(vec2(uv.x * 3.0 + t, uv.y * 2.0) * 2.0) * 0.5 + 0.5 : 0.0;`, "  float mistNoise = uv.y < 0.1 ? (field.z + fbmHigh(vec2(uv.x * 3.0 + t, uv.y * 2.0) * 2.0)) * 0.5 + 0.5 : 0.0;"],
+  [`      vec2 center = vec2(
+        snoise(vec2(fs * 17.3, floor(u_time * 3.0 + fs))) * 3.0,
+        snoise(vec2(fs * 31.7, floor(u_time * 3.0 + fs) + 100.0)) * 0.5
+      );`, "      vec2 center = preTable(fs, 0.0).xy; // PRE: time-only"],
+], "monsoon");

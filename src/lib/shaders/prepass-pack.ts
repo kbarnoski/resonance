@@ -145,7 +145,7 @@ float palT(float seed) { return seed + u_time * 0.012 + u_mid * 0.18; }
  * helpers. Without float targets the layer runs the shader's ORIG
  * (SHADER_PREPASS fallback).
  */
-const LIGHT_PRE = (header: string, light: string, e: string) => U + header + `
+export const LIGHT_PRE = (header: string, light: string, e: string) => U + header + `
 void main() {
   float fi = floor(gl_FragCoord.x);
   vec2 lp = vec2(0.0);
@@ -158,9 +158,151 @@ ${light}
   gl_FragColor = gl_FragCoord.y < 1.0 ? vec4(lp, lw, le) : vec4(lt, 1.0);
 }
 `;
-export function pointLightTableF(o: { n: number; header: string; light: string; eConst?: string }) {
+export interface TiledLights {
+  /** tile edge, in canvas pixels */
+  px: number;
+  /** lights a tile lists before it falls back to all of them (exact either way) */
+  k: number;
+  /** a light is NEAR within r1 of a pixel, fully FAR beyond r2 (uv units) */
+  r1: number;
+  r2: number;
+  /** far-field grid scale (1/n of the canvas) */
+  far: number;
+  /** one light's glow in terms of `a` (x, y, gain, softening) and `d2`
+   *  (squared distance) — default `a.z / (d2 + a.w)` */
+  glow?: string;
+  /** the shader's uv: "full" (default) = (fc·2 − res) / min(res), "half" = (fc − res/2) / min(res) */
+  uv?: "full" | "half";
+}
+
+/**
+ * TILED point lights (2026-10-14, the 120 fps law, pass 3): the light table
+ * as pointLightTableF, then two more prepass stages so a pixel no longer
+ * loops over every light —
+ *   stage 1 (tiles): for each px x px screen tile, the lights within r2 of
+ *     it (count + up to k copied lights); a tile with more falls back to all;
+ *   stage 2 (far field): on a coarse corner-aligned grid, every light's glow
+ *     weighted by a quintic ramp f(d) = 0 inside r1 … 1 beyond r2 — a smooth
+ *     field (no light cores in it), bilinearly interpolated;
+ *   main: far field + each listed light's glow x (1 − f(d)).
+ * Near + far is every light's glow exactly; only the far field's bilinear
+ * interpolation differs (A/B'd per shader, ≤ 1-2 of 255).
+ */
+export function tiledStages(n: number, t: TiledLights) {
+  const N = `${n}.0`, T = t.px.toFixed(1), K = t.k, ROWS = (1 + 2 * t.k).toFixed(1);
+  const R1 = t.r1.toFixed(4), R2 = t.r2.toFixed(4);
+  const GLOW = t.glow ?? "a.z / (d2 + a.w)";
+  const UVF = t.uv === "half" ? "(p - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y)" : "(p * 2.0 - u_resolution) / min(u_resolution.x, u_resolution.y)";
+  const FARW = `
+vec2 plUv(vec2 p) { return ${UVF}; }
+float plGlow(vec4 a, float d2) { return ${GLOW}; }
+float farW(float d) {
+  float x = clamp((d - ${R1}) / (${R2} - ${R1}), 0.0, 1.0);
+  return x * x * x * (x * (x * 6.0 - 15.0) + 10.0);
+}
+vec4 plLight(float i) { return texture2D(u_pre, vec2((i + 0.5) / ${N}, 0.25)); }
+vec3 plTint(float i) { return texture2D(u_pre, vec2((i + 0.5) / ${N}, 0.75)).rgb; }
+`;
+  const BIN = U + `
+uniform sampler2D u_pre;
+` + FARW + `
+void main() {
+  float tx = floor(gl_FragCoord.x), r = floor(gl_FragCoord.y);
+  float ty = floor((r + 0.5) / ${ROWS});
+  float j = r - ty * ${ROWS};
+  vec2 p0 = vec2(tx, ty) * ${T};
+  vec2 p1 = min(p0 + ${T}, u_resolution);
+  vec2 lo = plUv(p0);
+  vec2 hi = plUv(p1);
+  float want = j < 0.5 ? -1.0 : floor((j - 1.0) / 2.0);
+  float part = j - 1.0 - want * 2.0;
+  float c = 0.0;
+  for (int i = 0; i < ${n}; i++) {
+    float fi = float(i);
+    vec4 a = plLight(fi);
+    if (a.z <= 0.0) continue;
+    if (length(a.xy - clamp(a.xy, lo, hi)) >= ${R2}) continue; // no pixel of the tile is near
+    if (c == want) { gl_FragColor = part < 0.5 ? a : vec4(plTint(fi), 1.0); return; }
+    c += 1.0;
+  }
+  gl_FragColor = vec4(c, 0.0, 0.0, 1.0); // the count (row 0), or an unused slot
+}
+`;
+  const FAR = U + `
+uniform sampler2D u_pre;
+uniform vec2 u_preres2;
+` + FARW + `
+void main() {
+  // corner-aligned: the grid's first / last texel centres sit on the canvas's
+  vec2 fc = (gl_FragCoord.xy - 0.5) * (u_resolution - 1.0) / (u_preres2 - 1.0) + 0.5;
+  vec2 uv = plUv(fc);
+  vec3 col = vec3(0.0);
+  for (int i = 0; i < ${n}; i++) {
+    float fi = float(i);
+    vec4 a = plLight(fi);
+    if (a.z <= 0.0) continue;
+    vec2 dd = uv - a.xy;
+    float d2 = dot(dd, dd);
+    col += plTint(fi) * plGlow(a, d2) * farW(sqrt(d2));
+  }
+  gl_FragColor = vec4(col, 1.0);
+}
+`;
+  // the main pass: the far field + the tile's near lights
+  const SUM = `
+uniform sampler2D u_pre;
+uniform sampler2D u_pre1;
+uniform sampler2D u_pre2;
+uniform vec2 u_preres1;
+uniform vec2 u_preres2;
+` + FARW + `
+vec3 plSum(vec2 uv) {
+  vec2 g = (gl_FragCoord.xy - 0.5) * (u_preres2 - 1.0) / (u_resolution - 1.0) + 0.5;
+  vec3 col = texture2D(u_pre2, g / u_preres2).rgb;
+  vec2 tile = floor(gl_FragCoord.xy / ${T});
+  float base = tile.y * ${ROWS};
+  float cnt = texture2D(u_pre1, (vec2(tile.x, base) + 0.5) / u_preres1).x;
+  if (cnt > ${K}.0) {
+    for (int i = 0; i < ${n}; i++) {
+      float fi = float(i);
+      vec4 a = plLight(fi);
+      if (a.z <= 0.0) continue;
+      vec2 dd = uv - a.xy;
+      float d2 = dot(dd, dd);
+      col += plTint(fi) * plGlow(a, d2) * (1.0 - farW(sqrt(d2)));
+    }
+  } else {
+    for (int s = 0; s < ${K}; s++) {
+      float fs = float(s);
+      if (fs >= cnt) break;
+      vec4 a = texture2D(u_pre1, (vec2(tile.x, base + 1.0 + 2.0 * fs) + 0.5) / u_preres1);
+      vec3 tint = texture2D(u_pre1, (vec2(tile.x, base + 2.0 + 2.0 * fs) + 0.5) / u_preres1).rgb;
+      vec2 dd = uv - a.xy;
+      float d2 = dot(dd, dd);
+      col += tint * plGlow(a, d2) * (1.0 - farW(sqrt(d2)));
+    }
+  }
+  return col;
+}
+`;
+  const THEN = [
+    { frag: BIN, scale: 0, tiles: { px: t.px, rows: 1 + 2 * t.k }, nearest: true, float: true },
+    { frag: FAR, scale: 1 / t.far, float: true },
+  ];
+  return { SUM, THEN };
+}
+
+export function pointLightTableF(o: { n: number; header: string; light: string; eConst?: string; tiled?: TiledLights }) {
   const PRE = LIGHT_PRE(o.header, o.light, o.eConst ?? "0.0");
-  const FRAG = U + `
+  const tiled = o.tiled ? tiledStages(o.n, o.tiled) : null;
+  const FRAG = tiled ? U + tiled.SUM + `
+void main() {
+  vec2 uv = (gl_FragCoord.xy * 2.0 - u_resolution.xy) / min(u_resolution.x, u_resolution.y);
+  vec3 col = plSum(uv);
+  col += (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453) - 0.5) / 128.0;
+  gl_FragColor = vec4(col, 1.0);
+}
+` : U + `
 uniform sampler2D u_pre;
 void main() {
   vec2 uv = (gl_FragCoord.xy * 2.0 - u_resolution.xy) / min(u_resolution.x, u_resolution.y);
@@ -177,7 +319,7 @@ void main() {
   gl_FragColor = vec4(col, 1.0);
 }
 `;
-  return { PRE, FRAG, SIZE: [o.n, 2] as const };
+  return { PRE, FRAG, SIZE: [o.n, 2] as const, THEN: tiled?.THEN };
 }
 
 /**
@@ -197,34 +339,3 @@ void main() {
   gl_FragColor = texture2D(u_pre, gl_FragCoord.xy / u_resolution);
 }
 `;
-
-/**
- * The light table for shaders whose lights are only PART of the picture (and
- * may use their own uv convention or falloff): PRE as pointLightTableF's
- * (row 0 = x, y, gain; row 1 = colour), plus `plSum(uv)` — the summed light
- * for the main pass to use in place of its loop. `glow` is the GLSL falloff
- * of one light: in terms of `w` (gain), `dd2` (squared distance) and `fi`
- * (the light's index). Lights with gain 0 are skipped.
- */
-export function lightTable(o: { n: number; header: string; light: string; glow: string }) {
-  const PRE = LIGHT_PRE(o.header, o.light, "0.0");
-  const SUM = `
-uniform sampler2D u_pre;
-vec3 plSum(vec2 uv) {
-  vec3 col = vec3(0.0);
-  for (int i = 0; i < ${o.n}; i++) {
-    float fi = float(i);
-    float u = (fi + 0.5) / ${o.n}.0;
-    vec4 a = texture2D(u_pre, vec2(u, 0.25));
-    float w = a.z;
-    if (w <= 0.0) continue;
-    vec3 tint = texture2D(u_pre, vec2(u, 0.75)).rgb;
-    vec2 dd = uv - a.xy;
-    float dd2 = dot(dd, dd);
-    col += tint * (${o.glow});
-  }
-  return col;
-}
-`;
-  return { PRE, SUM, SIZE: [o.n, 2] as const };
-}

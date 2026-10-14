@@ -260,8 +260,9 @@ void main() {
   vec4 field0 = preField(0.0);
   vec4 field1 = preField(1.0);
   vec4 field2 = preField(2.0);`],
-  ["float tendrilA = fbm(uv * 6.0 + AtoB * t * 2.0);", "float tendrilA = field2.x + fbmHigh3(uv * 6.0 + AtoB * t * 2.0);"],
-  ["float tendrilB = fbm(uv * 6.0 + BtoA * t * 2.0 + 7.0);", "float tendrilB = field2.y + fbmHigh3(uv * 6.0 + BtoA * t * 2.0 + 7.0);"],
+  // (pass 3, exact: a tendril only shows through its reach, 0 outside it)
+  ["float tendrilA = fbm(uv * 6.0 + AtoB * t * 2.0);", "float tendrilA = field2.x + (reachA > 0.0 ? fbmHigh3(uv * 6.0 + AtoB * t * 2.0) : 0.0);"],
+  ["float tendrilB = fbm(uv * 6.0 + BtoA * t * 2.0 + 7.0);", "float tendrilB = field2.y + (reachB > 0.0 ? fbmHigh3(uv * 6.0 + BtoA * t * 2.0 + 7.0) : 0.0);"],
   ["float sharedField = fbm(uv * 2.0 + vec2(t * 0.1, -t * 0.08));", "float sharedField = field2.z;"],
   [`  vec2 warpA = vec2(
     snoise(uvA * 3.0 + vec2(t * 0.4, 0.0)),
@@ -272,7 +273,9 @@ void main() {
     snoise(uvB * 4.0 + vec2(t * 0.25, t * 0.3) + 15.0)
   );`, "  vec2 warpB = field0.zw;"],
   ["float texA = fbm(uvA * 5.0 + warpA * 2.0 + t * 0.2);", "float texA = field1.x + fbmHigh3(uvA * 5.0 + warpA * 2.0 + t * 0.2);"],
-  ["float texA2 = fbm(uvA * 8.0 + vec2(t * 0.3, -t * 0.15));", "float texA2 = field1.y + fbmHigh3(uvA * 8.0 + vec2(t * 0.3, -t * 0.15));"],
+  // (pass 3, exact: texA2 / texB2 only colour the flow / structure lines,
+  // which are multiplied by their organism's fill — 0 beyond dist 0.02)
+  ["float texA2 = fbm(uvA * 8.0 + vec2(t * 0.3, -t * 0.15));", "float texA2 = field1.y + (distA < 0.02 ? fbmHigh3(uvA * 8.0 + vec2(t * 0.3, -t * 0.15)) : 0.0);"],
   ["float texB = fbm(uvB * 6.0 + warpB * 1.5 - t * 0.15);", "float texB = field1.z + fbmHigh3(uvB * 6.0 + warpB * 1.5 - t * 0.15);"],
-  ["float texB2 = fbm(uvB * 10.0 + vec2(-t * 0.2, t * 0.25));", "float texB2 = field1.w + fbmHigh3(uvB * 10.0 + vec2(-t * 0.2, t * 0.25));"],
+  ["float texB2 = fbm(uvB * 10.0 + vec2(-t * 0.2, t * 0.25));", "float texB2 = field1.w + (distB < 0.02 ? fbmHigh3(uvB * 10.0 + vec2(-t * 0.2, t * 0.25)) : 0.0);"],
 ], "symbiosis"));

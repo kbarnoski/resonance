@@ -13,9 +13,11 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { SHADERS, SHADER_PREPASS, WHOLE_SHADER_SCALE, prepassFor } from "./index";
+import { stageSize } from "./prepass-gl";
 import { SCRIPTED_TAKES } from "@/lib/journeys/pinned-takes";
 
 const vis = readFileSync("src/components/audio/visualizer.tsx", "utf8");
+const gl = readFileSync("src/lib/shaders/prepass-gl.ts", "utf8");
 
 describe("shader prepasses", () => {
   const entries = Object.entries(SHADER_PREPASS);
@@ -64,17 +66,41 @@ describe("shader prepasses", () => {
       expect(pre!.fallback, mode).not.toBe(SHADERS[mode as keyof typeof SHADERS]);
     }
   });
-  it("the visualizer falls back to the original when float targets are missing, and sizes blocks + table rows", () => {
-    expect(vis).toMatch(/if \(prepass\?\.float && !floatPrepassOk\(gl, !!prepass\.nearest\)\) \{\s*fragSrc = prepass\.fallback \?\? fragShader;\s*prepass = null;/);
-    expect(vis).toMatch(/\* \(p\.blocks \?\? 1\) \+ \(p\.extraRows \?\? 0\)/);
-    expect(vis).toMatch(/if \(p\.columns\) return \[p\.columns, ch\];/);
-    // the target is allocated with the compile, not on the first visible frame
-    expect(vis).toMatch(/if \(prepass && canvas\.width > 0 && canvas\.height > 0\) ensurePreTarget\(canvas\.width, canvas\.height\);/);
-    // WHOLE: the layer's own program only upsamples; the small target is the shader's resolution
+  it("the visualizer falls back to the original when float targets are missing, and runs every stage through prepass-gl", () => {
+    expect(vis).toMatch(/if \(prepass && !prepassSupported\(gl, prepass\)\) \{\s*fragSrc = prepass\.fallback \?\? fragShader;\s*prepass = null;/);
+    // WHOLE: the layer's own program only upsamples
     expect(vis).toMatch(/if \(prepass\?\.whole\) fragSrc = UPSAMPLE_FRAG;/);
-    expect(vis).toMatch(/gl\.uniform2f\(preU\.u_resolution, prepass!\.whole \? pw : canvas\.width, prepass!\.whole \? ph : canvas\.height\);/);
-    expect(vis).toMatch(/prepass!\.float \? gl\.FLOAT : gl\.UNSIGNED_BYTE/);
-    expect(vis).toMatch(/if \(uPreresMain\) gl\.uniform2f\(uPreresMain, preW, preH\);/);
+    // the targets are allocated with the compile, not on the first visible frame
+    expect(vis).toMatch(/if \(pre && canvas\.width > 0 && canvas\.height > 0\) pre\.ensure\(canvas\.width, canvas\.height\);/);
+    expect(vis).toMatch(/if \(pre\) pre\.draw\(canvas\.width, canvas\.height, time, \[/);
+    expect(vis).toMatch(/gl\.useProgram\(program!\);\s*pre\?\.bindMain\(\);/);
+    // the chain: sizes (blocks + table rows, per-row columns, tiles), float targets, whole stages
+    expect(gl).toMatch(/\(st\.blocks \?\? 1\) \+ \(st\.extraRows \?\? 0\)/);
+    expect(gl).toMatch(/if \(st\.columns\) return \[st\.columns, ch\];/);
+    expect(gl).toMatch(/Math\.ceil\(cw \/ st\.tiles\.px\), Math\.ceil\(ch \/ st\.tiles\.px\) \* st\.tiles\.rows/);
+    expect(gl).toMatch(/st\.float \? gl\.FLOAT : gl\.UNSIGNED_BYTE/);
+    expect(gl).toMatch(/if \(stages\[k\]\.whole\) gl\.uniform2f\(u\.u_resolution, w, h\);/);
+  });
+  it("stage sizes at the kiosk's shader resolution", () => {
+    expect(stageSize({ frag: "", scale: 1 / 3, blocks: 2, extraRows: 1 }, 2268, 1473)).toEqual([756, 491 * 2 + 1]);
+    expect(stageSize({ frag: "", scale: 0, columns: 8 }, 2268, 1473)).toEqual([8, 1473]);
+    expect(stageSize({ frag: "", scale: 0, tiles: { px: 64, rows: 65 } }, 2268, 1473)).toEqual([36, 24 * 65]);
+    expect(stageSize({ frag: "", scale: 0, size: [80, 2] }, 2268, 1473)).toEqual([80, 2]);
+  });
+  it("tiled point lights: tiles list every light within r2 of the tile; near (1 - ramp) + far (ramp) = each light once", () => {
+    const tiled = Object.entries(SHADER_PREPASS).filter(([, p]) => p!.then?.length === 2);
+    expect(tiled.map(([m]) => m)).toEqual(expect.arrayContaining(["murmuration", "firefly-field", "meteor-rain", "pelagic", "vestige"]));
+    for (const [mode, p] of tiled) {
+      const [bin, far] = p!.then!;
+      expect(bin.tiles && bin.nearest && bin.float, mode).toBe(true);
+      expect(bin.frag, mode).toMatch(/if \(length\(a\.xy - clamp\(a\.xy, lo, hi\)\) >= /);
+      expect(far.float && far.scale > 0, mode).toBe(true);
+      expect(far.frag, mode).toMatch(/plGlow\(a, d2\) \* farW\(sqrt\(d2\)\)/);
+      const main = SHADERS[mode as keyof typeof SHADERS]!;
+      expect(main, mode).toMatch(/plGlow\(a, d2\) \* \(1\.0 - farW\(sqrt\(d2\)\)\)/);
+      // a tile that overflows its list sums every light (still exact)
+      expect(main, mode).toMatch(/if \(cnt > \d+\.0\) \{/);
+    }
   });
   it("only registered shaders sample a prepass (no FRAG reads an unbound u_pre)", () => {
     for (const [mode, frag] of Object.entries(SHADERS)) {
@@ -89,10 +115,11 @@ describe("shader prepasses", () => {
   it("the visualizer runs the prepass: same async compile, drawn before the shader, freed with it", () => {
     expect(vis).toMatch(/let prepass = prepassFor\(fragShader\);/);
     expect(vis).toMatch(/gl\.bindAttribLocation\(program!, 0, "a_position"\)/);
-    expect(vis).toMatch(/gl\.bindAttribLocation\(preProg!, 0, "a_position"\)/);
-    expect(vis).toMatch(/preProg && !gl\.getProgramParameter\(preProg, ext\.COMPLETION_STATUS_KHR\)/);
-    expect(vis).toMatch(/if \(preProg\) gl\.deleteProgram\(preProg\);/);
-    expect(vis).toMatch(/if \(preFbo\) gl\.deleteFramebuffer\(preFbo\);/);
+    expect(gl).toMatch(/gl\.bindAttribLocation\(prog, 0, "a_position"\)/);
+    expect(vis).toMatch(/!gl\.getProgramParameter\(program!, ext\.COMPLETION_STATUS_KHR\) \|\| pre\?\.compiling\(ext\)/);
+    expect(vis).toMatch(/const preErr = pre\?\.linkError\(\);/);
+    expect(vis).toMatch(/pre\?\.dispose\(\);/);
+    expect(gl).toMatch(/for \(const f of fbo\) if \(f\) gl\.deleteFramebuffer\(f\);/);
   });
 });
 

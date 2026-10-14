@@ -40,10 +40,11 @@ const LIGHT = `
     le = 0.00013;
 `;
 
-const T = pointLightTableF({ n: 126, header: HEADER, light: LIGHT, eConst: "0.00013" });
+const T = pointLightTableF({ n: 126, header: HEADER, light: LIGHT, eConst: "0.00013", tiled: { px: 64, k: 32, r1: 0.06, r2: 0.12, far: 8 } });
 export const FRAG = T.FRAG;
 export const PRE = T.PRE;
 export const PRE_SIZE = T.SIZE;
+export const PRE_THEN = T.THEN;
 
 /** The original single-pass shader — the fallback without float render
  *  targets, and the reference the table is A/B'd against. */

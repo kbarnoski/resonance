@@ -2,7 +2,7 @@ import { FRAG as DUSK_FRAG } from "./dusk";
 import { FRAG as OCEAN_FRAG } from "./ocean";
 import { FRAG as FLUX_FRAG } from "./flux";
 // Elemental (new)
-import { FRAG as MONSOON_FRAG } from "./monsoon";
+import { FRAG as MONSOON_FRAG, PRE as MONSOON_PRE, PRE_SCALE as MONSOON_PRE_SCALE, ORIG as MONSOON_ORIG } from "./monsoon";
 import { FRAG as MAGMA_FRAG, PRE as MAGMA_PRE, PRE_SCALE as MAGMA_PRE_SCALE, ORIG as MAGMA_ORIG } from "./magma";
 import { FRAG as TYPHOON_FRAG } from "./typhoon";
 
@@ -72,7 +72,7 @@ import { FRAG as HALO_FRAG } from "./halo";
 // Visionary (new batch)
 import { FRAG as GNOSIS_FRAG } from "./gnosis";
 import { FRAG as CHAKRA_FRAG } from "./chakra";
-import { FRAG as VESTIGE_FRAG, PRE as VESTIGE_PRE, PRE_SIZE as VESTIGE_PRE_SIZE, ORIG as VESTIGE_ORIG } from "./vestige";
+import { FRAG as VESTIGE_FRAG, PRE as VESTIGE_PRE, PRE_SIZE as VESTIGE_PRE_SIZE, ORIG as VESTIGE_ORIG, PRE_THEN as VESTIGE_PRE_THEN } from "./vestige";
 import { FRAG as STIGMATA_FRAG } from "./stigmata";
 import { FRAG as AUREOLE_FRAG } from "./aureole";
 import { FRAG as APOPHATIC_FRAG } from "./apophatic";
@@ -123,18 +123,18 @@ import { FRAG as DELUGE_FRAG } from "./deluge";
 import { FRAG as SPARKLER_FRAG } from "./sparkler";
 import { FRAG as COMET_SWARM_FRAG } from "./comet-swarm";
 import { FRAG as EMBER_FOUNTAIN_FRAG } from "./ember-fountain";
-import { FRAG as FIREFLY_FIELD_FRAG, PRE as FIREFLY_FIELD_PRE, PRE_SIZE as FIREFLY_FIELD_PRE_SIZE, ORIG as FIREFLY_FIELD_ORIG } from "./firefly-field";
-import { FRAG as RIBBON_OF_LIGHT_FRAG, PRE as RIBBON_OF_LIGHT_PRE, PRE_SIZE as RIBBON_OF_LIGHT_PRE_SIZE, ORIG as RIBBON_OF_LIGHT_ORIG } from "./ribbon-of-light";
-import { FRAG as ORBIT_WEAVER_FRAG, PRE as ORBIT_WEAVER_PRE, PRE_SIZE as ORBIT_WEAVER_PRE_SIZE, ORIG as ORBIT_WEAVER_ORIG } from "./orbit-weaver";
-import { FRAG as METEOR_RAIN_FRAG, PRE as METEOR_RAIN_PRE, PRE_SIZE as METEOR_RAIN_PRE_SIZE, ORIG as METEOR_RAIN_ORIG } from "./meteor-rain";
-import { FRAG as MURMURATION_FRAG, PRE as MURMURATION_PRE, PRE_SIZE as MURMURATION_PRE_SIZE, ORIG as MURMURATION_ORIG } from "./murmuration";
+import { FRAG as FIREFLY_FIELD_FRAG, PRE as FIREFLY_FIELD_PRE, PRE_SIZE as FIREFLY_FIELD_PRE_SIZE, ORIG as FIREFLY_FIELD_ORIG, PRE_THEN as FIREFLY_FIELD_PRE_THEN } from "./firefly-field";
+import { FRAG as RIBBON_OF_LIGHT_FRAG, PRE as RIBBON_OF_LIGHT_PRE, PRE_SIZE as RIBBON_OF_LIGHT_PRE_SIZE, ORIG as RIBBON_OF_LIGHT_ORIG, PRE_THEN as RIBBON_OF_LIGHT_PRE_THEN } from "./ribbon-of-light";
+import { FRAG as ORBIT_WEAVER_FRAG, PRE as ORBIT_WEAVER_PRE, PRE_SIZE as ORBIT_WEAVER_PRE_SIZE, ORIG as ORBIT_WEAVER_ORIG, PRE_THEN as ORBIT_WEAVER_PRE_THEN } from "./orbit-weaver";
+import { FRAG as METEOR_RAIN_FRAG, PRE as METEOR_RAIN_PRE, PRE_SIZE as METEOR_RAIN_PRE_SIZE, ORIG as METEOR_RAIN_ORIG, PRE_THEN as METEOR_RAIN_PRE_THEN } from "./meteor-rain";
+import { FRAG as MURMURATION_FRAG, PRE as MURMURATION_PRE, PRE_SIZE as MURMURATION_PRE_SIZE, ORIG as MURMURATION_ORIG, PRE_THEN as MURMURATION_PRE_THEN } from "./murmuration";
 import { FRAG as WILL_O_WISP_FRAG, PRE as WILL_O_WISP_PRE, PRE_SIZE as WILL_O_WISP_PRE_SIZE, ORIG as WILL_O_WISP_ORIG } from "./will-o-wisp";
 import { FRAG as GALAXY_SEED_FRAG } from "./galaxy-seed";
 import { FRAG as PENDULUM_DUST_FRAG, PRE as PENDULUM_DUST_PRE, PRE_SIZE as PENDULUM_DUST_PRE_SIZE, ORIG as PENDULUM_DUST_ORIG } from "./pendulum-dust";
 import { FRAG as HELIX_STREAM_FRAG } from "./helix-stream";
-import { FRAG as FRACTURE_LIGHT_FRAG, PRE as FRACTURE_LIGHT_PRE, PRE_SIZE as FRACTURE_LIGHT_PRE_SIZE, ORIG as FRACTURE_LIGHT_ORIG } from "./fracture-light";
-import { FRAG as ROSE_WINDOW_FRAG, PRE as ROSE_WINDOW_PRE, PRE_SIZE as ROSE_WINDOW_PRE_SIZE, ORIG as ROSE_WINDOW_ORIG } from "./rose-window";
-import { FRAG as CASCADE_VEIL_FRAG, PRE as CASCADE_VEIL_PRE, PRE_SIZE as CASCADE_VEIL_PRE_SIZE, ORIG as CASCADE_VEIL_ORIG } from "./cascade-veil";
+import { FRAG as FRACTURE_LIGHT_FRAG, PRE as FRACTURE_LIGHT_PRE, PRE_SIZE as FRACTURE_LIGHT_PRE_SIZE, ORIG as FRACTURE_LIGHT_ORIG, PRE_THEN as FRACTURE_LIGHT_PRE_THEN } from "./fracture-light";
+import { FRAG as ROSE_WINDOW_FRAG, PRE as ROSE_WINDOW_PRE, PRE_SIZE as ROSE_WINDOW_PRE_SIZE, ORIG as ROSE_WINDOW_ORIG, PRE_THEN as ROSE_WINDOW_PRE_THEN } from "./rose-window";
+import { FRAG as CASCADE_VEIL_FRAG, PRE as CASCADE_VEIL_PRE, PRE_SIZE as CASCADE_VEIL_PRE_SIZE, ORIG as CASCADE_VEIL_ORIG, PRE_THEN as CASCADE_VEIL_PRE_THEN } from "./cascade-veil";
 import { FRAG as BINARY_STARS_FRAG, PRE as BINARY_STARS_PRE, PRE_SIZE as BINARY_STARS_PRE_SIZE, ORIG as BINARY_STARS_ORIG } from "./binary-stars";
 import { FRAG as RESONANT_RINGS_FRAG } from "./resonant-rings";
 import { FRAG as RIPPLE_FRAG } from "./ripple";
@@ -152,7 +152,7 @@ import { FRAG as RADIANCE_FRAG } from "./radiance";
 // Dark (new batch)
 import { FRAG as MAELSTROM_DARK_FRAG } from "./maelstrom-dark";
 import { FRAG as OBSIDIAN_FLOW_FRAG } from "./obsidian-flow";
-import { FRAG as FURNACE_FRAG } from "./furnace";
+import { FRAG as FURNACE_FRAG, PRE as FURNACE_PRE, PRE_SCALE as FURNACE_PRE_SCALE, ORIG as FURNACE_ORIG } from "./furnace";
 // Geometry (April 2026)
 import { FRAG as PARABOLA_FRAG } from "./parabola";
 import { FRAG as CASSEGRAIN_FRAG } from "./cassegrain";
@@ -169,7 +169,7 @@ import { FRAG as RULED_SURFACE_FRAG } from "./ruled-surface";
 import { FRAG as WAVEFORM_FRAG } from "./waveform";
 import { FRAG as EPICYCLOID_FRAG } from "./epicycloid";
 // Organic (April 2026)
-import { FRAG as PELAGIC_FRAG, PRE as PELAGIC_PRE, PRE_SIZE as PELAGIC_PRE_SIZE, ORIG as PELAGIC_ORIG } from "./pelagic";
+import { FRAG as PELAGIC_FRAG, PRE as PELAGIC_PRE, PRE_SIZE as PELAGIC_PRE_SIZE, ORIG as PELAGIC_ORIG, PRE_THEN as PELAGIC_PRE_THEN } from "./pelagic";
 import { FRAG as ZOOID_FRAG } from "./zooid";
 import { FRAG as LAMINAR_FRAG } from "./laminar";
 import { FRAG as WHORL_FRAG } from "./whorl";
@@ -538,17 +538,14 @@ export const LAB_SHADERS: ReadonlySet<string> = new Set<string>([]);
  * each split is A/B'd against its single-pass original (scripts/perf/
  * shader-ab.mjs); only the GPU cost changes. The visualizer runs it.
  */
-/** `size` + `nearest`: a fixed-size TABLE instead of a scaled image — point-
- *  light shaders compute each light's position + colour once per frame there
- *  (the identical GPU math, packed 16-bit — shaders/prepass-pack.ts) instead
- *  of once per light per PIXEL. */
-/** `float` + `fallback`: a FLOAT target (32-bit, exact values, linear
- *  filtering) — needs OES_texture_float + WEBGL_color_buffer_float (+
- *  OES_texture_float_linear unless nearest); without them the layer runs
- *  `fallback`, the shader's original single-pass source. */
-export interface ShaderPrepass { frag: string; scale: number; size?: readonly [number, number]; nearest?: boolean; float?: boolean; fallback?: string; /** stacked field blocks (each round(H*scale) rows: 4 more values per texel) */ blocks?: number; /** table rows above the field blocks (time-only values, e.g. magma's sparks) */ extraRows?: number; /** the SHADER itself renders at `scale` (frag = its FRAG), the layer upsamples (prepass-pack.ts UPSAMPLE_FRAG) */ whole?: boolean; /** a per-ROW table: `columns` texels for every canvas row (values that depend on the pixel's row only) */ columns?: number }
+/** The prepass shape (stages, size rules, float + fallback) and its GL
+ *  runtime live in ./prepass-gl.ts — shared by the visualizer and the rigs. */
+import type { ShaderPrepass } from "./prepass-gl";
+export type { ShaderPrepass, PrepassStage } from "./prepass-gl";
 export const SHADER_PREPASS: Partial<Record<VisualizerMode, ShaderPrepass>> = {
   starfield: { frag: STARFIELD_PRE, scale: 0.25 },
+  furnace: { frag: FURNACE_PRE, scale: FURNACE_PRE_SCALE, float: true, fallback: FURNACE_ORIG },
+  monsoon: { frag: MONSOON_PRE, scale: MONSOON_PRE_SCALE, extraRows: 1, float: true, fallback: MONSOON_ORIG },
   mycelium: { frag: MYCELIUM_PRE, scale: MYCELIUM_PRE_SCALE, float: true, fallback: MYCELIUM_ORIG },
   lightyear: { frag: LIGHTYEAR_PRE, scale: LIGHTYEAR_PRE_SCALE, blocks: 2, float: true, fallback: LIGHTYEAR_ORIG },
   "molten-vein": { frag: MOLTEN_VEIN_PRE, scale: MOLTEN_VEIN_PRE_SCALE, float: true, fallback: MOLTEN_VEIN_ORIG },
@@ -557,22 +554,22 @@ export const SHADER_PREPASS: Partial<Record<VisualizerMode, ShaderPrepass>> = {
   kelp: { frag: KELP_PRE, scale: 0, columns: KELP_PRE_COLUMNS, nearest: true, float: true, fallback: KELP_ORIG },
   "iron-forge": { frag: IRON_FORGE_PRE, scale: IRON_FORGE_PRE_SCALE, blocks: 3, float: true, fallback: IRON_FORGE_ORIG },
   hubble: { frag: HUBBLE_PRE, scale: HUBBLE_PRE_SCALE, extraRows: 2, float: true, fallback: HUBBLE_ORIG },
-  pelagic: { frag: PELAGIC_PRE, scale: 0, size: PELAGIC_PRE_SIZE, nearest: true, float: true, fallback: PELAGIC_ORIG },
-  vestige: { frag: VESTIGE_PRE, scale: 0, size: VESTIGE_PRE_SIZE, nearest: true, float: true, fallback: VESTIGE_ORIG },
+  pelagic: { frag: PELAGIC_PRE, scale: 0, size: PELAGIC_PRE_SIZE, nearest: true, float: true, fallback: PELAGIC_ORIG, then: PELAGIC_PRE_THEN },
+  vestige: { frag: VESTIGE_PRE, scale: 0, size: VESTIGE_PRE_SIZE, nearest: true, float: true, fallback: VESTIGE_ORIG, then: VESTIGE_PRE_THEN },
   symbiosis: { frag: SYMBIOSIS_PRE, scale: SYMBIOSIS_PRE_SCALE, blocks: 3, float: true, fallback: SYMBIOSIS_ORIG },
   "sun-veil": { frag: SUN_VEIL_PRE, scale: SUN_VEIL_PRE_SCALE, float: true, fallback: SUN_VEIL_ORIG },
-  "fracture-light": { frag: FRACTURE_LIGHT_PRE, scale: 0, size: FRACTURE_LIGHT_PRE_SIZE, nearest: true, float: true, fallback: FRACTURE_LIGHT_ORIG },
+  "fracture-light": { frag: FRACTURE_LIGHT_PRE, scale: 0, size: FRACTURE_LIGHT_PRE_SIZE, nearest: true, float: true, fallback: FRACTURE_LIGHT_ORIG, then: FRACTURE_LIGHT_PRE_THEN },
   "binary-stars": { frag: BINARY_STARS_PRE, scale: 0, size: BINARY_STARS_PRE_SIZE, nearest: true, float: true, fallback: BINARY_STARS_ORIG },
   "will-o-wisp": { frag: WILL_O_WISP_PRE, scale: 0, size: WILL_O_WISP_PRE_SIZE, nearest: true, float: true, fallback: WILL_O_WISP_ORIG },
-  "rose-window": { frag: ROSE_WINDOW_PRE, scale: 0, size: ROSE_WINDOW_PRE_SIZE, nearest: true, float: true, fallback: ROSE_WINDOW_ORIG },
+  "rose-window": { frag: ROSE_WINDOW_PRE, scale: 0, size: ROSE_WINDOW_PRE_SIZE, nearest: true, float: true, fallback: ROSE_WINDOW_ORIG, then: ROSE_WINDOW_PRE_THEN },
   "pendulum-dust": { frag: PENDULUM_DUST_PRE, scale: 0, size: PENDULUM_DUST_PRE_SIZE, nearest: true, float: true, fallback: PENDULUM_DUST_ORIG },
-  "cascade-veil": { frag: CASCADE_VEIL_PRE, scale: 0, size: CASCADE_VEIL_PRE_SIZE, nearest: true, float: true, fallback: CASCADE_VEIL_ORIG },
-  "orbit-weaver": { frag: ORBIT_WEAVER_PRE, scale: 0, size: ORBIT_WEAVER_PRE_SIZE, nearest: true, float: true, fallback: ORBIT_WEAVER_ORIG },
-  "ribbon-of-light": { frag: RIBBON_OF_LIGHT_PRE, scale: 0, size: RIBBON_OF_LIGHT_PRE_SIZE, nearest: true, float: true, fallback: RIBBON_OF_LIGHT_ORIG },
-  "meteor-rain": { frag: METEOR_RAIN_PRE, scale: 0, size: METEOR_RAIN_PRE_SIZE, nearest: true, float: true, fallback: METEOR_RAIN_ORIG },
-  "firefly-field": { frag: FIREFLY_FIELD_PRE, scale: 0, size: FIREFLY_FIELD_PRE_SIZE, nearest: true, float: true, fallback: FIREFLY_FIELD_ORIG },
-  murmuration: { frag: MURMURATION_PRE, scale: 0, size: MURMURATION_PRE_SIZE, nearest: true, float: true, fallback: MURMURATION_ORIG },
-  flame: { frag: FLAME_PRE, scale: FLAME_PRE_SCALE, blocks: 2, float: true, fallback: FLAME_ORIG },
+  "cascade-veil": { frag: CASCADE_VEIL_PRE, scale: 0, size: CASCADE_VEIL_PRE_SIZE, nearest: true, float: true, fallback: CASCADE_VEIL_ORIG, then: CASCADE_VEIL_PRE_THEN },
+  "orbit-weaver": { frag: ORBIT_WEAVER_PRE, scale: 0, size: ORBIT_WEAVER_PRE_SIZE, nearest: true, float: true, fallback: ORBIT_WEAVER_ORIG, then: ORBIT_WEAVER_PRE_THEN },
+  "ribbon-of-light": { frag: RIBBON_OF_LIGHT_PRE, scale: 0, size: RIBBON_OF_LIGHT_PRE_SIZE, nearest: true, float: true, fallback: RIBBON_OF_LIGHT_ORIG, then: RIBBON_OF_LIGHT_PRE_THEN },
+  "meteor-rain": { frag: METEOR_RAIN_PRE, scale: 0, size: METEOR_RAIN_PRE_SIZE, nearest: true, float: true, fallback: METEOR_RAIN_ORIG, then: METEOR_RAIN_PRE_THEN },
+  "firefly-field": { frag: FIREFLY_FIELD_PRE, scale: 0, size: FIREFLY_FIELD_PRE_SIZE, nearest: true, float: true, fallback: FIREFLY_FIELD_ORIG, then: FIREFLY_FIELD_PRE_THEN },
+  murmuration: { frag: MURMURATION_PRE, scale: 0, size: MURMURATION_PRE_SIZE, nearest: true, float: true, fallback: MURMURATION_ORIG, then: MURMURATION_PRE_THEN },
+  flame: { frag: FLAME_PRE, scale: FLAME_PRE_SCALE, blocks: 3, float: true, fallback: FLAME_ORIG },
   plankton: { frag: PLANKTON_PRE, scale: PLANKTON_PRE_SCALE, extraRows: 1, float: true, fallback: PLANKTON_ORIG },
   magma: { frag: MAGMA_PRE, scale: MAGMA_PRE_SCALE, extraRows: 1, float: true, fallback: MAGMA_ORIG },
   plasma: { frag: PLASMA_PRE, scale: 0, size: PLASMA_PRE_SIZE, nearest: true },

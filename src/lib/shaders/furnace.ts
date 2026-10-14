@@ -1,6 +1,14 @@
 import { U, SMOOTH_NOISE, VISIONARY_PALETTE, ROT2 } from "./shared";
+import { deriveFrag, fieldGrid } from "./prepass-pack";
 
-export const FRAG =
+// PERF (2026-10-14, the 120 fps law, pass 3): the heat field (a 4-octave
+// fbm, smooth on a ~90 px scale) is computed once per 3x3 pixels in a float
+// prepass (PRE, the same code at the same points) and interpolated. The
+// convection warp stays per pixel: the sparks are fract() of a noise of it,
+// and flip under any sub-pixel change of the warp (measured: a 2e-6
+// perturbation of the original moves ~300 spark pixels). ORIG
+// is the reference and the no-float fallback. A/B: scripts/perf/shader-ab.mjs.
+export const ORIG =
   U +
   SMOOTH_NOISE +
   VISIONARY_PALETTE +
@@ -110,3 +118,46 @@ void main() {
   gl_FragColor = vec4(color, 1.0);
 }
 `;
+
+const GRID = fieldGrid(1, 0);
+export const PRE_SCALE = 1 / 3;
+
+/** Field = (-, -, heatField). */
+export const PRE =
+  U +
+  SMOOTH_NOISE +
+  ROT2 +
+  `
+// Industrial furnace — deep inside, everything is hot pressure and red-black.
+// Convection currents, radiant heat, the weight of extreme temperature.
+
+float fbm4(vec2 p) {
+  float v = 0.0, a = 0.5;
+  mat2 r = mat2(0.8, 0.6, -0.6, 0.8);
+  for (int i = 0; i < 4; i++) { v += a * snoise(p); p = r * p * 2.0; a *= 0.5; }
+  return v;
+}
+` +
+  GRID.pre +
+  `
+void main() {
+  float block, row;
+  vec2 fc = preTexel(block, row);
+  vec2 uv = (fc - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y);
+  float t = u_time * 0.05;
+  vec2 convUV = uv + vec2(0.0, t * 0.3);
+  float conv1 = fbm4(convUV * 2.0 + vec2(t * 0.2, -t * 0.5));
+  float conv2 = fbm4(convUV * 3.0 * rot2(0.3) + vec2(-t * 0.15, -t * 0.4));
+  vec2 heatDistort = vec2(conv1, conv2) * 0.15;
+  vec2 distortedUV = uv + heatDistort;
+  float heatField = fbm4(distortedUV * 1.5 + vec2(t * 0.1, -t * 0.2));
+  gl_FragColor = vec4(conv1, conv2, heatField, 1.0);
+}
+`;
+
+export const FRAG = deriveFrag(ORIG, [
+  ["void main() {", GRID.main + `
+void main() {
+  vec4 field = preField(0.0);`],
+  [`  float heatField = fbm4(distortedUV * 1.5 + vec2(t * 0.1, -t * 0.2));`, "  float heatField = field.z;"],
+], "furnace");
