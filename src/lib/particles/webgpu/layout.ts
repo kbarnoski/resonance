@@ -15,7 +15,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 export type ScalarType = "f32" | "u32" | "i32";
-export type FieldType = ScalarType | "vec2f" | "vec3f" | "vec4f" | "mat4x4f" | { array: "vec4f"; n: number };
+export type FieldType = ScalarType | "vec2f" | "vec3f" | "vec4f" | "mat3x3f" | "mat4x4f" | { array: "vec4f"; n: number };
 
 export interface FieldDecl {
   name: string;
@@ -43,7 +43,7 @@ export function alignOf(t: FieldType): number {
   switch (t) {
     case "f32": case "u32": case "i32": return 4;
     case "vec2f": return 8;
-    case "vec3f": case "vec4f": case "mat4x4f": return 16;
+    case "vec3f": case "vec4f": case "mat3x3f": case "mat4x4f": return 16;
   }
 }
 
@@ -54,6 +54,7 @@ export function sizeOf(t: FieldType): number {
     case "vec2f": return 8;
     case "vec3f": return 12;
     case "vec4f": return 16;
+    case "mat3x3f": return 48;
     case "mat4x4f": return 64;
   }
 }

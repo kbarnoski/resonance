@@ -182,6 +182,51 @@ spatial pairing (`setImageLiteral` softness becomes a drift on the OT target).
 
 ## 3. API parity and fallback
 
+### 3.1 The parity engine: conductor + ported passes (phase A, built)
+
+Hand-porting 47 soul laws, every force feature and the draw program would fork the show's
+source the day it was written (souls change daily: today's starburst calm, the Yellow Bird
+flight). Phase A instead keeps **one source of behaviour**:
+
+- **The conductor** is the show's own WebGL engine (`particle-engine.ts`), unmodified, running
+  against a recording WebGL2 context (`webgpu/gl-capture.ts`). That context draws nothing; it
+  records each program's uniforms (per program, as GL does), the texture units and uploads,
+  and every draw call. Every method, follower, glide, staging rule, image timeline and feature
+  envelope is therefore the show's code, and the conductor object *is* the `ParticleEngine` the
+  journey layer drives. Its watchdog covers the WebGPU encoding too.
+- **The ports.** `webgpu/gl-port.ts` turns the show's GLSL into Vulkan-flavoured GLSL 4.50 with
+  a few mechanical edits. Each edit is asserted, so a reshaped source fails loudly:
+  - uniforms become one std140 block;
+  - particle textures become storage buffers, and the spectrum keeps its LINEAR clamp;
+  - the sim's MRT outputs become a 256-wide compute kernel;
+  - point sprites become instanced quads (gl_PointCoord from the corner);
+  - GL clip z and window y are converted;
+  - vertex-stage `texture()` becomes `textureLod(…, 0)`;
+  - NaN tests become a bit-pattern check.
+
+  `scripts/gen-webgpu-port.mjs` runs **naga** (wgpu's type-correct translator) and commits
+  the WGSL to `port.generated.ts`, along with the source hash it was made from. All 47 souls,
+  the figure frame, currents, breath, light gravity, two hands, the living score, the image
+  spring, hover, the signature flight and respawn port in one pass, plus the whole draw program
+  (image colours, bridge, living fire, depth of field, colour drift, stable motes, trails).
+- **The executor** is `webgpu/engine-port.ts`. Each captured draw runs its WebGPU pass:
+  - `seedInit`/`posInit` → compute init;
+  - `sim` → the ported simulation;
+  - `fade` + `draw` → blend-constant fade plus ported sprites;
+  - `taa` → the TAA port;
+  - `comp` → the exact-mean governor plus composite.
+  `lum`/`expo` are replaced by the governor. Bloom is not ported (it's off in the show).
+  Spatial pairing is compiled out of the conductor (no float-blend): see §E.
+- **Freshness.** The engine warns (lab HUD and console) when the show's GLSL changed after the
+  port was generated. `engine-port.test.ts` asserts every edit still applies. The parity test
+  fails on a sim or draw uniform the port doesn't carry. Regenerate with
+  `NAGA_BIN=… node scripts/gen-webgpu-port.mjs` (`cargo install naga-cli`).
+
+The native compute skeleton (`webgpu/engine.ts`: procedural forms, energy-conserving sprites)
+stays as the phase B renderer's test bed (`/lab/webgpu?engine=native`).
+
+### 3.2 Surface, failure and fallback
+
 - `createWebGPUParticleEngine(canvas, opts): WebGPUParticleEngine` returns **synchronously**,
   with the same `ParticleEngine` surface as `createParticleEngine`, so `particle-lead-layer.tsx`
   can drive either engine. The device, context and pipelines resolve asynchronously, and
@@ -214,8 +259,9 @@ spatial pairing (`setImageLiteral` softness becomes a drift on the OT target).
   that isn't mapped fails CI, so the port can't silently fall behind the show.
 - `MASTERED_PARITY`: the Snowflake and Ghost checklist (§4.1).
 
-Phase A skeleton status: 43 of 69 methods live, 19 keep their state, 7 are stubs, all with TODOs
-naming the plan section.
+Status with the parity engine (phase A): 69 of 71 methods are live through the conductor.
+`setImageLiteral` (spatial pairing, §E) and `setTripwire` (async probe, §A.6) are the exceptions.
+Every sim and draw uniform is carried by the generated port, except the paired uv.
 
 ### 4.1 Snowflake ("first-snow") and Ghost ("ghost")
 
@@ -302,24 +348,17 @@ watching).
   - fade, energy-conserving sprites, governor and composite;
   - `?gpu=webgpu` backend selection with WebGL2 fallback;
   - the parity ledger; the lab page with mastered-journey cases.
-- **A.2 Souls:** the 47 soul laws as force modules (one compile, no per-soul pipeline; souls
-  branch on a uniform index), plus `setForm`, `setShape`, `setVariant`, figure staging,
-  `setInstances`, `setUnfold` and respawn/wrap modes. Snowflake's murmuration and Ghost's
-  spirit come first.
-- **A.3 Force stack:** currents, breath, light gravity, two hands, living score,
-  melody/follow, hover.
-- **A.4 Image timeline:** `dissolveTo`/`startDissolve` (A/B stills), world fade, colour mix.
-- **A.5 Draw features:**
-  - the worn image colours (rgba8 image textures, sampled in the vertex stage), tint;
-  - hue spread and wave, height colour, the bridge, living fire.
-- **A.6 Probes:** async velocity tripwire and state sampling (mapAsync, one in flight);
-  stats parity for the journey-review rig.
-- **A.8 Signature flight** (Yellow Bird, `signature-flight.ts`, merged 2026-10-13):
-  `setImageFlight` moves the image plane along the flight path and displaces wing and tail
-  motes with `wingDisp` (a direct WGSL port of the GLSL, mirrored from the CPU wing pose);
-  the tail sheds loose motes; `releaseFlight` respawns every off-frame mote unseen near the
-  centre (age < 0, fades in). The figure frame (`uFigRot`/`uFigOff`, figure-motion.ts)
-  ports with the souls (§A.2).
+- **A.2–A.5, A.8: done by the parity engine (§3.1).** The souls (all 47, the figure frame,
+  variants, field mode, unfold, respawn and wrap), the force stack (currents, breath, light
+  gravity, two hands, living score, melody/follow, hover), the image timeline (dissolve, world
+  fade, colour mix), the draw features (image colours, tint, hue spread and wave, height
+  colour, the bridge, living fire, DOF and drift, stable motes, trails) and the signature
+  flight all run from the show's own GLSL, ported by naga, driven by the show's own CPU code.
+- **A.6 Probes:** async velocity tripwire and state sampling (mapAsync, one in flight).
+- **A.9 Spatial pairing on the GPU:** the five pairing passes as compute (atomic histogram,
+  scans, assign), or go straight to §E. Until then WebGPU forms images with random pairing,
+  so emblems can contract/expand where the show doesn't. This is the one visible gap for
+  Snowflake's emblems.
 - **A.7 Exit:**
   - shared-engine wiring behind `?gpu=webgpu`;
   - the full tour on WebGPU at 160k matches WebGL frame for frame (`scripts/journey-review/`);
@@ -350,30 +389,30 @@ on and flow around the stills' structure. Ghost's tunnel and tree are the refere
 Sliced OT re-assignment per form change (GPU radix sort), straight-line travel on the existing
 springs. It retires spatial pairing.
 
-## 8. Phase A skeleton: what to run
+## 8. What to run
 
-- **Lab:** `/lab/webgpu` (not linked anywhere) shows 1,000,000 motes morphing through sphere →
-  knot → rose → galaxy → lissajous.
+- **Lab:** `/lab/webgpu` (not linked anywhere). By default it runs the **parity engine** at
+  1,000,000 motes, cycling torus → knot → rose → nebula → lissajous souls.
   - Query options:
-    - `?n=250000` sets the count;
-    - `?form=knot` holds one form;
+    - `?gpu=webgl2` runs the show engine on the same script (A/B);
+    - `?engine=native` runs the native compute skeleton (procedural forms);
+    - `?n=250000` sets the count (the show engines cap at 1024²);
+    - `?form=knot` holds one figure;
     - `?dpr=2` runs at the full panel;
     - `?timing=0` turns timestamps off;
-    - `?gpu=webgl2` runs the current engine at the same count (A/B);
+    - the show's own particle flags apply (`?stable=1`, `?cine=0`, …);
     - `?case=snowflake-emblems|snowflake-calm|ghost-opening|ghost-angel|ghost-blossom-wings`
       runs a mastered-journey moment.
-  - Keys: space = next form, 1–5 = form, ↑/↓ = count ×2/÷2, h = HUD.
-  - The HUD shows fps, p5 fps, frame ms, and GPU ms per pass (timestamp-query) for integrate,
-    sprites, govern and composite.
+  - Keys: space = next figure, 1–5 = figure, ↑/↓ = count ×2/÷2, h = HUD.
+  - The HUD shows fps, p5 fps, frame ms, and GPU ms per pass (sim, sprites, govern,
+    composite), plus a note if the port is stale.
   - `window.__webgpuLab.snapshot()` returns the same numbers for scripts.
 - **Tests:** `nice -n 19 npx vitest run src/lib/particles` covers layout, WGSL, parity,
-  backend, the engine against a recording fake device, and the static stall-law scan. With
-  `NAGA_BIN=/path/to/naga` the generated WGSL is also validated by naga (all five modules
-  validate today). Build naga with `cargo install naga-cli`.
-- **Not yet:**
-  - the image colours (worn images show in the palette);
-  - the souls' own force laws (souls morph to a stand-in figure);
-  - trails/streaks, DOF, the bridge, score and hands (see `parity.ts`).
+  backend, both engines against a recording fake device, the port's edits and freshness, and
+  the static stall-law scan. With `NAGA_BIN=/path/to/naga` the hand-written WGSL is also
+  validated by naga.
+- **Regenerate the port** after any change to the sim or draw GLSL:
+  `NAGA_BIN=… node scripts/gen-webgpu-port.mjs`.
 
 ## 9. Risks and open questions
 

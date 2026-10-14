@@ -12,7 +12,8 @@
 
 import { createParticleEngine, type ParticleEngine, type ParticleEngineOptions } from "../particle-engine";
 import { navigatorGpu, type WAdapter } from "./gpu-types";
-import { createWebGPUParticleEngine, type WebGPUEngineOptions } from "./engine";
+import type { WebGPUEngineOptions } from "./engine";
+import { createPortedParticleEngine } from "./engine-port";
 
 export type ParticleBackend = "webgl2" | "webgpu";
 
@@ -87,7 +88,8 @@ export function createParticleEngineFor(
   if (backend === "webgpu") {
     const adapter = probe?.adapter ?? null;
     if (adapter) probeP = null;
-    return createWebGPUParticleEngine(canvas, { ...opts, adapter });
+    // the PARITY engine: the show engine conducts, the ported passes run on WebGPU
+    return createPortedParticleEngine(canvas, { ...opts, adapter });
   }
   return createParticleEngine(canvas, opts);
 }

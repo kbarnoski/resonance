@@ -130,6 +130,8 @@ export interface WCommandBuffer {}
 export interface WQueue {
   submit(buffers: WCommandBuffer[]): void;
   writeBuffer(buf: WBuffer, offset: number, data: ArrayBufferView | ArrayBufferLike, dataOffset?: number, size?: number): void;
+  writeTexture(dst: { texture: WTexture }, data: ArrayBufferView, layout: { bytesPerRow: number; rowsPerImage?: number }, size: [number, number]): void;
+  copyExternalImageToTexture(src: { source: unknown; flipY?: boolean }, dst: { texture: WTexture }, size: [number, number]): void;
 }
 
 export interface WBindGroupEntry {
@@ -142,6 +144,7 @@ export interface WBindGroupLayoutEntry {
   visibility: number;
   buffer?: { type: "uniform" | "storage" | "read-only-storage" };
   texture?: { sampleType: "float" | "unfilterable-float" };
+  sampler?: { type: "filtering" | "non-filtering" };
 }
 
 export interface WDevice {

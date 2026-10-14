@@ -66,15 +66,15 @@ describe("the show path is untouched while the flag is off", () => {
 
 describe("static stall-law scan of the engine sources", () => {
   const dir = __dirname;
-  const sources = readdirSync(dir).filter((f) => f.endsWith(".ts") && !f.includes(".test.") && !f.includes("testkit"));
+  const sources = readdirSync(dir).filter((f) => f.endsWith(".ts") && !f.includes(".test.") && !f.includes("testkit") && !f.includes(".generated."));
   it("no synchronous pipeline creation, no onSubmittedWorkDone; mapAsync only in the timing probe", () => {
     for (const f of sources) {
       const src = readFileSync(join(dir, f), "utf8").replace(/\/\/[^\n]*/g, "");
       expect(src, f).not.toMatch(/\.create(Compute|Render)Pipeline\(/);
       expect(src, f).not.toMatch(/onSubmittedWorkDone/);
       const maps = src.match(/\.mapAsync\(/g) ?? [];
-      expect(maps.length, f).toBe(f === "engine.ts" ? 1 : 0);
+      expect(maps.length, f).toBe(f === "engine.ts" || f === "engine-port.ts" ? 1 : 0);
     }
-    expect(readFileSync(join(dir, "engine.ts"), "utf8")).toMatch(/function pollTimings[\s\S]*?\.mapAsync\(/);
+    for (const f of ["engine.ts", "engine-port.ts"]) expect(readFileSync(join(dir, f), "utf8")).toMatch(/function pollTimings[\s\S]*?\.mapAsync\(/);
   });
 });

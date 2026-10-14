@@ -1,36 +1,44 @@
 "use client";
 
 /**
- * WEBGPU PARTICLE LAB — measure the phase A skeleton on the kiosk.
+ * WEBGPU PARTICLE LAB — measure the WebGPU engines on the kiosk.
  *
- *   /lab/webgpu                      1,000,000 motes morphing through the forms
- *   ?n=250000                        particle count (4,096 … 4,194,304)
- *   ?form=knot | 0-4 | cycle         hold one form, or cycle (default)
- *   ?cycle=10                        seconds per form while cycling (morph 4 s)
+ *   /lab/webgpu                      the PARITY engine (the show engine conducts,
+ *                                    its ported GLSL runs on WebGPU) — 1,000,000
+ *                                    motes cycling souls
+ *   ?gpu=webgl2                      the CURRENT show engine, same script (A/B)
+ *   ?engine=native                   the native compute skeleton (procedural
+ *                                    forms; the phase B renderer's test bed)
+ *   ?n=250000                        particle count (show engines cap at 1024²)
+ *   ?form=knot | 0-4 | cycle         hold one figure, or cycle (default)
+ *   ?cycle=10                        seconds per figure while cycling
  *   ?dpr=1                           device-pixel-ratio cap (kiosk show = 1)
  *   ?timing=0                        GPU timestamp queries off
- *   ?gpu=webgl2                      the CURRENT engine at the same count (A/B)
+ *   ?stable=1 / ?cine=0 / …          the show's own particle flags apply
  *   ?case=ghost-angel                a mastered-journey moment (lab-cases.ts):
  *                                    snowflake-emblems · snowflake-calm ·
  *                                    ghost-opening · ghost-angel · ghost-blossom-wings
- *                                    (same calls on both engines — film side by side)
+ *                                    (same calls on every engine — film side by side)
  *
- * Keys: space = next form · 1-5 = form · ↑/↓ = count ×2 / ÷2 · h = HUD.
+ * Keys: space = next figure · 1-5 = figure · ↑/↓ = count ×2 / ÷2 · h = HUD.
  * Scripted reads: window.__webgpuLab.snapshot() (fps, fpsLow, GPU ms per pass).
- * Not linked anywhere; no audio (the field idles — motion is the curl drift).
+ * Not linked anywhere; no audio (the field idles on its own clocks).
  */
 
 import { useEffect, useRef } from "react";
 import { createParticleEngine, type ParticleEngine } from "@/lib/particles/particle-engine";
-import { createWebGPUParticleEngine, type WebGPUParticleEngine } from "@/lib/particles/webgpu/engine";
+import { createWebGPUParticleEngine, type WebGPUParticleEngine, type GpuTimings, type WebGPUInfo } from "@/lib/particles/webgpu/engine";
+import { createPortedParticleEngine, type PortedParticleEngine } from "@/lib/particles/webgpu/engine-port";
 import { probeWebGPU } from "@/lib/particles/webgpu/backend";
 import { FORM_NAMES, type FormName } from "@/lib/particles/webgpu/wgsl";
 import type { SoulId } from "@/lib/particles/souls";
 import { LAB_CASES, type LabCaseId } from "@/lib/particles/webgpu/parity";
 import { runCase, CASE_NOTES } from "./lab-cases";
 
-// the WebGL A/B cycles comparable souls (same figures, the show's force laws)
-const WEBGL_SOULS: SoulId[] = ["torus", "knot", "rose", "nebula", "lissajous"];
+// the show-engine figures cycled by the parity engine and the WebGL A/B
+const SOULS: SoulId[] = ["torus", "knot", "rose", "nebula", "lissajous"];
+
+type Gpu = { info(): WebGPUInfo | null; gpuTimings(): GpuTimings | null; failure(): string | null; portStale?: () => string | null };
 
 export default function WebGPULab() {
   const host = useRef<HTMLDivElement>(null);
@@ -44,7 +52,7 @@ export default function WebGPULab() {
     const formQ = q.get("form") ?? "cycle";
     const named = FORM_NAMES.indexOf(formQ as FormName);
     const fixedForm = formQ === "cycle" ? null : named >= 0 ? named : Math.max(0, Math.min(FORM_NAMES.length - 1, Number(formQ) || 0));
-    const webgl = q.get("gpu") === "webgl2";
+    const mode: "webgl2" | "port" | "native" = q.get("gpu") === "webgl2" ? "webgl2" : q.get("engine") === "native" ? "native" : "port";
     const timing = q.get("timing") !== "0";
     const caseId: LabCaseId = (LAB_CASES as readonly string[]).includes(q.get("case") ?? "") ? (q.get("case") as LabCaseId) : "forms";
     let stage = "";
@@ -54,40 +62,45 @@ export default function WebGPULab() {
     host.current!.appendChild(canvas);
 
     let engine: ParticleEngine | null = null;
-    let gpuEngine: WebGPUParticleEngine | null = null;
+    let gpu: Gpu | null = null;
+    let native: WebGPUParticleEngine | null = null;
     let form = fixedForm ?? 0;
     let alive = true;
     let problem = "";
-    let backendLine = "";
+    const backendLine = { webgl2: "WebGL2 (the show engine)", port: "WebGPU parity engine (show engine conducting, ported passes)", native: "WebGPU native compute skeleton" }[mode];
+    const watchdog = { cpuMs: 1000, gapMs: 5000, onStall: (w: string) => { problem = w; } };
 
     const setForm = (k: number) => {
       form = ((k % FORM_NAMES.length) + FORM_NAMES.length) % FORM_NAMES.length;
-      if (gpuEngine) gpuEngine.setProceduralForm(form, 4);
-      else engine?.setSoul(WEBGL_SOULS[form], 4);
+      if (native) native.setProceduralForm(form, 4);
+      else engine?.setSoul(SOULS[form], 4);
     };
 
     (async () => {
-      if (webgl) {
-        try {
-          engine = createParticleEngine(canvas, { count: n, dpr, soul: WEBGL_SOULS[form], gain: 1.4, watchdog: { cpuMs: 1000, gapMs: 5000, onStall: (w) => { problem = w; } } });
-          backendLine = "WebGL2 (current show engine)";
-        } catch (e) {
-          problem = `webgl2: ${e instanceof Error ? e.message : String(e)}`;
-          return;
+      try {
+        if (mode === "webgl2") {
+          engine = createParticleEngine(canvas, { count: n, dpr, soul: SOULS[form], gain: 1.4, watchdog });
+        } else {
+          const probe = await probeWebGPU();
+          if (!alive) return;
+          if (!probe.available) { problem = `WebGPU unavailable: ${probe.why} — the show would fall back to WebGL2 (?gpu=webgl2 to compare)`; return; }
+          const o = { count: n, dpr, gain: 1.4, adapter: probe.adapter, gpuTiming: timing, watchdog, onContextLost: () => { problem = "device lost"; } };
+          if (mode === "native") {
+            native = createWebGPUParticleEngine(canvas, { ...o, soul: "rings" });
+            engine = native;
+            gpu = native;
+          } else {
+            const port: PortedParticleEngine = createPortedParticleEngine(canvas, { ...o, soul: SOULS[form] });
+            engine = port;
+            gpu = port;
+          }
+          const ok = await (native ?? (engine as PortedParticleEngine)).ready();
+          if (!ok || !alive) return;
+          native?.setProceduralForm(form, 0.5);
         }
-      } else {
-        const probe = await probeWebGPU();
-        if (!alive) return;
-        if (!probe.available) { problem = `WebGPU unavailable: ${probe.why} — the show would fall back to WebGL2 (?gpu=webgl2 to compare)`; return; }
-        gpuEngine = createWebGPUParticleEngine(canvas, {
-          count: n, dpr, soul: "rings", gain: 1.4, adapter: probe.adapter, gpuTiming: timing,
-          watchdog: { cpuMs: 1000, gapMs: 5000, onStall: (w) => { problem = w; } },
-          onContextLost: () => { problem = "device lost"; },
-        });
-        engine = gpuEngine;
-        backendLine = "WebGPU compute (phase A skeleton)";
-        if (!(await gpuEngine.ready()) || !alive) return;
-        gpuEngine.setProceduralForm(form, 0.5);
+      } catch (e) {
+        problem = `${mode}: ${e instanceof Error ? e.message : String(e)}`;
+        return;
       }
       engine.setDensity(1);
       // warm while invisible (the show's contract), then run
@@ -112,14 +125,15 @@ export default function WebGPULab() {
     const snapshot = () => {
       const s = engine?.stats();
       return {
-        backend: webgl ? "webgl2" : "webgpu",
-        form: FORM_NAMES[form],
+        backend: mode,
+        form: native ? FORM_NAMES[form] : SOULS[form],
         case: caseId,
         stage,
-        problem: problem || null,
-        info: gpuEngine?.info() ?? null,
-        gpu: gpuEngine?.gpuTimings() ?? null,
-        stats: s ? { fps: s.fps, fpsLow: s.fpsLow, frameMs: s.frameMs, count: s.count, width: s.width, height: s.height, dpr: s.dpr, warm: s.programs } : null,
+        problem: problem || gpu?.failure() || null,
+        stale: gpu?.portStale?.() ?? null,
+        info: gpu?.info() ?? null,
+        gpu: gpu?.gpuTimings() ?? null,
+        stats: s ? { fps: s.fps, fpsLow: s.fpsLow, frameMs: s.frameMs, count: s.count, width: s.width, height: s.height, dpr: s.dpr, soul: s.soul } : null,
       };
     };
     (window as unknown as { __webgpuLab: unknown }).__webgpuLab = { snapshot, engine: () => engine };
@@ -131,14 +145,15 @@ export default function WebGPULab() {
       const s = sn.stats;
       const g = sn.gpu;
       const lines = [
-        backendLine || "starting…",
+        backendLine,
         sn.info ? `adapter ${sn.info.adapter} · ${sn.info.format} · pipelines ${sn.info.compileMs} ms (async)` : "",
-        s ? `${s.count.toLocaleString()} motes · ${s.width}×${s.height} @ dpr ${s.dpr}` : "",
+        s ? `${s.count.toLocaleString()} motes · ${s.width}×${s.height} @ dpr ${s.dpr} · soul ${s.soul}` : "",
         s ? `fps ${s.fps.toFixed(1)} · p5 ${s.fpsLow.toFixed(1)} · frame ${s.frameMs.toFixed(2)} ms` : "",
-        g ? `gpu ms  integrate ${g.integrate.toFixed(2)} · sprites ${g.sprites.toFixed(2)} · govern ${g.govern.toFixed(2)} · composite ${g.composite.toFixed(2)} · total ${g.total.toFixed(2)}` : gpuEngine && timing ? "gpu ms  (timestamp-query unavailable or warming)" : "",
-        caseId === "forms" ? `form ${sn.form}${fixedForm === null ? ` (cycle ${cycleSec}s)` : ""}` : `case ${caseId}: ${CASE_NOTES[caseId]}`,
+        g ? `gpu ms  sim ${g.integrate.toFixed(2)} · sprites ${g.sprites.toFixed(2)} · govern ${g.govern.toFixed(2)} · composite ${g.composite.toFixed(2)} · total ${g.total.toFixed(2)}` : gpu && timing ? "gpu ms  (timestamp-query unavailable or warming)" : "",
+        caseId === "forms" ? `figure ${sn.form}${fixedForm === null ? ` (cycle ${cycleSec}s)` : ""}` : `case ${caseId}: ${CASE_NOTES[caseId]}`,
         caseId !== "forms" && sn.stage ? `  ${sn.stage}` : "",
-        problem ? `problem: ${problem}` : "",
+        sn.stale ? `note: ${sn.stale}` : "",
+        sn.problem ? `problem: ${sn.problem}` : "",
       ].filter(Boolean);
       el.textContent = lines.join("\n");
     }, 250);

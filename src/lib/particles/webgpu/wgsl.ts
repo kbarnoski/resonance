@@ -485,3 +485,35 @@ export const ENTRY_POINTS: Record<string, readonly string[]> = {
   govern: ["govern"],
   composite: ["vsTri", "fsComp"],
 };
+
+/** TEMPORAL RESOLVE (?stable=1): port of shaders.ts TAA_FS — the HDR layer
+ *  blended with its history, the history first clamped into the current
+ *  frame's 3×3 min/max (widened by `slack`). keep = 0 shows the current frame. */
+export function buildTaaWGSL(slack: number): string {
+  return /* wgsl */ `// generated — temporal resolve (TAA_FS port)
+struct TaaU { keep: f32, _p0: f32, _p1: f32, _p2: f32 };
+@group(0) @binding(0) var<uniform> T: TaaU;
+@group(0) @binding(1) var cur: texture_2d<f32>;
+@group(0) @binding(2) var hist: texture_2d<f32>;
+${FULLSCREEN_VS}
+const ST_SLACK = ${slack.toFixed(4)};
+@fragment
+fn fsTaa(@builtin(position) fc: vec4f) -> @location(0) vec4f {
+  let c = vec2i(fc.xy);
+  let lim = vec2i(textureDimensions(cur)) - 1;
+  let cv = textureLoad(cur, c, 0).rgb;
+  var mn = cv;
+  var mx = cv;
+  for (var y = -1; y <= 1; y++) {
+    for (var x = -1; x <= 1; x++) {
+      if (x == 0 && y == 0) { continue; }
+      let v = textureLoad(cur, clamp(c + vec2i(x, y), vec2i(0), lim), 0).rgb;
+      mn = min(mn, v);
+      mx = max(mx, v);
+    }
+  }
+  let h = clamp(textureLoad(hist, c, 0).rgb, mn * (1.0 - ST_SLACK), mx * (1.0 + ST_SLACK));
+  return vec4f(mix(cv, h, T.keep), 1.0);
+}
+`;
+}

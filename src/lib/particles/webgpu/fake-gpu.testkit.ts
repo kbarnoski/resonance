@@ -26,6 +26,7 @@ export function fakeGpu(o: FakeGpuOptions = {}) {
     });
 
   const buffers: { label: string; size: number; usage: number }[] = [];
+  const lastWrite = new Map<string, ArrayBuffer>();
   const mkBuffer = (d: { size: number; usage: number; label?: string }) => {
     const b = {
       id: id++,
@@ -60,8 +61,17 @@ export function fakeGpu(o: FakeGpuOptions = {}) {
     });
   const queue = trap("queue", {
     submit: (b: unknown[]) => rec("submit", b.length),
-    writeBuffer: (buf: { label: string }, off: number, data: ArrayBufferView | ArrayBuffer, dataOff?: number, size?: number) =>
-      rec("writeBuffer", buf.label, off, size ?? (data as ArrayBufferView).byteLength ?? (data as ArrayBuffer).byteLength, dataOff ?? 0),
+    writeBuffer: (buf: { label: string }, off: number, data: ArrayBufferView | ArrayBuffer, dataOff?: number, size?: number) => {
+      const bytes = size ?? (data as ArrayBufferView).byteLength ?? (data as ArrayBuffer).byteLength;
+      rec("writeBuffer", buf.label, off, bytes, dataOff ?? 0);
+      // keep small uniform payloads for assertions
+      if (bytes <= 4096) {
+        const ab = data instanceof ArrayBuffer ? data : (data as ArrayBufferView).buffer.slice((data as ArrayBufferView).byteOffset, (data as ArrayBufferView).byteOffset + (data as ArrayBufferView).byteLength);
+        lastWrite.set(buf.label, (ab as ArrayBuffer).slice(0));
+      }
+    },
+    writeTexture: (dst: { texture: { label: string } }, _d: unknown, _l: unknown, size: number[]) => rec("writeTexture", dst.texture.label, size),
+    copyExternalImageToTexture: (src: { flipY?: boolean }, dst: { texture: { label: string } }, size: number[]) => rec("copyExternalImageToTexture", dst.texture.label, size, !!src.flipY),
   });
   const limits = {
     maxStorageBufferBindingSize: o.maxStorageBufferBindingSize ?? 1 << 30,
@@ -127,15 +137,15 @@ export function fakeGpu(o: FakeGpuOptions = {}) {
     getCurrentTexture: () => mkTexture({ size: [800, 500], label: "canvas" }),
   });
   const canvas = {
-    width: 0,
-    height: 0,
+    width: 800,
+    height: 500,
     style: {} as Record<string, string>,
     getContext: (kind: string) => { rec("getContext", kind); return kind === "webgpu" ? context : null; },
     getBoundingClientRect: () => ({ width: 800, height: 500 }),
     addEventListener: () => {},
     removeEventListener: () => {},
   };
-  return { gpu, adapter, device, canvas, calls, buffers };
+  return { gpu, adapter, device, canvas, calls, buffers, lastWrite };
 }
 
 /** Let every pending promise chain settle (pipelines, compile info, maps). */
