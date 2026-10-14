@@ -7,7 +7,7 @@ import { ResonanceMark } from "@/components/branding/resonance-mark";
 import { Eyebrow, DisplayTitle, MonoLabel } from "@/components/ui/typography";
 import { useEffect, useState } from "react";
 import { StatementPiano } from "./statement-piano";
-import { cardLayer, LATEST_REVEAL_MS } from "@/lib/particles/statement-piano-plan";
+import { cardLayer, LATEST_REVEAL_MS, PIANO_WAIT_MAX_MS } from "@/lib/particles/statement-piano-plan";
 
 /* Font readiness is gated upstream in installation-loop-client. By the
  * time this component renders any text, every Cormorant Garamond
@@ -50,9 +50,11 @@ interface Props {
   cardT0?: number | null;
   /** phone "title-hold": the card (and its piano) stays up until released */
   hold?: boolean;
+  /** the boot card is waiting on black for its piano: the loop holds its timeline */
+  onPianoWait?: (waiting: boolean) => void;
 }
 
-export function InstallationIntro({ stage = "cycle", journey, trackArtist, presenting, description, cardT0 = null, hold = false }: Props) {
+export function InstallationIntro({ stage = "cycle", journey, trackArtist, presenting, description, cardT0 = null, hold = false, onPianoWait }: Props) {
   // bg-black: opaque during cycle + fading-cycle, fades out during
   // journey + fading-journey on the SAME 3.8s clock as the journey
   // title's inner fade-in. This keeps the visualizer hidden until the
@@ -84,11 +86,14 @@ export function InstallationIntro({ stage = "cycle", journey, trackArtist, prese
   const [revealed, setRevealed] = useState(false);
   useEffect(() => { setRevealed(false); }, [cardT0]); // a new card (operator jump) starts dark
   useEffect(() => {
-    // safety: the text never waits on the piano past its latest reveal
+    // safety: the text never waits forever — a card waiting on black for its
+    // piano (held, or the boot card holding the loop) waits up to the piano's
+    // own limit (statement-piano.tsx reveals it with the piano long before)
     if (cardT0 === null || revealed) return;
-    const id = setTimeout(() => setRevealed(true), Math.max(0, LATEST_REVEAL_MS + 800 - (performance.now() - cardT0)));
+    const latest = hold ? LATEST_REVEAL_MS + PIANO_WAIT_MAX_MS + 1_500 : LATEST_REVEAL_MS + 800;
+    const id = setTimeout(() => setRevealed(true), Math.max(0, latest - (performance.now() - cardT0)));
     return () => clearTimeout(id);
-  }, [cardT0, revealed]);
+  }, [cardT0, revealed, hold]);
   const card = cardT0 !== null ? cardLayer(stage, revealed) : null;
 
   return (
@@ -110,7 +115,7 @@ export function InstallationIntro({ stage = "cycle", journey, trackArtist, prese
           the text, mounted for the card's whole life — it stops itself before
           journey 0 pre-starts and fades with the text (statement-piano.tsx) */}
       {cardT0 !== null && (expMounted || stage === "journey") && (
-        <StatementPiano key={cardT0} cardT0={cardT0} stage={stage} revealed={revealed} onReveal={() => setRevealed(true)} hold={hold} />
+        <StatementPiano key={cardT0} cardT0={cardT0} stage={stage} revealed={revealed} onReveal={() => setRevealed(true)} hold={hold} onWait={onPianoWait} />
       )}
 
       {expMounted && (

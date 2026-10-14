@@ -18,7 +18,7 @@ import { EXPERIENCE_INTRO_MS } from "@/components/audio/installation-machine";
 import {
   CARD_MS, PRESTART_MS, SPINUP_MS, TITLE_AFTER_PRESTART_MS, TEXT_OUT_BEFORE_PRESTART_MS, REVEAL_AT_MS, REVEAL_MS, TEXT_FADE_MS,
   STOP_AT_MS, FADE_OUT_AT_MS, RELEASE_AT_MS, HOLD_MAX_MS, LATEST_REVEAL_MS, WINDOW_START_MS, WINDOW_END_MS, PIANO_OPACITY, PIANO_HEIGHT,
-  engineWorkAllowed, pianoSchedule, textOnlySchedule, stepAllowed, pianoPlaneScale, cardLayer, heldCardClock, heldPianoWaits,
+  engineWorkAllowed, pianoSchedule, textOnlySchedule, stepAllowed, pianoPlaneScale, cardLayer, heldCardClock, pianoWaits, PIANO_WAIT_MAX_MS, LATE_CARD_SHOW_MS,
 } from "./statement-piano-plan";
 import { createPianoCard, type CardEngine } from "./statement-piano-card";
 import { critStep, type Crit } from "./image-follow";
@@ -155,7 +155,7 @@ describe("statement card — fades in and out WITH the text, no weird movements"
       for (const f of frames) expect(f.piano).toBeCloseTo(f.text * PIANO_OPACITY, 6);
     }
   });
-  it("a piano never ready: the text appears alone by the latest reveal, and nothing else changes", () => {
+  it("no piano IMAGE at all (decode failed): the text appears alone by the latest reveal, and nothing else changes", () => {
     const { frames } = playCard(Infinity);
     const first = frames.find((f) => f.text > 0.001)!;
     expect(first.t).toBeLessThanOrEqual(LATEST_REVEAL_MS + 20);
@@ -247,13 +247,18 @@ describe("statement card — the hand-back to journey 0 is clean", () => {
 
 // Lab 2026-10-13 (mode matrix step 8): back from Live into a song-by-song hold,
 // the cold page missed the reveal deadline and the held card sat as static
-// text. A held card is ALWAYS the piano card: its piano forms late, never not.
-describe("statement card — a held card always gets its piano", () => {
-  it("held + not warm by the reveal: text first, the piano waits (no deadline)", () => {
-    expect(heldPianoWaits(false, true, true)).toBe(true);
-    expect(heldPianoWaits(true, true, true)).toBe(false); // ready: the normal schedule
-    expect(heldPianoWaits(false, true, false)).toBe(false); // not held: the boot card's text-only rule stands
-    expect(heldPianoWaits(false, false, true)).toBe(false); // no image at all: nothing to form
+// text. Karel 2026-10-13: "the piano emblem has to be with all resonance title
+// screens. its one and only one design" — EVERY card (held or the boot card)
+// is the piano card: not ready by its reveal, it waits on black, then the
+// logo, text and piano appear together.
+describe("statement card — every card gets its piano (one design)", () => {
+  it("not warm by the reveal: the card waits for the piano (held or not)", () => {
+    expect(pianoWaits(false, true)).toBe(true);
+    expect(pianoWaits(true, true)).toBe(false); // ready: the normal schedule
+    expect(pianoWaits(false, false)).toBe(false); // no image at all: nothing to form
+    // the wait is long but finite, and a waited card shows a normal card's span
+    expect(PIANO_WAIT_MAX_MS).toBeGreaterThanOrEqual(20_000);
+    expect(LATE_CARD_SHOW_MS).toBe(FADE_OUT_AT_MS - REVEAL_AT_MS);
   });
   it("a held card's clock stays before the spin-up window, so a late form passes the guard", () => {
     for (const t of [LATEST_REVEAL_MS + 1, WINDOW_START_MS, WINDOW_START_MS + 2000, 120_000]) {
@@ -263,23 +268,84 @@ describe("statement card — a held card always gets its piano", () => {
     expect(heldCardClock(WINDOW_START_MS + 10, false)).toBe(WINDOW_START_MS + 10);
     expect(stepAllowed("form", heldCardClock(WINDOW_START_MS + 10, false))).toBe(false);
   });
-  it("a late form on a held card: formed and burning after the text, not released by the guard", () => {
+  it("a late form on a waiting card: formed unseen, THEN revealed with the text, not released by the guard", () => {
     const eng = fakeEngine();
     let now = 60_000; // a minute into the hold
     let revealed = false;
     const card = createPianoCard({ engine: eng, at: () => heldCardClock(now, true), screenAspect: () => 16 / 9, samples: () => undefined, setHold: () => {}, reveal: () => { revealed = true; } });
-    card.run("reveal", null);
-    expect(revealed).toBe(true);
     card.run("upload", piano);
     now += 50;
     card.run("form", piano);
+    expect(revealed).toBe(false); // black until the piano is formed
     expect(card.released).toBe(false);
     expect(card.formed).toBe(true);
+    card.run("reveal", piano);
+    expect(revealed).toBe(true);
     expect(eng.state()).toMatchObject({ running: true, image: "piano" });
   });
-  it("the component takes the held path and the held clock", () => {
+  it("the component waits (held clock while held OR waiting), never reveals the text before the piano", () => {
     const src = readFileSync("src/components/audio/statement-piano.tsx", "utf8");
-    expect(src).toMatch(/at: \(\) => heldCardClock\(at\(\), holdRef\.current\)/);
-    expect(src).toMatch(/if \(heldPianoWaits\(ready, !!img, holdRef\.current\)\)/);
+    expect(src).toMatch(/at: \(\) => heldCardClock\(at\(\), holdRef\.current \|\| waitingRef\.current\)/);
+    expect(src).toMatch(/if \(pianoWaits\(ready, !!img\) \|\| tooLate\) \{ waitForPiano\(img!\); return; \}/);
+    // the late path reveals only after the form (logo + text + piano together)
+    expect(src).toMatch(/card\.run\("form", img\);[\s\S]{0,400}?card\.run\("reveal", img\);/);
+    // text-only remains only for a missing image (and the 30 s never-warm limit)
+    expect(src).not.toMatch(/piano-skip", "programs warming"/);
+  });
+  it("the boot card holds the loop's timeline while it waits, then hands off as from a hold", () => {
+    expect(loop).toMatch(/if \(pianoWait && expMs > 0\) return;/);
+    expect(loop).toMatch(/const releasing = !titleHold && !pianoWait && releaseFromHoldRef\.current;/);
+    expect(loop).toMatch(/hold=\{titleHold \|\| pianoWait\}/);
+    expect(loop).toMatch(/onPianoWait=\{onPianoWait\}/);
+    expect(intro).toMatch(/onWait=\{onPianoWait\}/);
+  });
+});
+
+// Karel 2026-10-13: "ensure the resonance title screen with emblem is always
+// designed like it has been … i dont want changes to the nice layout design we
+// had." ONE layout, pinned: the values the kiosk shipped (bbf1f0bf), and every
+// path — the boot card, a card that waited for its piano, a held card — places
+// the piano through the SAME card upload (no per-path placement anywhere).
+describe("statement card — ONE layout on every path (pinned)", () => {
+  it("the shipped layout values", async () => {
+    const plan = await import("./statement-piano-plan");
+    expect({ height: plan.PIANO_HEIGHT, offsetY: plan.PIANO_OFFSET_Y, pad: plan.PIANO_PAD, opacity: plan.PIANO_OPACITY, form: plan.PIANO_FORM, fire: plan.FIRE_STRENGTH, fireLine: plan.FIRE_LINE_V })
+      .toEqual({ height: 0.86, offsetY: 0, pad: 0.12, opacity: 0.8, form: 1, fire: 1, fireLine: (0.575 + 0.12) / (1 + 2 * 0.12) });
+    expect({ revealAt: REVEAL_AT_MS, reveal: REVEAL_MS, fade: TEXT_FADE_MS }).toEqual({ revealAt: 700, reveal: 1400, fade: 1800 });
+  });
+  it("placement lives only in the card's upload step; the component never places the piano itself", () => {
+    const src = readFileSync("src/components/audio/statement-piano.tsx", "utf8");
+    expect(src).not.toMatch(/setImageScale|setOffset|setInstances|setImageForm|pianoPlaneScale/);
+    // the normal schedule and the waiting path both upload through the card
+    expect(src.match(/card\.run\("upload", img\)/g)?.length).toBe(1); // the waiting path
+    expect(src).toMatch(/card\.run\(ev\.step, img\)/); // the normal schedule
+    // one host layer + one halo, the same for every path (no variant markup)
+    expect(src.match(/zIndex: 121/g)?.length).toBe(2);
+    expect(src).toMatch(/radial-gradient\(ellipse 34vw 22vh at 50% 52%, rgba\(0,0,0,0\.62\) 0%, rgba\(0,0,0,0\.35\) 45%, transparent 100%\)/);
+    // the text: the same minimal statement text on every path
+    expect(intro).toMatch(/<ExperienceTextInner minimal animate=\{!card\} \/>/);
+  });
+  it("the boot card and a card that waited for its piano make the SAME engine placement calls", () => {
+    const run = (late: boolean) => {
+      const calls: string[] = [];
+      const eng = fakeEngine();
+      const traced = ["setImageScale", "setOffset", "setInstances", "setImageForm", "setImageTint", "setImageVariant", "setDensity", "setFire", "loadFormImage"];
+      const rec = new Proxy(eng, {
+        get: (t, k) => {
+          const v = (t as unknown as Record<string | symbol, unknown>)[k];
+          if (typeof v !== "function") return v;
+          return (...a: unknown[]) => {
+            if (traced.includes(String(k))) calls.push(`${String(k)}(${a.filter((x) => typeof x !== "object").join(",")})`);
+            return (v as (...b: unknown[]) => unknown).apply(t, a);
+          };
+        },
+      });
+      let now = late ? 60_000 : 300; // a card that waited a minute vs the normal boot card
+      const card = createPianoCard({ engine: rec, at: () => heldCardClock(now, late), screenAspect: () => 1512 / 982, samples: () => undefined, setHold: () => {}, reveal: () => {} });
+      card.run("upload", piano); now += 50; card.run("form", piano); now += 350; card.run("reveal", piano);
+      return calls;
+    };
+    expect(run(false).length).toBeGreaterThan(5);
+    expect(run(true)).toEqual(run(false));
   });
 });

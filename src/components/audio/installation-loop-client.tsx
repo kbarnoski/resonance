@@ -217,6 +217,18 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
   const titleHoldRef = useRef(titleHold);
   titleHoldRef.current = titleHold;
   const releaseFromHoldRef = useRef(false);
+  // The boot card waiting on BLACK for its piano (statement-piano.tsx — Karel
+  // 2026-10-13: "the piano emblem has to be with all resonance title screens"):
+  // the intro's timeline holds like a title-hold, then hands off from the
+  // moment the card (logo + text + piano) has been seen for a normal span.
+  const [pianoWait, setPianoWait] = useState(false);
+  const pianoWaitRef = useRef(false);
+  const onPianoWait = useCallback((waiting: boolean) => {
+    if (waiting === pianoWaitRef.current) return;
+    pianoWaitRef.current = waiting;
+    if (!waiting) releaseFromHoldRef.current = true;
+    setPianoWait(waiting);
+  }, []);
   // the 2.6 s fade of whatever was playing, before the held card comes up
   const [holdFading, setHoldFading] = useState(false);
   // Stable ref mirror so long-lived effects (heartbeat poster) can read
@@ -1456,9 +1468,10 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       const expMs = !(needsGesture && started) ? EXPERIENCE_INTRO_MS : 0;
       // released from a phone hold: the card is ALREADY up — keep its clock
       // and stage; only the hand-off below runs (from now)
-      const releasing = !titleHold && releaseFromHoldRef.current;
+      const releasing = !titleHold && !pianoWait && releaseFromHoldRef.current;
       releaseFromHoldRef.current = false;
-      if (!releasing) {
+      // (a card waiting for its piano keeps its clock and stage too)
+      if (!releasing && !pianoWait) {
         // the statement card's clock (its particle piano times its GPU-free
         // hold around the pre-start below — statement-piano-plan.ts)
         setCardT0(expMs > 0 ? performance.now() : null);
@@ -1475,6 +1488,9 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         window.addEventListener("installation-operator-skip", skipToStart);
         return () => window.removeEventListener("installation-operator-skip", skipToStart);
       }
+      // the boot card is waiting on black for its piano: no countdown yet —
+      // the hand-off runs (as from a hold) once the card has been seen
+      if (pianoWait && expMs > 0) return;
 
       // Refs to scoped timers so an early error listener can abort them.
       let fadeCycleStart: ReturnType<typeof setTimeout> | null = null;
@@ -2477,7 +2493,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase, sequence, fontsReady, playOnce, needsGesture, started, titleHold]);
+  }, [phase, sequence, fontsReady, playOnce, needsGesture, started, titleHold, pianoWait]);
 
   // Operator status panel — toggled with ⌘⇧S. Captured here so the
   // panel can show the live phase + journey name without needing to
@@ -2557,7 +2573,8 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
           presenting={program?.presenting}
           description={program?.description}
           cardT0={cardT0}
-          hold={titleHold}
+          hold={titleHold || pianoWait}
+          onPianoWait={onPianoWait}
         />
       )}
       {phase.kind === "statement" && (
