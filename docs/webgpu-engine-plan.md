@@ -565,6 +565,23 @@ figures, colours, brightness and motion.
 **Flicker gate (`scripts/flicker-gate.mjs`):** all lab films PASS on both engines (general
 ≤ 0.5 flashes/s, which is the page fade-in; red 0; local flicker 0).
 
+Journey films (20 s from journey start, kiosk size) show 0 FAIL on both engines:
+
+| Journey | WebGL2 (peak local-flicker field %) | WebGPU |
+|---|---|---|
+| Ghost | WARN 23.4 % | WARN 13.0 % |
+| Snowflake | WARN 14.3 % | WARN 19.5 % |
+| Welcome Home | WARN 50.7 % | WARN 44.2 % |
+| Singular 4 | PASS | PASS |
+
+The WARNs are content, not the engine:
+
+- the statement card's living fire (top-centre), which held longer in the WebGPU Snowflake
+  run because card timing varies run to run;
+- Welcome Home's centre imagery.
+
+Neither engine reaches a general or red flash.
+
 **Default on now:**
 
 - WebGPU parity engine (WebGL2 fallback on adapter / WGSL / device failure; `?gpu=webgl2`
