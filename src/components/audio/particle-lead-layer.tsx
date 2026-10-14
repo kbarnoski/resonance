@@ -1333,6 +1333,13 @@ export function ParticleLeadLayer({
     };
     // flash form (Ghost)
     let flashTail = 0;
+    // Ghost post-flash recede (Karel 2026-10-14: "after the first flash i dont like
+    // the particle getting all big and close and blurry … keep it less dramatically
+    // big"): as the angel releases, the camera glides back so the dissolving field
+    // recedes instead of billowing toward the viewer; the dolly resumes from there
+    const GHOST_RECEDE_K = 1.35;
+    let prevFlashTail = 0, ghostReceding = false;
+    let fastRelease = false;
     let imgLoaded: "angel" | "emblem" | "moment" | "motif" | "echo" | null = null;
     let angelUvWarm = false;
     const respK = journeyResponse({ id: journeyId, name: cast.name });
@@ -1496,7 +1503,8 @@ export function ParticleLeadLayer({
       // the end, and once mid-journey in long pieces — the form that SAYS the
       // journey (Yellow Bird → a yellow bird, Snowflake → a snowflake …)
       // (image-follow.ts emblemEnvelope — same timings, unit-tested)
-      const emEnv = emblemRef.current ? emblemEnvelope(t, useAudioStore.getState().duration || 0) : null;
+      // Ghost: no mid-way emblem — the angel flash already says it there
+      const emEnv = emblemRef.current ? emblemEnvelope(t, useAudioStore.getState().duration || 0, journeyId !== "ghost") : null;
       let emForm = emEnv?.form ?? 0, emShow = emEnv?.show ?? 0;
       const emOcc = emEnv?.occ ?? 0; // 0 = opening, 1 = mid, 2 = closing
       const emAge = emEnv?.age ?? ssf(4, 11, t); // the emblem eases smaller while held (big is brief)
@@ -1592,8 +1600,17 @@ export function ParticleLeadLayer({
           // Ghost: the tree's blossoms SCATTER as the image clears — falling
           // petals, not an abstract interim form (Karel 2026-10-11)
           if (cast.signatureImage === "angel" && imgKey?.startsWith("moment") && currentSoul !== "petals") { engine.setSoul("petals", 3.5); currentSoul = "petals"; if (VJ_TAP.on) VJ_TAP.soul = "petals"; glitchRecord("particle-form", "petals (blossoms scatter)"); }
+          // …and BRIEFLY (Karel 2026-10-14: "at end i dont love how the cloud of
+          // particles that seem indecisive again moving around to finally form the
+          // wings"): the blossom image releases at the fast pace, so the petals
+          // only drift a moment before the wings gather (filmed: 4.6 s → ~2 s)
+          if (cast.signatureImage === "angel" && imgKey?.startsWith("moment") && wantKey === "angel") { engine.setImagePace(1.5); fastRelease = true; }
         }
-        else if (act === "unload") { imgReleasing = false; imgLoaded = null; imgKey = null; formAt = soulAt = performance.now(); }
+        else if (act === "unload") {
+          imgReleasing = false; imgLoaded = null; imgKey = null; formAt = soulAt = performance.now();
+          // the wings themselves gather at the calm pace (Karel 2026-10-11)
+          if (fastRelease) { engine.setImagePace(calm ? 0.6 : 1); fastRelease = false; }
+        }
         loadNow = act === "load";
         if (act === "release") hoverAt = performance.now();
       } else {
@@ -1915,7 +1932,16 @@ export function ParticleLeadLayer({
         // for the first journey, slow for later ones — filmed: an appearance can open
         // CLOSE (k 0.45) and dolly out over 7 s, so the emblem filled the screen and
         // visibly contracted for ~3.5 s; which run got it was the luck of the draw)
-        if (imgLoaded === "emblem") engine.setCamScale(1);
+        const ghostRelease = journeyId === "ghost" && imgLoaded === "angel" && flashTail > 0.02 && flashTail < prevFlashTail;
+        if (ghostRelease) ghostReceding = true;
+        if (ghostReceding && imgLoaded !== "angel") {
+          // the flash has cleared: carry on from the receded distance, easing in a little
+          ghostReceding = false;
+          dollyFrom = GHOST_RECEDE_K; dollyTo = 1.15; dollyAt = performance.now();
+        }
+        prevFlashTail = flashTail;
+        if (ghostReceding) engine.setCamScale(GHOST_RECEDE_K);
+        else if (imgLoaded === "emblem") engine.setCamScale(1);
         else if (!(calm && imgLoaded)) engine.setCamScale(dollyFrom + (dollyTo - dollyFrom) * prog);
         // a CENTRED shader (suns, portals, mandalas…) pins the field to its
         // exact centre point (Karel 2026-10-06)
@@ -1936,7 +1962,10 @@ export function ParticleLeadLayer({
         // …and the rest of Ghost lifts off the floor too (Karel 2026-10-12, pass 7:
         // "a slight slowness when the particle blob and the lights falling shader
         // happen" — no dropped frames; the field ran at 0.38): calm, not dragging
-        engine.setMotion(journeyId === "ghost" ? Math.max(mo, phaseIdxAt(t) <= 1 ? 0.85 : 0.65) : mo);
+        // …and ONE pace for the whole journey (Karel 2026-10-14: the wisp cloud in the
+        // second section "seems slowed compared to first time" — it dropped 0.85 → 0.65
+        // at the opening's end): every section moves like the opening
+        engine.setMotion(journeyId === "ghost" ? Math.max(mo, 0.85) : mo);
         // a shader with its own moving particles: follow + trail them
         // OFF until a non-blocking read exists: snapshotting the WebGL1 shader
         // canvas cost ~90 ms per sample on the kiosk (murmuration, 2026-10-06)

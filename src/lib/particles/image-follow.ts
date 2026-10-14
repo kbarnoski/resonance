@@ -31,8 +31,10 @@ export function springTau(vel: Float64Array, i: number, x: number, target: numbe
 const ss = (e0: number, e1: number, x: number) => { const u = Math.max(0, Math.min(1, (x - e0) / (e1 - e0))); return u * u * (3 - 2 * u); };
 
 export interface EmblemEnvelope { form: number; show: number; occ: 0 | 1 | 2; age: number }
-/** The emblem under the title (0.8–16 s), mid-way in long pieces, and in the last 17 s. */
-export function emblemEnvelope(t: number, D: number): EmblemEnvelope {
+/** The emblem under the title (0.8–16 s), mid-way in long pieces, and in the last 17 s.
+ *  `mid = false` drops the mid-way one (Ghost, Karel 2026-10-14: right after the
+ *  angel flash it gathered "big and close and blurry" and popped in up top). */
+export function emblemEnvelope(t: number, D: number, mid = true): EmblemEnvelope {
   let form = ss(0.8, 3.8, t) * (1 - ss(11, 15, t));
   let show = ss(1.0, 4.0, t) * (1 - ss(12, 16, t));
   let occ: 0 | 1 | 2 = 0;
@@ -44,7 +46,7 @@ export function emblemEnvelope(t: number, D: number): EmblemEnvelope {
     occ = 2;
     age = ss(4, 11, e);
   }
-  if (D > 200 && t > D * 0.5 && t < D * 0.5 + 15) {
+  if (mid && D > 200 && t > D * 0.5 && t < D * 0.5 + 15) {
     const m = t - D * 0.5;
     form = Math.max(form, ss(0, 3.5, m) * (1 - ss(9, 13, m)));
     show = Math.max(show, ss(0.3, 4, m) * (1 - ss(10, 14, m)));
