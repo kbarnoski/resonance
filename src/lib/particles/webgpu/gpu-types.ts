@@ -37,7 +37,7 @@ export const ShaderStage = { VERTEX: 0x1, FRAGMENT: 0x2, COMPUTE: 0x4 } as const
 /** GPUMapMode flags. */
 export const MapMode = { READ: 0x0001, WRITE: 0x0002 } as const;
 
-export type WTextureFormat = "bgra8unorm" | "rgba8unorm" | "rgba16float" | "rgba32float" | "r32float";
+export type WTextureFormat = "bgra8unorm" | "rgba8unorm" | "r8unorm" | "rgba16float" | "rgba32float" | "r32float";
 
 export interface WAdapterInfo { vendor?: string; architecture?: string; device?: string; description?: string }
 

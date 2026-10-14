@@ -37,6 +37,11 @@ import { SIM_PORT, DRAW_PORT } from "./port.generated";
 import { createGLCapture, packUniforms, type CapDraw, type CapTexture } from "./gl-capture";
 import { buildSplatWGSL, buildAddSplatWGSL, SPLAT_LAYOUT, SPLAT_BINDINGS, SPLAT_ENTRIES, SPLAT_MAX_PX, SPLAT_MAX_TILES, tileGrid } from "./splat-wgsl";
 import { MOTE_STRIDE } from "./gl-port";
+import { buildFluidWGSL, FLUID_LAYOUT, FLUID_BINDINGS, FLUID_ENTRIES } from "./fluid-wgsl";
+import { FLUID_LAWS, fluidWeightFor, fluidRequested, glide } from "./fluid";
+import { buildCollideWGSL, COLLIDE_LAYOUT, COLLIDE_BINDINGS } from "./collide-wgsl";
+import { COLLIDE_LAWS, DEFAULT_CAL, collideRequested, type Rect } from "./depth-collide";
+import { SOUL_IDS } from "../souls";
 import { buildPairWGSL, PAIR_LAYOUT, PAIR_BINDINGS, PAIR_ENTRIES, PAIR_SECTORS, PAIR_RINGS } from "./pair-wgsl";
 import type { WebGPUEngineOptions, WebGPUInfo, GpuTimings } from "./engine";
 
@@ -50,6 +55,15 @@ export interface PortedParticleEngine extends ParticleEngine {
   portStale(): string | null;
   /** phase B: the tile-binned splat path is on and built */
   splatting(): boolean;
+  /** phase C: the fluid is compiled in, and its (glided) weight now */
+  fluidState(): { on: boolean; weight: number };
+  /** phase D: collisions compiled in, and the two slots' shown weights */
+  collideState(): { on: boolean; weights: number[] };
+  setCollideStrength(k: number): void;
+  /** phase D: a still's depth map (R8, rows top-down, bright = near) into slot
+   *  0 / 1 with its screen rect + target weight (glides). A map on screen never
+   *  swaps — refused (false) until that slot has faded out. */
+  setDepthField(slot: 0 | 1, field: Uint8Array | null, w: number, h: number, rect: Rect, weight: number): boolean;
   /** the conductor (the show engine on the capture context) — tests / diag */
   conductor(): ParticleEngine;
 }
@@ -81,6 +95,7 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
   } | null = null;
   let L: {
     sim: WBindGroupLayout; draw: WBindGroupLayout; drawInd: WBindGroupLayout; drawMote: WBindGroupLayout; splat: WBindGroupLayout; addSplat: WBindGroupLayout;
+    fluid: WBindGroupLayout; collide: WBindGroupLayout;
     govern: WBindGroupLayout; composite: WBindGroupLayout; taa: WBindGroupLayout; pair: WBindGroupLayout;
   } | null = null;
   // the splat path (phase B)
@@ -89,6 +104,21 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
   let ST: { tilesX: number; tilesY: number; count: WBuffer; offs: WBuffer; fill: WBuffer; tex: WTexture; addBG: WBindGroup } | null = null;
   const splatU = new UniformBlock(SPLAT_LAYOUT);
   let splatBG: WBindGroup | null = null;
+  // the conductor's sim + draw values the fluid / collisions need (this frame)
+  const cap2 = { soul: -1, dt: 1 / 60, bass: 0, imgGate: 1, eye: [0, 0, 1] as number[], vp: null as number[] | null, focal: 3 };
+  // phase C — the fluid
+  let FP: Record<(typeof FLUID_ENTRIES)[number], WComputePipeline> | null = null;
+  let FB: { u: WBuffer; acc: WBuffer; uA: WBuffer; uB: WBuffer; aux: WBuffer; pA: WBuffer; pB: WBuffer } | null = null;
+  let fluidBGs: [WBindGroup, WBindGroup] | null = null;
+  let fluidW = 0;
+  const fluidU = new UniformBlock(FLUID_LAYOUT);
+  // phase D — depth collisions: two slots that crossfade like the pictures
+  let CP: WComputePipeline | null = null;
+  let CB: WBuffer | null = null;
+  let collideBG: WBindGroup | null = null;
+  let collideK = 1;
+  const slots = [0, 1].map(() => ({ tex: null as WTexture | null, w: 0, h: 0, rect: [0, 0, 1, 1] as Rect, target: 0, shown: 0 }));
+  const collideU = new UniformBlock(COLLIDE_LAYOUT);
   let pairPipes: Record<(typeof PAIR_ENTRIES)[number], WComputePipeline> | null = null;
   let pairBufs: { u: WBuffer; stats: WBuffer; hist: WBuffer; cdf: WBuffer } | null = null;
   // float data textures (image uv, sorted pairing samples, paired uv) → storage buffers
@@ -156,6 +186,9 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
   // PHASE B: tile-binned fixed-point splatting (+ the temporal resolve always)
   const splatOn = opts.splat ?? splatRequested();
   const taaOn = stableOn || splatOn;
+  // PHASE C (fluid souls) and D (depth collisions): off unless asked for
+  const fluidOn = opts.fluid ?? fluidRequested();
+  const collideOn = opts.collide ?? collideRequested();
 
   const fail = (why: string) => {
     if (failed) return;
@@ -201,6 +234,8 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
       drawInd: splatOn ? mod(drawPort.vertexIndirect, "port-draw-ind") : null,
       splat: splatOn ? mod(buildSplatWGSL(), "port-splat") : null,
       addSplat: splatOn ? mod(buildAddSplatWGSL(), "port-add-splat") : null,
+      fluid: fluidOn ? mod(buildFluidWGSL(), "port-fluid") : null,
+      collide: collideOn ? mod(buildCollideWGSL(), "port-collide") : null,
       govern: mod(buildGovernWGSL(), "port-govern"),
       composite: mod(buildCompositeWGSL(), "port-composite"),
       pair: mod(buildPairWGSL(), "port-pair"),
@@ -229,6 +264,16 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
         ],
       }),
       addSplat: dev.createBindGroupLayout({ label: "port-add-splat", entries: [tb(0, F)] }),
+      fluid: dev.createBindGroupLayout({
+        label: "port-fluid",
+        entries: [ub(FLUID_BINDINGS.uniforms, C), sb(FLUID_BINDINGS.pos, C, true), sb(FLUID_BINDINGS.vel, C), sb(FLUID_BINDINGS.acc, C),
+          sb(FLUID_BINDINGS.uA, C), sb(FLUID_BINDINGS.uB, C), sb(FLUID_BINDINGS.aux, C), sb(FLUID_BINDINGS.pIn, C), sb(FLUID_BINDINGS.pOut, C)],
+      }),
+      collide: dev.createBindGroupLayout({
+        label: "port-collide",
+        entries: [ub(COLLIDE_BINDINGS.uniforms, C), sb(COLLIDE_BINDINGS.pos, C, true), sb(COLLIDE_BINDINGS.vel, C),
+          tb(COLLIDE_BINDINGS.depthA, C), tb(COLLIDE_BINDINGS.depthB, C), { binding: COLLIDE_BINDINGS.sampler, visibility: C, sampler: { type: "filtering" as const } }],
+      }),
       govern: dev.createBindGroupLayout({ label: "port-govern", entries: [ub(0, C), tb(1, C), sb(2, C)] }),
       composite: dev.createBindGroupLayout({ label: "port-composite", entries: [ub(0, F), tb(1, F), sb(2, F, true)] }),
       taa: dev.createBindGroupLayout({ label: "port-taa", entries: [ub(0, F), tb(1, F), tb(2, F)] }),
@@ -280,6 +325,27 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
     const pairList = await Promise.all(PAIR_ENTRIES.map((e) => dev.createComputePipelineAsync({ label: `port-${e}`, layout: pl([L!.pair]), compute: { module: m.pair, entryPoint: e } })));
     if (disposed) return false;
     pairPipes = Object.fromEntries(PAIR_ENTRIES.map((e, i) => [e, pairList[i]])) as Record<(typeof PAIR_ENTRIES)[number], WComputePipeline>;
+    if (fluidOn && m.fluid) {
+      const list = await Promise.all(FLUID_ENTRIES.map((e) => dev.createComputePipelineAsync({ label: `port-${e}`, layout: pl([L!.fluid]), compute: { module: m.fluid!, entryPoint: e } })));
+      if (disposed) return false;
+      FP = Object.fromEntries(FLUID_ENTRIES.map((e, i) => [e, list[i]])) as Record<(typeof FLUID_ENTRIES)[number], WComputePipeline>;
+      const cells = FLUID_LAWS.N ** 3;
+      const B0 = BufferUsage;
+      FB = {
+        u: dev.createBuffer({ size: FLUID_LAYOUT.size, usage: B0.UNIFORM | B0.COPY_DST, label: "fluid-u" }),
+        acc: dev.createBuffer({ size: cells * 16, usage: B0.STORAGE, label: "fluid-acc" }),
+        uA: dev.createBuffer({ size: cells * 16, usage: B0.STORAGE, label: "fluid-uA" }),
+        uB: dev.createBuffer({ size: cells * 16, usage: B0.STORAGE, label: "fluid-uB" }),
+        aux: dev.createBuffer({ size: cells * 16, usage: B0.STORAGE, label: "fluid-aux" }),
+        pA: dev.createBuffer({ size: cells * 4, usage: B0.STORAGE, label: "fluid-pA" }),
+        pB: dev.createBuffer({ size: cells * 4, usage: B0.STORAGE, label: "fluid-pB" }),
+      };
+    }
+    if (collideOn && m.collide) {
+      CP = await dev.createComputePipelineAsync({ label: "port-collide", layout: pl([L!.collide]), compute: { module: m.collide, entryPoint: "collide" } });
+      if (disposed) return false;
+      CB = dev.createBuffer({ size: COLLIDE_LAYOUT.size, usage: BufferUsage.UNIFORM | BufferUsage.COPY_DST, label: "collide-u" });
+    }
     if (splatOn && m.motes && m.drawInd && m.splat && m.addSplat) {
       const additiveB = { color: { srcFactor: "one", dstFactor: "one", operation: "add" }, alpha: { srcFactor: "one", dstFactor: "one", operation: "add" } };
       const [motesP, drawIndP, addP, ...steps] = await Promise.all([
@@ -396,6 +462,8 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
     P = { side, pos, vel, seed, uv, simBG: simGroup(U.sim, uv, pos, vel, seed), initBG: simGroup(U.init, uv, pos, vel, seed) };
     for (const b of fbufs.values()) b.destroy();
     fbufs.clear();
+    fluidBGs = null;
+    collideBG = null;
     drawBGs.clear();
     simBGs.clear();
     pairBGs.clear();
@@ -564,6 +632,15 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
         packUniforms(d.prog, SIM_PORT.fields, simF, simI);
         fr.sim = true;
         fr.simUv = d.textures.get("uImgUv") ?? null;
+        {
+          const v = d.prog.values;
+          cap2.soul = v.get("uSoulB")?.[0] ?? -1;
+          cap2.dt = v.get("uDt")?.[0] ?? 1 / 60;
+          cap2.bass = v.get("uBands")?.[0] ?? 0;
+          cap2.imgGate = 1 - Math.max(0, Math.min(1, Math.max(v.get("uImgForm")?.[0] ?? 0, v.get("uImgShow")?.[0] ?? 0)));
+          const e = v.get("uCurEye");
+          if (e && Math.hypot(e[0], e[1], e[2]) > 0.5) cap2.eye = e;
+        }
         return;
       case "pairAssign": {
         // the last of the five pairing passes: run all five as compute this frame
@@ -577,6 +654,8 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
         fr.decay = d.prog.values.get("uDecay")?.[0] ?? 0;
         return;
       case "draw":
+        cap2.vp = d.prog.values.get("uVP") ?? cap2.vp;
+        cap2.focal = d.prog.values.get("uFocal")?.[0] ?? cap2.focal;
         packUniforms(d.prog, drawPort.fields, drawF, drawI, { uPortVp: [canvas.width, canvas.height] });
         fr.draw = { count: d.count, tex: d.textures };
         return;
@@ -622,6 +701,83 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
 
   function tsWrites(k: number): WTimestampWrites | undefined {
     return ts && !ts.pending ? { querySet: ts.q, beginningOfPassWriteIndex: k * 2, endOfPassWriteIndex: k * 2 + 1 } : undefined;
+  }
+
+  /** Phase C: the fluid step (only while a fluid soul holds the stage). */
+  function encodeFluid(enc: ReturnType<WDevice["createCommandEncoder"]>, n: number) {
+    const dev = device!;
+    const soul = cap2.soul >= 0 ? SOUL_IDS[cap2.soul] : null;
+    const dtw = Math.min(0.05, Math.max(1 / 240, cap2.dt));
+    fluidW = glide(fluidW, fluidOn ? fluidWeightFor(soul) : 0, dtw, FLUID_LAWS.GLIDE_SEC);
+    if (!FP || !FB || !P || fluidW < 0.002) return;
+    if (!fluidBGs) {
+      const mk = (pin: WBuffer, pout: WBuffer) => dev.createBindGroup({ layout: L!.fluid, label: "port-fluid", entries: [
+        { binding: FLUID_BINDINGS.uniforms, resource: { buffer: FB!.u } },
+        { binding: FLUID_BINDINGS.pos, resource: { buffer: P!.pos } },
+        { binding: FLUID_BINDINGS.vel, resource: { buffer: P!.vel } },
+        { binding: FLUID_BINDINGS.acc, resource: { buffer: FB!.acc } },
+        { binding: FLUID_BINDINGS.uA, resource: { buffer: FB!.uA } },
+        { binding: FLUID_BINDINGS.uB, resource: { buffer: FB!.uB } },
+        { binding: FLUID_BINDINGS.aux, resource: { buffer: FB!.aux } },
+        { binding: FLUID_BINDINGS.pIn, resource: { buffer: pin } },
+        { binding: FLUID_BINDINGS.pOut, resource: { buffer: pout } },
+      ] });
+      fluidBGs = [mk(FB.pA, FB.pB), mk(FB.pB, FB.pA)];
+    }
+    const Lw = FLUID_LAWS, N = Lw.N;
+    fluidU.set("n", N).set("count", n).set("dt", dtw).set("weight", fluidW)
+      .set("boxMin", [-Lw.HALF, -Lw.HALF, -Lw.HALF]).set("cell", (2 * Lw.HALF) / N)
+      .set("couple", 1 - Math.exp(-dtw / Lw.COUPLE_TAU)).set("follow", 1 - Math.exp(-dtw / Lw.FOLLOW_TAU))
+      .set("damp", Math.exp(-Lw.DAMP_PER_SEC * dtw)).set("buoy", Lw.BUOYANCY * fluidW).set("vort", Lw.VORTICITY)
+      // the bass drives MOMENTUM into the plume (eased by the conductor's own band follower)
+      .set("plume", (Lw.PLUME_BASE + Lw.PLUME_BASS * Math.max(0, cap2.bass)) * fluidW)
+      .set("imgGate", cap2.imgGate).set("dense", Lw.DENSE_MOTES);
+    dev.queue.writeBuffer(FB.u, 0, fluidU.data);
+    const cells = N ** 3;
+    const [cx, cy] = dispatchSize(cells);
+    const [px, py] = dispatchSize(n);
+    const pass = enc.beginComputePass({ label: "fluid" });
+    const run = (e: (typeof FLUID_ENTRIES)[number], x: number, y: number, bg = 0) => { pass.setBindGroup(0, fluidBGs![bg]); pass.setPipeline(FP![e]); pass.dispatchWorkgroups(x, y); };
+    run("fClear", cx, cy);
+    run("fP2G", px, py);
+    run("fBlend", cx, cy);
+    run("fCurl", cx, cy);
+    run("fAdvect", cx, cy);
+    run("fDiv", cx, cy);
+    for (let k = 0; k < Lw.JACOBI; k++) run("fJacobi", cx, cy, k & 1);
+    run("fProject", cx, cy); // (even iterations: the solution is back in pA = pIn of group 0)
+    run("fG2P", px, py);
+    pass.end();
+  }
+
+  /** Phase D: ease free motes out of the still's surface (only while a slot is shown). */
+  function encodeCollide(enc: ReturnType<WDevice["createCommandEncoder"]>, n: number) {
+    const dev = device!;
+    const dtw = Math.min(0.05, Math.max(1 / 240, cap2.dt));
+    for (const sl of slots) sl.shown = glide(sl.shown, collideOn ? sl.target : 0, dtw, COLLIDE_LAWS.GLIDE_SEC);
+    if (!CP || !CB || !P || !cap2.vp || Math.max(slots[0].shown, slots[1].shown) < COLLIDE_LAWS.SWAP_EPS) return;
+    if (!collideBG) {
+      collideBG = dev.createBindGroup({ layout: L!.collide, label: "port-collide", entries: [
+        { binding: COLLIDE_BINDINGS.uniforms, resource: { buffer: CB } },
+        { binding: COLLIDE_BINDINGS.pos, resource: { buffer: P.pos } },
+        { binding: COLLIDE_BINDINGS.vel, resource: { buffer: P.vel } },
+        { binding: COLLIDE_BINDINGS.depthA, resource: (slots[0].tex ?? blackTex!).createView() },
+        { binding: COLLIDE_BINDINGS.depthB, resource: (slots[1].tex ?? blackTex!).createView() },
+        { binding: COLLIDE_BINDINGS.sampler, resource: sampler! },
+      ] });
+    }
+    collideU.set("vp", cap2.vp).set("eye", cap2.eye).set("focal", cap2.focal)
+      .set("rectA", slots[0].rect).set("rectB", slots[1].rect)
+      .set("weights", [slots[0].tex ? slots[0].shown * collideK : 0, slots[1].tex ? slots[1].shown * collideK : 0])
+      .set("dt", dtw).set("imgGate", cap2.imgGate)
+      .set("plane", DEFAULT_CAL.plane).set("span", DEFAULT_CAL.span).set("lead", DEFAULT_CAL.lead).set("count", n);
+    dev.queue.writeBuffer(CB, 0, collideU.data);
+    const [px, py] = dispatchSize(n);
+    const pass = enc.beginComputePass({ label: "collide" });
+    pass.setPipeline(CP);
+    pass.setBindGroup(0, collideBG);
+    pass.dispatchWorkgroups(px, py);
+    pass.end();
   }
 
   /** Phase B: mote records → classify → scan → scatter → per-tile fixed-point splat. */
@@ -712,6 +868,8 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
       const [gx, gy] = dispatchSize(n);
       pass.dispatchWorkgroups(gx, gy);
       pass.end();
+      encodeFluid(enc, n);
+      encodeCollide(enc, n);
     }
     const nowMs = performance.now();
     const dt = lastSubmit ? Math.min(0.05, Math.max(1 / 240, (nowMs - lastSubmit) / 1000)) : 1 / 60;
@@ -828,6 +986,27 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
     failure: () => failed,
     portStale: () => stale,
     splatting: () => splatOn && !!SP,
+    fluidState: () => ({ on: fluidOn && !!FP, weight: fluidW }),
+    collideState: () => ({ on: collideOn && !!CP, weights: slots.map((s) => s.shown) }),
+    setCollideStrength: (k: number) => { collideK = Math.max(0, Math.min(1, Number.isFinite(k) ? k : 0)); },
+    setDepthField: (slot: 0 | 1, field: Uint8Array | null, w: number, h: number, rect: Rect, weight: number): boolean => {
+      const sl = slots[slot];
+      if (!sl) return false;
+      sl.target = Math.max(0, Math.min(1, Number.isFinite(weight) ? weight : 0));
+      sl.rect = [...rect] as Rect;
+      if (!field) return true;
+      // a map on screen never swaps (the crossfade law): only once it has faded out
+      if (sl.tex && sl.shown > COLLIDE_LAWS.SWAP_EPS) return false;
+      if (!device || field.length < w * h) return false;
+      if (!sl.tex || sl.w !== w || sl.h !== h) {
+        sl.tex?.destroy();
+        sl.tex = device.createTexture({ size: [w, h], format: "r8unorm", usage: TextureUsage.TEXTURE_BINDING | TextureUsage.COPY_DST, label: `depth${slot}` });
+        sl.w = w; sl.h = h;
+        collideBG = null;
+      }
+      device.queue.writeTexture({ texture: sl.tex }, field, { bytesPerRow: w }, [w, h]);
+      return true;
+    },
     conductor: () => conductor,
     gpuTimings: () => (ts && timings.samples > 0 ? { ...timings } : null),
     isWarm: () => ready && !failed && seeded && placed && conductor.isWarm(),
@@ -844,6 +1023,9 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
       if (pairBufs) for (const b of Object.values(pairBufs)) b.destroy();
       if (SB) for (const b of [SB.motes, SB.list, SB.large, SB.args, SB.u]) b.destroy();
       if (ST) { for (const b of [ST.count, ST.offs, ST.fill]) b.destroy(); ST.tex.destroy(); }
+      if (FB) for (const b of Object.values(FB)) b.destroy();
+      CB?.destroy();
+      for (const sl of slots) sl.tex?.destroy();
       if (T) { T.hdr.destroy(); for (const t of T.taa) t.destroy(); }
       for (const g of gpuTex.values()) g.tex.destroy();
       blackTex?.destroy();

@@ -397,13 +397,54 @@ zero shimmer.
 
 ### C: fluid
 
-The 2.5-D stable-fluids grid with PIC/FLIP coupling for smoke, ink, wisp, flame and aurora.
-Bass injects momentum. A sample comes first (2–3 journeys).
+**Built (behind `?fluid=1` on the parity engine; `webgpu/fluid.ts` + `fluid-wgsl.ts`).** It runs
+right after the simulation, only while a fluid soul holds the stage:
+
+- **Grid:** world-aligned 64³ over the field's box. The camera orbits, so a camera-aligned
+  2.5-D slab would have to resample as it turns; 64³ costs about as much as the planned slab.
+- **Steps:**
+  1. P2G: each mote's velocity goes into its cell with fixed-point i32 atomics (momentum
+     conserved exactly).
+  2. The persistent field eases toward the motes' momentum, with damping, buoyancy where motes
+     gather, and a plume whose **momentum** follows the conductor's eased bass.
+  3. Curl, then semi-Lagrangian advection with vorticity confinement.
+  4. Divergence, then 20 Jacobi sweeps, warm-started from last frame. They use the *wide*
+     stencil, which is exactly central-div ∘ central-grad on the collocated grid, so the
+     projection converges. Then the projection itself.
+  5. G2P: each mote's velocity eases toward the field.
+- **Gate:** `FLUID_SOULS` (smoke, ink, smoke ring, wisp, flame, aurora) at their weights. Every
+  other soul is 0, including Snowflake's murmuration/rings/threads and Ghost's spirit, so their
+  look can't change. The weight glides over 2 s, and image forms and emblems are gated out.
+- **Laws (`fluid-collide.test.ts`):** the projection removes divergence, P2G conserves
+  momentum, trilinear sampling is exact on linear fields, the weight glides (< 1 %/frame), and
+  the WGSL is motion-only.
+- **Next:** film `?case=fluid-smoke&fluid=1` against the same case without the flag, then tune
+  couple, follow and plume from the film.
 
 ### D: depth collisions
 
-Pack depth maps and the edge SDF at harvest (offline). The collide pass runs, and motes settle
-on and flow around the stills' structure. Ghost's tunnel and tree are the reference sample.
+**Built (behind `?collide=1` on the parity engine; `webgpu/depth-collide.ts` +
+`collide-wgsl.ts`).** It is the motion twin of the depth-occlusion branch
+(`worktree-agent-ae44a39de2fd4c1f4`), and its screen → still → depth maths is copied verbatim
+so the two agree on where the surface is:
+
+- **Penetration:** a mote's camera depth maps through the occlusion calibration (plane, span,
+  lead). Where the still's material is nearer, that's a penetration in world units along the
+  view axis.
+- **Response:** a capped spring eases the mote back toward the camera (`uCurEye`). Its
+  into-surface velocity is damped and the tangential part slides with friction. It changes
+  velocity only, never position or light.
+- **Slots:** two depth slots crossfade like the pictures. Weights glide over 0.6 s, and a slot's
+  map swaps only once it has faded out (`setDepthField` refuses otherwise). Image forms and
+  emblems are gated out, so Snowflake's flakes and Ghost's angel and blossoms are never pushed.
+- **Laws (`fluid-collide.test.ts`):** no push in front of the surface, the push is capped and
+  scales with the weight, continuity as the weight → 0, into-surface velocity is never
+  amplified, and the WGSL is velocity-only.
+- **Sample:** `?case=depth-snowflake&collide=1` uses Snowflake stills gen-103/108 and their
+  pack depth maps. Ghost has no depth pack yet.
+- **Next:** feed the slots from the journey layer. When the occlusion branch lands, its
+  `OcclusionDriver` slots and worker sampler drive both. The edge SDF (flow *around*
+  silhouettes) is a harvest-time follow-up.
 
 ### E: optimal-transport form changes
 
@@ -422,6 +463,8 @@ springs. It retires spatial pairing.
     - `?dpr=2` runs at the full panel;
     - `?timing=0` turns timestamps off;
     - `?splat=1` turns on phase B (tile-binned fixed-point splat plus temporal resolve);
+    - `?fluid=1` turns on phase C (fluid souls), `?collide=1` phase D (depth collisions);
+      their samples are `?case=fluid-smoke` and `?case=depth-snowflake`;
     - the show's own particle flags apply (`?stable=1`, `?cine=0`, …);
     - `?case=snowflake-emblems|snowflake-calm|ghost-opening|ghost-angel|ghost-blossom-wings`
       runs a mastered-journey moment.

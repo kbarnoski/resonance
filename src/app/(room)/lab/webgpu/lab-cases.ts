@@ -17,6 +17,7 @@ import type { SoulId } from "@/lib/particles/souls";
 import type { LabCaseId } from "@/lib/particles/webgpu/parity";
 import { formCanvas, uvFor } from "@/app/review/forms/form-images";
 import { pairOrder, PAIR_GROUPS } from "@/lib/particles/spatial-pairing";
+import { COLLIDE_LAWS, blurDepthField, coverRect } from "@/lib/particles/webgpu/depth-collide";
 
 export interface CaseCtx {
   alive: () => boolean;
@@ -57,7 +58,28 @@ export const CASE_NOTES: Record<LabCaseId, string> = {
   "ghost-opening": "Ghost: emblem → slow blob rising in place, fine motes, then beside the imagery",
   "ghost-angel": "Ghost: the angel flash (flash pace) and its outline treatment",
   "ghost-blossom-wings": "Ghost: blossom → wings hover hand-off",
+  "fluid-smoke": "phase C: smoke / ink souls in the fluid (add &fluid=1; compare without)",
+  "depth-snowflake": "phase D: murmuration colliding with a Snowflake still's depth (add &collide=1)",
 };
+
+/** A pack still's depth map → the blurred 96-px R8 field the collisions sample. */
+async function depthField(stillUrl: string): Promise<{ px: Uint8Array; w: number; h: number; aspect: number } | null> {
+  const url = stillUrl.replace("/images/journeys/", "/depth/journeys/").replace(/\.jpg$/, ".png");
+  const img = new Image();
+  img.src = url;
+  try { await img.decode(); } catch { return null; }
+  const w = COLLIDE_LAWS.SAMPLE_W, h = Math.max(1, Math.round((w * img.naturalHeight) / Math.max(1, img.naturalWidth)));
+  const c = document.createElement("canvas");
+  c.width = w; c.height = h;
+  const ctx = c.getContext("2d", { willReadFrequently: true });
+  if (!ctx) return null;
+  ctx.drawImage(img, 0, 0, w, h);
+  const d = ctx.getImageData(0, 0, w, h).data;
+  const r = new Float32Array(w * h);
+  for (let i = 0; i < w * h; i++) r[i] = d[i * 4];
+  const b = blurDepthField(r, w, h, COLLIDE_LAWS.BLUR_PASSES);
+  return { px: Uint8Array.from(b, (x) => Math.max(0, Math.min(255, Math.round(x)))), w, h, aspect: img.naturalWidth / Math.max(1, img.naturalHeight) };
+}
 
 export async function runCase(id: LabCaseId, e: ParticleEngine, ctx: CaseCtx): Promise<void> {
   const soul = (s: SoulId, sec = 4) => e.setSoul(s, sec);
@@ -157,6 +179,34 @@ export async function runCase(id: LabCaseId, e: ParticleEngine, ctx: CaseCtx): P
         await wait(9000);
         e.setImageForm(0, 0);
         await wait(6000);
+      }
+      return;
+    }
+    case "fluid-smoke": {
+      const souls: SoulId[] = ["smoke", "ink", "wisp"];
+      for (let k = 0; ctx.alive(); k++) {
+        ctx.say(`${souls[k % souls.length]} (fluid ${"fluidState" in e ? JSON.stringify((e as unknown as { fluidState(): unknown }).fluidState()) : "n/a"})`);
+        soul(souls[k % souls.length], 6);
+        await wait(20_000);
+      }
+      return;
+    }
+    case "depth-snowflake": {
+      soul("murmuration", 1);
+      const stills = ["gen-103", "gen-108"];
+      const de = e as unknown as { setDepthField?(slot: 0 | 1, f: Uint8Array | null, w: number, h: number, r: [number, number, number, number], weight: number): boolean };
+      if (!de.setDepthField) { ctx.say("this engine has no depth collisions (WebGPU parity engine + &collide=1)"); return; }
+      for (let k = 0; ctx.alive(); k++) {
+        const slot = (k % 2) as 0 | 1;
+        const f = await depthField(`/tramokyo-pack/images/journeys/first-snow/${stills[k % stills.length]}.jpg`);
+        if (!f || !ctx.alive()) { ctx.say("no depth map (pack stills exist on the kiosk only)"); return; }
+        const rect = coverRect(f.aspect, innerWidth / Math.max(1, innerHeight));
+        // crossfade like the pictures: the other slot fades out, this one in
+        de.setDepthField((1 - slot) as 0 | 1, null, 0, 0, rect, 0);
+        await wait(1200);
+        de.setDepthField(slot, f.px, f.w, f.h, rect, 1);
+        ctx.say(`depth ${stills[k % stills.length]} (slot ${slot})`);
+        await wait(20_000);
       }
       return;
     }

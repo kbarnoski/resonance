@@ -16,6 +16,8 @@
  *   ?timing=0                        GPU timestamp queries off
  *   ?splat=1                         PHASE B: tile-binned fixed-point splatting +
  *                                    temporal resolve (parity engine)
+ *   ?fluid=1 / ?collide=1            PHASE C fluid (smoke / ink souls) / PHASE D
+ *                                    depth collisions (?case=fluid-smoke · depth-snowflake)
  *   ?stable=1 / ?cine=0 / …          the show's own particle flags apply
  *   ?case=ghost-angel                a mastered-journey moment (lab-cases.ts):
  *                                    snowflake-emblems · snowflake-calm ·

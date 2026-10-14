@@ -82,7 +82,7 @@ export const UNIFORM_PARITY: Record<string, ParityEntry> = {
 
 export type MasteredJourney = "first-snow" | "ghost";
 
-export const LAB_CASES = ["forms", "snowflake-emblems", "snowflake-calm", "ghost-opening", "ghost-angel", "ghost-blossom-wings"] as const;
+export const LAB_CASES = ["forms", "snowflake-emblems", "snowflake-calm", "ghost-opening", "ghost-angel", "ghost-blossom-wings", "fluid-smoke", "depth-snowflake"] as const;
 export type LabCaseId = (typeof LAB_CASES)[number];
 
 export interface MasteredMoment {

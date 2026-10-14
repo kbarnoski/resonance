@@ -58,6 +58,10 @@ export interface WebGPUEngineOptions extends ParticleEngineOptions {
   /** PHASE B (parity engine): tile-binned fixed-point splatting + temporal
    *  resolve instead of one raster quad per mote. Default: ?splat=1. */
   splat?: boolean;
+  /** PHASE C (parity engine): the fluid for the smoke / ink souls. Default: ?fluid=1. */
+  fluid?: boolean;
+  /** PHASE D (parity engine): collisions with the still's depth. Default: ?collide=1. */
+  collide?: boolean;
   /** The force stack compiled into `integrate` (default: all phase A forces). */
   forces?: readonly ForceId[];
   /** Smallest drawn sprite in device px (energy-conserving floor). Default 1.5. */
