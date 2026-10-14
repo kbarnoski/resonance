@@ -62,7 +62,9 @@ export function fakeGpu(o: FakeGpuOptions = {}) {
   const queue = trap("queue", {
     submit: (b: unknown[]) => rec("submit", b.length),
     writeBuffer: (buf: { label: string }, off: number, data: ArrayBufferView | ArrayBuffer, dataOff?: number, size?: number) => {
-      const bytes = size ?? (data as ArrayBufferView).byteLength ?? (data as ArrayBuffer).byteLength;
+      // (a typed array's offset / size are in ELEMENTS, an ArrayBuffer's in bytes — the WebGPU rule)
+      const el = ArrayBuffer.isView(data) ? (data as unknown as { BYTES_PER_ELEMENT?: number }).BYTES_PER_ELEMENT ?? 1 : 1;
+      const bytes = size !== undefined ? size * el : (data as ArrayBufferView).byteLength ?? (data as ArrayBuffer).byteLength;
       rec("writeBuffer", buf.label, off, bytes, dataOff ?? 0);
       // keep small uniform payloads for assertions
       if (bytes <= 4096) {

@@ -12,6 +12,7 @@
 //                    (NAGA_BIN=… node scripts/gen-webgpu-port.mjs).
 // Status: "live" = on the GPU now · "state" = the conductor keeps the state,
 // the GPU effect lands in the named phase · "planned" = not carried yet.
+// Spatial pairing: the conductor's five GL passes run as compute (pair-wgsl.ts).
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { ParticleEngine } from "../particle-engine";
@@ -44,7 +45,7 @@ export const METHOD_PARITY = {
   setTripwire: planned("A", "§A.6 probes", "the velocity read-back stays idle (async mapAsync probe planned)"),
   lastRetarget: C, settledFor: C, setImageVariant: C, setImageTint: C, loadBridgeStill: C, setBridge: C, bridgeState: C,
   setFollow: C, loadFormImage: C, imageSampleCount: C, setImageForm: C,
-  setImageLiteral: state("E", "§E optimal transport", "spatial pairing is compiled out of the conductor (float-blend histograms → compute atomics); the literal level still applies"),
+  setImageLiteral: live("spatial pairing runs as compute (pair-wgsl.ts: atomic histogram, scans, assign)"),
   setHover: C, setMotion: C, impulse: C, regather: C, setMelody: C, enter: C, setHueSpread: C, setGain: C,
   prepare: C, warmBurst: C, setWarmPace: C, prewarm: C, isWarm: C, resize: C,
   stats: live("the conductor's stats; exposure / meanLum are governed on the GPU and not read back"),
@@ -68,7 +69,7 @@ export const UNIFORM_PARITY: Record<string, ParityEntry> = {
   uImgB: live("texture"),
   uBridgeA: live("texture (writeTexture)"),
   uBridgeB: live("texture"),
-  uPairSoft: state("E", "§E optimal transport", "uniform ported; the paired uv is not (pairing compiled out)"),
+  uPairSoft: live("sim port; the paired uv comes from the pairing compute passes"),
 };
 
 // ── THE MASTERED JOURNEYS (Karel 2026-10-13: "i do want the new particle engine
@@ -97,7 +98,7 @@ export interface MasteredMoment {
 }
 
 export const MASTERED_PARITY: readonly MasteredMoment[] = [
-  { journey: "first-snow", moment: "emblem variants (snowflake-1…7): gather, hold, release at the calm pace (setImagePace 0.6) — spatially paired in the show", surface: ["loadFormImage", "setImageForm", "setImagePace", "setImageLiteral", "setImageScale"], status: "state", phase: "E", plan: "§A port live; pairing §E (or a compute port of the five pairing passes)", labCase: "snowflake-emblems" },
+  { journey: "first-snow", moment: "emblem variants (snowflake-1…7): gather, hold, release at the calm pace (setImagePace 0.6) — spatially paired in the show", surface: ["loadFormImage", "setImageForm", "setImagePace", "setImageLiteral", "setImageScale"], status: "live", phase: "A", plan: "§A (sim + draw port; pairing as compute §A.9)", labCase: "snowflake-emblems" },
   { journey: "first-snow", moment: "calm form holds (~25–32 s), slow breath, gentle dolly — never 'changing its mind'", surface: ["setSoul", "setShape", "settledFor", "setCamScale", "setBreath"], status: "live", phase: "A", plan: "§A (conductor + sim port)", labCase: "snowflake-calm" },
   { journey: "first-snow", moment: "murmuration opening; swell eases in (no brightness jump); Silk Threads", surface: ["setSoul", "enter", "setGain"], status: "live", phase: "A", plan: "§A (sim port: soul 3)", labCase: "snowflake-calm" },
   { journey: "ghost", moment: "opening: emblem → slow blob rising IN PLACE over the tunnel, fine motes (size 0.85, no offset)", surface: ["setSoul", "setSizeScale", "setOffset", "setImageForm"], status: "live", phase: "A", plan: "§A", labCase: "ghost-opening" },

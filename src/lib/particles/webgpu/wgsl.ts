@@ -17,6 +17,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { SIM_LAYOUT, RENDER_LAYOUT, GOVERNOR_LAYOUT, WORKGROUP, structWGSL } from "./layout";
+import { buildPairWGSL, PAIR_ENTRIES } from "./pair-wgsl";
 
 export const SPEC_BINS = 128;
 
@@ -474,6 +475,8 @@ export function allModules(): Record<string, string> {
     fade: buildFadeWGSL(),
     govern: buildGovernWGSL(),
     composite: buildCompositeWGSL(),
+    taa: buildTaaWGSL(0.05),
+    pair: buildPairWGSL(),
   };
 }
 
@@ -484,6 +487,8 @@ export const ENTRY_POINTS: Record<string, readonly string[]> = {
   fade: ["vsTri", "fsFade"],
   govern: ["govern"],
   composite: ["vsTri", "fsComp"],
+  taa: ["vsTri", "fsTaa"],
+  pair: PAIR_ENTRIES,
 };
 
 /** TEMPORAL RESOLVE (?stable=1): port of shaders.ts TAA_FS — the HDR layer

@@ -16,6 +16,7 @@ import type { ParticleEngine } from "@/lib/particles/particle-engine";
 import type { SoulId } from "@/lib/particles/souls";
 import type { LabCaseId } from "@/lib/particles/webgpu/parity";
 import { formCanvas, uvFor } from "@/app/review/forms/form-images";
+import { pairOrder, PAIR_GROUPS } from "@/lib/particles/spatial-pairing";
 
 export interface CaseCtx {
   alive: () => boolean;
@@ -28,7 +29,9 @@ async function image(e: ParticleEngine, src: string, ctx: CaseCtx) {
   const img = await formCanvas(src, 512);
   if (!img) { ctx.say(`could not load ${src} (pack stills exist on the kiosk only)`); return null; }
   const uv = uvFor(img, e.imageSampleCount());
-  return { img, uv, aspect: img.width / Math.max(1, img.height) };
+  // spatial pairing, as the journey layer does (each mote arrives where it is)
+  const pair = uv ? pairOrder(uv, PAIR_GROUPS) : undefined;
+  return { img, uv, pair, aspect: img.width / Math.max(1, img.height) };
 }
 
 /** gather an image form (glide), hold, release */
@@ -36,7 +39,7 @@ async function emblem(e: ParticleEngine, src: string, ctx: CaseCtx, holdMs: numb
   const im = await image(e, src, ctx);
   if (!im || !ctx.alive()) return;
   ctx.say(`gather ${src}`);
-  e.loadFormImage(im.img, im.aspect, im.uv, true);
+  e.loadFormImage(im.img, im.aspect, im.uv, true, im.pair);
   const lit = opts.literal ?? 0.97;
   e.setImageLiteral(lit);
   e.setImageScale(opts.scale ?? 0.55);
@@ -113,7 +116,7 @@ export async function runCase(id: LabCaseId, e: ParticleEngine, ctx: CaseCtx): P
         if (!im || !ctx.alive()) return;
         ctx.say(`flash approach ${src}`);
         // the flash meets the angel on the beat: no glide (flash pace)
-        e.loadFormImage(im.img, im.aspect, im.uv, false);
+        e.loadFormImage(im.img, im.aspect, im.uv, false, im.pair);
         e.setImageLiteral(1);
         e.setImageScale(0.62);
         for (let a = 1; a <= 10 && ctx.alive(); a++) { e.setImageForm(a / 10, a / 10); await wait(150); }
@@ -133,7 +136,7 @@ export async function runCase(id: LabCaseId, e: ParticleEngine, ctx: CaseCtx): P
         const bl = await image(e, `/tramokyo-pack/emblems/ghost-blossoms-${(k % 2) + 1}.jpg`, ctx);
         if (!bl || !ctx.alive()) return;
         ctx.say("blossom");
-        e.loadFormImage(bl.img, bl.aspect, bl.uv, true);
+        e.loadFormImage(bl.img, bl.aspect, bl.uv, true, bl.pair);
         e.setImageLiteral(0.97);
         e.setImageScale(0.55);
         e.setImageForm(0.97, 1);
@@ -147,7 +150,7 @@ export async function runCase(id: LabCaseId, e: ParticleEngine, ctx: CaseCtx): P
         await wait(1500);
         const wings = await image(e, `/tramokyo-pack/emblems/ghost-wings-${(k % 2) + 1}.jpg`, ctx);
         if (!wings || !ctx.alive()) return;
-        e.loadFormImage(wings.img, wings.aspect, wings.uv, true);
+        e.loadFormImage(wings.img, wings.aspect, wings.uv, true, wings.pair);
         e.setHover(0);
         e.setImageForm(0.97, 1);
         ctx.say("wings");

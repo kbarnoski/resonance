@@ -107,8 +107,31 @@ describe("the parity engine: conductor → ported passes", () => {
     engine.setImageForm(1, 1);
     step(5);
     const f = calls.slice(before);
-    expect(f.some((c) => c.name === "writeBuffer" && c.args[0] === "port-uv" && c.args[2] === n * 8)).toBe(true);
+    expect(f.some((c) => c.name === "writeBuffer" && String(c.args[0]).startsWith("fbuf") && c.args[2] === n * 8)).toBe(true);
     expect(f.some((c) => c.name === "copyExternalImageToTexture" && (c.args[1] as number[])[0] === 64 && c.args[2] === true)).toBe(true);
+    engine.dispose();
+  });
+
+  it("spatial pairing runs as compute (stats → hist → cdfs → assign) once per image, before the sim", async () => {
+    const { engine, calls } = await makePort();
+    engine.start();
+    step(2);
+    const n = engine.imageSampleCount();
+    const uv = new Float32Array(n * 2).map((_, i) => ((i * 7919) % 1000) / 1000);
+    const { pairOrder, PAIR_GROUPS } = await import("../spatial-pairing");
+    const before = calls.length;
+    engine.loadFormImage({ width: 64, height: 64 } as HTMLCanvasElement, 1, uv, true, pairOrder(uv, PAIR_GROUPS));
+    engine.setImageForm(1, 1);
+    step(4);
+    const f = calls.slice(before);
+    const pairing = f.filter((c) => c.name === "beginComputePass" && c.args[0] === "pairing");
+    expect(pairing.length).toBe(1); // once per image
+    expect(f.filter((c) => c.name === "compute.setPipeline" && c.args[0] === "pairing").length).toBe(6);
+    const pi = f.findIndex((c) => c.name === "beginComputePass" && c.args[0] === "pairing");
+    const si = f.findIndex((c, i) => i > pi && c.name === "beginComputePass" && c.args[0] === "sim");
+    expect(si).toBeGreaterThan(pi);
+    // the sorted samples and the image uv each reach their own buffer
+    expect(f.filter((c) => c.name === "writeBuffer" && String(c.args[0]).startsWith("fbuf") && c.args[2] === n * 8).length).toBe(2);
     engine.dispose();
   });
 

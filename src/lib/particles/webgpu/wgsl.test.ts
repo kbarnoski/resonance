@@ -6,6 +6,7 @@ import { join } from "path";
 import {
   allModules, buildSimWGSL, ENTRY_POINTS, FORCES, DEFAULT_FORCES, FORM_NAMES, SIM_BINDINGS, RENDER_BINDINGS, GOVERN_BINDINGS, FORMS_WGSL,
 } from "./wgsl";
+import { SIM_PORT, DRAW_PORT } from "./port.generated";
 import { SIM_LAYOUT, RENDER_LAYOUT, GOVERNOR_LAYOUT, structWGSL, WORKGROUP } from "./layout";
 
 const balanced = (s: string) => {
@@ -79,7 +80,9 @@ describe("WGSL generation", () => {
   // binary is available: NAGA_BIN=/path/to/naga npx vitest run src/lib/particles
   it.runIf(!!process.env.NAGA_BIN && existsSync(process.env.NAGA_BIN ?? ""))("validates with naga", () => {
     const dir = mkdtempSync(join(tmpdir(), "wgsl-"));
-    for (const [name, src] of Object.entries(mods)) {
+    const all: Record<string, string> = { ...mods, portSim: SIM_PORT.wgsl };
+    for (const [v, d] of Object.entries(DRAW_PORT)) { all[`portDrawV-${v}`] = d.vertex; all[`portDrawF-${v}`] = d.fragment; }
+    for (const [name, src] of Object.entries(all)) {
       const f = join(dir, `${name}.wgsl`);
       writeFileSync(f, src);
       const out = execFileSync(process.env.NAGA_BIN!, [f], { encoding: "utf8" });

@@ -35,6 +35,7 @@ import { buildSimWGSL, buildFadeWGSL, buildGovernWGSL, buildCompositeWGSL, build
 import { SIM_PORT_BINDINGS, DRAW_PORT_BINDINGS } from "./gl-port";
 import { SIM_PORT, DRAW_PORT } from "./port.generated";
 import { createGLCapture, packUniforms, type CapDraw, type CapTexture } from "./gl-capture";
+import { buildPairWGSL, PAIR_LAYOUT, PAIR_BINDINGS, PAIR_ENTRIES, PAIR_SECTORS, PAIR_RINGS } from "./pair-wgsl";
 import type { WebGPUEngineOptions, WebGPUInfo, GpuTimings } from "./engine";
 
 export interface PortedParticleEngine extends ParticleEngine {
@@ -69,7 +70,14 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
     seedInit: WComputePipeline; posInit: WComputePipeline; sim: WComputePipeline;
     fade: WRenderPipeline; draw: WRenderPipeline; taa: WRenderPipeline | null; govern: WComputePipeline; composite: WRenderPipeline;
   } | null = null;
-  let L: { sim: WBindGroupLayout; draw: WBindGroupLayout; govern: WBindGroupLayout; composite: WBindGroupLayout; taa: WBindGroupLayout } | null = null;
+  let L: { sim: WBindGroupLayout; draw: WBindGroupLayout; govern: WBindGroupLayout; composite: WBindGroupLayout; taa: WBindGroupLayout; pair: WBindGroupLayout } | null = null;
+  let pairPipes: Record<(typeof PAIR_ENTRIES)[number], WComputePipeline> | null = null;
+  let pairBufs: { u: WBuffer; stats: WBuffer; hist: WBuffer; cdf: WBuffer } | null = null;
+  // float data textures (image uv, sorted pairing samples, paired uv) → storage buffers
+  const fbufs = new Map<CapTexture, WBuffer>();
+  const simBGs = new Map<WBuffer, WBindGroup>();
+  const pairBGs = new Map<string, WBindGroup>();
+  const pairU = new UniformBlock(PAIR_LAYOUT);
   let sampler: WSampler | null = null;
   let U: { sim: WBuffer; init: WBuffer; draw: WBuffer; gov: WBuffer; taa: WBuffer; spec: WBuffer; expo: WBuffer } | null = null;
   let P: { side: number; pos: WBuffer; vel: WBuffer; seed: WBuffer; uv: WBuffer; simBG: WBindGroup; initBG: WBindGroup } | null = null;
@@ -85,6 +93,8 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
   let texSeq = 0;
   const texId = (t: WTexture) => { let k = texIds.get(t); if (k === undefined) { k = ++texSeq; texIds.set(t, k); } return k; };
   let lastSubmit = 0;
+  const bufIds = new WeakMap<WBuffer, number>();
+  const uvKey = (b: WBuffer) => { let k = bufIds.get(b); if (k === undefined) { k = ++texSeq; bufIds.set(b, k); } return k; };
   let wantSide = 0;
   let pendingSeed = false;
   let pendingInitR: number | null = null;
@@ -99,7 +109,11 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
   const gov = new UniformBlock(GOVERNOR_LAYOUT);
   const specData = new Float32Array(SPEC_BINS * 2);
   // what this conductor frame asked for (consumed at its composite draw)
-  const fr = { sim: false, decay: 0, draw: null as null | { count: number; tex: Map<string, CapTexture | null> }, taaKeep: null as number | null };
+  const fr = {
+    sim: false, simUv: null as CapTexture | null, decay: 0,
+    draw: null as null | { count: number; tex: Map<string, CapTexture | null> }, taaKeep: null as number | null,
+    pair: null as null | { sorted: CapTexture | null; target: CapTexture | null },
+  };
 
   // ── the conductor ────────────────────────────────────────────────────────
   const cap = createGLCapture({ onDraw, onUpload, onDelete });
@@ -116,7 +130,6 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
   };
   const conductor = createParticleEngine(shim as unknown as HTMLCanvasElement, {
     ...opts,
-    pairing: false, // §E (needs float-blend histograms → compute atomics)
     glow: false, // bloom is off in the show; not ported
     probe: false,
   });
@@ -165,6 +178,7 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
       taa: stableOn ? mod(buildTaaWGSL(STABLE_LAWS.TAA_CLAMP_SLACK), "port-taa") : null,
       govern: mod(buildGovernWGSL(), "port-govern"),
       composite: mod(buildCompositeWGSL(), "port-composite"),
+      pair: mod(buildPairWGSL(), "port-pair"),
     };
     const C = ShaderStage.COMPUTE, V = ShaderStage.VERTEX, F = ShaderStage.FRAGMENT;
     const ub = (b: number, vis: number) => ({ binding: b, visibility: vis, buffer: { type: "uniform" as const } });
@@ -184,6 +198,7 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
       govern: dev.createBindGroupLayout({ label: "port-govern", entries: [ub(0, C), tb(1, C), sb(2, C)] }),
       composite: dev.createBindGroupLayout({ label: "port-composite", entries: [ub(0, F), tb(1, F), sb(2, F, true)] }),
       taa: dev.createBindGroupLayout({ label: "port-taa", entries: [ub(0, F), tb(1, F), tb(2, F)] }),
+      pair: dev.createBindGroupLayout({ label: "port-pair", entries: [ub(0, C), sb(1, C, true), sb(2, C), sb(3, C), sb(4, C), sb(5, C, true), sb(6, C)] }),
     };
     const pl = (l: WBindGroupLayout[]) => dev.createPipelineLayout({ bindGroupLayouts: l });
     const simPL = pl([L.sim]);
@@ -228,7 +243,9 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
       }),
       ...checks,
     ]);
+    const pairList = await Promise.all(PAIR_ENTRIES.map((e) => dev.createComputePipelineAsync({ label: `port-${e}`, layout: pl([L!.pair]), compute: { module: m.pair, entryPoint: e } })));
     if (disposed) return false;
+    pairPipes = Object.fromEntries(PAIR_ENTRIES.map((e, i) => [e, pairList[i]])) as Record<(typeof PAIR_ENTRIES)[number], WComputePipeline>;
     pipes = {
       seedInit: seedInit as WComputePipeline, posInit: posInit as WComputePipeline, sim: sim as WComputePipeline,
       fade: fade as WRenderPipeline, draw: draw as WRenderPipeline, taa: (taa as WRenderPipeline | null) ?? null,
@@ -245,6 +262,12 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
       expo: dev.createBuffer({ size: 16, usage: B.STORAGE | B.COPY_DST, label: "port-expo" }),
     };
     dev.queue.writeBuffer(U.expo, 0, new Float32Array([1, 0, 0, 0]));
+    pairBufs = {
+      u: dev.createBuffer({ size: PAIR_LAYOUT.size, usage: B.UNIFORM | B.COPY_DST, label: "pair-u" }),
+      stats: dev.createBuffer({ size: 16, usage: B.STORAGE, label: "pair-stats" }),
+      hist: dev.createBuffer({ size: PAIR_SECTORS * PAIR_RINGS * 4, usage: B.STORAGE, label: "pair-hist" }),
+      cdf: dev.createBuffer({ size: (PAIR_SECTORS + PAIR_SECTORS * PAIR_RINGS) * 8, usage: B.STORAGE, label: "pair-cdf" }),
+    };
     sampler = dev.createSampler({ magFilter: "linear", minFilter: "linear" });
     blackTex = dev.createTexture({ size: [1, 1], format: "rgba8unorm", usage: TextureUsage.TEXTURE_BINDING | TextureUsage.COPY_DST, label: "black" });
     dev.queue.writeTexture({ texture: blackTex }, new Uint8Array([0, 0, 0, 255]), { bytesPerRow: 4 }, [1, 1]);
@@ -298,9 +321,46 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
     });
     // (the init module shares the binding table: SIM_BINDINGS == SIM_PORT_BINDINGS)
     void SIM_BINDINGS;
-    P = { side, pos, vel, seed, uv, simBG: group(U.sim, "port-sim"), initBG: group(U.init, "port-init") };
+    void group;
+    P = { side, pos, vel, seed, uv, simBG: simGroup(U.sim, uv, pos, vel, seed), initBG: simGroup(U.init, uv, pos, vel, seed) };
+    for (const b of fbufs.values()) b.destroy();
+    fbufs.clear();
     drawBGs.clear();
+    simBGs.clear();
+    pairBGs.clear();
     seeded = placed = false;
+  }
+
+  function simGroup(uni: WBuffer, uv: WBuffer, pos: WBuffer, vel: WBuffer, seed: WBuffer): WBindGroup {
+    return device!.createBindGroup({
+      layout: L!.sim, label: "port-sim",
+      entries: [
+        { binding: SIM_PORT_BINDINGS.uniforms, resource: { buffer: uni } },
+        { binding: SIM_PORT_BINDINGS.pos, resource: { buffer: pos } },
+        { binding: SIM_PORT_BINDINGS.vel, resource: { buffer: vel } },
+        { binding: SIM_PORT_BINDINGS.seed, resource: { buffer: seed } },
+        { binding: SIM_PORT_BINDINGS.uv, resource: { buffer: uv } },
+        { binding: SIM_PORT_BINDINGS.spec, resource: { buffer: U!.spec } },
+      ],
+    });
+  }
+
+  /** The storage buffer mirroring a side² RG32F data texture (created on demand). */
+  function fbuf(t: CapTexture | null | undefined, create = false): WBuffer | null {
+    if (!t || !P || !device) return null;
+    let b = fbufs.get(t);
+    if (b && b.size !== P.side * P.side * 8) { b.destroy(); b = undefined; fbufs.delete(t); drawBGs.clear(); simBGs.clear(); pairBGs.clear(); }
+    if (!b && create) {
+      b = device.createBuffer({ size: P.side * P.side * 8, usage: BufferUsage.STORAGE | BufferUsage.COPY_DST, label: `fbuf${t.id}` });
+      fbufs.set(t, b);
+    }
+    return b ?? null;
+  }
+  const uvOf = (t: CapTexture | null | undefined) => fbuf(t) ?? P!.uv;
+  function simBGFor(uv: WBuffer): WBindGroup {
+    let g = simBGs.get(uv);
+    if (!g) { g = simGroup(U!.sim, uv, P!.pos, P!.vel, P!.seed); simBGs.set(uv, g); }
+    return g;
   }
 
   function ensureSide(side: number) {
@@ -372,8 +432,9 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
       return;
     }
     // the importance-sampled image uv (RG32F side × side)
-    if (kind === "data" && P && t.width === P.side && t.height === P.side && t.data instanceof Float32Array && t.data.length === P.side * P.side * 2) {
-      device.queue.writeBuffer(P.uv, 0, t.data);
+    // (the importance-sampled uv and the sorted pairing samples alike: by texture)
+    if (kind === "data" && P && t.width === P.side && t.height === P.side && t.data instanceof Float32Array && t.data.length >= P.side * P.side * 2) {
+      device.queue.writeBuffer(fbuf(t, true)!, 0, t.data, 0, P.side * P.side * 2);
     }
   }
   function onDelete(t: CapTexture) {
@@ -417,7 +478,16 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
         ensureSide(d.viewport[2]);
         packUniforms(d.prog, SIM_PORT.fields, simF, simI);
         fr.sim = true;
+        fr.simUv = d.textures.get("uImgUv") ?? null;
         return;
+      case "pairAssign": {
+        // the last of the five pairing passes: run all five as compute this frame
+        const v = d.prog.values;
+        pairU.set("planeR", v.get("uPlaneR") ?? [1, 0, 0]).set("planeU", v.get("uPlaneU") ?? [0, 1, 0])
+          .set("count", v.get("uCount")?.[0] ?? 1).set("groups", v.get("uGroups")?.[0] ?? 48).set("texW", v.get("uTexW")?.[0] ?? 1);
+        fr.pair = { sorted: d.textures.get("uPair") ?? null, target: d.fbo?.color[0] ?? null };
+        return;
+      }
       case "fade":
         fr.decay = d.prog.values.get("uDecay")?.[0] ?? 0;
         return;
@@ -439,7 +509,8 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
   function drawGroup(tex: Map<string, CapTexture | null>): WBindGroup {
     const dev = device!;
     const a = texFor(tex.get("uImgA")), b = texFor(tex.get("uImgB")), ba = texFor(tex.get("uBridgeA")), bb = texFor(tex.get("uBridgeB"));
-    const key = [a, b, ba, bb].map(texId).join("|") + `#${P!.side}`;
+    const uvb = uvOf(tex.get("uImgUv"));
+    const key = [a, b, ba, bb].map(texId).join("|") + `#${P!.side}#${uvKey(uvb)}`;
     let g = drawBGs.get(key);
     if (!g) {
       const D = DRAW_PORT_BINDINGS;
@@ -450,7 +521,7 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
           { binding: D.pos, resource: { buffer: P!.pos } },
           { binding: D.vel, resource: { buffer: P!.vel } },
           { binding: D.seed, resource: { buffer: P!.seed } },
-          { binding: D.uv, resource: { buffer: P!.uv } },
+          { binding: D.uv, resource: { buffer: uvb } },
           { binding: D.imgA, resource: a.createView() },
           { binding: D.imgB, resource: b.createView() },
           { binding: D.bridgeA, resource: ba.createView() },
@@ -470,18 +541,50 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
   function submitFrame() {
     const dev = device;
     const want = { ...fr, draw: fr.draw };
-    fr.sim = false; fr.draw = null; fr.taaKeep = null;
+    fr.sim = false; fr.draw = null; fr.taaKeep = null; fr.pair = null; fr.simUv = null;
     if (!ready || !dev || !pipes || !P || !U || !ctx || !seeded || !placed) return;
     ensureTargets(Math.max(1, canvas.width), Math.max(1, canvas.height));
     if (!T) return;
     frames++;
     const enc = dev.createCommandEncoder({ label: "port-frame" });
     const n = P.side * P.side;
+    if (want.pair && pairPipes && pairBufs) {
+      const sorted = fbuf(want.pair.sorted), out = fbuf(want.pair.target, true);
+      if (sorted && out) {
+        dev.queue.writeBuffer(pairBufs.u, 0, pairU.data);
+        const key = `${uvKey(sorted)}>${uvKey(out)}`;
+        let g = pairBGs.get(key);
+        if (!g) {
+          const Q = PAIR_BINDINGS;
+          g = dev.createBindGroup({ layout: L!.pair, label: "port-pair", entries: [
+            { binding: Q.uniforms, resource: { buffer: pairBufs.u } },
+            { binding: Q.pos, resource: { buffer: P.pos } },
+            { binding: Q.stats, resource: { buffer: pairBufs.stats } },
+            { binding: Q.hist, resource: { buffer: pairBufs.hist } },
+            { binding: Q.cdf, resource: { buffer: pairBufs.cdf } },
+            { binding: Q.sorted, resource: { buffer: sorted } },
+            { binding: Q.out, resource: { buffer: out } },
+          ] });
+          pairBGs.set(key, g);
+        }
+        const [px, py] = dispatchSize(n);
+        const bins = Math.ceil((PAIR_SECTORS * PAIR_RINGS) / 256);
+        const pass = enc.beginComputePass({ label: "pairing" });
+        pass.setBindGroup(0, g);
+        pass.setPipeline(pairPipes.pairStats); pass.dispatchWorkgroups(1);
+        pass.setPipeline(pairPipes.pairClear); pass.dispatchWorkgroups(bins);
+        pass.setPipeline(pairPipes.pairHist); pass.dispatchWorkgroups(px, py);
+        pass.setPipeline(pairPipes.pairAcdf); pass.dispatchWorkgroups(1);
+        pass.setPipeline(pairPipes.pairRcdf); pass.dispatchWorkgroups(bins);
+        pass.setPipeline(pairPipes.pairAssign); pass.dispatchWorkgroups(px, py);
+        pass.end();
+      }
+    }
     if (want.sim) {
       dev.queue.writeBuffer(U.sim, 0, simBlock.data);
       const pass = enc.beginComputePass({ label: "sim", timestampWrites: tsWrites(0) });
       pass.setPipeline(pipes.sim);
-      pass.setBindGroup(0, P.simBG);
+      pass.setBindGroup(0, simBGFor(uvOf(want.simUv)));
       const [gx, gy] = dispatchSize(n);
       pass.dispatchWorkgroups(gx, gy);
       pass.end();
@@ -600,6 +703,8 @@ export function createPortedParticleEngine(canvas: HTMLCanvasElement, opts: WebG
       conductor.dispose();
       if (P) for (const b of [P.pos, P.vel, P.seed, P.uv]) b.destroy();
       if (U) for (const b of Object.values(U)) b.destroy();
+      for (const b of fbufs.values()) b.destroy();
+      if (pairBufs) for (const b of Object.values(pairBufs)) b.destroy();
       if (T) { T.hdr.destroy(); for (const t of T.taa) t.destroy(); }
       for (const g of gpuTex.values()) g.tex.destroy();
       blackTex?.destroy();

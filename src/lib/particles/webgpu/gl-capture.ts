@@ -13,15 +13,18 @@
 // (uniform names parsed from source), uniforms (per program, like GL), texture
 // units + uploads, framebuffers, viewport / scissor / blend state, drawArrays.
 // Everything else is a recorded no-op. Programs are always "compiled" (the
-// parallel-compile extension reports completion at once). EXT_float_blend is
-// absent, so the engine compiles spatial pairing out (ported in §E).
+// parallel-compile extension reports completion at once). Spatial pairing is
+// on (EXT_float_blend "present"); its five passes run as compute (pair-wgsl.ts).
 // ─────────────────────────────────────────────────────────────────────────────
 
 import {
   SEED_INIT_FS, POS_INIT_FS, FADE_FS, LUM_FS, EXPO_FS, TAA_FS, BLOOM_FS,
+  PAIR_STATS_FS, PAIR_HIST_VS, PAIR_ACDF_FS, PAIR_RCDF_FS, PAIR_ASSIGN_FS,
 } from "../shaders";
 
-export type ProgramKind = "sim" | "draw" | "seedInit" | "posInit" | "fade" | "lum" | "expo" | "comp" | "taa" | "bloom" | "pair" | "other";
+export type ProgramKind =
+  | "sim" | "draw" | "seedInit" | "posInit" | "fade" | "lum" | "expo" | "comp" | "taa" | "bloom"
+  | "pairStats" | "pairHist" | "pairAcdf" | "pairRcdf" | "pairAssign" | "other";
 
 export interface CapProgram {
   id: number;
@@ -98,8 +101,12 @@ function classify(vs: string, fs: string): ProgramKind {
   if (fs === EXPO_FS) return "expo";
   if (fs === TAA_FS) return "taa";
   if (fs === BLOOM_FS) return "bloom";
+  if (fs === PAIR_STATS_FS) return "pairStats";
+  if (vs === PAIR_HIST_VS) return "pairHist";
+  if (fs === PAIR_ACDF_FS) return "pairAcdf";
+  if (fs === PAIR_RCDF_FS) return "pairRcdf";
+  if (fs === PAIR_ASSIGN_FS) return "pairAssign";
   if (fs.includes("uniform float uTransparent")) return "comp";
-  if (/uPair|uAcdf|uRcdf|uHist\b|uStats/.test(fs + vs)) return "pair";
   return "other";
 }
 
@@ -134,7 +141,8 @@ export function createGLCapture(hooks: CaptureHooks = {}): GLCapture {
     getExtension: (name: string) => {
       if (name === "EXT_color_buffer_float") return {};
       if (name === "KHR_parallel_shader_compile") return { COMPLETION_STATUS_KHR: C.COMPLETION_STATUS_KHR };
-      return null; // EXT_float_blend absent → spatial pairing compiled out
+      if (name === "EXT_float_blend") return {}; // spatial pairing on (its passes run as compute: pair-wgsl.ts)
+      return null;
     },
     // ── programs ──
     createShader: (type: number) => { const s = { id: ids++ }; shaders.set(s, { type, src: "" }); return s; },

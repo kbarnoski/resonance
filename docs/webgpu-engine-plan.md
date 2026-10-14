@@ -215,8 +215,8 @@ flight). Phase A instead keeps **one source of behaviour**:
   - `fade` + `draw` → blend-constant fade plus ported sprites;
   - `taa` → the TAA port;
   - `comp` → the exact-mean governor plus composite.
+  - the five pairing passes → `pair-wgsl.ts` (compute).
   `lum`/`expo` are replaced by the governor. Bloom is not ported (it's off in the show).
-  Spatial pairing is compiled out of the conductor (no float-blend): see §E.
 - **Freshness.** The engine warns (lab HUD and console) when the show's GLSL changed after the
   port was generated. `engine-port.test.ts` asserts every edit still applies. The parity test
   fails on a sim or draw uniform the port doesn't carry. Regenerate with
@@ -259,9 +259,9 @@ stays as the phase B renderer's test bed (`/lab/webgpu?engine=native`).
   that isn't mapped fails CI, so the port can't silently fall behind the show.
 - `MASTERED_PARITY`: the Snowflake and Ghost checklist (§4.1).
 
-Status with the parity engine (phase A): 69 of 71 methods are live through the conductor.
-`setImageLiteral` (spatial pairing, §E) and `setTripwire` (async probe, §A.6) are the exceptions.
-Every sim and draw uniform is carried by the generated port, except the paired uv.
+Status with the parity engine (phase A): 70 of 71 methods are live through the conductor;
+`setTripwire` (the async velocity probe, §A.6) is the exception. Every sim and draw uniform is
+carried by the generated port, and spatial pairing runs as compute.
 
 ### 4.1 Snowflake ("first-snow") and Ghost ("ghost")
 
@@ -355,10 +355,9 @@ watching).
   colour, the bridge, living fire, DOF and drift, stable motes, trails) and the signature
   flight all run from the show's own GLSL, ported by naga, driven by the show's own CPU code.
 - **A.6 Probes:** async velocity tripwire and state sampling (mapAsync, one in flight).
-- **A.9 Spatial pairing on the GPU:** the five pairing passes as compute (atomic histogram,
-  scans, assign), or go straight to §E. Until then WebGPU forms images with random pairing,
-  so emblems can contract/expand where the show doesn't. This is the one visible gap for
-  Snowflake's emblems.
+- **A.9 Spatial pairing on the GPU (done):** the conductor's five pairing passes run as
+  compute (`pair-wgsl.ts`): an atomic<u32> histogram replaces the float-blend point scatter;
+  the bins, quantiles and per-mote hash are the same, so emblems gather where the show's do.
 - **A.7 Exit:**
   - shared-engine wiring behind `?gpu=webgpu`;
   - the full tour on WebGPU at 160k matches WebGL frame for frame (`scripts/journey-review/`);
