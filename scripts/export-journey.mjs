@@ -93,6 +93,19 @@ function pngSize(buf) {
   return { width: buf.readUInt32BE(16), height: buf.readUInt32BE(20) };
 }
 
+/** data:/blob: sources are placeholders (silent unlock wav, local blobs), never the journey track. */
+function isPlaceholderSrc(src) {
+  return /^(data|blob):/i.test(String(src ?? ""));
+}
+
+function decodeDataUri(uri) {
+  const comma = uri.indexOf(",");
+  if (comma < 0) return null;
+  const meta = uri.slice(5, comma);
+  const payload = uri.slice(comma + 1);
+  return /;base64$/i.test(meta) ? Buffer.from(payload, "base64") : Buffer.from(decodeURIComponent(payload), "latin1");
+}
+
 // ── preflight ───────────────────────────────────────────────────────
 async function checkServer(o) {
   const url = `http://${o.host}:${o.port}/`;
@@ -200,8 +213,10 @@ async function renderRange(o, { videoOut, lossless, label = "" }) {
         say(`${tag}console.error: ${txt.slice(0, 200)}`);
       }
     });
-    page.on("framenavigated", (f) => {
-      if (f === page.mainFrame() && started && !navigatedAway) navigatedAway = f.url();
+    // a NEW DOCUMENT (reload / location change) — framenavigated also fires for
+    // same-document history.replaceState, which the app does on purpose
+    page.on("domcontentloaded", () => {
+      if (started && !navigatedAway) navigatedAway = page.url();
     });
 
     say(`${tag}opening ${url}`);
@@ -212,43 +227,82 @@ async function renderRange(o, { videoOut, lossless, label = "" }) {
     await page.evaluate(() => (document.fonts ? document.fonts.ready.then(() => true) : true));
     const gl = await page.evaluate(() => window.__resonanceExport.glInfo());
     meta.gl = gl;
-    say(`${tag}WebGL: ${gl.renderer}${gl.webgl2 ? " (WebGL2)" : ""}`);
+    const pageDpr = await page.evaluate(() => window.devicePixelRatio);
+    say(`${tag}WebGL: ${gl.renderer}${gl.webgl2 ? " (WebGL2)" : ""} · devicePixelRatio ${pageDpr}`);
+    if (pageDpr !== o.dpr) die(`the page reports devicePixelRatio ${pageDpr}, expected ${o.dpr}`);
     if (/swiftshader|llvmpipe|software/i.test(String(gl.renderer)) && o.gl !== "swiftshader") {
       warnLine("WebGL is running in SOFTWARE — slow, and not the kiosk's look. Try --headed (real Metal GPU).");
     }
     if (/NO WEBGL/.test(String(gl.renderer))) die("no WebGL in this browser — try --headed or --gl=swiftshader");
-    const cdp = await ctx.newCDPSession(page);
 
+    // Frame grab. Playwright's screenshot at scale "device" — raw CDP
+    // Page.captureScreenshot in new-headless returned CSS-pixel (1x) frames
+    // despite deviceScaleFactor 2, and with a clip it returned black
+    // (2026-10-13 lab runs). The page's rAF override doesn't affect it.
+    async function grab() {
+      return page.screenshot({
+        type: o.capture,
+        ...(o.capture === "jpeg" ? { quality: o.jpegQuality } : {}),
+        scale: "device",
+        animations: "allow", // the runtime owns animation time
+        caret: "initial",
+        timeout: 120000,
+      });
+    }
     const stepTimeoutMs = o.settleMs * 2 + 90000;
     const pcmFiles = new Map(); // src → local file
     let shownWarnings = 0;
 
+    /** Bytes of a media src: http(s) through the page's request context, data: decoded locally, blob: unreachable (null). */
+    async function fetchMedia(key) {
+      if (isPlaceholderSrc(key)) {
+        if (key.startsWith("data:")) return decodeDataUri(key);
+        return null;
+      }
+      const r = await page.request.get(key, { timeout: 180000 });
+      if (!r.ok()) die(`could not download media: HTTP ${r.status()} ${key}`);
+      return r.body();
+    }
+
     async function loadPcm(list) {
       for (const { key, sampleRate } of list) {
-        say(`${tag}analyser audio: downloading + decoding ${short(key)} @ ${sampleRate} Hz`);
-        const r = await page.request.get(key, { timeout: 180000 });
-        if (!r.ok()) die(`could not download the track for analysis: HTTP ${r.status()} ${key}`);
-        const body = await r.body();
-        const ext = extname(new URL(key).pathname).slice(0, 6) || ".audio";
+        const placeholder = isPlaceholderSrc(key);
+        const body = await fetchMedia(key);
+        if (!body) { say(`${tag}analyser audio: skipping unreachable ${short(key)} (blob:) — it reads silence`); continue; }
+        if (!placeholder) say(`${tag}analyser audio: downloading + decoding ${short(key)} @ ${sampleRate} Hz`);
+        const ext = placeholder ? ".wav" : extname(new URL(key).pathname).slice(0, 6) || ".audio";
         const file = join(tmp, `track-${pcmFiles.size}${ext}`);
         writeFileSync(file, body);
-        const mono = await decodeMono(file, sampleRate);
-        if (mono.length < sampleRate) die(`decoded audio is suspiciously short (${mono.length} samples): ${key}`);
+        let mono;
+        try {
+          mono = await decodeMono(file, sampleRate);
+        } catch (e) {
+          if (placeholder) { say(`${tag}analyser audio: placeholder ${short(key)} did not decode — it reads silence`); continue; }
+          throw e;
+        }
+        if (!placeholder && mono.length < sampleRate) die(`decoded audio is suspiciously short (${mono.length} samples): ${key}`);
         const id = String(pcmBuffers.size);
         pcmBuffers.set(id, Buffer.from(mono.buffer, mono.byteOffset, mono.byteLength));
         const n = await page.evaluate(([k, u, sr]) => window.__resonanceExport.loadPcm(k, u, sr), [key, `/__resonance_export__/pcm/${id}.f32`, sampleRate]);
         pcmFiles.set(key, file);
-        say(`${tag}analyser audio ready: ${(n / sampleRate).toFixed(1)} s`);
+        if (!placeholder) say(`${tag}analyser audio ready: ${(n / sampleRate).toFixed(1)} s`);
       }
     }
 
     async function step() {
       if (crashed) die("the page CRASHED (GPU process / out of memory?)");
-      let timer;
-      const d = await Promise.race([
-        page.evaluate(() => window.__resonanceExport.step()),
-        new Promise((_, rej) => { timer = setTimeout(() => rej(new ExportError(`a frame step hung for ${stepTimeoutMs / 1000}s`)), stepTimeoutMs); }),
-      ]).finally(() => clearTimeout(timer));
+      const call = (fn) => {
+        let timer;
+        return Promise.race([
+          page.evaluate(fn),
+          new Promise((_, rej) => { timer = setTimeout(() => rej(new ExportError(`a frame step hung for ${stepTimeoutMs / 1000}s`)), stepTimeoutMs); }),
+        ]).finally(() => clearTimeout(timer));
+      };
+      let d = await call(() => window.__resonanceExport.step());
+      if (d.needPcm) {
+        await loadPcm(d.needPcm); // the frame is held before its rAF meanwhile
+        d = await call(() => window.__resonanceExport.resume());
+      }
       if (navigatedAway) die(`the page navigated away mid-export (${navigatedAway}) — the loop reloaded or jumped`);
       for (const w of d.warnings) { meta.warnings.push(w); if (shownWarnings++ < 25) warnLine(`${tag}${w}`); }
       if (d.errors.length && meta.pageErrors < 15) for (const e of d.errors.slice(0, 3)) say(`${tag}callback error: ${String(e).split("\n")[0].slice(0, 200)}`);
@@ -273,7 +327,9 @@ async function renderRange(o, { videoOut, lossless, label = "" }) {
     let lastPrint = Date.now();
     for (let n = 0; ; n++) {
       const m = d.main;
-      if (m && m.playing && Number.isFinite(m.duration) && m.duration > 0 && m.src) break;
+      // the REAL track: the kiosk first 'plays' a silent data: wav (audio unlock /
+      // pre-buffer) on the same element — never mistake that for the journey
+      if (m && m.playing && Number.isFinite(m.duration) && m.duration > 0 && m.src && !isPlaceholderSrc(m.src)) break;
       if (n > maxPre) {
         die(`the track never started within ${o.maxWaitStart}s of virtual time.\n  main audio: ${JSON.stringify(m)}\n  pending: ${JSON.stringify(await page.evaluate(() => window.__resonanceExport.pending()))}\n  Check the journey id / --set (url: ${url}).`);
       }
@@ -339,14 +395,7 @@ async function renderRange(o, { videoOut, lossless, label = "" }) {
         die(`frame ${i}: track time ${m.t.toFixed(4)}s ≠ expected ${expected.toFixed(4)}s — the app seeked or paused the track mid-range; the audio would desync`);
       }
       if (!m.playing && !m.ended) die(`frame ${i}: the track is paused at ${m.t.toFixed(3)}s`);
-      const shot = await cdp.send("Page.captureScreenshot", {
-        format: o.capture,
-        ...(o.capture === "jpeg" ? { quality: o.jpegQuality } : {}),
-        fromSurface: true,
-        captureBeyondViewport: false,
-        optimizeForSpeed: true,
-      });
-      const img = Buffer.from(shot.data, "base64");
+      const img = await grab();
       if (i === 0 && o.capture === "png") {
         const sz = pngSize(img);
         if (!sz || sz.width !== res.width || sz.height !== res.height) {
@@ -373,10 +422,10 @@ async function renderRange(o, { videoOut, lossless, label = "" }) {
     if (!audioFile) warnLine("the track's audio was never fetched for analysis — will download it for the mux");
     let muxAudio = audioFile;
     if (!muxAudio) {
-      const r = await page.request.get(src, { timeout: 180000 });
-      if (!r.ok()) die(`could not download the track for muxing: HTTP ${r.status()}`);
+      const body = await fetchMedia(src);
+      if (!body) die(`could not fetch the track for muxing: ${short(src)}`);
       muxAudio = join(tmp, `track-mux${extname(new URL(src).pathname) || ".audio"}`);
-      writeFileSync(muxAudio, await r.body());
+      writeFileSync(muxAudio, body);
     }
     return { frames, t0, durationS: frames / fps, audioFile: muxAudio, meta, tmp, interrupted };
   } catch (e) {

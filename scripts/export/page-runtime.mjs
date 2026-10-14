@@ -30,6 +30,11 @@ import { analyserMagnitudes, smoothSpectrum, toByteFrequency, toFloatFrequency, 
 /** Native media events swallowed (the virtual model fires its own). Loading events pass through. */
 export const EXPORT_BLOCKED_MEDIA_EVENTS = ["play", "playing", "pause", "seeking", "seeked", "timeupdate", "ended", "waiting"];
 
+/** data:/blob: sources are placeholders (the kiosk's silent unlock wav), never a journey track. */
+export function isPlaceholderSrc(src) {
+  return /^(data|blob):/i.test(String(src || ""));
+}
+
 export const EXPORT_RUNTIME_DEFAULTS = {
   fps: 60,
   epochMs: 1791921600000, // 2026-10-13T20:00:00Z — fixed so Date-driven logic is reproducible
@@ -198,10 +203,41 @@ export function installExportRuntime(g, cfg) {
     }
   }
   const workerStates = new Set();
+  // Workers get their own (unseeded) Math.random and init scripts never reach
+  // them — the particle decode worker samples emblems with it (2026-10-13 lab
+  // run: particles were the only non-bit-identical layer). Every classic
+  // worker is rebuilt as  seeded-prelude + original source.
+  const blobsByUrl = new Map();
+  if (g.URL && typeof g.URL.createObjectURL === "function") {
+    const coURL = g.URL.createObjectURL;
+    g.URL.createObjectURL = function (obj) {
+      const u = coURL.call(this, obj);
+      try { if (g.Blob && obj instanceof g.Blob) blobsByUrl.set(u, obj); } catch { /* MediaSource etc. */ }
+      return u;
+    };
+  }
+  let workerIndex = 0;
+  function seededWorkerUrl(url, opts) {
+    if (C.seed === null || C.seed === undefined || !g.Blob || !g.URL) return null;
+    if (opts && opts.type === "module") { warn("module-worker", "module worker left unseeded (its Math.random is not deterministic)"); return null; }
+    const seed = ((Number(C.seed) >>> 0) + 7919 * ++workerIndex) >>> 0;
+    const prelude = `self.Math.random = (${mulberry32.toString()})(${seed});\n`;
+    const key = String(url);
+    const blob = blobsByUrl.get(key);
+    let abs = key;
+    try { abs = new g.URL(key, g.location && g.location.href).href; } catch { /* keep */ }
+    const parts = blob ? [prelude, blob] : [prelude, `importScripts(${JSON.stringify(abs)});\n`];
+    return g.URL.createObjectURL(new g.Blob(parts, { type: "text/javascript" }));
+  }
   if (typeof g.Worker === "function") {
     const NW = g.Worker;
     const W = function (...a) {
-      const w = new NW(...a);
+      let w;
+      const seeded = seededWorkerUrl(a[0], a[1]);
+      if (seeded) {
+        try { w = new NW(seeded, a[1]); } catch (e) { warn("worker-seed", `could not seed a worker (${e}) — left unseeded`); }
+      }
+      if (!w) w = new NW(...a);
       const ws = { out: [] };
       workerStates.add(ws);
       const pm = w.postMessage;
@@ -580,7 +616,10 @@ export function installExportRuntime(g, cfg) {
         const s = mstate.get(el);
         if (!s || !s.playing) continue; // a paused element feeds silence
         const pcm = pcmStore.get(srcKey(el));
-        if (!pcm) { warn("nopcm:" + srcKey(el), `no PCM for analysed media (spectrum silent): ${srcKey(el).slice(-80)}`); continue; }
+        if (!pcm) {
+          if (!isPlaceholderSrc(srcKey(el))) warn("nopcm:" + srcKey(el), `no PCM for analysed media (spectrum silent): ${srcKey(el).slice(-80)}`);
+          continue;
+        }
         const gain = el.muted ? 0 : el.volume;
         mixWindow(pcm.data, sampleIndexAt(s.t + C.analyserLeadS, pcm.sampleRate), N, gain, win);
       }
@@ -672,7 +711,7 @@ export function installExportRuntime(g, cfg) {
     const list = [];
     for (const el of mediaSourceEls) {
       const k = srcKey(el);
-      if (!k || pcmStore.has(k) || pcmRequested.has(k)) continue;
+      if (!k || isPlaceholderSrc(k) || pcmStore.has(k) || pcmRequested.has(k)) continue; // the silent unlock wav reads silence
       pcmRequested.add(k);
       list.push({ key: k, sampleRate: ctxRates[0] || 48000 });
     }
@@ -680,8 +719,9 @@ export function installExportRuntime(g, cfg) {
   }
 
   let stepping = false;
+  let held = null; // a frame paused before its rAF, waiting for the driver to load PCM
   async function step() {
-    if (stepping) throw new Error("export runtime: step() re-entered");
+    if (stepping || held) throw new Error("export runtime: step() re-entered");
     stepping = true;
     try {
       const t0 = realNow();
@@ -703,34 +743,52 @@ export function installExportRuntime(g, cfg) {
       const s1 = await settle(C.settleMs);
       scanMedia();
       await syncVideos();
-      // 4. the frame: rAF, idle, CSS animation clocks
-      const rafs = clock.runAnimationFrames(target);
-      clock.runIdleCallbacks();
-      syncAnimations(target);
-      // 5. whatever the frame kicked off lands before the capture
-      const s2 = await settle(C.settleMs);
-      scanMedia();
-      await syncVideos();
-      const anim = syncAnimations(target);
-      return {
-        frame: clock.frame(), nowMs: target, rafs, anims: anim,
-        main: mainInfo(),
-        settle: { ok: s1.ok && s2.ok, ms: s1.ms + s2.ms, pending: s1.ok ? s2.pending : s1.pending },
-        stepMs: realNow() - t0,
-        wantedPcm: wantedPcm(),
-        errors: errors.splice(0),
-        warnings: warnings.splice(0),
-        totals: { settleTimeouts, seekTimeouts },
-      };
+      // A track src appeared this frame: hand back BEFORE the rAF so the
+      // driver decodes it — the analyser is right from the track's first frame.
+      const need = wantedPcm();
+      if (need.length) {
+        held = { t0, target, s1 };
+        return { needPcm: need };
+      }
+      return await finishFrame(t0, target, s1);
     } finally {
       stepping = false;
     }
+  }
+  async function resume() {
+    if (!held || stepping) throw new Error("export runtime: resume() without a held frame");
+    const h = held;
+    held = null;
+    stepping = true;
+    try { return await finishFrame(h.t0, h.target, h.s1); } finally { stepping = false; }
+  }
+  async function finishFrame(t0, target, s1) {
+    // 4. the frame: rAF, idle, CSS animation clocks
+    const rafs = clock.runAnimationFrames(target);
+    clock.runIdleCallbacks();
+    syncAnimations(target);
+    // 5. whatever the frame kicked off lands before the capture
+    const s2 = await settle(C.settleMs);
+    scanMedia();
+    await syncVideos();
+    const anim = syncAnimations(target);
+    return {
+      frame: clock.frame(), nowMs: target, rafs, anims: anim,
+      main: mainInfo(),
+      settle: { ok: s1.ok && s2.ok, ms: s1.ms + s2.ms, pending: s1.ok ? s2.pending : s1.pending },
+      stepMs: realNow() - t0,
+      wantedPcm: wantedPcm(),
+      errors: errors.splice(0),
+      warnings: warnings.splice(0),
+      totals: { settleTimeouts, seekTimeouts },
+    };
   }
 
   const api = {
     config: C,
     clock,
     step,
+    resume,
     settle,
     scanMedia,
     pending: () => pendingSummary(true),

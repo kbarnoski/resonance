@@ -78,7 +78,7 @@ first-frame time, warnings and timing.
    glitch logs and heartbeat (they keep the lab's `docs/glitch-events.jsonl`
    clean), and live imagery `/api/ai-image/*`, which is nondeterministic
    and costs money (`--allow-live-imagery` turns it back on).
-7. **Capture.** CDP `Page.captureScreenshot` grabs the composited page,
+7. **Capture.** Playwright's `page.screenshot({ scale: "device" })` grabs the composited page,
    including WebGL canvases, DOM overlays, titles and CSS filters, at
    3840×2160. Frames are piped into ffmpeg-static and written to a `.nut`
    intermediate (exact 1/60 timestamps, and it survives Ctrl-C). The audio
@@ -104,20 +104,26 @@ media with no PCM are printed as WARNING lines and counted in the sidecar.
 
 ## Expectations
 
-- **Speed.** Expect roughly 0.3–1 s per 4K frame (render, settle, PNG grab,
-  x264 slow). A 3½-minute track at 60 fps is about 12,600 frames, so 1–3
-  hours. Pre-roll in `simulate` mode costs render time but no grabs.
-  Progress lines show s/frame and the ETA.
-- **Disk.** ProRes 422 HQ at 4K60 is about 1.6 GB per minute; H.264 CRF 14
-  is about 0.3–0.6 GB per minute.
+- **Speed** (measured on the lab M4 Pro, 2026-10-13). A 4K60 frame takes
+  **0.86 s** (render, settle, device-scale PNG grab, x264 slow). Ghost
+  60→70 s (600 frames) took 8m32s to capture, plus 77 s of `simulate`
+  pre-roll at about 20 ms per frame. 1080p30 runs at 0.14 s/frame.
+  A 3½-minute track at 4K60 is about 3 hours. Progress lines show s/frame
+  and the ETA.
+- **Disk.** Ghost at 4K60 H.264 CRF 14 came to 25 MB for 10 s (about
+  150 MB/min; dark imagery compresses well). ProRes 422 HQ at 4K60 is
+  about 1.6 GB per minute.
 - **Determinism.** `--verify` renders [from, from+3 s] twice in fresh
   browsers, losslessly (FFV1 RGB), and compares per-frame pixel MD5s
   (ffmpeg `framemd5`). Differing frames get a PSNR. The verdict is
   IDENTICAL, NEAR-IDENTICAL (every differing frame at or above
   `--verify-min-psnr`, default 50 dB) or FAIL. The renders are kept for
-  inspection. One known source of residual nondeterminism: when two images
-  finish loading in a different order, their callbacks can draw random
-  numbers in a different order.
+  inspection. Measured on Yellow Bird 6–9 s at 1080p30: NEAR-IDENTICAL,
+  64/90 frames bit-identical, worst PSNR 98.7 dB (a few pixels off by one
+  level; the GPU raster at screenshot time). Workers are reseeded too: the
+  particle decode worker's `Math.random` was the one real divergence.
+  Remaining theoretical source: two images finishing their loads in a
+  different order can draw random numbers in a different order.
 - **Not identical to the live kiosk.** The kiosk renders at 120 Hz with
   the 1.5× shader ceiling and smooths the analyser once per rAF read.
   Exports render at the chosen fps with one smoothing step per frame and

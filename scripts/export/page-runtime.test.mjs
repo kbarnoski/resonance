@@ -194,6 +194,62 @@ describe("export page runtime", () => {
     expect(b[5]).toBe(0);
   });
 
+  it("the silent data: unlock wav is never requested; a real src holds the frame before its rAF until PCM loads", async () => {
+    const sr = 48000;
+    const pcm = new Float32Array(sr * 2).fill(0.25);
+    const { g, FakeMedia } = makeFakeWindow({ pcmBytes: pcm.buffer });
+    const api = installExportRuntime(g, { fps: 60, quietTurns: 1 });
+    const el = new FakeMedia();
+    const ctx = new g.AudioContext();
+    ctx.createMediaElementSource(el).connect(ctx.createAnalyser());
+    el.src = "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAVFYAAKhWAAACABAAZGF0YQAAAAA=";
+    el.play();
+    const d0 = await api.step();
+    expect(d0.needPcm).toBeUndefined();
+    expect(d0.wantedPcm).toEqual([]);
+    let rafRan = 0;
+    g.setTimeout(() => { el.src = "http://lab/track.m4a"; el.play(); }, 1);
+    g.requestAnimationFrame(() => { rafRan++; });
+    const held = await api.step();
+    expect(held.needPcm).toEqual([{ key: "http://lab/track.m4a", sampleRate: 48000 }]);
+    expect(rafRan).toBe(0); // paused before the frame's rAF
+    await expect(api.step()).rejects.toThrow(/re-entered/);
+    await api.loadPcm("http://lab/track.m4a", "/pcm/0.f32", sr);
+    const d = await api.resume();
+    expect(rafRan).toBe(1);
+    expect(d.main.src).toBe("http://lab/track.m4a");
+    expect(d.wantedPcm).toEqual([]);
+  });
+
+  it("workers are rebuilt with a seeded Math.random prelude (blob source inlined, URL via importScripts)", async () => {
+    const { g } = makeFakeWindow();
+    const made = [];
+    const blobs = new Map();
+    let n = 0;
+    g.Blob = Blob;
+    g.URL = class extends URL {
+      static createObjectURL(b) { const u = `blob:fake/${++n}`; blobs.set(u, b); return u; }
+    };
+    g.location = { href: "http://lab/room" };
+    g.Worker = class { constructor(url, opts) { made.push({ url, opts }); } postMessage() {} addEventListener() {} };
+    installExportRuntime(g, { seed: 5 });
+    const src = g.URL.createObjectURL(new Blob(["self.onmessage = () => postMessage(Math.random());"]));
+    new g.Worker(src);
+    new g.Worker("/w.js");
+    new g.Worker("/m.js", { type: "module" });
+    const text = async (u) => blobs.get(u).text();
+    const a = await text(made[0].url);
+    expect(a).toMatch(/^self\.Math\.random = \(function mulberry32/);
+    expect(a).toMatch(/postMessage\(Math\.random\(\)\);$/);
+    expect(await text(made[1].url)).toMatch(/importScripts\("http:\/\/lab\/w\.js"\)/);
+    expect(made[2].url).toBe("/m.js"); // module workers left alone (warned)
+    // the prelude really seeds: same seed → same draws as mulberry32
+    const seeded = new Function("self", /^self\.Math\.random = [\s\S]*?\)\(\d+\);\n/.exec(await text(made[0].url))[0] + "return self.Math.random();");
+    const self1 = { Math: Object.create(Math) };
+    const self2 = { Math: Object.create(Math) };
+    expect(seeded(self1)).toBe(seeded(self2));
+  });
+
   it("disconnecting the source detaches the analyser from the element", () => {
     const { g, FakeMedia } = makeFakeWindow();
     installExportRuntime(g, {});
