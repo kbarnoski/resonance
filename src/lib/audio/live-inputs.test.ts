@@ -28,3 +28,36 @@ describe("live mode inputs (Karel 2026-10-15: mic, laptop sound, or both)", () =
     expect(pickLiveInputs(noBh, "both")).toEqual({ mic: "mbp", laptop: null });
   });
 });
+
+import { describeLiveInputs } from "./audio-engine";
+
+describe("live input status (QA 2026-10-15: the phone + log must say what is heard)", () => {
+  it("mic found: ok, no note", () => {
+    const s = describeLiveInputs("mic", { mic: "mbp", laptop: null }, ["MacBook Pro Microphone"], false);
+    expect(s).toMatchObject({ src: "mic", ok: true, missing: [], note: null });
+  });
+  it("laptop without BlackHole: unavailable, says so, visuals drift", () => {
+    const s = describeLiveInputs("laptop", { mic: null, laptop: null }, [], false);
+    expect(s.ok).toBe(false);
+    expect(s.missing).toEqual(["laptop"]);
+    expect(s.note).toMatch(/BlackHole not installed/);
+    expect(s.note).toMatch(/drift/);
+  });
+  it("both without BlackHole: the mic drives, the laptop half is reported missing", () => {
+    const s = describeLiveInputs("both", { mic: "mbp", laptop: null }, ["MacBook Pro Microphone"], false);
+    expect(s.ok).toBe(true);
+    expect(s.missing).toEqual(["laptop"]);
+    expect(s.note).toMatch(/laptop sound unavailable/);
+  });
+  it("permission refused: not ok, the reason is kept", () => {
+    const s = describeLiveInputs("mic", { mic: null, laptop: null }, [], false, "NotAllowedError");
+    expect(s.ok).toBe(false);
+    expect(s.note).toMatch(/NotAllowedError/);
+  });
+  it("default-input fallback is named", () => {
+    const s = describeLiveInputs("mic", { mic: null, laptop: null }, ["Default"], true);
+    expect(s.ok).toBe(true);
+    expect(s.missing).toEqual([]);
+    expect(s.note).toMatch(/default input/);
+  });
+});

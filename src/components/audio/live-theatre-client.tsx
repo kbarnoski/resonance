@@ -17,19 +17,20 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { VisualizerClient } from "./visualizer-client";
 import { useAudioStore } from "@/lib/audio/audio-store";
-import { getAudioEngine, ensureResumed, attachMicDrive, getAnalyserNode, liveInputLabels, type LiveSource, attachSetDrive, rampSetGain } from "@/lib/audio/audio-engine";
+import { getAudioEngine, ensureResumed, attachMicDrive, getAnalyserNode, liveInputLabels, getLiveInputStatus, type LiveSource, attachSetDrive, rampSetGain } from "@/lib/audio/audio-engine";
 import { getJourney } from "@/lib/journeys/journeys";
 import { getCulminationJourney } from "@/lib/journeys/culmination-journeys";
-import { useKioskRemote } from "@/lib/audio/use-kiosk-remote";
+import { useKioskRemote, markKioskStatusDirty } from "@/lib/audio/use-kiosk-remote";
 import { startMidiInput } from "@/lib/audio/midi-input";
 import type { Journey } from "@/lib/journeys/types";
 import type { InstallationProgram, SequenceEntry } from "./installation-loop-client";
+import { createWorldRequester } from "@/lib/journeys/live-world-queue";
 import { pickLiveWorld, liveWorldPool, LIVE_SCENE_MS, LIVE_VEIL_MS, LIVE_DARK_HOLD_MS } from "@/lib/journeys/live-theatre";
 import {
   LIVE_SETS, planTrackWorlds, setWorldPool, SET_FADE_OUT_MS, SET_GAP_MS, SET_FADE_IN_MS, SET_MAX_SCENE_S,
   type PlannedScene, type SetTrackAnalysis,
 } from "@/lib/journeys/live-set";
-import { josephTrackUrl, JOSEPH_ANALYSIS_URL, type JosephTrack } from "@/lib/journeys/joseph-set";
+import { josephTrackUrl, josephTrackGain, JOSEPH_ANALYSIS_URL, type JosephTrack } from "@/lib/journeys/joseph-set";
 
 function postEvent(event: string) {
   try {
@@ -66,6 +67,10 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
   const setElRef = useRef<HTMLAudioElement | null>(null);
   const analysesRef = useRef<Record<string, SetTrackAnalysis>>({});
   const setLevelRef = useRef(1);
+  /** the playing track's level-match trim (joseph-set.ts josephTrackGain) */
+  const trimRef = useRef(1);
+  /** a track that can't play moves the set on (once per attempt) — never a silent stall */
+  const failRef = useRef<((token: number) => void) | null>(null);
   const setStateRef = useRef<{
     idx: number;
     state: "loading" | "fading" | "gap" | "playing" | "ended";
@@ -82,8 +87,47 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
     [startJourney, startCustomJourney],
   );
 
+  // The phone reads this through the kiosk status (use-kiosk-remote.ts):
+  // what's playing in the set, where, and what's next.
+  const publishSetStatus = useCallback(() => {
+    const set = setRef.current;
+    if (!set) return;
+    const st = setStateRef.current;
+    const el = setElRef.current;
+    const t = set.tracks[st.idx];
+    (window as unknown as Record<string, unknown>).__resonanceLiveSet = {
+      set: set.name,
+      index: st.idx + 1, // 1-based, as liveset:<set>@N
+      count: set.tracks.length,
+      id: t?.id ?? null,
+      title: t?.title ?? null,
+      state: st.state,
+      isPlaying: st.state === "playing" && !!el && !el.paused,
+      // mid-handoff (fading / gap) the element still holds the OLD track: report the new one at 0
+      currentTime: el && (st.state === "playing" || st.state === "ended") ? Math.round(el.currentTime) : 0,
+      duration: el && (st.state === "playing" || st.state === "ended") && Number.isFinite(el.duration) && el.duration > 0 ? Math.round(el.duration) : (t?.duration ?? 0),
+      next: set.tracks[st.idx + 1]?.title ?? null,
+      world: useAudioStore.getState().activeJourney?.name ?? null,
+      tracks: set.tracks.map((x, n) => ({ n: n + 1, id: x.id, title: x.title, duration: x.duration })),
+    };
+  }, []);
+
+  // PUSH the status on every change (QA 2026-10-15: the phone trailed ~2 s
+  // behind the 1 Hz heartbeat) — a world, a set track, a state.
+  const statusChanged = useCallback(() => {
+    publishSetStatus();
+    markKioskStatusDirty();
+  }, [publishSetStatus]);
+
+  // "Next world" taps that land while a change is in flight (QA 2026-10-15:
+  // they were silently dropped for ~3-4 s after every change, including
+  // right after entering Live) are QUEUED and run once the dip completes.
+  const worldQueueRef = useRef(createWorldRequester(() => busyRef.current));
+
   // One scene change: dip to black, open the next world while dark, fade up.
-  const nextWorld = useCallback(async (reason: string, forced?: SequenceEntry | null): Promise<boolean> => {
+  // `forced` may be a resolver, read once the screen is black: a set jump
+  // that lands mid-dip opens the NEWEST track's world, not the superseded one.
+  const nextWorld = useCallback(async (reasonIn: string | (() => string), forcedIn?: SequenceEntry | null | (() => SequenceEntry | null | undefined)): Promise<boolean> => {
     if (busyRef.current) return false;
     busyRef.current = true;
     try {
@@ -92,6 +136,8 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
         setVeil(1);
         await new Promise((r) => setTimeout(r, LIVE_VEIL_MS));
       }
+      const reason = typeof reasonIn === "function" ? reasonIn() : reasonIn;
+      const forced = typeof forcedIn === "function" ? forcedIn() : forcedIn;
       const entry = forced ?? pickLiveWorld(setRef.current ? setPoolRef.current : poolRef.current, historyRef.current, Math.random);
       if (!entry?.track) return true;
       historyRef.current = [...historyRef.current, entry.journey.id].slice(-12);
@@ -102,37 +148,67 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
       (window as unknown as Record<string, unknown>).__resonanceKioskPhaseLabel = `LIVE · ${entry.journey.name}`;
       postEvent(`live-world ${entry.journey.name} (${reason})`);
       sceneStartRef.current = Date.now();
+      statusChanged();
       // the handoff (stills, parallax, shader crossfade) settles under black
       await new Promise((r) => setTimeout(r, LIVE_DARK_HOLD_MS));
       setVeil(0);
       await new Promise((r) => setTimeout(r, LIVE_VEIL_MS));
     } finally {
       busyRef.current = false;
+      const queued = worldQueueRef.current.next();
+      if (queued) setTimeout(queued, 0);
     }
     return true;
-  }, [setQueue, setVolume, setSuppressNextJourneyIntro, startEntryJourney]);
+  }, [setQueue, setVolume, setSuppressNextJourneyIntro, startEntryJourney, statusChanged]);
 
   // A world change that must happen (a new set track): waits out a change in
   // flight, then runs — unless a newer set action superseded it (token).
+  // QA 2026-10-15: a jump during another jump's dip opened the superseded
+  // track's world, then dipped AGAIN for the new one — the opening world is
+  // now resolved under black (the newest track's), and a change whose world
+  // is already on screen is skipped.
   const waitWorld = useCallback(async (reason: string, entry: SequenceEntry | null | undefined, token: number) => {
     for (let i = 0; i < 60 && busyRef.current; i++) await new Promise((r) => setTimeout(r, 250));
-    if (token !== setStateRef.current.token) return;
-    await nextWorld(reason, entry ?? null);
+    const st = setStateRef.current;
+    if (token !== st.token) return;
+    if (entry && historyRef.current[historyRef.current.length - 1] === entry.journey.id) return;
+    const set = setRef.current;
+    await nextWorld(
+      () => (token === st.token || !set ? reason : `set ${st.idx + 1} ${set.tracks[st.idx]?.title ?? ""}`),
+      () => (token === st.token ? entry ?? null : st.scenes[0]?.world ?? entry ?? null),
+    );
   }, [nextWorld]);
 
   // One set track: fade the playing one out under the world's dip, a short
   // gap, then the next from its start — never a cut. Any index, any time.
+  // Past the last track = the end of the set (fade out, wander on).
   const playSetTrack = useCallback(async (idx: number, reason: string) => {
     const set = setRef.current;
     const el = setElRef.current;
     if (!set || !el || set.tracks.length === 0) return;
     const st = setStateRef.current;
     const token = ++st.token;
-    const i = Math.max(0, Math.min(set.tracks.length - 1, idx));
+    // QA 2026-10-15: "audible" was state === "playing" — a jump during a
+    // fade-in or a fade-out paused a half-loud track outright (a click / cut).
+    // Whatever is sounding now fades from where it is.
+    const wasAudible = !el.paused;
+    if (idx >= set.tracks.length) {
+      // QA 2026-10-15: skip on the last track restarted it — it ends the set
+      st.state = "fading";
+      statusChanged();
+      if (wasAudible) await rampSetGain(0, SET_FADE_OUT_MS);
+      if (token !== st.token) return;
+      el.pause();
+      st.state = "ended";
+      statusChanged();
+      postEvent(`liveset-end ${set.name} (${reason}) — wandering on`);
+      return;
+    }
+    const i = Math.max(0, idx);
     const track = set.tracks[i];
-    const wasAudible = st.state === "playing" && !el.paused;
     st.idx = i;
     st.state = "fading";
+    statusChanged();
     st.scenes = planTrackWorlds(track, analysesRef.current[track.id] ?? null, poolRef.current, historyRef.current.slice(-4));
     st.next = 1;
     const world = waitWorld(`set ${i + 1} ${track.title}`, st.scenes[0]?.world, token);
@@ -140,20 +216,28 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
     if (token !== st.token) return;
     el.pause();
     st.state = "gap";
+    statusChanged();
+    // the next file loads DURING the gap, so the silence is the designed gap, not gap + load
+    el.src = josephTrackUrl(track.id);
+    try { el.load(); } catch { /* loads on play */ }
+    trimRef.current = josephTrackGain(track.id);
     await new Promise((r) => setTimeout(r, SET_GAP_MS));
     if (token !== st.token) return;
-    el.src = josephTrackUrl(track.id);
     try {
       await el.play();
     } catch (e) {
-      postEvent(`liveset play FAILED ${track.id}: ${e instanceof Error ? e.message : String(e)}`);
+      if (token !== st.token) return; // superseded mid-start (AbortError) — not a failure
+      postEvent(`liveset play FAILED ${track.id}: ${e instanceof Error ? e.message : String(e)} — on to the next`);
+      failRef.current?.(token);
+      return;
     }
     if (token !== st.token) return;
     st.state = "playing";
-    void rampSetGain(setLevelRef.current, SET_FADE_IN_MS);
-    postEvent(`liveset-track ${set.name} ${i + 1}/${set.tracks.length} ${track.title} (${reason}) worlds: ${st.scenes.map((s) => `${Math.round(s.at)}s ${s.world.journey.name}`).join(" · ")}`);
+    statusChanged();
+    void rampSetGain(setLevelRef.current * trimRef.current, SET_FADE_IN_MS);
+    postEvent(`liveset-track ${set.name} ${i + 1}/${set.tracks.length} ${track.title} (${reason}) trim ${(20 * Math.log10(trimRef.current)).toFixed(1)} dB worlds: ${st.scenes.map((s) => `${Math.round(s.at)}s ${s.world.journey.name}`).join(" · ")}`);
     await world;
-  }, [waitWorld]);
+  }, [waitWorld, statusChanged]);
 
   // a spare world when the clock track runs out or a scene overstays:
   // the playing track's own matches first, else the whole set pool
@@ -193,18 +277,26 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
       const unsubVol = useAudioStore.subscribe((s, p) => {
         if (s.volume === p.volume) return;
         setLevelRef.current = s.volume;
-        if (setStateRef.current.state === "playing") void rampSetGain(s.volume, 300);
+        if (setStateRef.current.state === "playing") void rampSetGain(s.volume * trimRef.current, 300);
       });
       const onEnded = () => {
         const st = setStateRef.current;
-        if (st.idx < tracks.length - 1) void playSetTrack(st.idx + 1, "next");
-        else {
-          st.state = "ended";
-          st.token++;
-          postEvent(`liveset-end ${setName} — wandering on`);
-        }
+        if (st.state === "playing") void playSetTrack(st.idx + 1, "next"); // past the last = the set ends
       };
-      const onError = () => postEvent(`liveset audio-error ${el.currentSrc} (${el.error?.code ?? "?"})`);
+      let failedToken = -1;
+      failRef.current = (token: number) => {
+        const st = setStateRef.current;
+        if (token !== st.token || failedToken === token) return;
+        failedToken = token;
+        st.state = "ended"; // nothing audible; the world keeps wandering until the next track starts
+        statusChanged();
+        setTimeout(() => { if (token === setStateRef.current.token) void playSetTrack(st.idx + 1, "after a failed track"); }, 2_000);
+      };
+      const onError = () => {
+        postEvent(`liveset audio-error ${el.currentSrc} (${el.error?.code ?? "?"})`);
+        // a decode/network failure MID-track: on to the next (a failed start is handled by play())
+        if (setStateRef.current.state === "playing") failRef.current?.(setStateRef.current.token);
+      };
       el.addEventListener("ended", onEnded);
       el.addEventListener("error", onError);
       const at = Math.max(1, Math.min(tracks.length, Math.floor(Number(q.get("at")) || 1)));
@@ -239,11 +331,16 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
     const srcQ = q.get("livesrc");
     const liveSrc: LiveSource = srcQ === "laptop" || srcQ === "both" ? srcQ : "mic";
     void attachMicDrive(Number.isFinite(pre) && pre > 0 ? pre : undefined, liveSrc).then((ok) => {
-      postEvent(ok ? `live-mic on (${liveSrc}: ${liveInputLabels().join(" + ") || "default input"})` : `live-mic UNAVAILABLE (${liveSrc}${liveSrc !== "mic" ? " — is BlackHole installed?" : ""}; visuals drift on their own)`);
+      const status = getLiveInputStatus();
+      postEvent(ok
+        ? `live-mic on (${liveSrc}: ${liveInputLabels().join(" + ") || "default input"})${status?.note ? ` — ${status.note}` : ""}`
+        : `live-mic UNAVAILABLE (${liveSrc}${status?.note ? `: ${status.note}` : "; visuals drift on their own"})`);
       const an = getAnalyserNode();
       // diagnostics handles (on-kiosk check script) + a level line every 30 s
       // in the events log, so the mic drive can be tuned from real show levels
       const w = window as unknown as Record<string, unknown>;
+      // the phone reads what live mode hears (kiosk status "liveinput")
+      w.__resonanceLiveInput = status ?? { src: liveSrc, ok, inputs: [], missing: [], note: ok ? null : "unavailable" };
       w.__liveAnalyser = an;
       try { w.__liveClock = getAudioEngine().audioElement; } catch { /* engine warming */ }
       if (ok && an) {
@@ -253,6 +350,9 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
           an.getByteFrequencyData(d);
           const v = d.reduce((a, x) => a + x, 0) / d.length / 255;
           peak = Math.max(peak, v); sum += v; n++;
+          // status refresh (an input lost mid-show shows up on the phone) + the live level
+          const cur = getLiveInputStatus();
+          if (cur) w.__resonanceLiveInput = { ...cur, level: Math.round(v * 1000) / 1000 };
         }, 500);
         levelTimer = setInterval(() => {
           postEvent(`live-mic level avg=${(sum / Math.max(1, n)).toFixed(3)} peak=${peak.toFixed(3)}`);
@@ -275,31 +375,6 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // The phone reads this through the kiosk status (use-kiosk-remote.ts):
-  // what's playing in the set, where, and what's next.
-  const publishSetStatus = useCallback(() => {
-    const set = setRef.current;
-    if (!set) return;
-    const st = setStateRef.current;
-    const el = setElRef.current;
-    const t = set.tracks[st.idx];
-    (window as unknown as Record<string, unknown>).__resonanceLiveSet = {
-      set: set.name,
-      index: st.idx + 1, // 1-based, as liveset:<set>@N
-      count: set.tracks.length,
-      id: t?.id ?? null,
-      title: t?.title ?? null,
-      state: st.state,
-      isPlaying: st.state === "playing" && !!el && !el.paused,
-      // mid-handoff (fading / gap) the element still holds the OLD track: report the new one at 0
-      currentTime: el && (st.state === "playing" || st.state === "ended") ? Math.round(el.currentTime) : 0,
-      duration: el && (st.state === "playing" || st.state === "ended") && Number.isFinite(el.duration) && el.duration > 0 ? Math.round(el.duration) : (t?.duration ?? 0),
-      next: set.tracks[st.idx + 1]?.title ?? null,
-      world: useAudioStore.getState().activeJourney?.name ?? null,
-      tracks: set.tracks.map((x, n) => ({ n: n + 1, id: x.id, title: x.title, duration: x.duration })),
-    };
-  }, []);
-
   // Scene clock: a new world every LIVE_SCENE_MS, or before its clock track runs out.
   useEffect(() => {
     const id = setInterval(() => {
@@ -312,11 +387,19 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
         const st = setStateRef.current;
         const el = setElRef.current;
         if (st.state === "playing" && el) {
-          const sc = st.scenes[st.next];
-          if (sc && el.currentTime >= sc.at) {
-            st.next++;
-            void nextWorld(`section @${Math.round(sc.at)}s`, sc.world);
-            return;
+          // QA 2026-10-15: after a seek / stall every passed section fired in
+          // turn (three dips in 20 s) — jump to the LATEST due one, and none
+          // in a track's last 20 s (the next track brings its own world)
+          let k = st.next;
+          while (st.scenes[k] && el.currentTime >= st.scenes[k].at) k++;
+          if (k > st.next) {
+            const sc = st.scenes[k - 1];
+            st.next = k;
+            const tail = Number.isFinite(el.duration) ? el.duration - el.currentTime : Infinity;
+            if (tail >= 20) {
+              void nextWorld(`section @${Math.round(sc.at)}s`, sc.world);
+              return;
+            }
           }
         }
         if (st.state === "playing" || st.state === "ended") {
@@ -332,9 +415,18 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
     // phone: skip / prev = next / previous set track (plain live: next world);
     // liveset:joseph@N = that track now; liveset:world = next world, same track
     const inSet = () => !!setRef.current && setStateRef.current.state !== "ended";
+    // a "next world" now, or — mid-change — queued for right after it (≤ 3)
+    // a "next world" now, or — mid-change — queued for right after it (≤ 3);
+    // a queued one that still finds a change in flight (a set track's world
+    // got there first) queues again — never dropped
+    const requestWorld = (attempt: () => Promise<boolean>) => {
+      const run = () => { void attempt().then((ok) => { if (!ok) requestWorld(attempt); }); };
+      const r = worldQueueRef.current.request(run);
+      if (r !== "ran") postEvent(`live remote world ${r} (${worldQueueRef.current.pending} waiting)`);
+    };
     const onNext = () => {
       if (inSet()) void playSetTrack(setStateRef.current.idx + 1, "remote skip");
-      else void nextWorld("remote");
+      else requestWorld(() => nextWorld("remote"));
     };
     const onPrev = () => {
       if (setRef.current) void playSetTrack(Math.max(0, setStateRef.current.idx - (setStateRef.current.state === "ended" ? 0 : 1)), "remote prev");
@@ -343,12 +435,14 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
       const n = Number((e as CustomEvent).detail);
       if (setRef.current && Number.isFinite(n)) void playSetTrack(n - 1, "remote jump");
     };
-    const onWorld = () => {
+    const onWorld = () => requestWorld(async () => {
+      if (busyRef.current) return false;
+      // resolved when it RUNS (a queued tap takes the scene due then)
       const st = setStateRef.current;
       const sc = inSet() ? st.scenes[st.next] : undefined;
       if (sc) st.next++;
-      void nextWorld("remote world", sc?.world ?? (setRef.current ? spareWorld() : null));
-    };
+      return nextWorld("remote world", sc?.world ?? (setRef.current ? spareWorld() : null));
+    });
     window.addEventListener("live-next", onNext);
     window.addEventListener("live-prev", onPrev);
     window.addEventListener("liveset-jump", onJump);

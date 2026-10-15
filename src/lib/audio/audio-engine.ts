@@ -115,27 +115,72 @@ export function pickLiveInputs(devices: readonly { kind: string; deviceId: strin
   return { mic: src === "laptop" ? null : mic?.deviceId ?? null, laptop: src === "mic" ? null : laptop?.deviceId ?? null };
 }
 let liveStreams: MediaStream[] = [];
+/** What live mode is actually listening to (the kiosk status + events log):
+ *  which source was asked for, the input labels heard, and what is missing
+ *  (QA 2026-10-15: "both" without BlackHole said only "on" — it must say the
+ *  laptop half is unavailable). */
+export interface LiveInputStatus {
+  src: LiveSource;
+  ok: boolean;
+  inputs: string[];
+  missing: ("mic" | "laptop")[];
+  note: string | null;
+}
+let liveInputStatus: LiveInputStatus | null = null;
+export function getLiveInputStatus(): LiveInputStatus | null {
+  return liveInputStatus;
+}
+/** The status line for a source + what was found. Pure — tested. */
+export function describeLiveInputs(src: LiveSource, picks: { mic: string | null; laptop: string | null }, heard: string[], fellBackToDefault: boolean, error?: string): LiveInputStatus {
+  const missing: ("mic" | "laptop")[] = [];
+  if (src !== "laptop" && !picks.mic && !fellBackToDefault) missing.push("mic");
+  if (src !== "mic" && !picks.laptop) missing.push("laptop");
+  const ok = heard.length > 0;
+  const notes: string[] = [];
+  if (error) notes.push(`input refused (${error})`);
+  if (missing.includes("laptop")) notes.push("laptop sound unavailable — BlackHole not installed");
+  if (missing.includes("mic")) notes.push("built-in mic not found");
+  if (fellBackToDefault) notes.push("built-in mic not found by name — using the default input");
+  if (!ok) notes.push("visuals drift on their own");
+  return { src, ok, inputs: heard, missing, note: notes.length ? notes.join("; ") : null };
+}
 export async function attachMicDrive(preampGain = 2, src: LiveSource = "mic"): Promise<boolean> {
   if (micSource) return true;
   const eng = getAudioEngine();
   const raw = { echoCancellation: false, noiseSuppression: false, autoGainControl: false };
   const streams: MediaStream[] = [];
+  let picks: { mic: string | null; laptop: string | null } = { mic: null, laptop: null };
+  let fellBack = false;
   try {
     // one plain request first: it grants the permission, which unlocks device labels
     const probe = await navigator.mediaDevices.getUserMedia({ audio: raw });
-    const picks = pickLiveInputs(await navigator.mediaDevices.enumerateDevices(), src);
+    picks = pickLiveInputs(await navigator.mediaDevices.enumerateDevices(), src);
     probe.getTracks().forEach((t) => t.stop());
     for (const id of [picks.mic, picks.laptop]) {
       if (!id) continue;
       try { streams.push(await navigator.mediaDevices.getUserMedia({ audio: { ...raw, deviceId: { exact: id } } })); } catch { /* that input failed: the other still drives */ }
     }
     // no match (labels hidden / nothing installed): the default input, as before
-    if (!streams.length && src !== "laptop") streams.push(await navigator.mediaDevices.getUserMedia({ audio: raw }));
-  } catch {
+    if (!streams.length && src !== "laptop") {
+      streams.push(await navigator.mediaDevices.getUserMedia({ audio: raw }));
+      fellBack = true;
+    }
+  } catch (e) {
+    streams.forEach((st) => st.getTracks().forEach((t) => t.stop()));
+    liveInputStatus = describeLiveInputs(src, picks, [], false, e instanceof Error ? e.name : String(e));
     return false;
   }
+  liveInputStatus = describeLiveInputs(src, picks, streams.flatMap((st) => st.getAudioTracks().map((t) => t.label)), fellBack);
   if (!streams.length) return false;
   liveStreams = streams;
+  // an input that drops mid-show (unplugged / permission pulled) is reported, never silent
+  for (const st of streams) for (const t of st.getAudioTracks()) {
+    t.addEventListener("ended", () => {
+      if (!liveInputStatus) return;
+      const left = liveStreams.flatMap((x) => x.getAudioTracks().filter((y) => y.readyState === "live").map((y) => y.label));
+      liveInputStatus = { ...liveInputStatus, ok: left.length > 0, inputs: left, note: `input lost: ${t.label}${left.length ? "" : " — visuals drift on their own"}` };
+    });
+  }
   const ctx = eng.audioContext;
   // The clock track is disconnected OUTRIGHT: the element still plays and
   // advances (the visuals' clock) but has no path to the speakers, so no

@@ -199,3 +199,28 @@ export function josephTrackUrl(id: string): string {
 
 /** The analysis file scripts/import-joseph-set.ts writes. */
 export const JOSEPH_ANALYSIS_URL = "/tramokyo-pack/joseph/joseph-set.json";
+
+// ─── Level matching (QA 2026-10-15) ───────────────────────────────────────
+// Integrated loudness of each pack file (ffmpeg ebur128, measured on the
+// m4a the kiosk plays). Spread −8.1 … −15.8 LUFS: "I am" is ~6 LU hotter
+// than the set and true-peaks at +0.5 dBFS (clips at the output). A DJ trim:
+// ATTENUATE-ONLY toward JOSEPH_TARGET_LUFS — never a boost, so nothing can
+// clip that didn't already, and the quiet ones keep Joseph's own dynamics.
+export const JOSEPH_LUFS: Record<string, number> = {
+  "joseph-a-better-wish": -13.3, "joseph-burning-bush": -12.3, "joseph-butterfly": -14.1,
+  "joseph-closer-now-2": -14.0, "joseph-closer-now": -13.6, "joseph-closer-to-an-end": -15.1,
+  "joseph-faded-outlines": -13.5, "joseph-from-the-cradle": -11.0, "joseph-i-am": -8.1,
+  "joseph-i-was-here": -12.3, "joseph-ill-be-your-home": -13.8, "joseph-in-motion": -15.1,
+  "joseph-just-for-a-moment": -14.7, "joseph-maybe": -15.0, "joseph-road-less-traveled": -15.8,
+  "joseph-sixteen-thousand-days": -13.9, "joseph-sky-and-storm": -14.2, "joseph-teaching-birds-to-fly": -14.0,
+  "joseph-the-way": -11.6, "joseph-time-pulls-slow": -13.3, "joseph-time": -13.8,
+  "joseph-whispers-in-the-trees": -13.5, "joseph-without-a-brightness": -14.7, "joseph-worth-the-war": -13.9,
+};
+export const JOSEPH_TARGET_LUFS = -13;
+
+/** Linear gain (0..1) that levels a track into the set; 1 when unmeasured. */
+export function josephTrackGain(id: string): number {
+  const lufs = JOSEPH_LUFS[id];
+  if (typeof lufs !== "number") return 1;
+  return Math.min(1, Math.pow(10, (JOSEPH_TARGET_LUFS - lufs) / 20));
+}

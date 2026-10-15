@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { reconcile, mergeView, type Pending, type RefLite } from "@/lib/audio/presenter-optimistic";
 import { ArrowLeft, ArrowRight, ChevronDown, Play } from "lucide-react";
 import { TRAMOKYO_MAIN } from "@/lib/journeys/installation-sequence";
@@ -96,6 +96,9 @@ function position(ref: { journeyId: string; programId: string } | null, programs
 
 type View = "main" | "pick" | "sets" | "joseph";
 
+/** After a screen change, taps are ignored this long (the double-tap carry-over). */
+const SCREEN_TAP_SHIELD_MS = 450;
+
 export function PresenterView({
   presenter,
   programs,
@@ -103,6 +106,7 @@ export function PresenterView({
   currentTime,
   duration,
   stale,
+  ageMs = null,
   send,
   onControls,
 }: {
@@ -112,10 +116,25 @@ export function PresenterView({
   currentTime?: number;
   duration?: number;
   stale: boolean;
+  /** ms since the kiosk last reported (null = never) — the stale banner */
+  ageMs?: number | null;
   send: (cmd: string) => void;
   onControls: () => void;
 }) {
-  const [view, setView] = useState<View>("main");
+  const [view, setViewRaw] = useState<View>("main");
+  // TAP SHIELD (phone QA 2026-10-15): a double tap on a list row used to land
+  // its second tap on the NEW screen's button in the same spot (a track tap +
+  // NEXT = the tapped track skipped). Every screen change ignores taps for a beat.
+  const [shield, setShield] = useState(false);
+  const shieldTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => { if (shieldTimer.current) clearTimeout(shieldTimer.current); }, []);
+  const setView = (v: View) => {
+    setViewRaw(v);
+    setShield(true);
+    if (shieldTimer.current) clearTimeout(shieldTimer.current);
+    shieldTimer.current = setTimeout(() => setShield(false), SCREEN_TAP_SHIELD_MS);
+    if (typeof window !== "undefined") window.scrollTo(0, 0);
+  };
   // OPTIMISTIC (presenter-optimistic.ts): a tap changes the screen in the same
   // frame; the kiosk's report confirms it, and only a disagreeing kiosk (or
   // none after 6 s) ever moves it back
@@ -172,9 +191,31 @@ export function PresenterView({
   const shell = (children: React.ReactNode) => (
     <div
       className="min-h-screen bg-background text-ink px-4 py-6 max-w-md mx-auto select-none [-webkit-tap-highlight-color:transparent] [&_button]:touch-manipulation [&_button:active]:transition-none"
-      style={{ paddingBottom: "calc(2rem + env(safe-area-inset-bottom, 0px))" }}
+      style={{
+        // viewport-fit=cover + a Home Screen web app (black-translucent): keep
+        // clear of the notch / Dynamic Island and the landscape side insets
+        paddingTop: "calc(1.5rem + env(safe-area-inset-top, 0px))",
+        paddingBottom: "calc(2rem + env(safe-area-inset-bottom, 0px))",
+        paddingLeft: "max(1rem, env(safe-area-inset-left, 0px))",
+        paddingRight: "max(1rem, env(safe-area-inset-right, 0px))",
+      }}
     >
+      {stale ? (
+        <div
+          role="status"
+          className="mb-4 flex items-center gap-2 rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive"
+        >
+          <span className="h-2 w-2 shrink-0 animate-pulse rounded-full bg-destructive" />
+          <span className="min-w-0">
+            Waiting for kiosk…{" "}
+            <span className="text-destructive/80">
+              {ageMs === null ? "it hasn't reported yet" : `last heard ${fmt(ageMs / 1000)} ago`} — what&apos;s shown may be out of date
+            </span>
+          </span>
+        </div>
+      ) : null}
       {children}
+      {shield ? <div aria-hidden className="fixed inset-0 z-50" /> : null}
     </div>
   );
   const linkBtn =
@@ -194,7 +235,7 @@ export function PresenterView({
         <div className={`${label} mt-4 mb-1`}>Play from</div>
         <h1 className={`${title} text-3xl text-ink mb-2`}>Choose a set</h1>
         <p className="text-sm text-ink-mute mb-5">Auto-play and Next both move through the set you choose.</p>
-        <div className="grid gap-2">
+        <div className="grid grid-cols-[minmax(0,1fr)] gap-2">
           {sets.map((s) => {
             const on = s.id === setId;
             return (
@@ -250,7 +291,7 @@ export function PresenterView({
         <p className="text-sm text-ink-mute mb-5">
           {JOSEPH.length} tracks, in set order. Tap one to play it now — the worlds follow Joseph&apos;s music.
         </p>
-        <div className="grid gap-1.5">
+        <div className="grid grid-cols-[minmax(0,1fr)] gap-1.5">
           {JOSEPH.map((j) => (
             <button
               type="button"
@@ -263,7 +304,7 @@ export function PresenterView({
             >
               <span className="w-6 shrink-0 text-right font-mono text-[11px] text-ink-faint">{j.n}</span>
               <span className={`${title} min-w-0 flex-1 truncate text-base text-ink`}>{j.title}</span>
-              <span className="font-mono text-[11px] text-ink-faint">{fmt(j.dur)}</span>
+              <span className="shrink-0 font-mono text-[11px] text-ink-faint">{fmt(j.dur)}</span>
             </button>
           ))}
         </div>
@@ -292,7 +333,7 @@ export function PresenterView({
         <p className="text-sm text-ink-mute mb-5">
           {p?.journeys.length ?? 0} tracks, {SET_META[p?.id ?? ""]?.order ?? "in order"}. Tap one to play it now — the set plays on from there.
         </p>
-        <div className="grid gap-1.5">
+        <div className="grid grid-cols-[minmax(0,1fr)] gap-1.5">
           {(p?.journeys ?? []).map((j, i) => {
             const isCurrent = current?.journeyId === j.id && current.programId === p?.id;
             const isNext = next?.journeyId === j.id && next.programId === p?.id;
@@ -312,11 +353,11 @@ export function PresenterView({
                 <span className="w-6 shrink-0 text-right font-mono text-[11px] text-ink-faint">{i + 1}</span>
                 <span className={`${title} min-w-0 flex-1 truncate text-base text-ink`}>{j.name}</span>
                 {isCurrent ? (
-                  <span className="font-mono text-[11px] uppercase tracking-widest text-emerald-400">{holding ? "Held" : "Playing"}</span>
+                  <span className="shrink-0 font-mono text-[11px] uppercase tracking-widest text-emerald-400">{holding ? "Held" : "Playing"}</span>
                 ) : isNext ? (
-                  <span className="font-mono text-[11px] uppercase tracking-widest text-primary">Next</span>
+                  <span className="shrink-0 font-mono text-[11px] uppercase tracking-widest text-primary">Next</span>
                 ) : j.dur ? (
-                  <span className="font-mono text-[11px] text-ink-faint">{fmt(j.dur)}</span>
+                  <span className="shrink-0 font-mono text-[11px] text-ink-faint">{fmt(j.dur)}</span>
                 ) : null}
               </button>
             );
@@ -328,13 +369,23 @@ export function PresenterView({
 
   // ── MAIN (playing) / HOLDING ───────────────────────────────────────
   const progress = duration && duration > 0 ? Math.min(1, (currentTime ?? 0) / duration) : 0;
-  const statusLine = holding
+  // THE TITLE CARD HELD from the controls ("Title card — hold", or a kiosk
+  // opened with ?titlehold=1): the loop names it "Title card — HOLDING" while
+  // the presenter still reports the song before it as playing — the screen
+  // said "Now playing <old song>" with NEXT over a held card. It shows the
+  // hold and the Start the controls offer (title-release → Rise Above).
+  const titleHeld = !holding && !pending.action && /HOLDING/.test(journeyName ?? "");
+  const ra = programs.find((x) => x.id === DEFAULT_SET);
+  const raFirst = ra?.journeys[0] ? { journeyId: ra.journeys[0].id, programId: ra.id, name: ra.journeys[0].name } : null;
+  const statusLine = titleHeld
+    ? "Title card · holding"
+    : holding
     ? `Holding · ${fmt(heldFor)}`
     : status === "fading"
       ? "Fading out…"
       : status === "going"
         ? "Starting…"
-        : `Now playing · ${fmt(currentTime)} / ${fmt(duration)}`;
+        : `${stale ? "Last report" : "Now playing"} · ${fmt(currentTime)} / ${fmt(duration)}`;
 
   return shell(
     <>
@@ -381,12 +432,14 @@ export function PresenterView({
 
       {/* now playing / holding */}
       <div className="rounded-xl border border-border bg-card p-4 mb-3">
-        <div className={`font-mono text-[11px] uppercase tracking-widest ${holding ? "text-primary" : "text-emerald-400"}`}>
+        <div className={`font-mono text-[11px] uppercase tracking-widest ${holding || titleHeld ? "text-primary" : stale ? "text-ink-faint" : "text-emerald-400"}`}>
           {statusLine}
         </div>
-        <div className={`${title} mt-1 text-[34px] leading-[1.1] text-ink`}>{trackName}</div>
-        <div className="mt-1 text-sm text-ink-faint">{position(current, programs) ?? ""}</div>
-        {holding ? (
+        <div className={`${title} mt-1 text-[34px] leading-[1.1] text-ink [overflow-wrap:anywhere]`}>{titleHeld ? "Resonance" : trackName}</div>
+        <div className="mt-1 text-sm text-ink-faint">{titleHeld ? "The title card" : position(current, programs) ?? ""}</div>
+        {titleHeld ? (
+          <p className="mt-3 text-sm text-ink-mute">The title card is up and holding until you press Start.</p>
+        ) : holding ? (
           <p className="mt-3 text-sm text-ink-mute">
             Ended. {merged.holdOn === "title" ? "The title card is holding" : "The screen is holding on its last moment"} until you press Play.
           </p>
@@ -403,7 +456,16 @@ export function PresenterView({
       </div>
 
       {/* Up next / Ready */}
-      {holding ? (
+      {titleHeld ? (
+        <div className="rounded-xl border border-primary bg-primary/10 p-4 mb-4">
+          <div className={`${label} text-primary`}>Ready</div>
+          <div className={`${title} mt-1 text-2xl text-ink`}>{raFirst?.name ?? "Rise Above"}</div>
+          <div className="mt-0.5 text-sm text-ink-faint">{position(raFirst, programs, true) ?? "Rise Above, from the beginning"}</div>
+          <button type="button" className={`${linkBtn} text-primary`} onClick={() => setView("pick")}>
+            Choose a different track
+          </button>
+        </div>
+      ) : holding ? (
         <div className="rounded-xl border border-primary bg-primary/10 p-4 mb-4">
           <div className={`${label} text-primary`}>Ready</div>
           <div className={`${title} mt-1 text-2xl text-ink`}>{next?.name ?? "—"}</div>
@@ -425,7 +487,15 @@ export function PresenterView({
       )}
 
       {/* NEXT / PLAY */}
-      {holding ? (
+      {titleHeld ? (
+        <Button
+          className="h-[104px] w-full flex-col gap-1 rounded-lg active:bg-primary/75 text-lg text-primary-foreground"
+          onClick={() => choose("title-release", { action: "going" })}
+        >
+          <span className="inline-flex items-center gap-2 text-xl"><Play className="size-6" /> Start Rise Above</span>
+          <span className="max-w-full truncate text-sm text-primary-foreground/80">{raFirst?.name ?? ""}</span>
+        </Button>
+      ) : holding ? (
         <Button
           className="h-[104px] w-full flex-col gap-1 rounded-lg active:bg-primary/75 text-lg text-primary-foreground"
           onClick={() => choose("next", { cued: null, action: "going" })}
@@ -442,7 +512,9 @@ export function PresenterView({
         </Button>
       )}
       <p className="mt-2 mb-4 text-center text-xs text-ink-faint">
-        {holding
+        {titleHeld
+          ? "The title card flows straight into Rise Above."
+          : holding
           ? merged.holdOn === "title" ? "The title card flows straight into its title and music." : "The held ending flows straight into its title and music."
           : `Mid-song, Next fades this one out gracefully, then plays ${next?.name ?? "the next track"}.`}
       </p>
@@ -451,7 +523,11 @@ export function PresenterView({
         <Button variant="glass" className="h-auto min-h-12 text-sm text-ink active:bg-white/[0.14]" onClick={() => setView("pick")}>
           Pick a track
         </Button>
-        {holding ? (
+        {titleHeld ? (
+          <Button variant="glass" className="h-auto min-h-12 text-sm text-ink" disabled>
+            Fade out now
+          </Button>
+        ) : holding ? (
           <Button variant="glass" className="h-auto min-h-12 text-sm text-ink active:bg-white/[0.14]" onClick={() => choose("replay", { action: "going" })}>
             Replay this one
           </Button>

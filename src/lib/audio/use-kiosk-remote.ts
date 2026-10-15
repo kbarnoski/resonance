@@ -19,6 +19,7 @@ import {
 } from "./presenter-machine";
 import { useVjBridge } from "@/lib/vj-bridge/use-vj-bridge";
 import { parseLiveSetCommand } from "@/lib/journeys/live-set";
+import { liveSourceOf } from "./live-source";
 
 // Rolling frame-rate meter (2026-10-05: a steady slowdown never trips the
 // >50ms gap recorder — Karel saw journeys crawl while the log stayed clean).
@@ -58,6 +59,12 @@ function frameStats(): { fps: number; p95: number } | null {
  * loop defers to the loop client's instance so only one poller runs).
  */
 export type KioskRemoteContext = "loop" | "room" | "live" | null;
+
+/** Fired by a page whose status just changed: the kiosk status is pushed now. */
+export const KIOSK_STATUS_DIRTY = "kiosk-status-dirty";
+export function markKioskStatusDirty(): void {
+  try { window.dispatchEvent(new Event(KIOSK_STATUS_DIRTY)); } catch { /* SSR */ }
+}
 
 const POLL_MS = 2_000;
 /** Gap between long-polls (the parked request itself lasts ≤ 1.5 s). */
@@ -328,18 +335,24 @@ export function useKioskRemote(context: KioskRemoteContext): void {
       timer = setTimeout(() => void tick(), ms);
     };
 
-    const tick = async () => {
+    const buildStatus = () => {
       const s = useAudioStore.getState();
       // a live set (Joseph) names ITS track — not the silent world clock's
       const ls = (window as unknown as Record<string, { title: string | null; isPlaying: boolean; currentTime: number; duration: number } | undefined>).__resonanceLiveSet;
-      let next = POLL_MS;
-      try {
-        const res = await fetch(url, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            role: "kiosk",
-            status: {
+      // PLAIN LIVE (mic / laptop): what is HEARD is Karel's playing — the
+      // world's own track is a silent clock, so the phone must not show its
+      // title and timer as "now playing" (QA 2026-10-15). Name the input instead.
+      const li = context === "live" && !ls
+        ? (window as unknown as Record<string, { ok?: boolean; inputs?: string[]; note?: string | null } | undefined>).__resonanceLiveInput
+        : undefined;
+      const liveLine = context === "live" && !ls
+        ? li
+          ? li.ok
+            ? `Listening · ${(li.inputs ?? []).join(" + ") || "input"}${li.note ? ` (${li.note})` : ""}`
+            : `Not listening — ${li.note ?? "no input"}`
+          : "Listening · starting…"
+        : null;
+      return {
               context,
               // Build identity — the deploy script polls this to verify
               // the PAGE (not just the server) is running the new build
@@ -369,13 +382,22 @@ export function useKioskRemote(context: KioskRemoteContext): void {
                 ((window as unknown as Record<string, unknown>)
                   .__resonanceKioskPhaseLabel as string | undefined) ??
                 null,
-              track: ls ? ls.title : (s.currentTrack?.title ?? null),
-              isPlaying: ls ? ls.isPlaying : s.isPlaying,
-              currentTime: ls ? ls.currentTime : Math.round(s.currentTime),
-              duration: ls ? ls.duration : Math.round(s.duration),
+              track: ls ? ls.title : liveLine ?? (s.currentTrack?.title ?? null),
+              isPlaying: ls ? ls.isPlaying : liveLine ? !!li?.ok : s.isPlaying,
+              currentTime: ls ? ls.currentTime : liveLine ? 0 : Math.round(s.currentTime),
+              duration: ls ? ls.duration : liveLine ? 0 : Math.round(s.duration),
               // LIVE SET: { set, index (1-based), count, id, title, state, isPlaying,
               // currentTime, duration, next, world, tracks[{n,id,title,duration}] }
               liveset: ls ?? null,
+              // LIVE THEATRE input: { src: mic|laptop|both, ok, inputs[labels], missing[], note, level }
+              // (note e.g. "laptop sound unavailable — BlackHole not installed")
+              liveinput:
+                context === "live"
+                  ? ((window as unknown as Record<string, unknown>).__resonanceLiveInput ?? null)
+                  : null,
+              // Live Theatre: what it listens to (the phone's "Listen to" shows
+              // the kiosk's truth, not its own last tap); "set" in a live set
+              liveSrc: context === "live" ? liveSourceOf(window.location.search, !!ls) : null,
               volume: s.volume,
               // Live Theatre: "MIDI: Nord Stage 3 connected · 12 notes/min" (midi-input.ts)
               midi:
@@ -390,8 +412,16 @@ export function useKioskRemote(context: KioskRemoteContext): void {
                 (context === "loop"
                   ? (window as unknown as Record<string, unknown>).__resonancePresenter
                   : null) ?? null,
-            },
-          }),
+      };
+    };
+
+    const tick = async () => {
+      let next = POLL_MS;
+      try {
+        const res = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ role: "kiosk", status: buildStatus() }),
         });
         if (stopped) return;
         if (res.ok) {
@@ -406,14 +436,48 @@ export function useKioskRemote(context: KioskRemoteContext): void {
       schedule(next);
     };
 
+    // PUSH (QA 2026-10-15: the Joseph status trailed the phone by up to ~2 s):
+    // a page that changed what's on (live set track / world / state) fires
+    // "kiosk-status-dirty" and the fresh status goes up AT ONCE in a
+    // non-parked POST (any commands it returns run here, so none is lost) —
+    // the long-poll heartbeat keeps running untouched.
+    let active = false;
+    let pushTimer: ReturnType<typeof setTimeout> | null = null;
+    let lastPush = 0;
+    const pushUrl = `/api/pack/remote${key ? `?key=${encodeURIComponent(key)}` : ""}`;
+    const push = async () => {
+      pushTimer = null;
+      if (stopped || !active) return;
+      lastPush = Date.now();
+      try {
+        const res = await fetch(pushUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ role: "kiosk", status: buildStatus() }),
+        });
+        if (stopped || !res.ok) return;
+        const { commands } = (await res.json()) as { commands?: string[] };
+        for (const cmd of commands ?? []) runCommand(cmd, context);
+        if ((commands?.length ?? 0) > 0) schedule(150);
+      } catch { /* the heartbeat carries it */ }
+    };
+    const onDirty = () => {
+      if (pushTimer) return; // coalesce bursts (≥ 150 ms apart)
+      pushTimer = setTimeout(() => void push(), Math.max(0, 150 - (Date.now() - lastPush)));
+    };
+    window.addEventListener(KIOSK_STATUS_DIRTY, onDirty);
+
     void fetchPackLocalImages().then(() => {
       if (stopped || !isPackActive()) return;
+      active = true;
       void tick();
     });
 
     return () => {
       stopped = true;
       if (timer) clearTimeout(timer);
+      if (pushTimer) clearTimeout(pushTimer);
+      window.removeEventListener(KIOSK_STATUS_DIRTY, onDirty);
     };
   }, [context]);
 }

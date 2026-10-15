@@ -143,3 +143,23 @@ describe("live set — phone commands", () => {
     }
   });
 });
+
+import { josephTrackGain, JOSEPH_LUFS } from "./joseph-set";
+
+describe("joseph set — level matching (QA 2026-10-15)", () => {
+  it("every track is measured", () => {
+    for (const t of JOSEPH_TRACKS) expect(JOSEPH_LUFS[t.id], t.id).toBeTypeOf("number");
+  });
+  it("attenuate-only: never a boost, hot tracks trimmed into the set", () => {
+    for (const t of JOSEPH_TRACKS) {
+      const g = josephTrackGain(t.id);
+      expect(g).toBeGreaterThan(0);
+      expect(g).toBeLessThanOrEqual(1);
+      // after the trim no track sits above the target
+      expect(JOSEPH_LUFS[t.id] + 20 * Math.log10(g)).toBeLessThanOrEqual(-13 + 1e-9);
+    }
+    expect(20 * Math.log10(josephTrackGain("joseph-i-am"))).toBeCloseTo(-4.9, 1);
+    expect(josephTrackGain("joseph-road-less-traveled")).toBe(1);
+    expect(josephTrackGain("unknown")).toBe(1);
+  });
+});

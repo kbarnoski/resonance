@@ -2,6 +2,7 @@
 // kiosk wanders the WHOLE catalogue, a new world every ~2.5 min, never
 // repeating one it showed recently. Pure — tested in live-theatre.test.ts.
 import type { InstallationProgram, SequenceEntry } from "@/components/audio/installation-loop-client";
+import { isExcludedWorld } from "./live-set";
 
 /** One world's screen time before the next (ms). */
 export const LIVE_SCENE_MS = 150_000;
@@ -11,17 +12,21 @@ export const LIVE_VEIL_MS = 2_800;
 export const LIVE_DARK_HOLD_MS = 3_500;
 
 /** Mastered EP worlds stay with their own tracks (Snowflake's arc, Ghost's
- *  angel flashes on bass cues) — never borrowed for a live collage. */
-const EXCLUDED = new Set(["first-snow", "ghost"]);
-
-/** Every distinct playable world across the programs (one per journey id). */
+ *  angel flashes on bass cues) — never borrowed for a live collage. QA
+ *  2026-10-15: the id check alone let their DB copies (and any world built on
+ *  their pack stills) and Horses through — the live set's full exclusion
+ *  (isExcludedWorld) applies here too. One world per NAME as well: a builtin
+ *  and its DB copy are the same world and must never play back to back. */
+/** Every distinct playable world across the programs (one per journey id / name). */
 export function liveWorldPool(programs: InstallationProgram[]): SequenceEntry[] {
   const seen = new Set<string>();
   const out: SequenceEntry[] = [];
   for (const p of programs) {
     for (const e of p.sequence) {
-      if (!e.track || EXCLUDED.has(e.journey.id) || seen.has(e.journey.id)) continue;
+      const name = `name:${(e.journey.name ?? "").trim().toLowerCase()}`;
+      if (!e.track || isExcludedWorld(e.journey) || seen.has(e.journey.id) || (name !== "name:" && seen.has(name))) continue;
       seen.add(e.journey.id);
+      seen.add(name);
       out.push(e);
     }
   }
