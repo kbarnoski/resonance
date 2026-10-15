@@ -5,6 +5,12 @@ import { reconcile, mergeView, type Pending, type RefLite } from "@/lib/audio/pr
 import { ArrowLeft, ArrowRight, ChevronDown, Play } from "lucide-react";
 import { TRAMOKYO_MAIN } from "@/lib/journeys/installation-sequence";
 import { Button } from "@/components/ui/button";
+import { setRunTime } from "@/lib/audio/set-duration";
+import { josephSet } from "@/lib/journeys/joseph-set";
+
+/** Joseph's live set (live-theatre-client.tsx): liveset:joseph@N plays track N now. */
+const JOSEPH = josephSet().map((t, i) => ({ n: i + 1, id: t.id, title: t.title, dur: t.duration }));
+const JOSEPH_TIME = setRunTime(JOSEPH);
 
 /**
  * PRESENTER — the phone's main screen (Karel 2026-10-13, Tramokyo; design
@@ -19,7 +25,7 @@ import { Button } from "@/components/ui/button";
  *   cue:<journey id>@<program id>     make a track next ("Ready")
  *   cue:clear
  *   next                              NEXT / PLAY (fades a playing song out first)
- *   playnow:<journey id>@<program id> cue + next
+ *   playnow:<journey id>@<program id> play it NOW (any state), then auto-play on
  *   replay                            play the held / current track again
  *   fadeout                           fade the song out now, then hold
  */
@@ -88,7 +94,7 @@ function position(ref: { journeyId: string; programId: string } | null, programs
   return `${setName(p.id, programs)} · ${i + 1} of ${p.journeys.length}${dur}`;
 }
 
-type View = "main" | "pick" | "sets";
+type View = "main" | "pick" | "sets" | "joseph";
 
 export function PresenterView({
   presenter,
@@ -176,7 +182,10 @@ export function PresenterView({
 
   // ── CHOOSE A SET ───────────────────────────────────────────────────
   if (view === "sets") {
-    const sets = SET_IDS.map((id) => ({ id, n: programs.find((p) => p.id === id)?.journeys.length ?? 0 })).filter((s) => s.n > 0);
+    const sets = SET_IDS.map((id) => {
+      const js = programs.find((p) => p.id === id)?.journeys;
+      return { id, n: js?.length ?? 0, time: setRunTime(js) };
+    }).filter((s) => s.n > 0);
     return shell(
       <>
         <button type="button" className={linkBtn} onClick={() => setView("main")}>
@@ -198,13 +207,65 @@ export function PresenterView({
                   setView("main");
                 }}
               >
-                <div className={`${title} text-xl text-ink`}>{setName(s.id, programs)}</div>
+                <div className="flex items-baseline justify-between gap-3">
+                  <span className={`${title} min-w-0 truncate text-xl text-ink`}>{setName(s.id, programs)}</span>
+                  {s.time ? <span className="shrink-0 font-mono text-xs text-ink-faint">{s.time}</span> : null}
+                </div>
                 <div className="text-xs text-ink-faint mt-0.5">
                   {s.n} tracks · {SET_META[s.id]?.kind ?? "set"}
                 </div>
               </button>
             );
           })}
+          {JOSEPH.length ? (
+            <button
+              type="button"
+              className="min-h-14 w-full rounded-xl border border-border bg-card px-4 py-3 text-left transition-colors duration-instant active:bg-white/[0.06]"
+              onClick={() => setView("joseph")}
+            >
+              <div className="flex items-baseline justify-between gap-3">
+                <span className={`${title} min-w-0 truncate text-xl text-ink`}>Joseph</span>
+                {JOSEPH_TIME ? <span className="shrink-0 font-mono text-xs text-ink-faint">{JOSEPH_TIME}</span> : null}
+              </div>
+              <div className="text-xs text-ink-faint mt-0.5">{JOSEPH.length} tracks · live set</div>
+            </button>
+          ) : null}
+        </div>
+      </>,
+    );
+  }
+
+  // ── JOSEPH — live set: a tap plays that track now ─────────────────
+  if (view === "joseph") {
+    return shell(
+      <>
+        <button type="button" className={linkBtn} onClick={() => setView("sets")}>
+          <ArrowLeft className="size-4" /> Back
+        </button>
+        <div className={`${label} mt-4 mb-1`}>Play a track</div>
+        <h1 className={`${title} text-3xl text-ink mb-2`}>
+          Joseph
+          {JOSEPH_TIME ? <span className="ml-2 align-middle font-mono text-sm font-normal text-ink-faint">{JOSEPH_TIME}</span> : null}
+        </h1>
+        <p className="text-sm text-ink-mute mb-5">
+          {JOSEPH.length} tracks, in set order. Tap one to play it now — the worlds follow Joseph&apos;s music.
+        </p>
+        <div className="grid gap-1.5">
+          {JOSEPH.map((j) => (
+            <button
+              type="button"
+              key={j.id}
+              className="flex min-h-12 w-full items-center gap-3 rounded-lg border border-transparent px-3 py-2 text-left transition-colors duration-instant active:bg-white/[0.06]"
+              onClick={() => {
+                send(`liveset:joseph@${j.n}`);
+                setView("main");
+              }}
+            >
+              <span className="w-6 shrink-0 text-right font-mono text-[11px] text-ink-faint">{j.n}</span>
+              <span className={`${title} min-w-0 flex-1 truncate text-base text-ink`}>{j.title}</span>
+              <span className="font-mono text-[11px] text-ink-faint">{fmt(j.dur)}</span>
+            </button>
+          ))}
         </div>
       </>,
     );
@@ -223,10 +284,13 @@ export function PresenterView({
             Change set
           </button>
         </div>
-        <div className={`${label} mt-4 mb-1`}>Pick the next track</div>
-        <h1 className={`${title} text-3xl text-ink mb-2`}>{setName(p?.id, programs)}</h1>
+        <div className={`${label} mt-4 mb-1`}>Play a track</div>
+        <h1 className={`${title} text-3xl text-ink mb-2`}>
+          {setName(p?.id, programs)}
+          {setRunTime(p?.journeys) ? <span className="ml-2 align-middle font-mono text-sm font-normal text-ink-faint">{setRunTime(p?.journeys)}</span> : null}
+        </h1>
         <p className="text-sm text-ink-mute mb-5">
-          {p?.journeys.length ?? 0} tracks, {SET_META[p?.id ?? ""]?.order ?? "in order"}. Tap one to make it next.
+          {p?.journeys.length ?? 0} tracks, {SET_META[p?.id ?? ""]?.order ?? "in order"}. Tap one to play it now — the set plays on from there.
         </p>
         <div className="grid gap-1.5">
           {(p?.journeys ?? []).map((j, i) => {
@@ -239,8 +303,9 @@ export function PresenterView({
                 className={`flex min-h-12 w-full items-center gap-3 rounded-lg border px-3 py-2 text-left transition-colors duration-instant ${isNext ? "border-primary/60 bg-primary/10" : "border-transparent active:bg-white/[0.06]"}`}
                 onClick={() => {
                   if (!p) return;
-                  if (p.id !== setId) send(`set:${p.id}`);
-                  choose(`cue:${j.id}@${p.id}`, { setId: p.id, cued: { journeyId: j.id, programId: p.id, name: j.name } });
+                  // a tapped track PLAYS NOW (show day 2026-10-15) — no NEXT
+                  // press; the set auto-plays on from it
+                  choose(`playnow:${j.id}@${p.id}`, { setId: p.id, playback: "auto", cued: null, action: "going" });
                   setView("main");
                 }}
               >
@@ -283,6 +348,9 @@ export function PresenterView({
             onClick={() => setView("sets")}
           >
             <span className={`${title} truncate text-2xl text-ink`}>{setName(setId, programs)}</span>
+            {setRunTime(programs.find((x) => x.id === setId)?.journeys) ? (
+              <span className="shrink-0 font-mono text-xs text-ink-faint">{setRunTime(programs.find((x) => x.id === setId)?.journeys)}</span>
+            ) : null}
             <ChevronDown className="size-5 shrink-0 text-ink-mute" />
           </button>
         </div>

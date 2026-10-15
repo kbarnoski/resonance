@@ -6,6 +6,7 @@ import {
   peekNext,
   restorePresenter,
   serializePresenter,
+  bootResume,
   parsePresenterCommand,
   PRESENTER_FADE_OUT_MS,
   type PresenterEvent,
@@ -109,9 +110,11 @@ describe("presenter — song by song", () => {
     const r = run(manual, { type: "next" });
     expect(r.last).toEqual({ kind: "go", target: { journeyId: "first-light", programId: "ra" }, fadeCurrent: true });
   });
-  it("play now = cue + go", () => {
+  it("play now = go at once (fading the playing song), then auto-play on from it", () => {
     const r = run(manual, { type: "play-now", ref: { journeyId: "yellow-bird", programId: "ml" } });
     expect(r.last).toEqual({ kind: "go", target: { journeyId: "yellow-bird", programId: "ml" }, fadeCurrent: true });
+    expect(r.state.playback).toBe("auto");
+    expect(r.state.setId).toBe("ml");
   });
   it("replay goes back into the held journey and keeps the cue", () => {
     const r = run(manual, { type: "cue", ref: { journeyId: "spectre", programId: "ml" } }, { type: "track-ended" }, { type: "replay" });
@@ -193,6 +196,7 @@ describe("presenter — status is always the truth", () => {
   it("boot: a held card reads holding; a set start reads going until the music starts", () => {
     expect(run(INITIAL_PRESENTER, { type: "boot", holding: false }).state.status).toBe("going");
     const back = restorePresenter(serializePresenter(manual));
+    expect(back.status).toBe("idle"); // a reload alone never holds
     expect(run(back, { type: "boot", holding: true }).state.status).toBe("holding");
     // then the pre-start (music begins) → playing
     expect(run(INITIAL_PRESENTER, { type: "boot", holding: false }, started("ghost")).state.status).toBe("playing");
@@ -241,7 +245,8 @@ describe("presenter — persistence", () => {
       { type: "cue", ref: { journeyId: "spectre", programId: "ml" } },
     ).state;
     const back = restorePresenter(serializePresenter(s));
-    expect(back).toEqual({ ...s, status: "holding" });
+    // a reload never comes back holding (show day 2026-10-15) — bootResume plays on
+    expect(back).toEqual({ ...s, status: "idle" });
   });
   it("auto-play restores idle (the loop runs as today)", () => {
     expect(restorePresenter(serializePresenter(INITIAL_PRESENTER))).toEqual(INITIAL_PRESENTER);
@@ -266,5 +271,103 @@ describe("presenter — phone commands", () => {
     expect(parsePresenterCommand("fadeout")).toEqual({ type: "fade-out" });
     expect(parsePresenterCommand("cue:ghost")).toBeNull();
     expect(parsePresenterCommand("skip")).toBeNull();
+  });
+});
+
+// Show day 2026-10-15 (Karel): "clicking between tracks in the remote currently
+// resulted in a black screen … if i open a set list and click a track it should
+// move to that track and start playing. i shouldnt have to go to main view and
+// click the next button. should work from touching any track at any time."
+describe("presenter — a tapped track always plays", () => {
+  const tap = (journeyId: string, programId: string): PresenterEvent => ({ type: "play-now", ref: { journeyId, programId } });
+  const target = { journeyId: "spectre", programId: "ml" };
+  const manual = run(INITIAL_PRESENTER, { type: "set-playback", playback: "manual" }, started("first-snow")).state;
+
+  it("from a held ending (song by song): plays, and the set auto-plays on", () => {
+    const held = run(manual, { type: "track-ended" });
+    expect(held.state.status).toBe("holding");
+    const r = run(held.state, tap("spectre", "ml"));
+    expect(r.last).toEqual({ kind: "go", target, fadeCurrent: false });
+    expect(r.state).toMatchObject({ status: "going", playback: "auto", setId: "ml", cued: null });
+    // the tapped track starts → playing; at its end the set goes on (no hold)
+    const p = run(r.state, started("spectre", "ml"));
+    expect(p.state.status).toBe("playing");
+    expect(run(p.state, { type: "track-ended" }).last).toEqual({ kind: "advance" });
+  });
+  it("from the held title card after a boot hold: plays", () => {
+    const booted = run(restorePresenter(serializePresenter(manual)), { type: "boot", holding: true }).state;
+    expect(run(booted, tap("spectre", "ml")).last).toEqual({ kind: "go", target, fadeCurrent: false });
+  });
+  it("in song-by-song mode mid-song: fades the playing one and plays (no NEXT press)", () => {
+    const r = run(manual, tap("spectre", "ml"));
+    expect(r.last).toEqual({ kind: "go", target, fadeCurrent: true });
+    expect(r.state.playback).toBe("auto");
+  });
+  it("in auto-play mid-song: fades and plays", () => {
+    const s = run(INITIAL_PRESENTER, started("ghost")).state;
+    expect(run(s, tap("spectre", "ml")).last).toEqual({ kind: "go", target, fadeCurrent: true });
+  });
+  it("during a fade-out: plays (the fade becomes the hand-off)", () => {
+    const f = run(manual, { type: "fade-out" });
+    expect(f.state.status).toBe("fading");
+    const r = run(f.state, tap("spectre", "ml"));
+    expect(r.last).toEqual({ kind: "go", target, fadeCurrent: true });
+    // the superseded fade's completion changes nothing
+    expect(run(r.state, { type: "fade-complete" }).last).toEqual({ kind: "none" });
+  });
+  it("mid-transition (a go in flight): the newest tap wins", () => {
+    const g = run(manual, { type: "next" });
+    expect(g.state.status).toBe("going");
+    const r = run(g.state, tap("spectre", "ml"));
+    expect(r.last).toEqual({ kind: "go", target, fadeCurrent: false });
+    expect(run(r.state, started("spectre", "ml")).state.current).toEqual(target);
+  });
+  it("at boot / idle / during credits (advance in flight): plays", () => {
+    expect(run(INITIAL_PRESENTER, tap("spectre", "ml")).last).toEqual({ kind: "go", target, fadeCurrent: false });
+    const adv = run(INITIAL_PRESENTER, started("ghost"), { type: "track-ended" });
+    expect(adv.last).toEqual({ kind: "advance" });
+    expect(run(adv.state, tap("spectre", "ml")).last).toEqual({ kind: "go", target, fadeCurrent: false });
+  });
+  it("the same track again: replays it", () => {
+    expect(run(manual, tap("first-snow", "ra")).last).toEqual({ kind: "go", target: { journeyId: "first-snow", programId: "ra" }, fadeCurrent: true });
+  });
+  it("a stale cue never survives a tap", () => {
+    const s = run(manual, { type: "cue", ref: { journeyId: "ghost", programId: "ra" } }).state;
+    const r = run(s, tap("spectre", "ml"));
+    expect(r.state.cued).toBeNull();
+    expect(peekNext(run(r.state, started("spectre", "ml")).state, SETS)).toEqual({ journeyId: "the-first", programId: "ml" });
+  });
+});
+
+describe("presenter — a reload never strands the show on the title card", () => {
+  const manual = run(INITIAL_PRESENTER, { type: "set-playback", playback: "manual" }, started("first-snow")).state;
+
+  it("manual + a cued track: restores idle (not holding) and resumes AT the cue", () => {
+    const s = run(manual, { type: "cue", ref: { journeyId: "spectre", programId: "ml" } }).state;
+    const raw = serializePresenter(s);
+    expect(restorePresenter(raw).status).toBe("idle");
+    expect(bootResume(raw, SETS, false)).toEqual({ journeyId: "spectre", programId: "ml" });
+  });
+  it("manual mid-song: resumes that song", () => {
+    expect(bootResume(serializePresenter(manual), SETS, false)).toEqual({ journeyId: "first-snow", programId: "ra" });
+  });
+  it("manual held on an ending (or fading out): resumes at the NEXT track of the set", () => {
+    const held = run(manual, { type: "track-ended" }).state;
+    expect(bootResume(serializePresenter(held), SETS, false)).toEqual({ journeyId: "first-light", programId: "ra" });
+    const fading = run(manual, { type: "fade-out" }).state;
+    expect(bootResume(serializePresenter(fading), SETS, false)).toEqual({ journeyId: "first-light", programId: "ra" });
+  });
+  it("auto-play, an explicit ?start=, nothing stored, or a vanished track: the loop's normal start", () => {
+    expect(bootResume(serializePresenter(run(INITIAL_PRESENTER, started("ghost")).state), SETS, false)).toBeNull();
+    expect(bootResume(serializePresenter(manual), SETS, true)).toBeNull();
+    expect(bootResume(null, SETS, false)).toBeNull();
+    expect(bootResume("{nope", SETS, false)).toBeNull();
+    const gone = run(INITIAL_PRESENTER, { type: "set-playback", playback: "manual" }, started("deleted", "ra")).state;
+    expect(bootResume(serializePresenter(gone), SETS, false)).toBeNull();
+  });
+  it("a resumed set plays from boot (going), not holding", () => {
+    const back = restorePresenter(serializePresenter(run(manual, { type: "track-ended" }).state));
+    const r = run(back, { type: "boot", holding: false }, started("first-light"));
+    expect(r.state.status).toBe("playing");
   });
 });

@@ -18,6 +18,7 @@ import {
   PRESENTER_STORAGE_KEY,
 } from "./presenter-machine";
 import { useVjBridge } from "@/lib/vj-bridge/use-vj-bridge";
+import { parseLiveSetCommand } from "@/lib/journeys/live-set";
 
 // Rolling frame-rate meter (2026-10-05: a steady slowdown never trips the
 // >50ms gap recorder — Karel saw journeys crawl while the log stayed clean).
@@ -80,7 +81,7 @@ function runPresenterCommand(cmd: string, context: KioskRemoteContext): boolean 
     const target = ev.type === "play-now" ? ev.ref : state.cued;
     const start = target ? `${target.journeyId}@${target.programId}` : state.setId;
     if (ev.type === "play-now") {
-      try { window.localStorage.setItem(PRESENTER_STORAGE_KEY, serializePresenter({ ...state, cued: null })); } catch { /* ok */ }
+      try { window.localStorage.setItem(PRESENTER_STORAGE_KEY, serializePresenter({ ...state, cued: null, playback: "auto" })); } catch { /* ok */ }
     }
     window.location.href = `/room/installation?loop=1${start ? `&start=${encodeURIComponent(start)}` : ""}${kiosk}`;
     return true;
@@ -105,10 +106,25 @@ function runCommand(cmd: string, context: KioskRemoteContext): void {
     glitchRecord("karel-mark", `${store.activeJourney?.name ?? "?"} @${t.toFixed(1)}s (lag ${lag.toFixed(1)}s)`);
   } else if (cmd === "toggle-play") {
     store.togglePlayPause();
-  } else if (cmd === "live" && context !== "live") {
+  } else if ((cmd === "live" && context !== "live") || /^live:(mic|laptop|both)$/.test(cmd)) {
     // LIVE THEATRE (Karel 2026-10-11): he plays the Nord; the kiosk listens
     // and wanders the catalogue (live-theatre-client.tsx). Full page load.
-    window.location.href = "/room/installation?live=1&kiosk=1";
+    // live:<src> picks what it listens to (Karel 2026-10-15: "either mic or the
+    // sound from laptop. i need both") — also switches it while already live
+    const src = cmd.startsWith("live:") ? cmd.slice(5) : "mic";
+    window.location.href = `/room/installation?live=1&kiosk=1&livesrc=${src}`;
+  } else if (cmd.startsWith("liveset:")) {
+    // LIVE SET (Tramokyo 2026-10-15, the Joseph set — live-theatre-client.tsx):
+    // "liveset:joseph[@N]" plays that set (from track N) audibly while the
+    // worlds wander; already in it → jump straight there. "liveset:world" →
+    // next world, same track. skip / prev in a set = next / previous track.
+    const ev = parseLiveSetCommand(cmd);
+    const running = (window as unknown as Record<string, { set?: string } | undefined>).__resonanceLiveSet?.set;
+    if (ev?.type === "world") window.dispatchEvent(new Event("liveset-world"));
+    else if (ev && context === "live" && running === ev.set) window.dispatchEvent(new CustomEvent("liveset-jump", { detail: ev.at }));
+    else if (ev) window.location.href = `/room/installation?live=1&kiosk=1&liveset=${ev.set}&at=${ev.at}`;
+  } else if (cmd === "prev" && context === "live") {
+    window.dispatchEvent(new Event("live-prev"));
   } else if (cmd === "skip" && context === "live") {
     window.dispatchEvent(new Event("live-next"));
   } else if (cmd === "skip" && context === "loop") {
@@ -162,11 +178,25 @@ function runCommand(cmd: string, context: KioskRemoteContext): void {
     // "jump:<jid>@<program id>" — the program the piece was tapped under
     // (Rise Above borrows album pieces, so a journey id alone is ambiguous).
     const [jid, programId] = cmd.slice(5).split("@");
-    if (context === "loop") {
+    if (context === "loop" && jid && programId) {
+      // A TAPPED TRACK PLAYS NOW (show day 2026-10-15): the presenter's play-now
+      // — the playing song fades, the tapped one plays, the set auto-plays on
+      // from it, from ANY state (held title card, held ending, song by song,
+      // mid-transition, credits). The raw loop jump below cut the music, left
+      // a held card up and kept song-by-song holding.
+      window.dispatchEvent(
+        new CustomEvent("installation-presenter", { detail: { type: "play-now", ref: { journeyId: jid, programId } } }),
+      );
+    } else if (context === "loop") {
       window.dispatchEvent(
         new CustomEvent("installation-operator-jump-journey", { detail: programId ? `${jid}@${programId}` : jid })
       );
     } else {
+      // the loop opens playing the tapped track, auto-playing on from it
+      try {
+        const st = restorePresenter(window.localStorage.getItem(PRESENTER_STORAGE_KEY));
+        window.localStorage.setItem(PRESENTER_STORAGE_KEY, serializePresenter({ ...st, playback: "auto", cued: null }));
+      } catch { /* storage blocked */ }
       window.location.href = `/room/installation?loop=1&start=${encodeURIComponent(programId ? `${jid}@${programId}` : jid)}${context === "live" ? "&kiosk=1" : ""}`;
     }
   } else if (cmd.startsWith("program:")) {
@@ -300,6 +330,8 @@ export function useKioskRemote(context: KioskRemoteContext): void {
 
     const tick = async () => {
       const s = useAudioStore.getState();
+      // a live set (Joseph) names ITS track — not the silent world clock's
+      const ls = (window as unknown as Record<string, { title: string | null; isPlaying: boolean; currentTime: number; duration: number } | undefined>).__resonanceLiveSet;
       let next = POLL_MS;
       try {
         const res = await fetch(url, {
@@ -337,10 +369,13 @@ export function useKioskRemote(context: KioskRemoteContext): void {
                 ((window as unknown as Record<string, unknown>)
                   .__resonanceKioskPhaseLabel as string | undefined) ??
                 null,
-              track: s.currentTrack?.title ?? null,
-              isPlaying: s.isPlaying,
-              currentTime: Math.round(s.currentTime),
-              duration: Math.round(s.duration),
+              track: ls ? ls.title : (s.currentTrack?.title ?? null),
+              isPlaying: ls ? ls.isPlaying : s.isPlaying,
+              currentTime: ls ? ls.currentTime : Math.round(s.currentTime),
+              duration: ls ? ls.duration : Math.round(s.duration),
+              // LIVE SET: { set, index (1-based), count, id, title, state, isPlaying,
+              // currentTime, duration, next, world, tracks[{n,id,title,duration}] }
+              liveset: ls ?? null,
               volume: s.volume,
               // Live Theatre: "MIDI: Nord Stage 3 connected · 12 notes/min" (midi-input.ts)
               midi:

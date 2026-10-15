@@ -88,6 +88,7 @@ import { SustainMeter, trailsEnabled, trailsForJourney, trailsSessionStore } fro
 import { liveMidiDrive } from "@/lib/particles/midi-drive";
 import { VJ_TAP, vjTapWanted, vjTapJourney } from "@/lib/vj-bridge/tap";
 import { midiRequestedByUrl, startMidiInput } from "@/lib/audio/midi-input";
+import { signatureFlightMayFly, endSignatureFlight } from "@/lib/journeys/signature-flight-guard";
 
 /** PHRASE CONDUCTOR (?phrase=1, off by default — phrase-conductor.ts): the deep
  *  analysis's section starts / crests / breaths time the form changes and the
@@ -1419,6 +1420,8 @@ export function ParticleLeadLayer({
       if (particlesDisabledReason()) { window.clearInterval(iv); return; } // failsafe tripped: stand down
       // the statement card owns the engine + canvas (its piano): an outgoing
       // journey still mounted for its fade must not touch either
+      // …and never leaves a signature-flight pose behind for the card's piano
+      if (statementHoldActive() && flightPosed) { endSignatureFlight(engine); flightPosed = false; }
       if (statementHoldActive()) { lastTick = performance.now(); return; }
       const now = performance.now();
       const tickDt = Math.min(0.5, (now - lastTick) / 1000);
@@ -1526,7 +1529,8 @@ export function ParticleLeadLayer({
         if (flightAt < 0) {
           const Dn = useAudioStore.getState().duration || 0;
           const st = emOcc === 2 && flightFlag.closing ? closingFlightStart(Dn, PARTICLE_PROFILES[journeyId]) : emOcc === 0 && flightFlag.opening ? openingFlightStart(Dn) : null;
-          if (st !== null && t >= st && t < st + 0.5 && imgLoaded === "emblem" && imgKey === `emblem:${emOcc}` && !imgReleasing && engine.imageShown() > 0.9) {
+          if (st !== null && t >= st && t < st + 0.5 && engine.imageShown() > 0.9 &&
+            signatureFlightMayFly({ imgLoaded, imgKey, flightOcc: emOcc, imgReleasing, cardHeld: statementHoldActive(), disposed })) {
             flightAt = t; flightOcc = emOcc; flightLetGo = false; flightDirX = imgVar.mirror ? (-sigFlight.dir.x as -1 | 1) : sigFlight.dir.x;
             glitchRecord("particle-flash", `signature flight ${sigFlight.name} emblem ${emOcc} @${t.toFixed(1)}s`);
           }
@@ -1685,12 +1689,12 @@ export function ParticleLeadLayer({
       // the flown emblem's plane follows the flight path (the motes stay bound to
       // it — the bird stays a bird); after it the far pose holds until the image
       // has cleared (or another image takes the slot), then the plane returns unseen
-      if (sigFlight && flE >= 0 && imgLoaded === "emblem" && imgKey === `emblem:${flightOcc}` && !imgReleasing) {
+      if (sigFlight && flE >= 0 && signatureFlightMayFly({ imgLoaded, imgKey, flightOcc, imgReleasing, cardHeld: statementHoldActive(), disposed })) {
         // (the engine evaluates the path + the articulated wings every frame from this clock)
         engine.setImageFlight({ e: flE, flight: { dir: { x: flightDirX, y: 1 }, wing: sigFlight.wing }, sec: flightOcc === 0 ? FLIGHT.OPEN_SEC : FLIGHT.SEC, bpm: flBpm });
         flightPosed = true;
-      } else if (flightPosed && (engine.imageLevel() < IMAGE_CLEAR || (imgLoaded !== null && imgKey !== `emblem:${flightOcc}`))) {
-        engine.setImageFlight(null);
+      } else if (flightPosed && (engine.imageLevel() < IMAGE_CLEAR || (imgLoaded !== null && imgKey !== `emblem:${flightOcc}`) || statementHoldActive())) {
+        endSignatureFlight(engine);
         flightPosed = false;
       }
       if (VJ_TAP.on) { VJ_TAP.image = imgLoaded; VJ_TAP.emblem = emblemOn; }
@@ -2214,6 +2218,10 @@ export function ParticleLeadLayer({
       offGravClip();
       engine.setGravity(null);
       engine.setTrails(null); // tails glide away with the fade (never snapped)
+      // a signature flight never outlives its journey: the shared engine goes on
+      // to the title card's piano (show day 2026-10-15: title-hold during Yellow
+      // Bird's opening flight — the held card's PIANO flew off along the bird's path)
+      endSignatureFlight(engine);
       // keep the shared engine + context for the next journey; a VISIBLE field
       // fades out over 1.5 s (jump / skip) instead of vanishing in one frame
       disposed = true;

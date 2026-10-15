@@ -20,6 +20,7 @@ import { useKioskRemote } from "@/lib/audio/use-kiosk-remote";
 import {
   presenterReduce,
   restorePresenter,
+  bootResume,
   serializePresenter,
   peekNext,
   PRESENTER_STORAGE_KEY,
@@ -190,12 +191,37 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
   // intro → journeys → dedication arc using the existing single-cycle
   // phase machine below (which reads the CURRENT program's sequence);
   // the credits timer advances programIndex before wrapping to intro.
+  // PRESENTER (song by song, presenter-machine.ts) — persisted so a kiosk
+  // recovery reload keeps the mode, the chosen set and the cue.
+  const presenterRef = useRef<PresenterState | null>(null);
+  // A RELOAD NEVER HOLDS (show day 2026-10-15): song by song reloaded mid-show
+  // resumes PLAYING at its set position (the cue / the track on screen / the
+  // one after a held ending) instead of opening on the held title card
+  const bootResumeRef = useRef<{ pi: number; ji: number } | null | undefined>(undefined);
+  if (presenterRef.current === null) {
+    let raw: string | null = null;
+    try { raw = typeof window !== "undefined" ? window.localStorage.getItem(PRESENTER_STORAGE_KEY) : null; } catch { /* storage blocked */ }
+    presenterRef.current = restorePresenter(raw);
+    let at: { pi: number; ji: number } | null = null;
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search);
+      const r = q.has("titlehold")
+        ? null
+        : bootResume(raw, programs.map((p) => ({ id: p.id, journeyIds: p.sequence.map((e) => e.journey.id) })), q.has("start"));
+      const pi = r ? programs.findIndex((p) => p.id === r.programId) : -1;
+      const ji = pi >= 0 ? programs[pi].sequence.findIndex((e) => e.journey.id === r!.journeyId) : -1;
+      if (pi >= 0 && ji >= 0) at = { pi, ji };
+    }
+    bootResumeRef.current = at;
+  }
   const [programIndex, setProgramIndex] = useState(() =>
-    programs.length > 0 ? Math.min(Math.max(0, startProgramIndex), programs.length - 1) : 0,
+    bootResumeRef.current
+      ? bootResumeRef.current.pi
+      : programs.length > 0 ? Math.min(Math.max(0, startProgramIndex), programs.length - 1) : 0,
   );
   // ?start journey offset applies only to the first pass through the
   // starting program; every later intro starts at journey 0.
-  const [startIdx, setStartIdx] = useState(startIndex);
+  const [startIdx, setStartIdx] = useState(() => bootResumeRef.current?.ji ?? startIndex);
   const program = programs[programIndex] ?? programs[0] ?? null;
   const sequence = program?.sequence ?? EMPTY_SEQUENCE;
 
@@ -207,25 +233,16 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
   // and resonance hanging out … introduce it and leave it up until i formally
   // start"): the statement card holds indefinitely; "title-release" starts
   // Rise Above from the card. ?titlehold=1 opens the page already holding.
-  // PRESENTER (song by song, presenter-machine.ts) — persisted so a kiosk
-  // recovery reload keeps the mode, the chosen set and the cue.
-  const presenterRef = useRef<PresenterState | null>(null);
-  if (presenterRef.current === null) {
-    let raw: string | null = null;
-    try { raw = typeof window !== "undefined" ? window.localStorage.getItem(PRESENTER_STORAGE_KEY) : null; } catch { /* storage blocked */ }
-    presenterRef.current = restorePresenter(raw);
-  }
   // bumped by every presenter go / fade — a pending hold or fade checks it
   const presenterGoGenRef = useRef(0);
   const [titleHold, setTitleHold] = useState(() => {
     if (typeof window === "undefined") return false;
     const q = new URLSearchParams(window.location.search);
-    if (q.has("titlehold")) return true;
-    // song by song, reloaded mid-show (watchdog / recovery): the ending can't
-    // be recreated, so the loop opens HOLDING on the title card; NEXT plays on
-    // (an explicit ?start= from the phone still starts there)
-    const pr = presenterRef.current;
-    return !q.has("start") && pr?.playback === "manual" && !!pr.current;
+    // ONLY an explicit hold (?titlehold=1 — the phone's title-hold from Live /
+    // the DJ room). Song by song reloaded mid-show used to open HOLDING here
+    // and sat on "Title card — HOLDING (press Start)" until recovered by hand
+    // (show day 2026-10-15); it now resumes playing (bootResumeRef above).
+    return q.has("titlehold");
   });
   const titleHoldRef = useRef(titleHold);
   titleHoldRef.current = titleHold;
@@ -238,6 +255,15 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
   const pianoWaitRef = useRef(false);
   const onPianoWait = useCallback((waiting: boolean) => {
     if (waiting === pianoWaitRef.current) return;
+    // A card already released (a phone tap / title-release landed before the
+    // boot card's piano warm-up resolved) must never freeze the hand-off: show
+    // day 2026-10-15 the late "boot card: the loop holds until the piano
+    // forms" landed 3 s AFTER a release, cleared the intro's timers and left
+    // the tapped track stuck behind black (audio frozen at 0:03) until reload.
+    if (waiting && (phaseRef.current.kind !== "intro" || introStageRef.current !== "experience")) {
+      glitchRecord("piano-wait-ignored", `${phaseRef.current.kind}/${introStageRef.current}`);
+      return;
+    }
     pianoWaitRef.current = waiting;
     if (!waiting) releaseFromHoldRef.current = true;
     setPianoWait(waiting);
@@ -349,6 +375,12 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       if (titleHoldRef.current || t) return;
       // presenter "hold on the title": keep the set playing from (NEXT picks the track)
       const keep = (e as CustomEvent<{ keep?: boolean } | undefined>).detail?.keep === true;
+      // Karel's explicit hold beats a track tap still in flight (its jump would
+      // otherwise land under the held card): cancel the pending go
+      if (!keep) {
+        presenterGoGenRef.current++;
+        if (presenterGoTimerRef.current) { clearTimeout(presenterGoTimerRef.current); presenterGoTimerRef.current = null; }
+      }
       const gen = presenterGoGenRef.current;
       glitchRecord("title-hold", phaseRef.current.kind);
       postEvent(keep ? "title-hold (presenter)" : "title-hold");
@@ -383,6 +415,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       postEvent("title-release");
       releaseFromHoldRef.current = true;
       setTitleHold(false);
+      dropTitleHoldParam();
     };
     window.addEventListener("installation-operator-title-hold", onHold);
     window.addEventListener("installation-operator-title-release", onRelease);
@@ -540,6 +573,15 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
   // log (/tmp/tramokyo-events.log) that survives page reloads — overnight
   // diagnosis without console access. Offline-pack only (route 404s
   // elsewhere and this never throws).
+  /** a released hold must not come back on the next reload (?titlehold=1 stays in the URL otherwise) */
+  const dropTitleHoldParam = () => {
+    try {
+      const u = new URL(window.location.href);
+      if (!u.searchParams.has("titlehold")) return;
+      u.searchParams.delete("titlehold");
+      window.history.replaceState(window.history.state, "", u.toString());
+    } catch { /* ok */ }
+  };
   const postEvent = (event: string) => {
     try {
       void fetch("/api/pack/log", {
@@ -629,9 +671,13 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       setProgramIndex(pi);
       releaseFromHoldRef.current = true;
       setTitleHold(false);
+      dropTitleHoldParam();
       return;
     }
-    if (fadeCurrent) {
+    // a tap mid-transition (a go / set start in flight with music sounding):
+    // never cut it — fade it like a mid-song NEXT
+    const fade = fadeCurrent || useAudioStore.getState().isPlaying;
+    if (fade) {
       // mid-song: the music fades gracefully (store stays "playing" so the
       // provider's 200 ms pause ramp can't cut it short), then pauses
       void rampGainTo(0, PRESENTER_NEXT_FADE_MS).then(() => {
@@ -664,7 +710,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
       window.dispatchEvent(
         new CustomEvent("installation-operator-jump-journey", { detail: `${target.journeyId}@${target.programId}` }),
       );
-    }, (fadeCurrent ? PRESENTER_NEXT_FADE_MS : 0) + PRESENTER_GO_BEAT_MS);
+    }, (fade ? PRESENTER_NEXT_FADE_MS : 0) + PRESENTER_GO_BEAT_MS);
   };
   const runPresenterEffect = useRef<(eff: PresenterEffect) => void>(() => {});
   runPresenterEffect.current = (eff: PresenterEffect) => {

@@ -101,17 +101,41 @@ let micSource: MediaStreamAudioSourceNode | null = null;
 /** Live mode: feed the shared analyser from the microphone instead of the
  *  track. Resolves false when the mic is unavailable (no permission / no
  *  device) — the visuals then simply drift on their own. */
-export async function attachMicDrive(preampGain = 2): Promise<boolean> {
+export type LiveSource = "mic" | "laptop" | "both";
+/** Which input devices a live source listens to, by label (2026-10-15: the
+ *  Mac's DEFAULT input was a virtual NDI device — plain getUserMedia heard
+ *  silence, and an iPhone Continuity mic can appear too). "mic" = the built-in
+ *  MacBook mic; "laptop" = the BlackHole loopback (the laptop's own sound,
+ *  via a Multi-Output device); "both" = mixed. Exported for tests. */
+export function pickLiveInputs(devices: readonly { kind: string; deviceId: string; label: string }[], src: LiveSource): { mic: string | null; laptop: string | null } {
+  const ins = devices.filter((d) => d.kind === "audioinput" && d.deviceId !== "default" && d.deviceId !== "communications");
+  const mic = ins.find((d) => /macbook.*microphone|built-?in.*microphone/i.test(d.label))
+    ?? ins.find((d) => !/ndi|blackhole|iphone|ipad|virtual|loopback|zoom|teams|parrot/i.test(d.label));
+  const laptop = ins.find((d) => /blackhole/i.test(d.label)) ?? ins.find((d) => /loopback/i.test(d.label));
+  return { mic: src === "laptop" ? null : mic?.deviceId ?? null, laptop: src === "mic" ? null : laptop?.deviceId ?? null };
+}
+let liveStreams: MediaStream[] = [];
+export async function attachMicDrive(preampGain = 2, src: LiveSource = "mic"): Promise<boolean> {
   if (micSource) return true;
   const eng = getAudioEngine();
-  let stream: MediaStream;
+  const raw = { echoCancellation: false, noiseSuppression: false, autoGainControl: false };
+  const streams: MediaStream[] = [];
   try {
-    stream = await navigator.mediaDevices.getUserMedia({
-      audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false },
-    });
+    // one plain request first: it grants the permission, which unlocks device labels
+    const probe = await navigator.mediaDevices.getUserMedia({ audio: raw });
+    const picks = pickLiveInputs(await navigator.mediaDevices.enumerateDevices(), src);
+    probe.getTracks().forEach((t) => t.stop());
+    for (const id of [picks.mic, picks.laptop]) {
+      if (!id) continue;
+      try { streams.push(await navigator.mediaDevices.getUserMedia({ audio: { ...raw, deviceId: { exact: id } } })); } catch { /* that input failed: the other still drives */ }
+    }
+    // no match (labels hidden / nothing installed): the default input, as before
+    if (!streams.length && src !== "laptop") streams.push(await navigator.mediaDevices.getUserMedia({ audio: raw }));
   } catch {
     return false;
   }
+  if (!streams.length) return false;
+  liveStreams = streams;
   const ctx = eng.audioContext;
   // The clock track is disconnected OUTRIGHT: the element still plays and
   // advances (the visuals' clock) but has no path to the speakers, so no
@@ -125,9 +149,61 @@ export async function attachMicDrive(preampGain = 2): Promise<boolean> {
   const preamp = ctx.createGain();
   preamp.gain.value = preampGain;
   preamp.connect(eng.analyserNode);
-  micSource = ctx.createMediaStreamSource(stream);
-  micSource.connect(preamp);
+  for (const st of liveStreams) {
+    const node = ctx.createMediaStreamSource(st);
+    node.connect(preamp);
+    micSource ??= node;
+  }
   return true;
+}
+/** The input labels live mode is listening to (diagnostics / the events log). */
+export function liveInputLabels(): string[] {
+  return liveStreams.flatMap((st) => st.getAudioTracks().map((t) => t.label));
+}
+
+// ─── LIVE SET: a set's tracks play AUDIBLY and drive the visuals ───
+// Tramokyo 2026-10-15 (the Joseph set). Same rewire as the mic drive — the
+// world's clock track is cut off from the speakers — but the source is a
+// second media element playing the set:
+//   track element -> (nothing)                        (the silent clock)
+//   set element -> setGain -> destination             (heard)
+//                  setGain -> analyser -> mute(0) -> destination  (drives)
+// The analyser follows the set's fades too, so the visuals breathe with them.
+let setGain: GainNode | null = null;
+let setSource: MediaElementAudioSourceNode | null = null;
+export function attachSetDrive(el: HTMLAudioElement): GainNode | null {
+  if (setGain) return setGain;
+  if (micSource) return null; // a page is one or the other
+  const eng = getAudioEngine();
+  const ctx = eng.audioContext;
+  try {
+    setSource = ctx.createMediaElementSource(el);
+  } catch {
+    return null;
+  }
+  try { eng.sourceNode.disconnect(); } catch { /* not connected */ }
+  try { eng.analyserNode.disconnect(); } catch { /* not connected */ }
+  const mute = ctx.createGain();
+  mute.gain.value = 0;
+  eng.analyserNode.connect(mute);
+  mute.connect(ctx.destination);
+  setGain = ctx.createGain();
+  setGain.gain.value = 0; // the set fades itself in
+  setSource.connect(setGain);
+  setGain.connect(ctx.destination);
+  setGain.connect(eng.analyserNode);
+  return setGain;
+}
+/** Ramp the live set's gain (never a step). Resolves after the ramp. */
+export function rampSetGain(target: number, ms: number): Promise<void> {
+  if (!setGain || !audioContext) return Promise.resolve();
+  try {
+    const now = audioContext.currentTime;
+    setGain.gain.cancelScheduledValues(now);
+    setGain.gain.setValueAtTime(setGain.gain.value, now);
+    setGain.gain.linearRampToValueAtTime(Math.max(0, Math.min(1, target)), now + ms / 1000);
+  } catch { /* context closing */ }
+  return new Promise((r) => setTimeout(r, ms));
 }
 
 // ─── Gain envelopes — the "never abrupt" law, applied to audio ───

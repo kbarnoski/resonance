@@ -174,7 +174,16 @@ export function presenterReduce(
     case "clear-cue":
       return { state: { ...state, cued: null }, effect: NONE };
     case "play-now":
-      return presenterReduce({ ...state, cued: event.ref }, { type: "next" }, sets);
+      // A TAPPED TRACK ALWAYS PLAYS NOW (Karel 2026-10-15, show day: "if i
+      // open a set list and click a track it should move to that track and
+      // start playing … should work from touching any track at any time"):
+      // from playing, holding, fading, mid-go or idle; the outgoing song fades
+      // first, and the set then auto-plays on from the tapped track.
+      return go(
+        { ...state, playback: "auto", setId: event.ref.programId, cued: null },
+        event.ref,
+        state.status === "playing" || state.status === "fading",
+      );
     case "next":
       return go(state, peekNext(state, sets), state.status === "playing" || state.status === "fading");
     case "replay":
@@ -223,7 +232,9 @@ export function presenterReduce(
 
 export function serializePresenter(s: PresenterState): string {
   const { playback, holdOn, setId, cued, current } = s;
-  return JSON.stringify({ playback, holdOn, setId, cued, current });
+  // held: the track on screen had ended / was fading out (a reload resumes AFTER it)
+  const held = s.status === "holding" || s.status === "fading";
+  return JSON.stringify({ playback, holdOn, setId, cued, current, held });
 }
 
 const isRef = (x: unknown): x is PresenterRef =>
@@ -232,10 +243,11 @@ const isRef = (x: unknown): x is PresenterRef =>
   typeof (x as PresenterRef).programId === "string" && (x as PresenterRef).programId.length > 0;
 
 /**
- * Restore after a reload. Song by song with something on screen before the
- * reload comes back HOLDING (the loop opens on the held title card — a
- * reloaded page can't recreate the ending); auto-play restores as idle and
- * the loop runs exactly as today.
+ * Restore after a reload: the mode, the hold setting, the set and the cue.
+ * A reload NEVER comes back holding (show day 2026-10-15: a deploy reload in
+ * song-by-song mode reopened on "Title card — HOLDING (press Start)" and sat
+ * black until recovered by hand). Song by song resumes PLAYING at its set
+ * position instead (bootResume); auto-play runs the loop exactly as today.
  */
 export function restorePresenter(raw: string | null | undefined): PresenterState {
   if (!raw) return INITIAL_PRESENTER;
@@ -246,14 +258,32 @@ export function restorePresenter(raw: string | null | undefined): PresenterState
     const setId = typeof o.setId === "string" && o.setId ? o.setId : null;
     const cued = isRef(o.cued) ? o.cued : null;
     const current = isRef(o.current) ? o.current : null;
-    return {
-      playback, holdOn, setId, cued, current,
-      // the loop's "boot" event sets the truth at once (holding card / set start)
-      status: playback === "manual" && current ? "holding" : "idle",
-    };
+    // never "holding": the loop's "boot" event sets the truth at once (a set
+    // start under way, or a title card held ONLY by an explicit ?titlehold=1)
+    return { playback, holdOn, setId, cued, current, status: "idle" };
   } catch {
     return INITIAL_PRESENTER;
   }
+}
+
+/**
+ * Where a RELOADED kiosk resumes (instead of holding on the title card):
+ * song by song with a track on screen → the cued track if any, else the
+ * track after it when it had ended / was fading out, else that track again.
+ * null = the loop's normal start (auto-play, nothing persisted, an explicit
+ * ?start= on the URL, or a position no longer in the sets).
+ */
+export function bootResume(raw: string | null | undefined, sets: PresenterSets, hasStart: boolean): PresenterRef | null {
+  if (hasStart || !raw) return null;
+  const s = restorePresenter(raw);
+  if (s.playback !== "manual" || !s.current) return null;
+  let held = false;
+  try { held = (JSON.parse(raw) as { held?: unknown }).held === true; } catch { /* restorePresenter handled it */ }
+  const inSets = (r: PresenterRef | null) =>
+    !!r && sets.some((x) => x.id === r.programId && x.journeyIds.includes(r.journeyId));
+  if (inSets(s.cued)) return s.cued;
+  const t = held ? nextInSet(sets, s.current.programId, s.current) : s.current;
+  return inSets(t) ? t : null;
 }
 
 /** Parse a phone command into a presenter event (null = not a presenter command). */

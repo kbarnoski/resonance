@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { INSTALLATION_PROGRAMS, TRAMOKYO_MIX_ID } from "@/lib/journeys/installation-sequence";
 import { Button } from "@/components/ui/button";
+import { setRunTime } from "@/lib/audio/set-duration";
+import { josephSet } from "@/lib/journeys/joseph-set";
 import { PresenterView, type PresenterStatus } from "./presenter-view";
 
 // "Start from" jump points — the beginning is program 0's intro; every
@@ -45,7 +47,26 @@ interface KioskStatus {
   midi?: string | null;
   /** Presenter (auto-play / song by song) — loop context only */
   presenter?: PresenterStatus | null;
+  /** LIVE SET (Joseph, live-theatre-client.tsx) — live context only */
+  liveset?: LiveSetStatus | null;
 }
+
+interface LiveSetStatus {
+  set: string;
+  index: number; // 1-based
+  count: number;
+  title: string | null;
+  state: string;
+  isPlaying: boolean;
+  currentTime: number;
+  duration: number;
+  next: string | null;
+  world: string | null;
+  tracks?: { n: number; id: string; title: string; duration: number }[];
+}
+
+/** The Joseph live set as the phone lists it (the kiosk's own list once it reports one). */
+const JOSEPH_TRACKS_LOCAL = josephSet().map((t, i) => ({ n: i + 1, id: t.id, title: t.title, duration: t.duration }));
 
 function fmt(sec: number | undefined): string {
   if (!sec || sec < 0) return "0:00";
@@ -65,6 +86,13 @@ function keyQuery(): string {
   return k ? `key=${encodeURIComponent(k)}` : "";
 }
 
+type LiveSrc = "mic" | "laptop" | "both";
+const LIVE_SRCS: { src: LiveSrc; label: string; long: string }[] = [
+  { src: "mic", label: "Mic", long: "the mic" },
+  { src: "laptop", label: "Laptop sound", long: "the laptop's sound" },
+  { src: "both", label: "Mic + laptop", long: "the mic and the laptop's sound" },
+];
+
 export function RemoteClient({
   initialStatus = null,
   initialAgeMs = null,
@@ -83,6 +111,10 @@ export function RemoteClient({
   const [sendError, setSendError] = useState<string | null>(null);
   // the presenter is the main screen; every other control lives behind the Live pill
   const [controlsOpen, setControlsOpen] = useState(false);
+  // LIVE source (Karel 2026-10-15: "play any sound on the laptop and it feeds
+  // resonance in live mode … either mic or the sound from laptop. i need both")
+  const [livePick, setLivePick] = useState(false);
+  const [liveSrc, setLiveSrc] = useState<LiveSrc>("mic");
 
   useEffect(() => {
     // no lists from the server (kiosk not reporting yet)? the last ones this
@@ -279,11 +311,31 @@ export function RemoteClient({
           )
         )}
         {inLive ? (
-          // LIVE THEATRE (Karel 2026-10-11): the kiosk listens to the Nord and
-          // wanders the catalogue; Next opens another world now
-          <Button variant="glass" className={`${btn} col-span-2`} onClick={() => void send("skip")}>
-            Next world ▶
-          </Button>
+          <>
+            {/* LIVE THEATRE (Karel 2026-10-11): the kiosk listens to the Nord and
+                wanders the catalogue; Next opens another world now */}
+            {/* (in a live set Next / Previous move through its tracks — below — and
+                this changes the world only: liveset:world) */}
+            <Button variant="glass" className={`${btn} col-span-2`} onClick={() => void send(status?.liveset ? "liveset:world" : "skip")}>
+              Next world ▶
+            </Button>
+            {/* what the kiosk listens to — switches at once (live:<src>) */}
+            <div className="col-span-2">
+              <div className="mb-1.5 font-mono text-[11px] uppercase tracking-widest text-ink-faint">Listen to</div>
+              <div className="grid grid-cols-3 overflow-hidden rounded-lg border border-border bg-card">
+                {LIVE_SRCS.map((o) => (
+                  <button
+                    type="button"
+                    key={o.src}
+                    className={`min-h-11 rounded-none px-2 text-sm transition-colors duration-instant ${liveSrc === o.src ? "bg-primary/20 text-ink" : "text-ink-mute active:bg-white/[0.06]"}`}
+                    onClick={() => { setLiveSrc(o.src); void send(`live:${o.src}`); }}
+                  >
+                    {o.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </>
         ) : (
           <>
             <Button
@@ -293,16 +345,37 @@ export function RemoteClient({
             >
               {status?.isPlaying === false ? "Play" : "Pause"}
             </Button>
-            <Button
-              variant="glass"
-              className={`${btn} col-span-2`}
-              onClick={() => {
-                // confirmed — a pocket tap would stop the show
-                if (window.confirm("Go LIVE? The kiosk listens to your playing and wanders every world until you press Back to loop.")) void send("live");
-              }}
-            >
-              ● Live — I&apos;m playing
-            </Button>
+            {livePick ? (
+              // choose what LIVE listens to, then confirm — a pocket tap would stop the show
+              <div className="col-span-2 rounded-xl border border-border bg-card p-3">
+                <div className="mb-2 font-mono text-[11px] uppercase tracking-widest text-ink-faint">Go live — listen to</div>
+                <div className="grid grid-cols-3 gap-2">
+                  {LIVE_SRCS.map((o) => (
+                    <Button
+                      variant="glass"
+                      key={o.src}
+                      className={`${btn} px-2 justify-center text-center`}
+                      onClick={() => {
+                        if (window.confirm(`Go LIVE listening to ${o.long}? The kiosk wanders every world until you press Back to loop.`)) {
+                          setLiveSrc(o.src);
+                          setLivePick(false);
+                          void send(`live:${o.src}`);
+                        }
+                      }}
+                    >
+                      {o.label}
+                    </Button>
+                  ))}
+                </div>
+                <button type="button" className="mt-2 min-h-11 w-full text-sm text-ink-mute" onClick={() => setLivePick(false)}>
+                  Cancel
+                </button>
+              </div>
+            ) : (
+              <Button variant="glass" className={`${btn} col-span-2`} onClick={() => setLivePick(true)}>
+                ● Live — I&apos;m playing
+              </Button>
+            )}
           </>
         )}
 
@@ -322,14 +395,55 @@ export function RemoteClient({
         )}
       </div>
 
+      {/* JOSEPH — live set (Tramokyo 2026-10-15): a tap plays that track now
+          (liveset:joseph@N); in the set, Next / Previous move through it */}
+      {(() => {
+        const ls = inLive && status?.liveset?.set === "joseph" ? status.liveset : null;
+        const tracks = ls?.tracks?.length ? ls.tracks : JOSEPH_TRACKS_LOCAL;
+        if (!tracks.length) return null;
+        const total = setRunTime(tracks.map((t) => ({ dur: t.duration })));
+        return (
+          <div>
+            <div className="mb-2 flex items-baseline justify-between gap-3 font-mono text-[11px] uppercase tracking-widest text-ink-faint">
+              <span className="min-w-0 truncate">Joseph — live set</span>
+              {total ? <span className="shrink-0 normal-case tracking-normal">{total}</span> : null}
+            </div>
+            {ls ? (
+              <div className="grid grid-cols-2 gap-2 mb-2">
+                <Button variant="glass" className={btn} onClick={() => void send("prev")}>◀ Previous track</Button>
+                <Button variant="glass" className={btn} onClick={() => void send("skip")}>Next track ▶</Button>
+              </div>
+            ) : null}
+            <div className="grid grid-cols-2 gap-2 mb-6">
+              {tracks.map((t) => {
+                const cmd = `liveset:joseph@${t.n}`;
+                const on = ls?.index === t.n;
+                return (
+                  <Button
+                    variant="glass"
+                    key={t.id}
+                    className={`${btn} py-2.5 justify-start text-left ${on || sending === cmd ? "bg-white/[0.18]" : ""}`}
+                    onClick={() => void send(cmd)}
+                  >
+                    <span className="mr-2 shrink-0 font-mono text-[10px] text-ink-faint">{t.n}</span>
+                    <span className="block truncate">{t.title}</span>
+                  </Button>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })()}
+
       {/* Program sections — track lists straight from the kiosk's built
           programs (Welcome Home, Snowflake EP, and any future program —
           Surrounded by Light / March Light — appear automatically).
           Names only, numbered; a tap jumps the loop to that journey. */}
       {(status?.programs ?? []).map((prog) => (
         <div key={prog.id}>
-          <div className="mb-2 font-mono text-[11px] uppercase tracking-widest text-ink-faint">
-            {prog.label}
+          <div className="mb-2 flex items-baseline justify-between gap-3 font-mono text-[11px] uppercase tracking-widest text-ink-faint">
+            <span className="min-w-0 truncate">{prog.label}</span>
+            {setRunTime(prog.journeys) ? <span className="shrink-0 normal-case tracking-normal">{setRunTime(prog.journeys)}</span> : null}
           </div>
           <div className="grid grid-cols-2 gap-2 mb-6">
             {prog.journeys.map((j, i) => (
