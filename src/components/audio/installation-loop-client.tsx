@@ -62,6 +62,19 @@ const particlesActive = () => PARTICLES_ENABLED || particlesForcedThisSession();
  *  journey title mounts pre-start + 3.8 s, after the spin-up. The music starts
  *  at the pre-start, as before. */
 
+/** JUMP VEIL (post-show stall fix): a remote jump that lands while the set
+ *  intro still covers the screen (statement card, or the black spin-up after
+ *  the pre-start) used to unmount that cover in one frame, mid spin-up — the
+ *  set-start journey and the jumped-to journey spinning up together stalled
+ *  the GPU 258-349 ms ON SCREEN (kiosk 2026-10-14 18:26:31 / 20:20:49; jumps
+ *  3.2-3.5 s after a set pre-start; ~20 mid-set double hand-offs showed none).
+ *  Keep it black through the spin-up instead, then fade in — heavy spin-up
+ *  lands on a still frame (kiosk stall law). ?jumpveil=0 = old behaviour. */
+const JUMP_VEIL_HOLD_MS = 2_600;
+const JUMP_VEIL_FADE_MS = 1_800;
+const jumpVeilEnabled = () =>
+  typeof location === "undefined" || new URLSearchParams(location.search).get("jumpveil") !== "0";
+
 /** One entry in the curated loop sequence. */
 export interface SequenceEntry {
   journey: Journey;
@@ -235,6 +248,10 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
   // current phase without depending on it (which would re-run the entire
   // effect on every phase change).
   const phaseRef = useRef<Phase>(phase);
+  // jump veil (JUMP_VEIL_HOLD_MS): black cover over a jump out of a covered intro
+  const [jumpVeil, setJumpVeil] = useState<null | "hold" | "fade">(null);
+  const jumpVeilTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+  useEffect(() => () => jumpVeilTimersRef.current.forEach(clearTimeout), []);
   useEffect(() => { phaseRef.current = phase; }, [phase]);
   // warm every particle form's GPU program during the intro (black / title),
   // so no particle pipeline is ever built while a journey is on screen
@@ -413,6 +430,19 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         // landing journey at the same time as the standard journey
         // overlay (the doubled/overlapping title Karel saw). One title
         // system owns the card: the visualizer-client overlay.
+        // The intro's cover (statement card / black spin-up) must not vanish
+        // in one frame mid spin-up — hold black, then fade (JUMP_VEIL_HOLD_MS).
+        const cover = phaseRef.current.kind === "statement" ||
+          (phaseRef.current.kind === "intro" && introStageRef.current !== "journey" && introStageRef.current !== "fading-journey" && introStageRef.current !== "gone");
+        if (cover && jumpVeilEnabled()) {
+          jumpVeilTimersRef.current.forEach(clearTimeout);
+          setJumpVeil("hold");
+          glitchRecord("jump-veil", `${phaseRef.current.kind}/${introStageRef.current} hold ${JUMP_VEIL_HOLD_MS}ms`);
+          jumpVeilTimersRef.current = [
+            setTimeout(() => setJumpVeil("fade"), JUMP_VEIL_HOLD_MS),
+            setTimeout(() => setJumpVeil(null), JUMP_VEIL_HOLD_MS + JUMP_VEIL_FADE_MS + 100),
+          ];
+        }
         setIntroStage("gone");
         useAudioStore.getState().setSuppressNextJourneyIntro(false);
         setStartIdx(0);
@@ -717,6 +747,8 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
   const [introStage, setIntroStage] = useState<IntroStage>(
     () => (playOnce ? "fading-cycle" : "cycle"),
   );
+  const introStageRef = useRef(introStage);
+  introStageRef.current = introStage;
   // Font readiness gate. We wait until every Cormorant Garamond
   // variant the intro/title text uses (300 regular, 300 italic, 400)
   // is loaded BEFORE starting the timing chain. Without this gate the
@@ -2575,6 +2607,17 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
           cardT0={cardT0}
           hold={titleHold || pianoWait}
           onPianoWait={onPianoWait}
+        />
+      )}
+      {jumpVeil && (
+        <div
+          className="absolute inset-0 z-[120] pointer-events-none"
+          aria-hidden
+          style={{
+            backgroundColor: "var(--void)",
+            opacity: jumpVeil === "hold" ? 1 : 0,
+            transition: jumpVeil === "fade" ? `opacity ${JUMP_VEIL_FADE_MS}ms ease-out` : undefined,
+          }}
         />
       )}
       {phase.kind === "statement" && (
