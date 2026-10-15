@@ -86,7 +86,7 @@ SERVER_COMMIT="$(curl -s --max-time 3 http://localhost:3000/api/version | /usr/b
 # Docs/log-only commits since the build don't change what the kiosk serves —
 # no dialog for those (a blocking dialog on show day is worse than useless).
 if [ "$SERVER_COMMIT" != "?" ] && [ "$SERVER_COMMIT" != "$HEAD_COMMIT" ] \
-  && git -C "$APP_DIR" diff --quiet "$SERVER_COMMIT" HEAD -- . ':(exclude)docs' ':(exclude)*.md' ':(exclude)*.jsonl' ':(exclude)scripts/tramokyo-*' 2>/dev/null; then
+  && git -C "$APP_DIR" diff --quiet "$SERVER_COMMIT" HEAD -- . ':(exclude)docs' ':(exclude)*.md' ':(exclude)*.jsonl' ':(exclude)scripts/tramokyo-*' ':(exclude)src/app/dream' 2>/dev/null; then
   SERVER_COMMIT="$HEAD_COMMIT"
 fi
 if [ "$HEAD_COMMIT" != "unknown" ] && [ "$SERVER_COMMIT" != "?" ] && [ "$SERVER_COMMIT" != "$HEAD_COMMIT" ]; then
