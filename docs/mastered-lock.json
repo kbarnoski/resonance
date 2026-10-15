@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-14T15:31:19.708Z",
+  "updated": "2026-10-15T15:04:59.801Z",
   "journeys": {
     "ghost": {
       "definition": "3c87fe99fae1c8a5",
@@ -19,7 +19,7 @@
       "finaleStill": "74234e98afe7498f",
       "finaleShader": "095a76a4b4e4a4eb",
       "legacySlideshow": "true",
-      "particleCast": "1f8cbfd4f9d302e8",
+      "particleCast": "254e5441f3a15087",
       "emblemHandoff": "096e14393c5ee3ae",
       "packStills": "37a1e873780c6aec"
     }

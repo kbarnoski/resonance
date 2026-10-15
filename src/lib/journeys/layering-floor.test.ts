@@ -8,7 +8,7 @@ import { describe, it, expect } from "vitest";
 import {
   LAYERING, LEGACY, layeringEnabled, layeringAppliesTo, layeredCap, capOccupancy, dizzyGuard,
   idleMaxMs, pushGapOk, rescueMayWalk, stillMotion, cloneCap, parallaxCamTarget, parallaxLagSrc,
-  simulateCollage, type SimOptions, type SimSecond,
+  simulateCollage, type SimOptions, type SimSecond, ghostOpeningLift, GHOST_OPENING_LIFT_END,
 } from "./layering-floor";
 import { TAKE_STILL_SCRIPTS } from "./pinned-takes";
 import { MASTERED_JOURNEYS } from "./mastered";
@@ -197,5 +197,32 @@ describe("pinned takes are untouched", () => {
     expect(TAKE_STILL_SCRIPTS[THE_FIRST].map(([t, n]) => `${t}:${n}`).join(" ")).toBe(
       "11:gen-001.jpg 21:gen-002.jpg 30:gen-003.jpg 38:gen-004.jpg 47:gen-005.jpg 62:gen-010.jpg 74:gen-013.jpg 83:gen-014.jpg 99:gen-002.jpg",
     );
+  });
+});
+
+describe("Ghost opening lift (Karel 2026-10-15: first 1/3 \"a bit of a slide show\")", () => {
+  it("applies only to Ghost, only in the first third of the track", () => {
+    expect(GHOST_OPENING_LIFT_END).toBeCloseTo(1 / 3);
+    expect(ghostOpeningLift("ghost", 0, 230)).toBe(true);
+    expect(ghostOpeningLift("ghost", 70, 230)).toBe(true);
+    expect(ghostOpeningLift("ghost", 230 / 3, 230)).toBe(false);
+    expect(ghostOpeningLift("ghost", 150, 230)).toBe(false);
+    expect(ghostOpeningLift("ghost", 10, 0)).toBe(false); // duration unknown
+    expect(ghostOpeningLift("first-snow", 10, 230)).toBe(false);
+    expect(ghostOpeningLift(THE_FIRST, 10, 230)).toBe(false);
+    expect(ghostOpeningLift(null, 10, 230)).toBe(false);
+  });
+  it("Ghost stays out of the general floor (still mastered)", () => {
+    expect(layeringAppliesTo({ id: "ghost" }, true)).toBe(false);
+  });
+  it("lift knobs are gentle: drift 0.2, one clone, departing stills free their slot", () => {
+    expect(stillMotion(0, true)).toBe(LAYERING.MOTION_FLOOR);
+    expect(LAYERING.MOTION_FLOOR).toBeLessThanOrEqual(0.2);
+    expect(cloneCap(0, true, false)).toBe(1);
+    expect(cloneCap(0, true, true)).toBe(0);
+    expect(capOccupancy([
+      { state: "fading-out", opacity: 0.6, fadeStartTime: 0 },
+      { state: "peak", opacity: 1, fadeStartTime: 0 },
+    ], true)).toBe(1);
   });
 });

@@ -273,7 +273,7 @@ describe("3. max on-screen time for a figure", () => {
       }
       if (run) runs.push(run);
       // (the last run ends at the closing emblem; the first starts under the opening one)
-      for (const r of runs) if (isFigureSoul(r.soul)) expect(r.sec, `${l.name} ${r.soul}`).toBeLessThanOrEqual(CAP + 0.51);
+      for (const r of runs) if (isFigureSoul(r.soul)) expect(r.sec, `${l.name} ${r.soul}`).toBeLessThanOrEqual(CAP_SOFT);
     }
   });
 });

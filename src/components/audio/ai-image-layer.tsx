@@ -17,7 +17,7 @@ import { isVideoActive, markVideoActive, markJourneyBoundary, inBoundarySettle, 
 import { isWhisperImageryName, imageryDprCeil } from "@/lib/journeys/kinetic";
 import {
   LAYERING, layeringOn, layeringAppliesTo, layeredCap, capOccupancy, dizzyGuard, idleMaxMs, pushGapOk,
-  rescueMayWalk, scriptedStillDue, bypassesCap, stillMotion, parallaxLagSrc,
+  rescueMayWalk, scriptedStillDue, bypassesCap, stillMotion, parallaxLagSrc, ghostOpeningLift,
 } from "@/lib/journeys/layering-floor";
 
 interface AiImageLayerProps {
@@ -604,6 +604,10 @@ export function AiImageLayer({
     const layering = layeringNow();
     const scriptedPush = !isVideoPush && !!opts?.scripted;
     const capExempt = isVideoPush || bypassesCap(layering, scriptedPush, isCoverPush);
+    // Ghost opening lift (Karel 2026-10-15, layering-floor.ts): Ghost's first
+    // third borrows the floor's slot/guard/drift knobs — nothing else.
+    const liftSt = useAudioStore.getState();
+    const lift = !layering && ghostOpeningLift(journeyIdRef.current, liftSt.currentTime, liftSt.duration);
 
     // Evict fully invisible layers first
     for (let i = layers.length - 1; i >= 0; i--) {
@@ -617,14 +621,14 @@ export function AiImageLayer({
     // but skip layers that haven't held at peak for MIN_PEAK_DURATION yet.
     // If nothing can be evicted, drop the incoming image (next gen will try again).
     const stillLayers = layers.filter((l) => "complete" in l.img);
-    if (layering && !capExempt) {
+    if ((layering || lift) && !capExempt) {
       const g = dizzyGuard(stillLayers);
       if (g !== "ok") {
         glitchRecord("push-refused", `layering-${g}`);
         return false;
       }
     }
-    const stillCount = capOccupancy(stillLayers, layering);
+    const stillCount = capOccupancy(stillLayers, layering || lift);
     if (!capExempt && stillCount >= conductedMaxLayers()) {
       // Never cut a layer mid-entrance (Karel 2026-09-28: "right after
       // the text an image dropped"): a fading-in layer is only evictable
@@ -703,7 +707,7 @@ export function AiImageLayer({
     if (coverBoost) coverBoostRef.current = false;
     const baseMotion = isVideo ? 0 : t0 < 0.6 ? 0 : t0 < 0.85 ? 0.35 : mProg > 0.45 ? 1 : 0.35;
     // Layering floor: every still drifts gently (videos stay static).
-    const motionScale = isVideo ? 0 : stillMotion(coverBoost ? Math.max(0.35, baseMotion) : baseMotion, layering);
+    const motionScale = isVideo ? 0 : stillMotion(coverBoost ? Math.max(0.35, baseMotion) : baseMotion, layering || lift);
     // Visible cinematic travel: up to 10-22% scale change per layer life,
     // alternating push-in and pull-back. Still-image endpoints stay ≥1.06
     // so cover-fit always overflows and the pan never exposes an edge;
@@ -724,7 +728,7 @@ export function AiImageLayer({
     glitchRecord(
       isVideo ? "layer-push-video" : "layer-push-still",
       // vis = stills visible (> 0.25) before this push; n also counts departing + video layers
-      `n=${layers.length + 1} motion=${motionScale.toFixed(2)}${layering ? ` lay=1 vis=${stillLayers.filter((l) => l.opacity > LAYERING.VISIBLE_OPACITY).length}${scriptedPush ? " take" : ""}` : ""}`,
+      `n=${layers.length + 1} motion=${motionScale.toFixed(2)}${layering ? ` lay=1 vis=${stillLayers.filter((l) => l.opacity > LAYERING.VISIBLE_OPACITY).length}${scriptedPush ? " take" : ""}` : ""}${lift ? ` lift=1 vis=${stillLayers.filter((l) => l.opacity > LAYERING.VISIBLE_OPACITY).length}` : ""}`,
     );
     layers.push({
       img,

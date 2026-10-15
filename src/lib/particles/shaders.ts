@@ -1463,14 +1463,22 @@ void main(){
   // stood back the re-entry height came into view and recycled motes popped
   // in. Every recycled mote is now marked (age < 0) and the draw fades it in
   // over ~1.6 s wherever the camera is.
-  bool reborn = false;
+  bool reborn = false, flownBorn = false;
   if (uFlown.x > 0.5) {
     vec2 sc = vec2(dot(p - uFrameO, uFrameR), dot(p - uFrameO, uFrameU));
-    if (max(abs(sc.x), abs(sc.y)) > uFlown.y) {
-      vec3 r = hash31(s.a * 3307.0 + 1.7);
-      p = uFrameO + (r - 0.5) * vec3(2.4, 1.4, 2.0);
+    // the let-go's first frame (x = 2) takes EVERY mote, in frame or not: the
+    // emblem's square plane must never be seen; later frames only the off-frame
+    if (uFlown.x > 1.5 || max(abs(sc.x), abs(sc.y)) > uFlown.y) {
+      // NO RECTANGLE (Karel 2026-10-15, Yellow Bird: after the bird flies away
+      // "the particle cloud smashes in suddenly as almost a rectangle with no
+      // fade in"): a uniform box filled at once read as a slab. Now a soft
+      // round cloud — each axis a sum of three hashes (bell-shaped, no edge) —
+      // and the arrivals spread over ~7 s (flownBorn, below)
+      vec3 r = hash31(s.a * 3307.0 + 1.7), q = hash31(s.a * 811.3 + 5.1), w = hash31(s.a * 157.9 + 9.3);
+      p = uFrameO + ((r + q + w) / 3.0 - 0.5) * vec3(2.6, 1.6, 2.0);
       v = vec3(0.0);
       reborn = true;
+      flownBorn = true;
     }
   }
   // rise souls: climbers return to the hearth (fallers to the top) — the draw
@@ -1517,6 +1525,9 @@ void main(){
   // camera can see. Each now waits its own 0-2.4 s (invisible below -1.6) while
   // it drifts, so they arrive one by one wherever they have moved to.
   if (reborn) age = -1.6 - 2.4 * hash11(s.a * 31.7 + floor(uTime * 0.37)); // counts up through the fade-in (draw: arrive)
+  // the flown bird's cloud gathers slowly: a stable per-mote wait of 0-6 s, so
+  // it builds from a few motes to the field (re-respawned motes keep theirs)
+  if (flownBorn) age = -1.6 - 6.0 * hash11(s.a * 71.3 + 0.5);
   float life = lifeOf(s);
   if (age > life) {
     age -= life;
@@ -1866,7 +1877,8 @@ void main(){
 
   float life = lifeOf(s);
   // a recycled mote fades in by its age (sim: reborn → age −1.6 … 0)
-  if (p.w < 0.0) a *= smoothstep(-1.6, 0.0, p.w);
+  float ageK = p.w < 0.0 ? smoothstep(-1.6, 0.0, p.w) : 1.0;
+  a *= ageK;
   float fade = smoothstep(0.0, 1.0, p.w) * smoothstep(life, life - 1.5, p.w);
   a *= mix(1.0, fade, smoothstep(0.0, 0.5, uSmokeW + uInkW));
   // infinite unfolding: a blossom layer fades in at birth and out as it opens away
@@ -1903,6 +1915,10 @@ void main(){
     img = pow(mix(ia, ib, uColorMix), vec3(2.2));
     if (size <= 1.0) img *= a / max(uAlpha, 1e-6); // sub-pixel energy rule
     img *= emberA;
+    // …and in image mode too (Karel 2026-10-15, Yellow Bird: the flown bird's
+    // reborn motes wore their pixel at full strength while the image let go —
+    // the square, then a bright ball "with no fade in")
+    img *= ageK;
   }
   if (uImgTint > 0.001) {
     float il = dot(img, vec3(0.2126, 0.7152, 0.0722));

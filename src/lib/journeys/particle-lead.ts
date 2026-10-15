@@ -274,6 +274,22 @@ export function buildParticleLeads(removals: FormRemovals = FORM_REMOVALS): Read
       cast.souls = Object.fromEntries(Object.entries(cast.souls).map(([k, v]) => [k, ok(v)])) as typeof cast.souls;
       if (cast.phaseChars) cast.phaseChars = cast.phaseChars.map((c) => ({ ...c, forms: [...new Set(c.forms.map(ok))] }));
     }
+    // SNOWFLAKE GIVES THE WISP TO GHOST (Karel 2026-10-15, show day: "i wouldnt
+    // use the same whisp form in snowflake since it is in ghost"): the soft
+    // murmuration wisp is now Ghost's opening/tunnel signature, so Snowflake's
+    // murmuration slots become its own falling-snow hush — the pollen drift
+    // (fine motes hanging in slow light) it already wears as its break soul and
+    // in its third phase; Ghost never shows it (duststorm was tried first: it
+    // broke the loop-wide quiet-lead rotation, particle-variety-budget)
+    if (id === "first-snow") {
+      const ok = (f: SoulId): SoulId => (f === "murmuration" ? "pollen" : f);
+      cast.formCycle = [...new Set(cast.formCycle.map(ok))];
+      cast.morphSouls = cast.morphSouls.map(ok);
+      cast.windows = cast.windows.map((w) => ({ ...w, soul: ok(w.soul) }));
+      cast.breaks = cast.breaks.map((w) => ({ ...w, soul: ok(w.soul) }));
+      cast.souls = Object.fromEntries(Object.entries(cast.souls).map(([k, v]) => [k, ok(v)])) as typeof cast.souls;
+      if (cast.phaseChars) cast.phaseChars = cast.phaseChars.map((c) => ({ ...c, forms: [...new Set(c.forms.map(ok))] }));
+    }
     out[id] = applySoulRemovals(cast, [...(JOURNEY_FORM_BANS[id] ?? []), ...removals.souls], id);
   });
   return out;

@@ -247,19 +247,19 @@ const GRATITUDE: ProgramDedication = {
 // One version of a track per set (Karel 2026-10-09: "we cant have two versions of the same track in ra") —
 // except Night Wind (2 early, 9 mid, 4 late — far apart, Karel's own placements). ONE Tranquility only: 38 (Karel 2026-10-12).
 const RISE_ABOVE = [
-  "ghost", //  1. Ghost
-  "first-snow", //  2. Snowflake
+  "first-snow", //  1. Snowflake — before Ghost again (Karel 2026-10-15, show day: "have snowflake before ghost")
+  "ghost", //  2. Ghost
   "87e106f9-4d74-4886-b944-fd625a827b02", //  3. First Light — I. pure piano
   "c80a89bc-2c88-4bde-bec8-4be6916acb62", //  4. Yellow Bird
   "f0362f24-75f1-4717-8487-cc9cf12c7bcc", //  5. The First (Expanded) — before Bath (Karel 2026-10-13: "bath is so mellow it needs to come later … it just would look better")
   "fdc6470e-5c7e-43b4-968c-3e907f1fa88f", //  6. Grasshopper
-  "fb56b19e-ee23-43c6-ad41-5714e7969aad", //  7. Afterglow — the warm close of the piano opening, after Grasshopper (Karel 2026-10-13: "ghost>snowflake>first light>yellow bird>first expanded>grasshopper>afterglow>testimony", the bridge kept)
-  "mycelium-dream", //  8. Mycelium Dream — featured solo piano bridge — spacey, far out there, visionary (Karel 2026-10-09)
+  "f7b01537-af1b-4ade-b788-f21c6565b057", //  7. Surrounded By Light (the March Light album's) — in Afterglow's spot (Karel 2026-10-15, show day: "have the track surrounded by light in the spot afterglow takes in the ra set"; Afterglow stays in March Light). Was: Afterglow — the warm close of the piano opening, after Grasshopper (Karel 2026-10-13: "ghost>snowflake>first light>yellow bird>first expanded>grasshopper>afterglow>testimony", the bridge kept)
+  // (8. Mycelium Dream pulled out of RA for now — Karel 2026-10-15, show day: "mycelium dream pull out from ra set for now"; it stays in the Featured set)
   "a5b5f0cf-9a6b-451a-8293-3d98f3904342", //  9. Bath — slow, ambient: in the spacey corner of the solo piano bridge, after Mycelium Dream (Karel 2026-10-13: "since bath is so slow and ambient")
-  "the-ascent", // 10. The Summit — featured solo piano bridge — a classical, moving piece into the mix (Karel 2026-10-09), handing to Amboise 1's classical strings
-  "dc8d9705-785a-485e-b91f-a12c85bf7b92", // 11. Testimony 3 — the LAST solo piano, where the bridge to the fuller sound happens: "a pick me upper gospel vibe with some organ under piano" (Karel 2026-10-13; was #6)
-  "6ff51cde-f4ca-4285-8707-0f77eaf9394c", // 12. Amboise 1 — end of the bridge: classical strings + piano, right after the solo piano completes, into the Expansion (Karel 2026-10-12) — wave 1 wakes from here
-  "1f5e3884-5317-4146-ba18-4742eaf74ce9", // 13. Chemiluminescence — the connector from the strings into the voices and ambient (Karel 2026-10-13: "a great connector to the voices and ambient")
+  "dc8d9705-785a-485e-b91f-a12c85bf7b92", // 10. Testimony 3 — "a pick me upper gospel vibe with some organ under piano" (Karel 2026-10-13; was #6)
+  "1f5e3884-5317-4146-ba18-4742eaf74ce9", // 11. Chemiluminescence — right after Testimony 3 (Karel 2026-10-15: "switch chemo to be after testimony") — the connector from the strings into the voices and ambient (Karel 2026-10-13: "a great connector to the voices and ambient")
+  "the-ascent", // 12. The Summit — featured solo piano bridge — a classical, moving piece (Karel 2026-10-09); after Testimony 3 (Karel 2026-10-15: "play summit after testimony"), handing to Amboise 1's classical strings
+  // (Amboise 1 removed from RA — Karel 2026-10-15, show day: "remove amboise from ra setlist")
   "1f83e254-a0c8-45ec-974f-8b363038a98d", // 14. Rise 1 — the first voice after Amboise 1's strings: voice and a little piano, peaceful and beautiful (Karel 2026-10-12: "right after amboise"; was the ballad before Singular 4)
   "e9beec7a-6aa4-41bb-83f0-c827603ed51d", // 15. Northern Plane 3 — a transporting ambient one, a must (Karel 2026-10-09); far from Northern Plane 5
   "4cd35ec2-bc13-4b9a-b26c-9e38e956fb80", // 16. Night Wind 2

@@ -3,7 +3,7 @@
 import { glitchRecord } from "@/lib/journeys/glitch-recorder";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
 import { inBoundarySettle } from "@/lib/journeys/video-activity";
-import { layeringOn, layeringAppliesTo, cloneCap } from "@/lib/journeys/layering-floor";
+import { layeringOn, layeringAppliesTo, cloneCap, ghostOpeningLift } from "@/lib/journeys/layering-floor";
 import { useAudioStore } from "@/lib/audio/audio-store";
 
 import { useEffect, useRef, useCallback } from "react";
@@ -122,7 +122,10 @@ export function AiOverlayElements({
       // Layering floor (?layering=1): one gentle drifting clone even in quiet
       // passages — never in the sparse interlude, never on a mastered journey.
       const aj = useAudioStore.getState().activeJourney;
-      const conductedCap = cloneCap(baseCap, layeringOn() && layeringAppliesTo(aj ? { id: aj.id, name: aj.name } : null, true), sparse);
+      // Ghost opening lift (Karel 2026-10-15): one soft clone in Ghost's first third.
+      const st = useAudioStore.getState();
+      const lift = ghostOpeningLift(aj?.id, st.currentTime, st.duration);
+      const conductedCap = cloneCap(baseCap, lift || (layeringOn() && layeringAppliesTo(aj ? { id: aj.id, name: aj.name } : null, true)), sparse);
       const maxClones = Math.min(conductedCap, Math.max(1, Math.round(MAX_CLONES_BASE * tier.cloneScale)));
       if (activeClonesRef.current.length >= maxClones) return;
 

@@ -513,3 +513,26 @@ export function simulateCollage(o: SimOptions): SimResult {
   }
   return { seconds, pushes, refusals, refusalReasons: reasons, maxIdleSec: maxIdle, maxIdleAt, cloneSpawns };
 }
+
+// ────────────────────────────────────────────────────────────────────────────
+// GHOST OPENING LIFT (Karel 2026-10-15, watching Ghost on the kiosk: "opening
+// first 1/3 of ghost needs a little imaging. it was a bit of a slide show.
+// ensure a bit of layering. dont over do it though").
+//
+// Ghost is mastered, so the floor above never reaches it. Kiosk session
+// 2hmi02 (Ghost 0-75 s): 8 of 10 still pushes at motion=0.00, a 17 s
+// single-image stretch (8.8 s push, then push-refused cap=2 at 19.6/21.2 s:
+// the departing still held a cap slot), and only 3 clones in the opening vs
+// 10 after it. The lift applies four of the floor's knobs to Ghost's first
+// third ONLY: departing stills free their cap slot, the anti-dizzy guard
+// (one arriving, <= 3 visible), a gentle 0.2 drift floor on stills, and one
+// soft clone. Ghost's stills, take, shaders, particles, arc, idle/push timing
+// and depth parallax are untouched; nothing changes after the first third.
+// ────────────────────────────────────────────────────────────────────────────
+
+/** Fraction of Ghost's track the lift covers. */
+export const GHOST_OPENING_LIFT_END = 1 / 3;
+
+export function ghostOpeningLift(journeyId: string | null | undefined, currentTime: number, duration: number): boolean {
+  return journeyId === "ghost" && duration > 0 && currentTime >= 0 && currentTime / duration < GHOST_OPENING_LIFT_END;
+}

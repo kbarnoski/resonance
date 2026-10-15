@@ -340,8 +340,15 @@ function seed01(key: string): number {
   return (h >>> 0) / 4294967296;
 }
 export function leadSeedCost(journeyId: string, soul: SoulId): number {
-  return LEAD_SEED_SPREAD * seed01(`${journeyId}|opener|${soul}`);
+  return LEAD_SEED_SPREAD * seed01(`${journeyId}|opener|${soul}${OPENER_SEED_SALT[journeyId] ?? ""}`);
 }
+/** Re-seeds a journey's fresh-start opener when a set order lines up three
+ *  identical ones (the variety budget's reload case): Rise Above 2026-10-15
+ *  (Karel: Chemiluminescence after Testimony 3, then The Summit) put three
+ *  smoke openers in a row. */
+export const OPENER_SEED_SALT: Readonly<Record<string, string>> = {
+  "1f5e3884-5317-4146-ba18-4742eaf74ce9": "|ra-2026-10-15c", // Chemiluminescence
+};
 
 /**
  * The cast as THIS loop position plays it: morph + window forms re-chosen so

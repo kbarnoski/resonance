@@ -928,6 +928,10 @@ export function createParticleEngine(
   let wingCur: WingPose = REST_WINGS, wingPrev: WingPose = REST_WINGS;
   let flP = 0, flTP = 0; // body pitch (glided)
   let flownT = -1; // releaseFlight: seconds since the flown motes let go (-1 = off)
+  // …and its FIRST sim frame: every mote is reborn then (Karel 2026-10-15, Yellow
+  // Bird: "smashes in suddenly as almost a rectangle with no fade in" — the
+  // emblem's square plane, its dark-pixel motes hidden while worn, showed at once)
+  let flownFresh = false;
   let flSpeed = 0; // the plane centre's world speed this frame (u/s)
   const flVel = [0, 0, 0];
   let sizeScaleS = 1, sizeScaleT = 1;
@@ -1549,7 +1553,8 @@ export function createParticleEngine(
       g.uniform2f(sim.u.uShedDir, (flDirX / dl) * Math.sign(imgMirror || 1), flDirY / dl);
     }
     if (sim.u.uFlown) {
-      g.uniform2f(sim.u.uFlown, flownT >= 0 ? 1 : 0, 1.12);
+      g.uniform2f(sim.u.uFlown, flownT >= 0 ? (flownFresh ? 2 : 1) : 0, 1.12);
+      flownFresh = false;
       if (flownT >= 0) {
         g.uniform3f(sim.u.uFrameR, frameR[0], frameR[1], frameR[2]);
         g.uniform3f(sim.u.uFrameU, frameU[0], frameU[1], frameU[2]);
@@ -2169,7 +2174,7 @@ export function createParticleEngine(
     setCamScale(k) { camScaleTarget = camScaleBase * Math.max(0.3, Math.min(2.6, k)); },
     setOffset(x, y) { offTX = Math.max(-0.7, Math.min(0.7, x)); offTY = Math.max(-0.5, Math.min(0.5, y)); },
     setImageScale(k) { imgScaleT = Math.max(0.2, Math.min(1.2, k)); },
-    releaseFlight() { flownT = 0; },
+    releaseFlight() { flownT = 0; flownFresh = true; },
     setImageFlight(fl) {
       if (!fl || !Number.isFinite(fl.e)) { flSpec = null; flTX = flTY = flTShed = flTP = 0; flTS = 1; wingCur = wingPrev = REST_WINGS; return; }
       if (!flSpec || Math.abs(fl.e - flE) > 0.3) { flE = fl.e; flResync = true; }

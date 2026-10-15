@@ -130,10 +130,17 @@ export const PINNED_TAKES: Record<string, number | number[]> = {
   "d92c2d3a-4283-4300-abc3-d71ed7c6848d": 903101341,
   // Karel 2026-10-12 (pass 7): "this night wind track is a keeper" — Night Wind 2
   "4cd35ec2-bc13-4b9a-b26c-9e38e956fb80": 391401299,
+  // ^ re-confirmed 2026-10-15: "i like this take of night wind" (session 2hmi02 played this pinned seed; still script added below)
   // Karel 2026-10-12 (pass 7): "the current journey playing is a big time keeper" — No question 7
   "19acdb4c-5a52-4532-99bd-a59652c7ff8e": 1643832524,
   // Karel 2026-10-14: "otherwise its a keeper take" — Redwoods Sway 2 (session 0a7gtm); its ember slot (p0.271, the "amber web") re-picks via the pick-time ban in shader-balance.ts
   "99b7ad2c-a212-440e-85fa-0c670c1e4296": 995886728,
+  // Karel 2026-10-15 (show day, Rise Above): "i like this rise journey take" — Rise 1 (session 2hmi02, 15:24:39–15:27:18 UTC)
+  "1f83e254-a0c8-45ec-974f-8b363038a98d": 1296466177,
+  // Karel 2026-10-15: "northern plane was good too" — Northern Plane 3 (session 2hmi02, 15:27:18–15:30:14 UTC)
+  "e9beec7a-6aa4-41bb-83f0-c827603ed51d": 1252698631,
+  // Karel 2026-10-15: "i like this sbl journey take" — Surrounded by Light 6 (session 2hmi02, 15:33:47–15:36:46 UTC)
+  "6251d682-b5e4-46b6-98cf-ceb6b609a7bc": 1808706099,
 };
 
 /** Resolve tonight's take for a journey: a pinned one (or a random
@@ -159,6 +166,14 @@ export const TAKE_STILL_SCRIPTS: Record<string, readonly (readonly [number, stri
   "f0362f24-75f1-4717-8487-cc9cf12c7bcc": [[11, "gen-001.jpg"], [21, "gen-002.jpg"], [30, "gen-003.jpg"], [38, "gen-004.jpg"], [47, "gen-005.jpg"], [62, "gen-010.jpg"], [74, "gen-013.jpg"], [83, "gen-014.jpg"], [99, "gen-002.jpg"]],
   // Redwoods Sway 2 — Karel 2026-10-14: "otherwise its a keeper take" (session 0a7gtm)
   "99b7ad2c-a212-440e-85fa-0c670c1e4296": [[2, "gen-000.jpg"], [17, "gen-002.jpg"], [26, "gen-003.jpg"], [34, "gen-004.jpg"], [43, "gen-005.jpg"], [52, "gen-006.jpg"], [61, "gen-007.jpg"], [71, "gen-008.jpg"], [80, "gen-009.jpg"], [86, "gen-010.jpg"], [99, "gen-013.jpg"], [114, "gen-000.jpg"], [125, "gen-016.jpg"], [130, "gen-017.jpg"]],
+  // Rise 1 — Karel 2026-10-15: "i like this rise journey take" (session 2hmi02)
+  "1f83e254-a0c8-45ec-974f-8b363038a98d": [[2, "gen-000.jpg"], [16, "gen-002.jpg"], [24, "gen-003.jpg"], [33, "gen-004.jpg"], [42, "gen-005.jpg"], [51, "gen-006.jpg"], [59, "gen-007.jpg"], [68, "gen-008.jpg"], [81, "gen-010.jpg"], [94, "gen-000.jpg"], [109, "gen-015.jpg"], [118, "gen-016.jpg"], [128, "gen-017.jpg"], [137, "gen-018.jpg"], [142, "gen-019.jpg"]],
+  // Northern Plane 3 — Karel 2026-10-15: "northern plane was good too" (session 2hmi02)
+  "e9beec7a-6aa4-41bb-83f0-c827603ed51d": [[2, "gen-000.jpg"], [10, "gen-001.jpg"], [16, "gen-002.jpg"], [28, "gen-005.jpg"], [37, "gen-006.jpg"], [46, "gen-007.jpg"], [54, "gen-008.jpg"], [63, "gen-009.jpg"], [68, "gen-010.jpg"], [84, "gen-000.jpg"], [92, "gen-013.jpg"], [101, "gen-015.jpg"], [110, "gen-016.jpg"], [119, "gen-017.jpg"], [128, "gen-018.jpg"], [142, "gen-000.jpg"], [156, "gen-022.jpg"], [164, "gen-023.jpg"]],
+  // Night Wind 2 — Karel 2026-10-15: "i like this take of night wind" (session 2hmi02, 15:30:14–15:33:47 UTC; pinned seed 391401299)
+  "4cd35ec2-bc13-4b9a-b26c-9e38e956fb80": [[2, "gen-000.jpg"], [10, "gen-001.jpg"], [19, "gen-002.jpg"], [28, "gen-003.jpg"], [37, "gen-004.jpg"], [47, "gen-005.jpg"], [56, "gen-006.jpg"], [61, "gen-007.jpg"], [74, "gen-010.jpg"], [82, "gen-011.jpg"], [88, "gen-012.jpg"], [99, "gen-015.jpg"], [108, "gen-016.jpg"], [116, "gen-017.jpg"], [124, "gen-018.jpg"], [130, "gen-019.jpg"], [141, "gen-022.jpg"], [154, "gen-024.jpg"], [162, "gen-025.jpg"], [170, "gen-026.jpg"], [183, "gen-000.jpg"], [197, "gen-001.jpg"]],
+  // Surrounded by Light 6 — Karel 2026-10-15: "i like this sbl journey take" (session 2hmi02)
+  "6251d682-b5e4-46b6-98cf-ceb6b609a7bc": [[2, "gen-000.jpg"], [16, "gen-002.jpg"], [24, "gen-003.jpg"], [33, "gen-004.jpg"], [42, "gen-005.jpg"], [51, "gen-006.jpg"], [60, "gen-007.jpg"], [68, "gen-008.jpg"], [77, "gen-009.jpg"], [86, "gen-010.jpg"], [96, "gen-011.jpg"], [101, "gen-012.jpg"], [115, "gen-016.jpg"], [123, "gen-017.jpg"], [128, "gen-018.jpg"], [142, "gen-000.jpg"], [157, "gen-023.jpg"], [166, "gen-001.jpg"]],
   "first-snow": [[16, "gen-102.jpg"], [30, "gen-103.jpg"], [46, "gen-102.jpg"], [61, "gen-103.jpg"], [72, "gen-017.jpg"], [78, "gen-104.jpg"], [92, "gen-105.jpg"], [100, "gen-031.jpg"], [116, "gen-042.jpg"], [130, "gen-124.jpg"], [142, "gen-120.jpg"], [152, "gen-116.jpg"], [163, "gen-113.jpg"], [171, "gen-114.jpg"]],
 };
 /** The scripted still for a journey at time t (seconds), or null. */
