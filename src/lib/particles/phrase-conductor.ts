@@ -438,14 +438,21 @@ export function figureZones(D: number, phaseBounds: readonly number[] = [], imag
  *  start of the no-change zone the cap would fall in. */
 export function figureDeadline(start: number, zones: readonly FigureZone[] = []): number {
   let d = start + FIGURE_LAWS.MAX_HOLD_SEC;
-  // chained zones: step back until the deadline is clear of all of them
+  // chained zones: step back until the deadline is clear of all of them — but
+  // never to under a full hold (2026-10-15 review: a zone starting 5-9 s into
+  // the figure cut it there, "form changed after 5.7 s"); then it waits the
+  // zone out instead (a figure a little over the cap beats a form too soon)
+  const floor = start + FIGURE_FLOOR_SEC;
   for (let guard = 0; guard < 8; guard++) {
     const z = zones.find(([a, b]) => d >= a && d < b && a > start);
     if (!z) break;
-    d = z[0];
+    d = z[0] >= floor ? z[0] : z[1];
   }
-  return d;
+  return Math.max(d, floor);
 }
+/** No conducted change before a form has held this long (s; the review's calm
+ *  floor — 12 s, 13 s on the calm journeys). Not for the mastered pair. */
+export const FIGURE_FLOOR_SEC = 13;
 export function figureHoldDue(cursor: PhraseCursor | null, t: number, sinceFormMs: number, formDur: number, soulHeldSec: number | null, zones: readonly FigureZone[] = []): FigureHold {
   const base = formHoldDue(cursor, t, sinceFormMs, formDur);
   const act = base.event ? (base.event.action as "form" | "refigure") : null;

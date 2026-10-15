@@ -10,7 +10,7 @@ import {
   figureRigidTarget, glideRigid, rigidMatrix, REST_RIGID, type FigureRigidInput,
 } from "./figure-motion";
 import {
-  conductPhrases, createPhraseCursor, figureHoldDue, figureZones, figureDeadline, formHoldDue, takePhraseEvent,
+  conductPhrases, createPhraseCursor, FIGURE_FLOOR_SEC, figureHoldDue, figureZones, figureDeadline, formHoldDue, takePhraseEvent,
   PHRASE_LAWS, PHRASE_LOCKED_JOURNEYS, type PhraseTimeline,
 } from "./phrase-conductor";
 import { SOUL_IDS, SHAPE_SOULS, type SoulId } from "./souls";
@@ -20,6 +20,11 @@ import { PARTICLE_LEADS } from "@/lib/journeys/particle-lead";
 import { replayLoop, loopOrder } from "@/lib/journeys/loop-replay";
 
 const CAP = FIGURE_LAWS.MAX_HOLD_SEC;
+// the cap yields to the hold floor: a no-change zone starting < 13 s into a
+// figure is waited out (a morph zone is 11 s, then the image lead-in) — worst
+// 31 s across the catalogue (2026-10-15), never the 48-94 s starburst the cap
+// exists for
+const CAP_SOFT = CAP + 10;
 
 describe("figure souls", () => {
   it("the geometric figures are figures; the free souls are not", () => {
@@ -153,7 +158,7 @@ describe("3. max on-screen time for a figure", () => {
    *  morph keeps the same soul, the busy zone (±4 s) and the image lead-in
    *  (15 s, overdue 8 s) refuse changes, a refigure keeps the look. Returns the
    *  longest any one figure soul stays visible. */
-  function longestFigure(id: string, tl: PhraseTimeline | null): { max: number; at: number } {
+  function longestFigure(id: string, tl: PhraseTimeline | null): { max: number; at: number; minHeld: number } {
     const p = PARTICLE_PROFILES[id];
     const D = p.duration;
     const pbs = PARTICLE_LEADS[id].phaseBounds ?? p.phaseBounds ?? [];
@@ -161,7 +166,7 @@ describe("3. max on-screen time for a figure", () => {
     const imgs = [...(D > 200 ? [D * 0.5] : []), ...(D > 40 ? [D - 17] : [])];
     const cursor = tl ? createPhraseCursor(tl) : null;
     const dt = 0.1;
-    let formAt: number = PHRASE_LAWS.OPENING_EMBLEM_END, soulAt = formAt, max = 0, at = 0, cycle = 0;
+    let formAt: number = PHRASE_LAWS.OPENING_EMBLEM_END, soulAt = formAt, max = 0, at = 0, cycle = 0, minHeld = Infinity;
     for (let t = PHRASE_LAWS.OPENING_EMBLEM_END; t < D - 17; t += dt) {
       // the mid emblem is worn: the figure leaves; it re-forms after
       if (D > 200 && t >= D * 0.5 - 1 && t < D * 0.5 + 15) { formAt = soulAt = D * 0.5 + 15; continue; }
@@ -172,27 +177,31 @@ describe("3. max on-screen time for a figure", () => {
       const busy = pbs.some((pb) => Math.abs(pb - t) < PHRASE_LAWS.PHASE_BUSY_SEC);
       const lead = g.capped ? FIGURE_LAWS.OVERDUE_LEAD_SEC : PHRASE_LAWS.TIMED_LEAD_SEC;
       const timedSoon = (D > 40 && t >= D - 20) || imgs.some((m) => m > t && m - t < lead);
-      if (busy || !g.due || timedSoon) continue;
+      // the layer's hard floor (phrase / clock changes; the cap has figureDeadline's)
+      if (busy || !g.due || timedSoon || (!g.capped && t - formAt < FIGURE_FLOOR_SEC)) continue;
       if (g.event) takePhraseEvent(cursor, g.index);
       const refigure = g.action ? g.action === "refigure" : ++cycle % 3 === 0;
+      if (!refigure && t - soulAt < minHeld) minHeld = t - soulAt;
       formAt = t;
       if (!refigure) soulAt = t;
     }
-    return { max, at };
+    return { max, at, minHeld };
   }
 
   it("covers the catalogue", () => expect(ids.length).toBeGreaterThan(40));
   it(`phrase conductor ON: no figure held > ${CAP} s on any journey`, () => {
     for (const id of ids) {
       const tl = conductPhrases(PARTICLE_PROFILES[id], optsFor(id));
-      const { max, at } = longestFigure(id, tl.events.length ? tl : null);
-      expect(max, `${PARTICLE_PROFILES[id].name} @${at.toFixed(1)}`).toBeLessThanOrEqual(CAP + 0.11);
+      const { max, at, minHeld } = longestFigure(id, tl.events.length ? tl : null);
+      expect(max, `${PARTICLE_PROFILES[id].name} @${at.toFixed(1)}`).toBeLessThanOrEqual(CAP_SOFT);
+      expect(minHeld, PARTICLE_PROFILES[id].name).toBeGreaterThanOrEqual(FIGURE_FLOOR_SEC - 0.11);
     }
   });
   it(`phrase conductor OFF (the hold clock): no figure held > ${CAP} s either`, () => {
     for (const id of ids) {
-      const { max, at } = longestFigure(id, null);
-      expect(max, `${PARTICLE_PROFILES[id].name} @${at.toFixed(1)}`).toBeLessThanOrEqual(CAP + 0.11);
+      const { max, at, minHeld } = longestFigure(id, null);
+      expect(max, `${PARTICLE_PROFILES[id].name} @${at.toFixed(1)}`).toBeLessThanOrEqual(CAP_SOFT);
+      expect(minHeld, PARTICLE_PROFILES[id].name).toBeGreaterThanOrEqual(FIGURE_FLOOR_SEC - 0.11);
     }
   });
   it("Grasshopper (the starburst Karel saw held 48 s → 94 s) is capped", () => {
@@ -244,6 +253,12 @@ describe("3. max on-screen time for a figure", () => {
     expect(figureDeadline(10, zones)).toBe(32);
     expect(figureDeadline(200, zones)).toBe(240 - 17 - FIGURE_LAWS.OVERDUE_LEAD_SEC - 0.5); // closing emblem lead-in
     for (const [a, b] of zones) expect(b).toBeGreaterThan(a);
+  });
+  it("the deadline never steps back to under a full hold — it waits the zone out instead", () => {
+    const zones = figureZones(240, [60]); // busy zone [53, 64)
+    expect(figureDeadline(40, zones)).toBe(53); // cap 62 in the zone; its start is 13 s in: step back
+    expect(figureDeadline(41, zones)).toBe(64); // zone start only 12 s in: wait the zone out
+    for (let s = 0; s < 220; s += 0.5) expect(figureDeadline(s, zones) - s).toBeGreaterThanOrEqual(FIGURE_FLOOR_SEC);
   });
   it("the loop replay (conductor on) never holds a figure soul past the cap", () => {
     const logs = replayLoop(loopOrder(), 2, undefined, { phrase: true });

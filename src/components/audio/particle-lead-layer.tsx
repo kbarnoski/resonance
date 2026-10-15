@@ -76,7 +76,7 @@ import { journeyResponse } from "@/lib/journeys/kinetic";
 import { PARTICLE_PROFILES } from "@/lib/journeys/particle-profiles.generated";
 import { OnsetDetector, LivingScore, livingScoreEnabled, scoreGain, scoreSessionStore, SCORE_LOCKED_JOURNEYS } from "@/lib/particles/living-score";
 import { FIGURE_LAWS, isFigureSoul } from "@/lib/particles/figure-motion";
-import { conductPhrases, createPhraseCursor, figureHoldDue, figureZones, type FigureZone, takePhraseEvent, swellAt, phraseConductorEnabled, PHRASE_LOCKED_JOURNEYS, type PhraseTimeline } from "@/lib/particles/phrase-conductor";
+import { conductPhrases, createPhraseCursor, FIGURE_FLOOR_SEC, figureHoldDue, figureZones, type FigureZone, takePhraseEvent, swellAt, phraseConductorEnabled, PHRASE_LOCKED_JOURNEYS, type PhraseTimeline } from "@/lib/particles/phrase-conductor";
 import { bridgeEnabled, createBridgeState, nextBridgeBoundary, onBridgeHint, stepBridge, BRIDGE_LOCKED_JOURNEYS, type BridgeHint } from "@/lib/particles/bridge";
 import { sampleBridgeStill, type BridgeStill } from "@/lib/particles/bridge-sampler";
 import { mastersFeaturesEnabled } from "@/lib/particles/mastered-features";
@@ -1865,7 +1865,11 @@ export function ParticleLeadLayer({
         if (D !== figZonesD) { figZonesD = D; figZones = figureZones(D, cast.phaseBounds ?? []); }
       }
       const phraseHold = figureHoldDue(phraseCursor, t, performance.now() - formAt, formDur, soulHeld, figZones);
-      const holdDone = () => phraseHold.due;
+      // HARD FLOOR (2026-10-15 review): a phrase or the clock never re-forms a
+      // non-mastered field before the current form (or image form) has held
+      // FIGURE_FLOOR_SEC; the figure cap has its own floor (figureDeadline, from
+      // when the look first showed — morph re-aims don't restart it)
+      const holdDone = () => phraseHold.due && (cast.mastered || phraseHold.capped || performance.now() - formAt >= FIGURE_FLOOR_SEC * 1000);
       const settledEnough = () => phraseHold.capped || engine.settledFor() > (phraseHold.event ? 3 : 7) || performance.now() - formAt > formDur * 2.2;
       if (!busyNow && shown > 0.6 && !dissolving && !imgLoaded && echoAt < 0 && flashP < 0.05 && motifAt < 0 && holdDone() && !timedSoon(t, motifDur + 2) && settledEnough() && rand01(61 + cycleIdx) < pMotif && startMotif(t)) {
         cycleIdx++;
