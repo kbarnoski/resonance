@@ -120,9 +120,15 @@ rm -rf "$HOME/.tramokyo-chrome/Default/Sessions" "$HOME/.tramokyo-chrome/Default
 # NEVER THROTTLED (2026-10-07: Karel's review runs stalled — macOS marked the
 # covered kiosk window hidden for 15-80 s; Chrome throttled it: imaging froze
 # "after the second flash", particles went "start and go")
+# NO EXTENSIONS (2026-10-14): the kiosk profile is signed into Google and had
+# synced Karel's personal extensions (Claude, Loom, Grammarly, MetaMask,
+# Adblock, Privacy Badger …) — all running beside the show. The kiosk needs
+# none. Remote debugging is localhost-only and lets the review rigs attach.
 open -na "Google Chrome" --args \
   --user-data-dir="$HOME/.tramokyo-chrome" \
   --kiosk \
+  --disable-extensions \
+  --remote-debugging-port=9333 \
   --no-first-run \
   --no-default-browser-check \
   --disable-session-crashed-bubble \
