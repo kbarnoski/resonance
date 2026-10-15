@@ -74,7 +74,7 @@ export const JOSEPH_TRACKS: JosephTrack[] = [
     id: "joseph-sky-and-storm", title: "You were the sky and I was the storm",
     file: "You were the sky and I was the storm.m4a", duration: 213,
     // his father: "the sky … its storm … the ocean does a cliff … your darkness and your light"
-    words: ["storm", "sky", "ocean", "cliff", "wave", "surf", "lightning", "thunder", "cloud", "sea", "rain", "tempest", "gust", "wind"],
+    words: ["storm", "sky", "ocean", "cliff", "wave", "lightning", "thunder", "cloud", "sea", "rain", "raindrop", "tempest", "gale", "spray", "crest", "gust", "wind"],
   },
   {
     id: "joseph-whispers-in-the-trees", title: "Whispers in the trees - (The holy shit remix)",
