@@ -278,7 +278,7 @@ const RISE_ABOVE = [
   "85124aed-c3b4-42e2-870a-b14bc5425b72", // 29. Night Wind 9 — groovy chill with a beat, not a peak (Karel 2026-10-09); between Night Wind 2 and 4
   "ecf0d90f-7e1b-4ecb-a654-ecea936caca8", // 30. Bells 1 — dark trip-hop groove
   "3814f116-5c54-499c-9d9b-355201700fdc", // 31. Rattler 2 — funky, groovy: a fun peak (Karel 2026-10-09)
-  "c7a0c1c2-c5d2-487b-8c54-73b134e6f09a", // 32. Horses 1
+  // (Horses 1 removed from RA — Karel 2026-10-15, show day: "remove horses from ra set")
   "24101852-61ee-4ac9-8fd7-da2ae19ab0a3", // 33. The Other Side 9 — the only Other Side; one of the peaks, super soulful (Karel 2026-10-09; replaced The Other Side 10)
   "6ee9f014-8203-437c-b05c-9d8bd0de9d3e", // 34. Chenin 5 — THE PEAK — the screeching, intense one
   "19acdb4c-5a52-4532-99bd-a59652c7ff8e", // 35. No question 7 — building up soulfully, after the peak
