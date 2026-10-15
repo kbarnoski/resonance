@@ -26,6 +26,7 @@
  * Usage:
  *   node scripts/journey-review/record.mjs --journeys ghost,first-snow
  *   node scripts/journey-review/record.mjs --all [--parallel 4]
+ *   node scripts/journey-review/record.mjs --journeys a,b,c --contiguous   (one slice in loop order: real handoffs)
  *   node scripts/journey-review/record.mjs --only-failed <runId> [--parallel 4]
  *   node scripts/journey-review/record.mjs --perf --journeys ghost      (clean timing)
  * Options: --dry-run (print the plan only)  --run <id>  --tail <s> (default 20)  --frames-every <s> (default 2;
@@ -454,7 +455,7 @@ if (!ids.length) { console.error("nothing to record (use --journeys, --all or --
 // slices: --all keeps contiguous loop order (real handoffs); explicit lists /
 // --only-failed / --perf play each journey on its own (start → end + tail)
 let slices;
-if (flag("--all") && !PERF) {
+if ((flag("--all") || flag("--contiguous")) && !PERF) {
   const contig = ids.filter((id) => contiguousIds.has(id));
   const total = contig.reduce((s, id) => s + (DUR[id]?.dur ?? 240), 0);
   const per = total / PARALLEL;

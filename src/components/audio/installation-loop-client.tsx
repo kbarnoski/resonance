@@ -1492,6 +1492,7 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
     return () => document.removeEventListener("keydown", handler, true);
   }, []);
 
+  const cycleLoggedForRef = useRef<Phase | null>(null);
   // ─── Phase machine ────────────────────────────────────────────────
   useEffect(() => {
     // Block the entire timing chain on fonts being loaded. The
@@ -1508,9 +1509,15 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
     if (needsGesture && !started) return;
 
     if (phase.kind === "intro") {
-      postEvent(
-        `cycle-start ${program?.id ?? "?"} (${sequence.length} journeys)`,
-      );
+      // once per real entry into the intro: this effect re-runs while the card
+      // holds (piano forms, the set list arrives) — 2-3 "cycle-start"s per boot
+      // read as restarts in the events log (log only; the card is untouched)
+      if (cycleLoggedForRef.current !== phase) {
+        cycleLoggedForRef.current = phase;
+        postEvent(
+          `cycle-start ${program?.id ?? "?"} (${sequence.length} journeys)`,
+        );
+      }
       // Unfreeze the journey engine — credits screen had it frozen so
       // shaders wouldn't keep mutating during the bg fade-in. Now the
       // new cycle is starting, normal shader switching resumes.

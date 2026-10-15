@@ -1771,7 +1771,18 @@ export function ParticleLeadLayer({
 
       const dissolving = engine.dissolveTime() !== null;
       if (w) {
-        if (w.soul !== lastAsked && (shown < 0.05 || (performance.now() - formAt > formDur && echoAt < 0 && motifAt < 0 && !imgLoaded && !timedSoon(t, 15) && (engine.settledFor() > 7 || performance.now() - formAt > formDur * 2.2)))) { lastAsked = w.soul; switchForm(w.soul, t); }
+        if (w.soul !== lastAsked && (shown < 0.05 || (performance.now() - formAt > formDur && echoAt < 0 && motifAt < 0 && !imgLoaded && !timedSoon(t, 15) && (engine.settledFor() > 7 || performance.now() - formAt > formDur * 2.2)))) {
+          lastAsked = w.soul;
+          // A WINDOW RE-ASKING THE SOUL ALREADY ON SCREEN KEEPS ITS LOOK (2026-10-15
+          // review, Surrounded By Light: a phrase had formed the girih, then its window
+          // re-asked the girih 12.7 s later — switchForm restaged a fresh design +
+          // shape + colour roll, a visible form change, while the figure clock (soulAt,
+          // "the same look") ran on, so the 22 s cap cut it 9.4 s later: "form changed
+          // after 9.4 s"). Nothing restages; the figure holds on toward its cap. Not
+          // the mastered pair (their scripted forms keep their approved behaviour).
+          if (!cast.mastered && w.soul === currentSoul && shown >= 0.05) glitchRecord("particle-form-keep", w.soul);
+          else switchForm(w.soul, t);
+        }
         // sparse → form: density grows with what is SHOWN (never ahead of the fade)
         const target = pr.window ? pr.density : w.density;
         // an image form (emblem / angel) needs every mote to read clearly
