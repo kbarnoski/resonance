@@ -138,8 +138,27 @@ interface Slot {
   aspect: number;
 }
 
+/** UPLOAD SPREAD (post-show stall fix): a still's image + depth bitmaps used to
+ *  upload in the same frame, as both decodes resolved. Every >=80 ms kiosk
+ *  stall on 2026-10-14 mid-journey (16:08:58, 19:55:08 = 367 ms, 15:35:42 …)
+ *  sat within ~100 ms of a parallax mix/queue — the frame those two
+ *  texImage2D calls landed in (block 0 = the GPU, not script). Each upload now
+ *  gets its own animation frame, serialized; "parallax-upload" logs each one
+ *  so the next soak can prove or clear the link. ?pxspread=0 = old behaviour. */
+const UPLOAD_SPREAD = typeof location === "undefined" || new URLSearchParams(location.search).get("pxspread") !== "0";
+let uploadGate: Promise<void> = Promise.resolve();
+function inOwnFrame<T>(fn: () => T): Promise<T> {
+  if (!UPLOAD_SPREAD) return Promise.resolve().then(fn);
+  const run = uploadGate.then(() => new Promise<T>((resolve, reject) => {
+    requestAnimationFrame(() => { try { resolve(fn()); } catch (e) { reject(e); } });
+  }));
+  uploadGate = run.then(() => undefined, () => undefined);
+  return run;
+}
+
 function loadTex(gl: WebGLRenderingContext, url: string): Promise<{ tex: WebGLTexture; aspect: number }> {
   const upload = (src: TexImageSource, w: number, h: number) => {
+    const t0 = performance.now();
     const tex = gl.createTexture();
     if (!tex) throw new Error("no tex");
     gl.bindTexture(gl.TEXTURE_2D, tex);
@@ -148,6 +167,7 @@ function loadTex(gl: WebGLRenderingContext, url: string): Promise<{ tex: WebGLTe
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    glitchRecord("parallax-upload", `${url.includes("/depth/") ? "depth" : "img"} ${w}x${h} ${(performance.now() - t0).toFixed(1)}ms`);
     return { tex, aspect: w / Math.max(1, h) };
   };
   // Decode OFF the main thread first (2026-10-10 soak: uploading straight from
@@ -157,9 +177,9 @@ function loadTex(gl: WebGLRenderingContext, url: string): Promise<{ tex: WebGLTe
     return fetch(url, { mode: "cors" })
       .then((r) => (r.ok ? r.blob() : Promise.reject(new Error(`load failed ${r.status}`))))
       .then((b) => createImageBitmap(b))
-      .then((bmp) => {
+      .then((bmp) => inOwnFrame(() => {
         try { return upload(bmp, bmp.width, bmp.height); } finally { bmp.close(); }
-      });
+      }));
   }
   return new Promise((resolve, reject) => {
     const img = new Image();
