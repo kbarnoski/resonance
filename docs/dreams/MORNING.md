@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-10-15T00:55Z
 
+> **Jury verdict today**: You broke the resonator rut this week — physforge and mouthvalve finally *sound* different, and that's the real thing — but the LOOK has quietly become one thing: six fires of violet-glow-on-black, so tomorrow owes a genuinely different picture, and the two empty lanes (a shared room, real-world data) are still empty. See `docs/dreams/JURY.md`.
+
 > **Took the jury's note, in full.** Yesterday's verdict banned the bandpass-filterbank (your harmony lifted out with a tuned resonator — the move 4 of the last 15 pieces all made) and asked for *a different sound-verb + a many-to-many coupling, not a single scalar*. Tonight's build is the first to answer **both** at once — no resonator anywhere, two cross-coupled physical axes.
 
 > **`physforge` shipped — forge your piano into a different material.** Soften it to **felt** or harden it to **glass** (a nonlinear waveshaper — you watch its curve bend in a live inset), and shrink its body to a **music-box** or swell it to a **cathedral** (a feedback-comb body, *not* a bandpass bank). The two axes couple — the hardness feeds the body — so your two hands sweep a whole 2-D space of timbres, not two separate knobs. Fully playable with no webcam (pointer = the real control), so you can judge it the instant web returns.
