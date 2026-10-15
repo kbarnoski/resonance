@@ -50,7 +50,9 @@ export const PHRASE_LAWS = {
   /** no big change within this many seconds of another */
   BIG_CHANGE_GAP_SEC: 3,
   /** a form is held at least this long, whatever triggers the next one */
-  MIN_FORM_HOLD_SEC: 10,
+  MIN_FORM_HOLD_SEC: 12, // review 2026-10-15: 10 s broke the ≥ 12 s form-hold law (Karel 2026-10-08)
+  /** the mastered pair (PHRASE_LOCKED_JOURNEYS, conducted via ?masters) keep the hold Karel approved */
+  LOCKED_MIN_FORM_HOLD_SEC: 10,
   /** the conductor's own form changes are this far apart (default formDur) */
   FORM_HOLD_SEC: 14,
   /** the layer's busy zone either side of a phase boundary (travel morph) */
@@ -153,6 +155,11 @@ const r2 = (x: number) => Math.round(x * 100) / 100;
 const fmt = (t: number) => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, "0")}`;
 
 /** The emblem windows (image-follow.ts emblemEnvelope): opening, mid (> 200 s), closing (> 40 s). */
+/** Shortest hold for a form in this journey (the mastered pair keep 10 s). */
+export function minFormHold(journeyId: string): number {
+  return PHRASE_LOCKED_JOURNEYS.has(journeyId) ? PHRASE_LAWS.LOCKED_MIN_FORM_HOLD_SEC : PHRASE_LAWS.MIN_FORM_HOLD_SEC;
+}
+
 export function emblemWindows(D: number): [number, number][] {
   const out: [number, number][] = [[0, PHRASE_LAWS.OPENING_EMBLEM_END]];
   if (D > 200) out.push([D * 0.5 - 1, D * 0.5 + 15]);
@@ -162,12 +169,12 @@ export function emblemWindows(D: number): [number, number][] {
 
 /** Where no form change may land: the emblems + the layer's 15 s lead-in
  *  (timedSoon) + a full hold after each image lets go. */
-function formBlockedZones(D: number, reserved: readonly (readonly [number, number])[]): [number, number][] {
+function formBlockedZones(D: number, reserved: readonly (readonly [number, number])[], hold: number): [number, number][] {
   const L = PHRASE_LAWS;
-  const out: [number, number][] = [[0, L.OPENING_EMBLEM_END + L.MIN_FORM_HOLD_SEC]];
-  if (D > 200) out.push([D * 0.5 - L.TIMED_LEAD_SEC, D * 0.5 + 15 + L.MIN_FORM_HOLD_SEC]);
+  const out: [number, number][] = [[0, L.OPENING_EMBLEM_END + hold]];
+  if (D > 200) out.push([D * 0.5 - L.TIMED_LEAD_SEC, D * 0.5 + 15 + hold]);
   if (D > 40) out.push([D - 17 - L.TIMED_LEAD_SEC, D + 2]);
-  for (const [a, b] of reserved) out.push([a - L.TIMED_LEAD_SEC, b + L.MIN_FORM_HOLD_SEC]);
+  for (const [a, b] of reserved) out.push([a - L.TIMED_LEAD_SEC, b + hold]);
   return out;
 }
 
@@ -229,7 +236,8 @@ export function conductPhrases(input: PhraseInput, opts: PhraseOptions = {}): Ph
   const journeyId = opts.journeyId ?? "";
   const reserved = (opts.reserved ?? []).map(([a, b]) => [a, b] as [number, number]);
   const emblems = [...emblemWindows(D), ...reserved];
-  const formBlocked = formBlockedZones(D, reserved);
+  const hold = minFormHold(journeyId);
+  const formBlocked = formBlockedZones(D, reserved, hold);
   const phraseSec = phraseSeconds(input.tempo?.bpm);
   const empty: PhraseTimeline = { journeyId, duration: D, phraseSec, events: [], emblemWindows: emblems, formBlocked, skipped: [] };
   if ((!opts.allowLocked && PHRASE_LOCKED_JOURNEYS.has(journeyId)) || D < 30 || !input.sections?.length) return empty;
@@ -242,8 +250,8 @@ export function conductPhrases(input: PhraseInput, opts: PhraseOptions = {}): Ph
   // own hold clock still guards their form switches at run time.
   const pbs = [...(input.phaseBounds ?? [])].filter((x) => x > 0 && x < D);
   const wins = [...(opts.formChanges ?? [])].filter((x) => Number.isFinite(x));
-  const nearMorph = (t: number) => pbs.some((x) => t > x - (L.PHASE_BUSY_SEC + L.BIG_CHANGE_GAP_SEC) && t < x + L.MIN_FORM_HOLD_SEC);
-  const nearWindow = (t: number) => wins.some((x) => t > x - L.BIG_CHANGE_GAP_SEC && t < x + L.MIN_FORM_HOLD_SEC);
+  const nearMorph = (t: number) => pbs.some((x) => t > x - (L.PHASE_BUSY_SEC + L.BIG_CHANGE_GAP_SEC) && t < x + hold);
+  const nearWindow = (t: number) => wins.some((x) => t > x - L.BIG_CHANGE_GAP_SEC && t < x + hold);
   const events: PhraseEvent[] = [];
 
   // ── forms: section starts, then tempo-aligned sub-phrases ──
@@ -381,7 +389,7 @@ export function formHoldDue(cursor: PhraseCursor | null, t: number, sinceFormMs:
     if (e.t > t) break;
     if ((e.action !== "form" && e.action !== "refigure") || cursor.taken.has(i)) continue;
     if (t - e.t > PHRASE_LAWS.EVENT_GRACE_SEC) continue;
-    if (sinceFormMs >= PHRASE_LAWS.MIN_FORM_HOLD_SEC * 1000) return { due: true, event: e, index: i };
+    if (sinceFormMs >= minFormHold(cursor.tl.journeyId) * 1000) return { due: true, event: e, index: i };
   }
   return { due: sinceFormMs > formDur * 2.2, event: null, index: -1 };
 }
@@ -451,7 +459,7 @@ export function figureHoldDue(cursor: PhraseCursor | null, t: number, sinceFormM
     const ev = cursor.tl.events;
     for (let i = 0; i < ev.length && !later; i++) {
       const e = ev[i];
-      if ((e.action === "form" || e.action === "refigure") && i !== base.index && !cursor.taken.has(i) && e.t >= t + PHRASE_LAWS.MIN_FORM_HOLD_SEC && e.t <= t + left) later = true;
+      if ((e.action === "form" || e.action === "refigure") && i !== base.index && !cursor.taken.has(i) && e.t >= t + minFormHold(cursor.tl.journeyId) && e.t <= t + left) later = true;
     }
   } else later = formDur / 1000 <= left;
   return { ...base, action: later ? act : "form", capped: false };

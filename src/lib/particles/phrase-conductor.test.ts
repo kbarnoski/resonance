@@ -185,16 +185,16 @@ describe("phrase conductor — flag ON at run time", () => {
   const id = "6ee9f014-8203-437c-b05c-9d8bd0de9d3e"; // Chenin 5
   const tl = conductPhrases(PARTICLE_PROFILES[id], optsFor(id));
   const forms = tl.events.map((e, i) => ({ e, i })).filter(({ e }) => e.action === "form" || e.action === "refigure");
-  it("a form event is due from its time once the form has held ≥ 10 s, taken once", () => {
+  it("a form event is due from its time once the form has held ≥ 12 s, taken once", () => {
     const { e, i } = forms[0];
     const c = createPhraseCursor(tl);
     expect(formHoldDue(c, e.t - 0.5, 60_000, 14_000).event).toBeNull(); // not yet
-    expect(formHoldDue(c, e.t + 1, 9_000, 14_000).due).toBe(false); // held < 10 s
-    const r = formHoldDue(c, e.t + 1, 10_500, 14_000);
+    expect(formHoldDue(c, e.t + 1, 11_000, 14_000).due).toBe(false); // held < 12 s
+    const r = formHoldDue(c, e.t + 1, 12_500, 14_000);
     expect(r.due).toBe(true);
     expect(r.index).toBe(i);
     takePhraseEvent(c, r.index);
-    expect(formHoldDue(c, e.t + 1.5, 10_600, 14_000).event).toBeNull();
+    expect(formHoldDue(c, e.t + 1.5, 12_600, 14_000).event).toBeNull();
     // missed past its grace: the event lets go, the slow fallback clock remains
     const c2 = createPhraseCursor(tl);
     expect(formHoldDue(c2, e.t + L.EVENT_GRACE_SEC + 0.5, 12_000, 14_000).due).toBe(false);

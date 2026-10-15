@@ -207,20 +207,20 @@ describe("3. max on-screen time for a figure", () => {
     const i = tl.events.findIndex((e) => e.action === "refigure");
     expect(i).toBeGreaterThanOrEqual(0);
     const e = tl.events[i];
-    // the figure has held 15 s; 11 s since its last change; a refigure is due
-    const r = figureHoldDue(createPhraseCursor(tl), e.t + 0.5, 11_000, 13_500, 15);
+    // the figure has held 15 s; 13 s since its last change; a refigure is due
+    const r = figureHoldDue(createPhraseCursor(tl), e.t + 0.5, 13_000, 13_500, 15);
     expect(r.due).toBe(true);
-    // nothing more can land inside the cap (7 s left < the 10 s hold) → a NEW form, on this phrase
+    // nothing more can land inside the cap (7 s left < the 12 s hold) → a NEW form, on this phrase
     expect(r.action).toBe("form");
     expect(r.capped).toBe(false);
     expect(r.index).toBe(i);
     // a free soul: exactly the conductor's own choice
-    const free = figureHoldDue(createPhraseCursor(tl), e.t + 0.5, 11_000, 13_500, null);
+    const free = figureHoldDue(createPhraseCursor(tl), e.t + 0.5, 13_000, 13_500, null);
     expect(free.action).toBe("refigure");
     // a figure that just arrived: the refigure stays a refigure when a later change still fits
     const later = tl.events.find((x, k) => k > i && (x.action === "form" || x.action === "refigure") && x.t - e.t >= PHRASE_LAWS.MIN_FORM_HOLD_SEC);
     if (later && later.t - e.t <= CAP - 1) {
-      const fresh = figureHoldDue(createPhraseCursor(tl), e.t + 0.5, 11_000, 13_500, 0.5);
+      const fresh = figureHoldDue(createPhraseCursor(tl), e.t + 0.5, 13_000, 13_500, 0.5);
       expect(fresh.action).toBe("refigure");
     }
   });

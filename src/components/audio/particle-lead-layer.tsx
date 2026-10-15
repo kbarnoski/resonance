@@ -1385,8 +1385,13 @@ export function ParticleLeadLayer({
     // NEVER >10 s WITHOUT PARTICLES (Karel 2026-10-07, all journeys): the field
     // returns 6-9 s after it has gone (plus its ~1.5 s fade-in)
     // a rest is a REST: ≥ 12 s out before the ambient field returns (it came
-    // back after 3.5-5.5 s — "fades out and then right back in", Karel 2026-10-12)
-    let ambientGap = BRIDGE_SEC + 3 * rand01(21);
+    // back after 3.5-5.5 s — "fades out and then right back in", Karel 2026-10-12).
+    // That note was Ghost's: on every other journey a 12-15 s wait broke the
+    // NEVER >10 s WITHOUT PARTICLES law (2026-10-07) — review 2026-10-15: 163
+    // gaps of 12-15 s across 98 journeys. They keep the 2026-10-08 timing
+    // (3.5-5.5 s + fade tails ≈ 8-9.5 s out); the mastered pair keeps the long rest.
+    const restGap = (k: number) => cast.mastered ? BRIDGE_SEC + 3 * rand01(k) : 3.5 + 2 * rand01(k);
+    let ambientGap = restGap(21);
     let bridgeUntil = -1;
     let hoverAt = -1, formPeak = 0; // hover: when an image began letting go / its strongest form
     // the next moment the field is due back: a window's start, or a phase
@@ -1897,7 +1902,7 @@ export function ParticleLeadLayer({
         // only where this journey is running UNDER budget (few morphs)
         if (!hush && ambientUntil < t && outSince > ambientGap && t > 4) {
           ambientUntil = t + 12 + 10 * rand01(22 + appearN);
-          ambientGap = BRIDGE_SEC + 3 * rand01(23 + appearN);
+          ambientGap = restGap(23 + appearN);
           const nxt = nextForm(t);
           if (nxt) { lastAsked = nxt; switchForm(nxt, t); engine.setDensity(densK * 0.6 * 0.3); }
           glitchRecord("particle-ambient", `${Math.round(ambientUntil - t)}s`);
