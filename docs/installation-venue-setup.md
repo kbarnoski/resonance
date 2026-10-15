@@ -575,3 +575,12 @@ default; use `--osc-host <TD machine>` for a LAN desk). Then open the kiosk
 URL once with `&osc=1`, or use `&osc=always` to keep it on. You can start and
 stop the relay at any time without touching the show. Address map, TD recipes
 and the safety rules: `docs/touchdesigner-bridge.md`.
+
+## Kiosk page watchdog (2026-10-15)
+
+`scripts/tramokyo-kiosk-watchdog.sh` starts with every Tramokyo.app launch
+(PID in `/tmp/tramokyo-watchdog.pid`, log `~/Library/Logs/Tramokyo/kiosk-watchdog.log`).
+If the kiosk page stops reporting for 3 min — e.g. the lid was closed and the
+Mac slept, or Chrome lost the page — it relaunches the kiosk by itself (no
+dialog). Tramokyo Stop.app stops it first. After opening the lid at the venue,
+the show is back within ~3.5 min on its own; open Tramokyo.app to skip the wait.
