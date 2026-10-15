@@ -1424,18 +1424,6 @@ void main(){
     float shedW = 0.0;
     if (dot(uShedV, uShedV) > 1e-6) {
       shedW = smoothstep(0.2, 0.5, dot(ndc, -uShedDir)) * step(hash11(s.a * 173.7), 0.3);
-      // …and the WINGS glitter + whisp off as it flies, like the tail (Karel
-      // 2026-10-15: "particles glittering and whisping from its wings just like
-      // you do its tail"): a share of each wing's motes — most at the tips,
-      // where the stroke is fastest — stream back along the flight. Motion only.
-      if (uWingOn > 0.5) {
-        vec2 uvW = imgUv(c, s, uTexW);
-        vec2 relW = vec2((uvW.x - 0.5) * uImgAspect, uvW.y - 0.5) - uWingH.xy;
-        float aW = dot(relW, uWingH.zw), rW = dot(relW, uWingN.xy);
-        float inWing = smoothstep(0.0, uWingN.w, rW) * smoothstep(uWingR.x - 0.04, uWingR.x, aW) * (1.0 - smoothstep(uWingR.y, uWingR.y + 0.04, aW));
-        float tipK = smoothstep(0.2, 0.9, rW / max(uWingN.z, 1e-3));
-        shedW = max(shedW, inWing * step(hash11(s.a * 311.3), 0.08 + 0.22 * tipK));
-      }
       imgT -= uShedV * (0.5 + 1.2 * hash11(s.a * 41.9)) * shedW;
     }
     f = mix(f, vec4((imgT - p) * 9.0, 4.6), imgK);
