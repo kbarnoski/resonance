@@ -1421,13 +1421,27 @@ void main(){
     // the flying form's TRAIL: ~30 % of the tail-side motes aim at a point
     // behind their own (0.5-1.7 s of the flight back along its path) and drift
     // a little — they stream after the bird. Motion only.
-    float shedW = 0.0;
+    float shedW = 0.0, auraW = 0.0;
     if (dot(uShedV, uShedV) > 1e-6) {
-      shedW = smoothstep(0.2, 0.5, dot(ndc, -uShedDir)) * step(hash11(s.a * 173.7), 0.3);
-      imgT -= uShedV * (0.5 + 1.2 * hash11(s.a * 41.9)) * shedW;
+      // a FULL WAKE (Karel 2026-10-15: "make sure that bird leave a lot of
+      // trailing particles"): ~half of the tail-side motes, from further up the
+      // body, trailing 0.5-2.4 s back along the path — each on its own lag
+      shedW = smoothstep(0.0, 0.4, dot(ndc, -uShedDir)) * step(hash11(s.a * 173.7), 0.5);
+      imgT -= uShedV * (0.5 + 1.9 * hash11(s.a * 41.9)) * shedW;
+      // …and a loose cloud AROUND it ("almost like the cloud is surrounding a
+      // bit but not so much you cant see the bird"): ~1 in 7 of the rest drift
+      // free of their point on their own slow current — dust, never a halo shape
+      auraW = (1.0 - shedW) * step(hash11(s.a * 529.1), 0.14);
+      if (auraW > 0.0) {
+        vec3 dir = normalize(hash31(s.a * 887.3) - 0.5 + 1e-4);
+        float ph = uTime * (0.25 + 0.35 * hash11(s.a * 61.1)) + hash11(s.a * 17.9) * 6.2831853;
+        float reach = (0.06 + 0.16 * hash11(s.a * 233.7)) * length(uPlaneR);
+        imgT += (dir + 0.5 * vec3(sin(ph), cos(ph * 0.8), sin(ph * 0.6))) * reach * min(length(uShedV), 1.0);
+      }
     }
     f = mix(f, vec4((imgT - p) * 9.0, 4.6), imgK);
     if (shedW > 0.0) f.xyz += curlNoise(p * 1.5 + vec3(uClock.x * 0.1, 0.0, 0.0)) * 0.8 * shedW * min(length(uShedV), 3.0);
+    if (auraW > 0.0) f.xyz += curlNoise(p * 2.1 + vec3(0.0, uClock.x * 0.08, 0.0)) * 0.5 * auraW * min(length(uShedV), 2.0);
     float rel = uImgShow * (1.0 - uImgForm);
     f.xyz += curlNoise(p * 1.2 + vec3(0.0, uClock.y * 0.18, uClock.x * 0.05)) * (0.5 + 2.2 * max(drv, 0.0)) * rel * 0.9;
   }
