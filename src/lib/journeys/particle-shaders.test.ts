@@ -53,23 +53,31 @@ function loopJourney(id: string): { journey: Journey; dur: number; seeds: number
 }
 
 /** Real-engine replay: on-screen seconds per shader over every layer, mean over the seeds. */
+// The replay clock only ever moves FORWARD, as performance.now does on the
+// kiosk (2026-10-15: the old replay rewound it to 1 s per journey; the engine's
+// cross-journey switch spacing (lastAnySwitchMs) then read a negative gap and
+// held the opening shader — Realized's orbit-weaver at 43.6 % — depending on
+// which journey replayed before: the "flaky" H2).
+let replayClockBase = 1000;
 function replay(id: string): { share: number; on: Map<string, number>; total: number; dur: number } {
   const { journey, dur, seeds, script } = loopJourney(id);
   const on = new Map<string, number>();
   let total = 0;
-  let clock = 0;
+  let clock = replayClockBase;
   vi.spyOn(performance, "now").mockImplementation(() => clock);
   for (const seed of seeds) {
     const eng = getJourneyEngine();
-    clock = 1000;
+    const base = replayClockBase + 60_000; // a minute between journeys, like the loop's hand-off and title
+    clock = base;
     eng.start(journey, { seed, trackDuration: dur, script });
     for (let t = 0; t <= dur; t += 0.5) {
-      clock = 1000 + t * 1000;
+      clock = base + t * 1000;
       const f = eng.getFrame(t / dur);
       if (!f) continue;
       for (const m of new Set([f.shaderMode, f.dualShaderMode, f.tertiaryShaderMode].filter((x): x is string => !!x))) { on.set(m, (on.get(m) ?? 0) + 0.5 / seeds.length); total += 0.5 / seeds.length; }
     }
     eng.stop();
+    replayClockBase = clock;
   }
   vi.restoreAllMocks();
   let p = 0;

@@ -194,9 +194,13 @@ describe("checkRateLimit (KV backend)", () => {
 
   it("falls back to in-memory when KV REST returns an error", async () => {
     nextResponse = { status: 500, result: undefined };
+    // the fallback warns (expected) — captured so the suite output stays clean
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     const r = await checkRateLimit("test:kv-fallback", 5, 1);
     // First request: in-memory has 5 tokens, this consumes one → allowed.
     expect(r.allowed).toBe(true);
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining("KV backend failed"), expect.anything());
+    warn.mockRestore();
   });
 
   it("falls back to in-memory when KV returns malformed result", async () => {
