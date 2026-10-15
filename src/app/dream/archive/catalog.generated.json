@@ -1,5 +1,13 @@
 [
  {
+  "slug": "20800-physforge",
+  "cycle": 20800,
+  "name": "Physforge",
+  "status": "demoable",
+  "description": "What if you could forge Karel's recorded piano into a different physical material in real time — soften it to felt or harden it to glass, shrink its body to a music-box or swell it",
+  "category": "local"
+ },
+ {
   "slug": "20640-mouthvalve",
   "cycle": 20640,
   "name": "Sing the Shape, Not the Note",
