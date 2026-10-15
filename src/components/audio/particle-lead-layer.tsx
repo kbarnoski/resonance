@@ -1905,7 +1905,12 @@ export function ParticleLeadLayer({
       const dur = audioSt.duration || 0;
       const endFade = !audioSt.currentTrack ? 0 : dur > 10 ? Math.max(0, Math.min(1, (dur - 1.5 - t) / 5)) : 1;
       // ambient: return between windows so the field is present ~60 % overall
-      if (pr.presence <= 0 && flashP <= 0 && !next) {
+      // (a window's envelope can leave a ~0.01 tail for its whole rest — that
+      // read as "not absent" and the return never came: Northern Plane 3 went
+      // 13 s without particles, 2026-10-15 review. The mastered pair keep their
+      // approved timing: exactly 0 there.)
+      const prAbsent = cast.mastered ? pr.presence <= 0 : pr.presence < 0.02;
+      if (prAbsent && flashP <= 0 && !next) {
         if (shown < 0.01) outSince += tickDt; else outSince = 0;
         // only where this journey is running UNDER budget (few morphs)
         if (!hush && ambientUntil < t && outSince > ambientGap && t > 4) {
@@ -1917,7 +1922,7 @@ export function ParticleLeadLayer({
         }
       } else outSince = 0;
       const ambientP = ambientUntil > t ? Math.min(1, (ambientUntil - t) / 3) : 0;
-      if (ambientP > 0 && pr.presence <= 0) {
+      if (ambientP > 0 && prAbsent) {
         const dens = Math.min(cast.mastered ? 0.8 : 1, 0.6, journeyId === "ghost" && phaseIdxAt(t) === 1 ? 0.12 : 1) * densKS * (0.3 + 0.7 * densP);
         engine.setDensity(phraseSw ? dens * phraseSw.density : dens);
       }
