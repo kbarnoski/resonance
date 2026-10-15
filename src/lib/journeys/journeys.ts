@@ -1,7 +1,7 @@
 import type { Journey, JourneyPhase } from "./types";
 import { applyAnalysisBounds } from "./analysis-phase-bounds";
 import { MODE_META, LAB_SHADERS } from "@/lib/shaders";
-import { seededShuffle } from "./seeded-random";
+import { seededShuffle, createSeededRandom } from "./seeded-random";
 import { applyShaderPreferences } from "./adaptive-engine";
 import { getUserBlockedShaders, getUserDeletedShaders } from "@/lib/shader-preferences";
 import { getDeviceTier } from "@/lib/audio/device-tier";
@@ -538,12 +538,23 @@ function pickShaders(pool: string[], count: number, used: Set<string>, random: (
   return picked;
 }
 
+/** Bumped only to pick pools that meet the craft rules (particle-shaders H2 etc.). */
+const DEFAULT_PHASES_SALT = "v0|";
+function hashRealm(s: string): number { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+
 export function defaultPhases(
   realmId: string,
   overrides: Partial<Record<string, Partial<JourneyPhase>>> = {}
 ): JourneyPhase[] {
-  // Every play gets a fresh random set, biased toward realm-appropriate categories
-  const allShaders = pickJourneyShaders({ realmId });
+  // A realm-biased set — DETERMINISTIC per definition (2026-10-15): this runs
+  // at module load for every built-in journey, and Math.random here gave
+  // Realized & co. a different pool on every page load, so a pinned take
+  // could not replay exactly (and the H2 screen-time test flapped). Seeded by
+  // realm + the definition's own overrides (its prompts): a pure function of
+  // the arguments — varied across journeys, identical every load.
+  // (The engine still regenerates per play from the take's seed where it does.)
+  const rnd = createSeededRandom(hashRealm(DEFAULT_PHASES_SALT + realmId + "|" + JSON.stringify(overrides)));
+  const allShaders = pickJourneyShaders({ realmId }, rnd);
 
   // Track used shaders across all phases to guarantee diversity
   const usedShaders = new Set<string>();
@@ -558,7 +569,7 @@ export function defaultPhases(
       id: "threshold",
       start: 0.0,
       end: 0.10,
-      shaderModes: pickShaders(allShaders, phaseBudgets.threshold, usedShaders),
+      shaderModes: pickShaders(allShaders, phaseBudgets.threshold, usedShaders, rnd),
       shaderOpacity: 0.60,
       aiPrompt: "luminous geometry condensing from deep space, glowing non-representational forms emerging at the edge of perception, radiant points in vast emptiness, no text no signatures no watermarks no letters no writing",
       aiPromptModifiers: {
@@ -585,7 +596,7 @@ export function defaultPhases(
       id: "expansion",
       start: 0.10,
       end: 0.26,
-      shaderModes: pickShaders(allShaders, phaseBudgets.expansion, usedShaders),
+      shaderModes: pickShaders(allShaders, phaseBudgets.expansion, usedShaders, rnd),
       shaderOpacity: 0.60,
       aiPrompt: "radiant abstract topologies unfolding, luminous energy fields pulsing with light, pressure gradients made visible as glowing color and bright form, no text no signatures no watermarks no letters no writing",
       aiPromptModifiers: {
@@ -613,7 +624,7 @@ export function defaultPhases(
       id: "transcendence",
       start: 0.26,
       end: 0.48,
-      shaderModes: pickShaders(allShaders, phaseBudgets.transcendence, usedShaders),
+      shaderModes: pickShaders(allShaders, phaseBudgets.transcendence, usedShaders, rnd),
       shaderOpacity: 0.60,
       aiPrompt: "pure radiant abstraction at peak intensity, brilliant color fields dissolving into blinding light, the visual equivalent of every frequency at once, overwhelming luminous saturation, no text no signatures no watermarks no letters no writing",
       aiPromptModifiers: {
@@ -642,7 +653,7 @@ export function defaultPhases(
       id: "illumination",
       start: 0.48,
       end: 0.65,
-      shaderModes: pickShaders(allShaders, phaseBudgets.illumination, usedShaders),
+      shaderModes: pickShaders(allShaders, phaseBudgets.illumination, usedShaders, rnd),
       shaderOpacity: 0.60,
       aiPrompt: "abstract clarity, luminous negative space, simple geometric forms hovering in warm light, the mathematics of understanding, no text no signatures no watermarks no letters no writing",
       aiPromptModifiers: {
@@ -669,7 +680,7 @@ export function defaultPhases(
       id: "return",
       start: 0.65,
       end: 0.82,
-      shaderModes: pickShaders(allShaders, phaseBudgets.return, usedShaders),
+      shaderModes: pickShaders(allShaders, phaseBudgets.return, usedShaders, rnd),
       shaderOpacity: 0.60,
       aiPrompt: "luminous warmth condensing, soft radiant gradients resolving, gentle glowing comfort, bright color fields settling into harmony, no text no signatures no watermarks no letters no writing",
       aiPromptModifiers: {
@@ -696,7 +707,7 @@ export function defaultPhases(
       id: "integration",
       start: 0.82,
       end: 1.0,
-      shaderModes: pickShaders(allShaders, phaseBudgets.integration, usedShaders),
+      shaderModes: pickShaders(allShaders, phaseBudgets.integration, usedShaders, rnd),
       shaderOpacity: 0.60,
       aiPrompt: "minimal radiant abstraction, a single bright luminous form in vast space, the glowing geometry of stillness, no text no signatures no watermarks no letters no writing",
       aiPromptModifiers: {

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useCallback, useState } from "react";
 import { getRealtimeImageService } from "@/lib/journeys/realtime-image-service";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
-import { TAKE_FINALE_STILLS, TAKE_INTRO_STILLS, scriptedStillAt } from "@/lib/journeys/pinned-takes";
+import { TAKE_FINALE_STILLS, TAKE_INTRO_STILLS, scriptedStillAt, scriptedStillNext } from "@/lib/journeys/pinned-takes";
 import { LEGACY_SLIDESHOW_JOURNEYS } from "@/lib/journeys/mastered";
 import { getGhostAngelTheme } from "@/lib/journeys/ghost-flash-images";
 import { GHOST_NEGATIVE_PROMPT, composeGhostPrompt } from "@/lib/journeys/journeys";
@@ -893,7 +893,13 @@ export function AiImageLayer({
       // a scripted image take (pinned-takes TAKE_STILL_SCRIPTS) replays its stills exactly
       let scriptedName: string | null = null;
       {
-        const sc = scriptedStillAt(journeyIdRef.current, currentTime);
+        let sc = scriptedStillAt(journeyIdRef.current, currentTime);
+        // a morph cover needs a FRESH image: if the script's current still is
+        // already on screen, the cover takes the script's next still instead
+        if (sc && morphCoverPendingRef.current) {
+          const k0 = urls.findIndex((u) => u.endsWith("/" + sc));
+          if (k0 >= 0 && !isFresh(k0)) sc = scriptedStillNext(journeyIdRef.current, currentTime) ?? sc;
+        }
         if (sc) { const k = urls.findIndex((u) => u.endsWith("/" + sc)); if (k >= 0) { idx = k; scriptedName = sc; } }
       }
       // A pending morph cover must ALWAYS land (session 04cmm4: the

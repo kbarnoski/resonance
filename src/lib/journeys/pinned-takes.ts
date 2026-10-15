@@ -184,6 +184,17 @@ export function scriptedStillAt(journeyId: string | null | undefined, t: number)
   for (const [at, name] of s) if (t + 0.5 >= at) hit = name;
   return hit;
 }
+/** The script's NEXT still after the one due at `t` (null past the end / no
+ *  script). A morph's cover must be a fresh image: when the clip ends a beat
+ *  before the script's next entry, the cover takes that entry — not an
+ *  unscripted neighbour slot (2026-10-15: Rise 1's pinned take showed an extra
+ *  gen-001 after travel-0 because the clip ended at 15 s and gen-002 was due at 16). */
+export function scriptedStillNext(journeyId: string | null | undefined, t: number): string | null {
+  const s = journeyId ? TAKE_STILL_SCRIPTS[journeyId] : undefined;
+  if (!s) return null;
+  for (const [at, name] of s) if (at > t + 0.5) return name;
+  return null;
+}
 
 export const TAKE_INTRO_STILLS: Record<string, string> = {
   "first-snow": "/tramokyo-pack/images/journeys/first-snow/gen-106.jpg",
