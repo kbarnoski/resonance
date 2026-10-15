@@ -270,7 +270,7 @@ const RISE_ABOVE = [
   "84a82478-f0f2-4c49-b800-b4fe722f1df5", // 21. Stand 10 — a jazzy lounge groove (Karel 2026-10-11)
   "81683231-3b3c-4542-8696-13dfcf56469a", // 22. Loire 5A — loungey groove, borderline dance (Karel 2026-10-09)
   "3ee9acf2-c89d-42b2-b9a3-d5fce97da2ac", // 23. Cabin Soul 8 — "a great jazzy groove that is loungey just like stand 10" (Karel 2026-10-11; his RA take over Cabin Soul 6)
-  "86b64938-26ea-40b9-9ea1-461323a049d5", // 24. Chenin 3 — "wow that is dope" (Karel 2026-10-09)
+  // (Chenin 3 removed from RA — Karel 2026-10-15, show day: "remove chenin 3 from ra set")
   "4ef43223-42cf-4ce8-9088-7578569f7de6", // 25. Sancerre Cry 4 — beat, attitude, groove
   "aadbf1d3-5db1-4f80-a60d-f6d0c4a6e7b6", // 26. Velvet Tears 1 — crest 2 — tribal dance groove, unique (Karel 2026-10-09)
   "13e71555-03d6-4b27-ad32-2c6834559c24", // 27. Northern Plane 5 — breath
