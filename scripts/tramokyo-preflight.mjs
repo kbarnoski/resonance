@@ -45,12 +45,12 @@ try {
   console.log("\nPREFLIGHT FAIL — pack manifests unreadable. Run rebuild-pack-manifests.mjs or restore from backup.");
   process.exit(1);
 }
-let clipGaps = 0;
-for (const [jid, e] of Object.entries(clips)) {
-  const h = Object.keys(e).filter((k) => !k.startsWith("t")).length;
-  if (h < 6) { clipGaps++; warns.push(`${jid}: ${h}/6 heroes`); }
-}
-ok(`${Object.keys(clips).length} journeys in clip manifest${clipGaps ? ` (${clipGaps} with hero gaps)` : " — all complete"}`);
+// Hero loops are DISABLED in the player since 2026-09-28b (ai-image-layer:
+// travel morphs at phase boundaries only) — their gaps were 88 stale warnings
+// burying real ones. Count what plays: the travel morphs (absent ones are
+// intentional crossfades under the no-glitch law, so info only).
+const withMorphs = Object.values(clips).filter((e) => Object.keys(e).some((k) => k.startsWith("t"))).length;
+ok(`${Object.keys(clips).length} journeys in clip manifest (${withMorphs} with travel morphs; hero loops disabled since 2026-09-28)`);
 const covered = Object.values(depth).filter(Boolean).length;
 if (covered < Object.keys(depth).length) warns.push(`depth coverage ${covered}/${Object.keys(depth).length}`);
 else ok(`depth ${covered}/${Object.keys(depth).length}`);
@@ -96,6 +96,17 @@ const audioDir = path.join(PACK, "audio");
 if (existsSync(audioDir)) {
   const audioFiles = await readdir(audioDir);
   ok(`${audioFiles.length} audio files in pack`);
+  // the Joseph live set (2026-10-15): every track in its manifest on disk, non-empty
+  try {
+    const js = JSON.parse(await readFile(path.join(PACK, "joseph", "joseph-set.json"), "utf8"));
+    const tracks = js.tracks ?? [];
+    let jMissing = 0;
+    for (const t of tracks) {
+      try { const st = await stat(path.join(PACK, "joseph", t.file)); if (!st.size) jMissing++; } catch { jMissing++; }
+    }
+    if (jMissing) fails.push(`Joseph set: ${jMissing}/${tracks.length} track files missing or empty`);
+    else ok(`Joseph set: ${tracks.length} tracks on disk`);
+  } catch { warns.push("Joseph set manifest unreadable (public/tramokyo-pack/joseph/joseph-set.json)"); }
   if (audioFiles.length < 40) warns.push(`only ${audioFiles.length} audio files — setlist expects ~43+`);
 } else fails.push("pack audio directory missing");
 
