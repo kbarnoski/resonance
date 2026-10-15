@@ -10,6 +10,12 @@ CAFFEINATE_PID_FILE=/tmp/tramokyo-caffeinate.pid
 LABEL="com.resonance.tramokyo"
 DOMAIN="gui/$(id -u)"
 
+# Kiosk page watchdog first, so it can't relaunch what we're stopping.
+if [ -f /tmp/tramokyo-watchdog.pid ]; then
+  kill "$(cat /tmp/tramokyo-watchdog.pid 2>/dev/null)" 2>/dev/null
+  rm -f /tmp/tramokyo-watchdog.pid
+fi
+
 # Kiosk Chrome — uniquely identified by its dedicated profile dir.
 pkill -f "tramokyo-chrome" 2>/dev/null
 

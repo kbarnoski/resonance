@@ -89,7 +89,7 @@ if [ "$SERVER_COMMIT" != "?" ] && [ "$SERVER_COMMIT" != "$HEAD_COMMIT" ] \
   && git -C "$APP_DIR" diff --quiet "$SERVER_COMMIT" HEAD -- . ':(exclude)docs' ':(exclude)*.md' ':(exclude)*.jsonl' ':(exclude)scripts/tramokyo-*' ':(exclude)src/app/dream' 2>/dev/null; then
   SERVER_COMMIT="$HEAD_COMMIT"
 fi
-if [ "$HEAD_COMMIT" != "unknown" ] && [ "$SERVER_COMMIT" != "?" ] && [ "$SERVER_COMMIT" != "$HEAD_COMMIT" ]; then
+if [ -z "${TRAMOKYO_NO_DIALOG:-}" ] && [ "$HEAD_COMMIT" != "unknown" ] && [ "$SERVER_COMMIT" != "?" ] && [ "$SERVER_COMMIT" != "$HEAD_COMMIT" ]; then
   CHOICE=$(osascript -e "button returned of (display dialog \"Server build ($SERVER_COMMIT) is older than the latest code ($HEAD_COMMIT). Ask Claude to deploy, or open the current server version anyway.\" with title \"Tramokyo\" buttons {\"Cancel\", \"Open Anyway\"} default button \"Open Anyway\")" 2>/dev/null || echo "Open Anyway")
   if [ "$CHOICE" = "Cancel" ]; then exit 0; fi
 fi
@@ -124,6 +124,15 @@ rm -rf "$HOME/.tramokyo-chrome/Default/Sessions" "$HOME/.tramokyo-chrome/Default
 # synced Karel's personal extensions (Claude, Loom, Grammarly, MetaMask,
 # Adblock, Privacy Badger …) — all running beside the show. The kiosk needs
 # none. Remote debugging is localhost-only and lets the review rigs attach.
+# KIOSK PAGE WATCHDOG (2026-10-15): relaunches the page if it goes silent (sleep
+# / crash). One per session; it relaunches through this script itself, so the
+# watchdog's own call must not start a second one.
+WATCHDOG_PID_FILE=/tmp/tramokyo-watchdog.pid
+if [ -z "${TRAMOKYO_FROM_WATCHDOG:-}" ] && { [ ! -f "$WATCHDOG_PID_FILE" ] || ! kill -0 "$(cat "$WATCHDOG_PID_FILE" 2>/dev/null)" 2>/dev/null; }; then
+  nohup "$APP_DIR/scripts/tramokyo-kiosk-watchdog.sh" >/dev/null 2>&1 &
+  echo $! > "$WATCHDOG_PID_FILE"
+fi
+
 open -na "Google Chrome" --args \
   --user-data-dir="$HOME/.tramokyo-chrome" \
   --kiosk \
