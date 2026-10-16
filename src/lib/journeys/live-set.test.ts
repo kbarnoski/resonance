@@ -163,3 +163,16 @@ describe("joseph set — level matching (QA 2026-10-15)", () => {
     expect(josephTrackGain("unknown")).toBe(1);
   });
 });
+
+import { worldEntryFraction } from "./live-set";
+describe("world entry (Karel 2026-10-16: same rules + diversity as the sets)", () => {
+  it("never the opening emblem or the finale; energy picks the part of the journey", () => {
+    for (const r of [0, 0.5, 1]) {
+      const v = worldEntryFraction(null, () => r);
+      expect(v).toBeGreaterThanOrEqual(0.08);
+      expect(v).toBeLessThanOrEqual(0.8);
+    }
+    expect(worldEntryFraction("low", () => 1)).toBeLessThanOrEqual(worldEntryFraction("mid", () => 0));
+    expect(worldEntryFraction("mid", () => 1)).toBeLessThanOrEqual(worldEntryFraction("high", () => 0));
+  });
+});

@@ -30,7 +30,7 @@ import { trackTitlesHidden } from "@/lib/journeys/track-titles";
 import { HorizonTitle } from "./horizon-title";
 import { ExperienceTextInner } from "./installation-intro";
 import {
-  LIVE_SETS, planTrackWorlds, setWorldPool, SET_FADE_OUT_MS, SET_GAP_MS, SET_FADE_IN_MS, SET_MAX_SCENE_S,
+  LIVE_SETS, planTrackWorlds, worldEntryFraction, setWorldPool, SET_FADE_OUT_MS, SET_GAP_MS, SET_FADE_IN_MS, SET_MAX_SCENE_S,
   type PlannedScene, type SetTrackAnalysis,
 } from "@/lib/journeys/live-set";
 import { setLiveSetDrive } from "@/lib/journeys/live-drive";
@@ -45,6 +45,29 @@ function postEvent(event: string) {
       keepalive: true,
     }).catch(() => {});
   } catch { /* never let logging hurt the show */ }
+}
+
+/** Seek the world's (silent) clock track to `frac` of its length once its
+ *  new source has loaded — the journey's phase follows the clock. Resolves to
+ *  the time sought, or null if it never loaded (the world then plays from 0). */
+function seekClockWhenReady(frac: number): Promise<number | null> {
+  return new Promise((resolve) => {
+    let el: HTMLAudioElement;
+    try { el = getAudioEngine().audioElement; } catch { resolve(null); return; }
+    let done = false;
+    const go = () => {
+      if (done) return;
+      if (!Number.isFinite(el.duration) || el.duration <= 0) return;
+      done = true;
+      el.removeEventListener("loadedmetadata", go);
+      const at = Math.max(0, Math.min(el.duration - 25, el.duration * frac));
+      try { el.currentTime = at; } catch { resolve(null); return; }
+      resolve(at);
+    };
+    // the src swap lands a beat after setQueue: wait for ITS metadata
+    el.addEventListener("loadedmetadata", go);
+    setTimeout(() => { if (!done) { done = true; el.removeEventListener("loadedmetadata", go); resolve(null); } }, 8_000);
+  });
 }
 
 export function LiveTheatreClient({ programs }: { programs: InstallationProgram[] }) {
@@ -137,7 +160,7 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
   const worldQueueRef = useRef(createWorldRequester(() => busyRef.current));
 
   // One scene change: the next world hands over in view, like the loop's journeys.
-  const nextWorld = useCallback(async (reasonIn: string | (() => string), forcedIn?: SequenceEntry | null | (() => SequenceEntry | null | undefined)): Promise<boolean> => {
+  const nextWorld = useCallback(async (reasonIn: string | (() => string), forcedIn?: SequenceEntry | null | (() => SequenceEntry | null | undefined), energy?: "low" | "mid" | "high" | null): Promise<boolean> => {
     if (busyRef.current) return false;
     busyRef.current = true;
     try {
@@ -155,6 +178,10 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
       setSuppressNextJourneyIntro(true); // no journey titles — it's Karel's music, not the track's
       setQueue([entry.track], 0);
       startEntryJourney(entry.journey);
+      // open the world where its journey matches the music (live-set.ts
+      // worldEntryFraction) — its body, not its opening, every time
+      const frac = worldEntryFraction(energy);
+      void seekClockWhenReady(frac).then((at) => { if (at !== null) postEvent(`live-world-entry ${entry.journey.name} @${Math.round(at)}s (${Math.round(frac * 100)}%, ${energy ?? "any"})`); });
       (window as unknown as Record<string, unknown>).__resonanceKioskPhaseLabel = `LIVE · ${entry.journey.name}`;
       postEvent(`live-world ${entry.journey.name} (${reason})`);
       sceneStartRef.current = Date.now();
@@ -189,6 +216,7 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
     await nextWorld(
       () => (token === st.token || !set ? reason : `set ${st.idx + 1} ${set.tracks[st.idx]?.title ?? ""}`),
       () => (token === st.token ? entry ?? null : st.scenes[0]?.world ?? entry ?? null),
+      st.scenes[0]?.energy,
     );
   }, [nextWorld]);
 
@@ -439,7 +467,7 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
             st.next = k;
             const tail = Number.isFinite(el.duration) ? el.duration - el.currentTime : Infinity;
             if (tail >= 20) {
-              void nextWorld(`section @${Math.round(sc.at)}s`, sc.world);
+              void nextWorld(`section @${Math.round(sc.at)}s`, sc.world, sc.energy);
               return;
             }
           }
@@ -483,7 +511,7 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
       const st = setStateRef.current;
       const sc = inSet() ? st.scenes[st.next] : undefined;
       if (sc) st.next++;
-      return nextWorld("remote world", sc?.world ?? (setRef.current ? spareWorld() : null));
+      return nextWorld("remote world", sc?.world ?? (setRef.current ? spareWorld() : null), sc?.energy);
     });
     window.addEventListener("live-next", onNext);
     window.addEventListener("live-prev", onPrev);

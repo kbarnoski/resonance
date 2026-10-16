@@ -164,6 +164,28 @@ export function planTrackWorlds<W extends SetWorld>(
   });
 }
 
+// ─── Where a world is entered ───────────────────────────────────────────
+/** WHERE in its journey a world opens (0-1 of its clock track). Karel
+ *  2026-10-16: "as with other sets you keep the same definitions rules and
+ *  diversity in all elements including particles changing color to imaging …
+ *  shaders and imaging". Entering every world at 0 showed only openings — the
+ *  sparse beat, the opening emblem, the first shader — never the body where the
+ *  imaging, the particles' imaging colours and the evolving shaders live. A
+ *  world now opens where its journey matches the music: quiet → its early
+ *  sparse part, mid → its body, high → its build. Never the opening emblem
+ *  (< 0.08) or the finale (> 0.8). Unknown energy (plain live, spare worlds):
+ *  anywhere in the body. */
+export const WORLD_ENTRY = {
+  low: [0.08, 0.3],
+  mid: [0.3, 0.55],
+  high: [0.55, 0.78],
+  any: [0.12, 0.7],
+} as const;
+export function worldEntryFraction(energy: "low" | "mid" | "high" | null | undefined, rand: () => number = Math.random): number {
+  const [lo, hi] = WORLD_ENTRY[energy ?? "any"];
+  return lo + (hi - lo) * Math.max(0, Math.min(1, rand()));
+}
+
 // ─── Commands (phone) ───────────────────────────────────────────────────
 export type LiveSetCommand =
   | { type: "start"; set: string; at: number }
