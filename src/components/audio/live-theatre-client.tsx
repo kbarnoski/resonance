@@ -25,7 +25,7 @@ import { startMidiInput } from "@/lib/audio/midi-input";
 import type { Journey } from "@/lib/journeys/types";
 import type { InstallationProgram, SequenceEntry } from "./installation-loop-client";
 import { createWorldRequester } from "@/lib/journeys/live-world-queue";
-import { pickLiveWorld, liveWorldPool, LIVE_SCENE_MS, LIVE_VEIL_MS, LIVE_DARK_HOLD_MS, LIVE_SOFT_VEIL, LIVE_SONG_TITLE_MS, SET_TITLE_CARD_MS } from "@/lib/journeys/live-theatre";
+import { pickLiveWorld, liveWorldPool, LIVE_SCENE_MS, LIVE_VEIL_MS, LIVE_DARK_HOLD_MS, LIVE_SONG_TITLE_MS, SET_TITLE_CARD_MS } from "@/lib/journeys/live-theatre";
 import { trackTitlesHidden } from "@/lib/journeys/track-titles";
 import { HorizonTitle } from "./horizon-title";
 import { ExperienceTextInner } from "./installation-intro";
@@ -136,20 +136,16 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
   // right after entering Live) are QUEUED and run once the dip completes.
   const worldQueueRef = useRef(createWorldRequester(() => busyRef.current));
 
-  // One scene change: dip, open the next world under it, fade up. Between a
-  // set's songs the dip goes to black (the song gap); every change MID-MUSIC
-  // dims only to LIVE_SOFT_VEIL — the experience never leaves the screen.
-  // `forced` may be a resolver, read once the screen is black: a set jump
-  // that lands mid-dip opens the NEWEST track's world, not the superseded one.
-  const nextWorld = useCallback(async (reasonIn: string | (() => string), forcedIn?: SequenceEntry | null | (() => SequenceEntry | null | undefined), betweenSongs = false): Promise<boolean> => {
+  // One scene change: the next world hands over in view, like the loop's journeys.
+  const nextWorld = useCallback(async (reasonIn: string | (() => string), forcedIn?: SequenceEntry | null | (() => SequenceEntry | null | undefined)): Promise<boolean> => {
     if (busyRef.current) return false;
     busyRef.current = true;
     try {
       const first = sceneStartRef.current === 0;
-      if (!first) {
-        setVeil(betweenSongs ? 1 : LIVE_SOFT_VEIL);
-        await new Promise((r) => setTimeout(r, LIVE_VEIL_MS));
-      }
+      // NO DIP (Karel 2026-10-16: "your transitions for josephs set should be
+      // like other sets … all others have perfectly smooth transitions visually
+      // not a fade to black"): the next world hands over exactly as the loop's
+      // journeys do — stills, parallax and the shader crossfade carry it.
       const reason = typeof reasonIn === "function" ? reasonIn() : reasonIn;
       const forced = typeof forcedIn === "function" ? forcedIn() : forcedIn;
       const entry = forced ?? pickLiveWorld(setRef.current ? setPoolRef.current : poolRef.current, historyRef.current, Math.random);
@@ -163,9 +159,12 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
       postEvent(`live-world ${entry.journey.name} (${reason})`);
       sceneStartRef.current = Date.now();
       statusChanged();
-      // the handoff (stills, parallax, shader crossfade) settles under black
-      await new Promise((r) => setTimeout(r, LIVE_DARK_HOLD_MS));
-      setVeil(0);
+      // the first world fades up from black; every later one hands over in
+      // view — the hold only spaces changes so two never stack
+      if (first) {
+        await new Promise((r) => setTimeout(r, LIVE_DARK_HOLD_MS));
+        setVeil(0);
+      }
       await new Promise((r) => setTimeout(r, LIVE_VEIL_MS));
     } finally {
       busyRef.current = false;
@@ -190,7 +189,6 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
     await nextWorld(
       () => (token === st.token || !set ? reason : `set ${st.idx + 1} ${set.tracks[st.idx]?.title ?? ""}`),
       () => (token === st.token ? entry ?? null : st.scenes[0]?.world ?? entry ?? null),
-      true, // a new song: the full dip, under the song gap
     );
   }, [nextWorld]);
 
@@ -226,11 +224,16 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
       await new Promise((r) => setTimeout(r, LIVE_VEIL_MS));
       if (token !== st.token) return setVeil(0);
       setTitleCard("in");
-      await new Promise((r) => setTimeout(r, SET_TITLE_CARD_MS));
+      await new Promise((r) => setTimeout(r, SET_TITLE_CARD_MS - LIVE_DARK_HOLD_MS));
       if (token !== st.token) { setTitleCard(null); return setVeil(0); }
+      // track 1 and its world start BEHIND the card; the card then lifts
+      // straight onto them (no black beat after it)
+      titleCardRef.current = false;
+      void playSetTrack(0, "set loop");
+      await new Promise((r) => setTimeout(r, LIVE_DARK_HOLD_MS));
+      setVeil(0);
       setTitleCard("out");
       setTimeout(() => setTitleCard((c) => (c === "out" ? null : c)), 1_500);
-      void playSetTrack(0, "set loop");
       return;
     }
     const i = Math.max(0, idx);
@@ -527,7 +530,7 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
           className="pointer-events-none absolute inset-0 z-[210] flex items-center justify-center"
           style={{ animation: `journeyIntroAnim ${LIVE_SONG_TITLE_MS}ms ease-in-out forwards` }}
         >
-          <HorizonTitle name={songTitle.name} byline={setRef.current?.name === "joseph" ? "Music by Joseph" : null} fit />
+          <HorizonTitle name={songTitle.name} under={setRef.current?.name === "joseph" ? "Music by Joseph" : null} fit />
         </div>
       )}
     </div>

@@ -34,8 +34,12 @@ function fitStyle(title: string): React.CSSProperties {
   return { fontSize: `min(4.4vh, calc(84vw / ${(perLine * 1.06).toFixed(2)}))`, whiteSpace: "normal", textWrap: "balance", lineHeight: 1.35 };
 }
 
-export function HorizonTitle({ name, byline, fit = false }: { name: string; byline?: string | null; fit?: boolean }) {
-  const { title, num, sub } = splitJourneyName(name);
+export function HorizonTitle({ name, byline, fit = false, under }: { name: string; byline?: string | null; fit?: boolean; under?: string | null }) {
+  const split = splitJourneyName(name);
+  const { title, num } = fit ? { title: name, num: null } : split; // a song title is never split on its digits
+  // `under` rides beneath the line in the No. treatment (Karel 2026-10-16:
+  // "the music by joseph should be same text treatment as when you No.s")
+  const sub = under ?? (fit ? null : split.sub);
   return (
     // its own compositor layer: the entrance (transform + opacity) never repaints
     <div className="relative flex flex-col items-center text-center" style={{ maxWidth: "92vw", willChange: "transform, opacity", transform: "translateZ(0)" }}>
