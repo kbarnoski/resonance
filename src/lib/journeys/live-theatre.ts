@@ -39,8 +39,14 @@ export function liveWorldPool(programs: InstallationProgram[]): SequenceEntry[] 
  *  fewer when the pool is small). Null on an empty pool. */
 export function pickLiveWorld(pool: SequenceEntry[], history: string[], rand: () => number): SequenceEntry | null {
   if (pool.length === 0) return null;
-  const avoid = new Set(history.slice(-Math.min(12, Math.max(0, pool.length - 1))));
-  const fresh = pool.filter((e) => !avoid.has(e.journey.id));
+  // WIDE OPEN (Karel 2026-10-16: "joseph's and the live mode are the massive
+  // wide open diverse ones. so i shouldnt see the same thing over ever"): no
+  // world — nor another copy of it under the same name — returns until every
+  // other world has had its turn
+  const recent = history.slice(-Math.max(0, pool.length - 1));
+  const avoid = new Set(recent);
+  const avoidNames = new Set(pool.filter((e) => avoid.has(e.journey.id)).map((e) => (e.journey.name ?? "").toLowerCase()));
+  const fresh = pool.filter((e) => !avoid.has(e.journey.id) && !avoidNames.has((e.journey.name ?? "").toLowerCase()));
   const from = fresh.length > 0 ? fresh : pool;
   return from[Math.min(from.length - 1, Math.floor(rand() * from.length))];
 }

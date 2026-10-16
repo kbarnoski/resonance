@@ -110,10 +110,11 @@ describe("live set — scene timing", () => {
   it("without analysis: ~150 s scenes", () => {
     expect(worldChangeTimes({ duration: 300, sections: [] }).map((x) => x.at)).toEqual([0, 150]);
   });
-  it("a track OPENS on its best match even if shown a while ago — only not the world on screen", () => {
+  it("a track opens on its best FRESH match — a world shown this pass never returns (Karel 2026-10-16: wide open, never the same thing)", () => {
     const bush = track("joseph-burning-bush");
     const a = { id: bush.id, duration: 374, arc: "intense" as const, sections: [{ start: 0, end: 60, energy: "low" as const }, { start: 60, end: 374, energy: "high" as const }] };
-    expect(planTrackWorlds(bush, a, POOL, ["forge", "mist"])[0].world.journey.id).toBe("forge");
+    expect(planTrackWorlds(bush, a, POOL, [])[0].world.journey.id).toBe("forge");
+    expect(planTrackWorlds(bush, a, POOL, ["forge", "mist"])[0].world.journey.id).not.toBe("forge");
     expect(planTrackWorlds(bush, a, POOL, ["mist", "forge"])[0].world.journey.id).not.toBe("forge");
   });
   it("one world never shows twice in a track, even as a builtin + DB copy", () => {

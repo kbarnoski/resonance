@@ -173,7 +173,7 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
       const forced = typeof forcedIn === "function" ? forcedIn() : forcedIn;
       const entry = forced ?? pickLiveWorld(setRef.current ? setPoolRef.current : poolRef.current, historyRef.current, Math.random);
       if (!entry?.track) return true;
-      historyRef.current = [...historyRef.current, entry.journey.id].slice(-12);
+      historyRef.current = [...historyRef.current, entry.journey.id].slice(-400); // a whole pass of the catalogue
       if (!setRef.current) setVolume(0); // a live set keeps the store volume as ITS level (phone slider)
       setSuppressNextJourneyIntro(true); // no journey titles — it's Karel's music, not the track's
       setQueue([entry.track], 0);
@@ -269,7 +269,7 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
     st.idx = i;
     st.state = "fading";
     statusChanged();
-    st.scenes = planTrackWorlds(track, analysesRef.current[track.id] ?? null, poolRef.current, historyRef.current.slice(-4));
+    st.scenes = planTrackWorlds(track, analysesRef.current[track.id] ?? null, poolRef.current, historyRef.current.slice(-Math.max(1, setPoolRef.current.length - 1)));
     st.next = 1;
     const world = waitWorld(`set ${i + 1} ${track.title}`, st.scenes[0]?.world, token);
     if (wasAudible) await rampSetGain(0, SET_FADE_OUT_MS);
@@ -377,7 +377,7 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
           // the whole set's plan, for checks (on-kiosk / lab)
           const recent: string[] = [];
           w.__resonanceLiveSetPlan = tracks.map((t, n) => {
-            const plan = planTrackWorlds(t, analysesRef.current[t.id] ?? null, poolRef.current, recent.slice(-4));
+            const plan = planTrackWorlds(t, analysesRef.current[t.id] ?? null, poolRef.current, recent.slice(-Math.max(1, setPoolRef.current.length - 1)));
             recent.push(...plan.map((p) => p.world.journey.id));
             return { n: n + 1, title: t.title, arc: analysesRef.current[t.id]?.arc ?? null, worlds: plan.map((p) => `${Math.round(p.at)}s ${p.energy} ${p.world.journey.name}`) };
           });

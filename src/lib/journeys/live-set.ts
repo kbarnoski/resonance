@@ -145,12 +145,16 @@ export function planTrackWorlds<W extends SetWorld>(
   const top = ranked.slice(0, Math.min(ranked.length, Math.max(6, times.length + 3)));
   const onScreen = recent[recent.length - 1];
   const avoid = new Set(recent);
+  // every world shown this pass is avoided — the opening too, unless nothing
+  // fresh is left (Karel 2026-10-16: "i shouldnt see the same thing over ever");
+  // by NAME as well, so a world's second copy never stands in for it
+  const avoidNames = new Set(ranked.filter((r) => avoid.has(r.world.journey.id)).map((r) => (r.world.journey.name ?? "").toLowerCase()));
   const used = new Set<string>();
   const usedNames = new Set<string>(); // the builtin + DB copies of one world share a name
   const nm = (r: RankedWorld<W>) => (r.world.journey.name ?? "").toLowerCase();
   return times.map(({ at, energy }, i) => {
     const id = (r: RankedWorld<W>) => r.world.journey.id;
-    const ok = (r: RankedWorld<W>) => !used.has(id(r)) && !usedNames.has(nm(r)) && (i === 0 ? id(r) !== onScreen : !avoid.has(id(r)));
+    const ok = (r: RankedWorld<W>) => !used.has(id(r)) && !usedNames.has(nm(r)) && id(r) !== onScreen && !avoid.has(id(r)) && !avoidNames.has(nm(r));
     const value = (r: RankedWorld<W>) => (i === 0 ? r.score : r.score + ENERGY_BIAS[energy] * r.intensity);
     const best = (list: RankedWorld<W>[]) => list.reduce<RankedWorld<W> | null>((m, r) => (m && value(m) >= value(r) ? m : r), null);
     const pick =
