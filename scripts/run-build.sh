@@ -17,7 +17,9 @@ set -uo pipefail
 # failure (EMFILE during static generation — broke prod deploys
 # 2026-09-25, run "dream: cycle 1259"). Never apply it off-Darwin.
 if [ "$(uname)" = "Darwin" ]; then
-  ulimit -n 10240 2>/dev/null || true
+  # 20480 (2026-10-15): 10240 now hits EMFILE (the build opens >10k files),
+  # 65536 re-triggers the spawn EBADF this clamp exists for — the middle works
+  ulimit -n 20480 2>/dev/null || ulimit -n 10240 2>/dev/null || true
 fi
 # APPEND the heap bump (audit #20: ":-" silently dropped it whenever
 # NODE_OPTIONS was already set, e.g. on CI).

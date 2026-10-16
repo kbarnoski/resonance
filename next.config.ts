@@ -156,7 +156,10 @@ const nextConfig: NextConfig = {
     // reserving that heap can make macOS refuse the spawns entirely
     // (`spawn EBADF` at "Generating static pages" — seen 2026-08-30).
     // 110 static pages need nowhere near a full fleet.
-    cpus: 4,
+    // kiosk deploys pass NEXT_BUILD_CPUS=2 (2026-10-15: on the show Mac the
+    // kiosk + lab rigs leave too little memory for 4 × 6 GB-heap workers →
+    // EBADF retries); Vercel/CI keep 4
+    cpus: Number(process.env.NEXT_BUILD_CPUS) || 4,
   },
   outputFileTracingIncludes: {
     "/api/audio/[id]": ["./node_modules/ffmpeg-static/**/*"],

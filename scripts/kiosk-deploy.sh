@@ -42,7 +42,7 @@ rm -rf .next-staging
 [ -d .next/cache ] && mkdir -p .next-staging && cp -R .next/cache .next-staging/cache 2>/dev/null
 cp tsconfig.json /tmp/kiosk-tsconfig.bak
 # the LIVE IMAGERY VALVE is closed in the kiosk build (src/lib/journeys/live-imagery-valve.ts)
-KIOSK_BUILD_COMMIT=$HEAD NEXT_PUBLIC_LIVE_IMAGERY=off NEXT_DIST_DIR=.next-staging npm run build > /tmp/kiosk-deploy-build.log 2>&1 || { cp /tmp/kiosk-tsconfig.bak tsconfig.json; echo "BUILD FAILED — see /tmp/kiosk-deploy-build.log (kiosk untouched, still playing)"; tail -5 /tmp/kiosk-deploy-build.log; exit 1; }
+KIOSK_BUILD_COMMIT=$HEAD NEXT_PUBLIC_LIVE_IMAGERY=off NEXT_DIST_DIR=.next-staging NEXT_BUILD_CPUS=2 npm run build > /tmp/kiosk-deploy-build.log 2>&1 || { cp /tmp/kiosk-tsconfig.bak tsconfig.json; echo "BUILD FAILED — see /tmp/kiosk-deploy-build.log (kiosk untouched, still playing)"; tail -5 /tmp/kiosk-deploy-build.log; exit 1; }
 # next adds the staging types dir to tsconfig — never let a deploy dirty it
 cp /tmp/kiosk-tsconfig.bak tsconfig.json
 # bootout returns BEFORE the job is unloaded: an immediate bootstrap then
