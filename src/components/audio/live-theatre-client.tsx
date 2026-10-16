@@ -25,7 +25,9 @@ import { startMidiInput } from "@/lib/audio/midi-input";
 import type { Journey } from "@/lib/journeys/types";
 import type { InstallationProgram, SequenceEntry } from "./installation-loop-client";
 import { createWorldRequester } from "@/lib/journeys/live-world-queue";
-import { pickLiveWorld, liveWorldPool, LIVE_SCENE_MS, LIVE_VEIL_MS, LIVE_DARK_HOLD_MS } from "@/lib/journeys/live-theatre";
+import { pickLiveWorld, liveWorldPool, LIVE_SCENE_MS, LIVE_VEIL_MS, LIVE_DARK_HOLD_MS, LIVE_SOFT_VEIL, LIVE_SONG_TITLE_MS } from "@/lib/journeys/live-theatre";
+import { trackTitlesHidden } from "@/lib/journeys/track-titles";
+import { HorizonTitle } from "./horizon-title";
 import {
   LIVE_SETS, planTrackWorlds, setWorldPool, SET_FADE_OUT_MS, SET_GAP_MS, SET_FADE_IN_MS, SET_MAX_SCENE_S,
   type PlannedScene, type SetTrackAnalysis,
@@ -58,6 +60,10 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
   const busyRef = useRef(false);
   const sceneStartRef = useRef(0);
   const [veil, setVeil] = useState(1); // starts black, fades up on the first world
+  // a set's song title, between songs (titles on — track-titles.ts)
+  const [songTitle, setSongTitle] = useState<{ name: string; key: number } | null>(null);
+  const songTitleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => { if (songTitleTimer.current) clearTimeout(songTitleTimer.current); }, []);
 
   // LIVE SET (?liveset=joseph[&at=N], Tramokyo 2026-10-15): a set's tracks
   // play AUDIBLY in order and drive the visuals (attachSetDrive) instead of
@@ -125,16 +131,18 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
   // right after entering Live) are QUEUED and run once the dip completes.
   const worldQueueRef = useRef(createWorldRequester(() => busyRef.current));
 
-  // One scene change: dip to black, open the next world while dark, fade up.
+  // One scene change: dip, open the next world under it, fade up. Between a
+  // set's songs the dip goes to black (the song gap); every change MID-MUSIC
+  // dims only to LIVE_SOFT_VEIL — the experience never leaves the screen.
   // `forced` may be a resolver, read once the screen is black: a set jump
   // that lands mid-dip opens the NEWEST track's world, not the superseded one.
-  const nextWorld = useCallback(async (reasonIn: string | (() => string), forcedIn?: SequenceEntry | null | (() => SequenceEntry | null | undefined)): Promise<boolean> => {
+  const nextWorld = useCallback(async (reasonIn: string | (() => string), forcedIn?: SequenceEntry | null | (() => SequenceEntry | null | undefined), betweenSongs = false): Promise<boolean> => {
     if (busyRef.current) return false;
     busyRef.current = true;
     try {
       const first = sceneStartRef.current === 0;
       if (!first) {
-        setVeil(1);
+        setVeil(betweenSongs ? 1 : LIVE_SOFT_VEIL);
         await new Promise((r) => setTimeout(r, LIVE_VEIL_MS));
       }
       const reason = typeof reasonIn === "function" ? reasonIn() : reasonIn;
@@ -177,6 +185,7 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
     await nextWorld(
       () => (token === st.token || !set ? reason : `set ${st.idx + 1} ${set.tracks[st.idx]?.title ?? ""}`),
       () => (token === st.token ? entry ?? null : st.scenes[0]?.world ?? entry ?? null),
+      true, // a new song: the full dip, under the song gap
     );
   }, [nextWorld]);
 
@@ -236,6 +245,12 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
     st.state = "playing";
     statusChanged();
     void rampSetGain(setLevelRef.current * trimRef.current, SET_FADE_IN_MS);
+    // the song's title rises as its world does (titles on, from the phone)
+    if (!trackTitlesHidden()) {
+      if (songTitleTimer.current) clearTimeout(songTitleTimer.current);
+      setSongTitle((t) => ({ name: track.title, key: (t?.key ?? 0) + 1 }));
+      songTitleTimer.current = setTimeout(() => setSongTitle(null), LIVE_SONG_TITLE_MS);
+    }
     postEvent(`liveset-track ${set.name} ${i + 1}/${set.tracks.length} ${track.title} (${reason}) trim ${(20 * Math.log10(trimRef.current)).toFixed(1)} dB worlds: ${st.scenes.map((s) => `${Math.round(s.at)}s ${s.world.journey.name}`).join(" · ")}`);
     await world;
   }, [waitWorld, statusChanged]);
@@ -468,6 +483,15 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
         className="pointer-events-none absolute inset-0 z-[200] bg-black"
         style={{ opacity: veil, transition: `opacity ${LIVE_VEIL_MS}ms ease-in-out` }}
       />
+      {songTitle && (
+        <div
+          key={songTitle.key}
+          className="pointer-events-none absolute inset-0 z-[210] flex items-center justify-center"
+          style={{ animation: `journeyIntroAnim ${LIVE_SONG_TITLE_MS}ms ease-in-out forwards` }}
+        >
+          <HorizonTitle name={songTitle.name} byline={setRef.current?.name === "joseph" ? "Joseph" : null} fit />
+        </div>
+      )}
     </div>
   );
 }

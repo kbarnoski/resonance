@@ -10,6 +10,13 @@ export const LIVE_SCENE_MS = 150_000;
 export const LIVE_VEIL_MS = 2_800;
 /** Held black while the next world's handoff settles (ms). */
 export const LIVE_DARK_HOLD_MS = 3_500;
+/** A world change MID-MUSIC dims only this far — never to black (Karel
+ *  2026-10-16, the Joseph set: "you go to black screen … the experience always
+ *  be present"). The full dip is kept only between a set's songs, under the
+ *  song gap, where the title rises. */
+export const LIVE_SOFT_VEIL = 0.45;
+/** The song title card between a set's songs (journeyIntroAnim, ms). */
+export const LIVE_SONG_TITLE_MS = 8_500;
 
 /** Mastered EP worlds stay with their own tracks (Snowflake's arc, Ghost's
  *  angel flashes on bass cues) — never borrowed for a live collage. QA

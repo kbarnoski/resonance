@@ -23,7 +23,18 @@ export function splitJourneyName(name: string): { title: string; num: string | n
   return { title: name, num: null, sub: null };
 }
 
-export function HorizonTitle({ name, byline }: { name: string; byline?: string | null }) {
+/** `fit` (live-set song titles — Joseph's run to 36 characters): the line
+ *  shrinks to fit the screen, and a very long one breaks into two balanced
+ *  lines, instead of running off the edges. Journey titles never pass it. */
+function fitStyle(title: string): React.CSSProperties {
+  const n = Math.max(1, title.length);
+  // a tracked Inter Tight 300 cap is ~1.06 em wide; keep the line inside 84 vw
+  if (n <= 26) return { fontSize: `min(5vh, calc(84vw / ${(n * 1.06).toFixed(2)}))` };
+  const perLine = Math.ceil(n / 2) + 2;
+  return { fontSize: `min(4.4vh, calc(84vw / ${(perLine * 1.06).toFixed(2)}))`, whiteSpace: "normal", textWrap: "balance", lineHeight: 1.35 };
+}
+
+export function HorizonTitle({ name, byline, fit = false }: { name: string; byline?: string | null; fit?: boolean }) {
   const { title, num, sub } = splitJourneyName(name);
   return (
     // its own compositor layer: the entrance (transform + opacity) never repaints
@@ -37,7 +48,7 @@ export function HorizonTitle({ name, byline }: { name: string; byline?: string |
       <div style={{ overflow: "hidden", padding: "0.1em 0" }}>
         <div
           className="hz-title relative text-white uppercase whitespace-nowrap"
-          style={{ fontFamily: "var(--font-inter-tight), var(--font-geist-sans), ui-sans-serif, sans-serif", fontWeight: 300, fontSize: "5vh", lineHeight: 1, letterSpacing: "0.46em", paddingLeft: "0.46em", textShadow: SHADOW }}
+          style={{ fontFamily: "var(--font-inter-tight), var(--font-geist-sans), ui-sans-serif, sans-serif", fontWeight: 300, fontSize: "5vh", lineHeight: 1, letterSpacing: "0.46em", paddingLeft: "0.46em", textShadow: SHADOW, ...(fit ? fitStyle(title) : null) }}
         >
           {title}
         </div>
