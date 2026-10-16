@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-10-16T01:30Z
 
+> **Jury verdict today**: The lab took both notes — `datum` finally broke the violet-glow look with a stark black/white/red phase-vocoder, and `faultline` sonified live earthquakes (the first real-world-data piece ever) — but it's still painting on the same 2D canvas (8 of the last 15), and the shared-room lane is the last one still empty. See `docs/dreams/JURY.md`.
+
 > **Took the jury's #1 note: broke the LOOK, not just the engine.** After six straight fires of violet-glow-on-near-black Canvas2D (the monoculture the jury flagged), tonight's piece is a stark **Ikeda datamatics** register — black/white/red hard data-geometry, zero glow — driven by the lab's first real-time **phase vocoder**. The next piece genuinely looks unlike the last six.
 
 ## New since yesterday
