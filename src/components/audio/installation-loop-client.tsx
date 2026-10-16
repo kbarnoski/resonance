@@ -1877,11 +1877,15 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         const next = programs[programIndex + 1];
         const first = programs.findIndex((p) => p.setList === list);
         setProgramIndex(
-          // Rise Above loops on its own; on-demand sets (albums, Vigil, EP,
-          // Expansion, Featured) hand back to it (Karel 2026-10-09).
-          program?.setList && next?.setList === program.setList && !next.onDemand
+          // EVERY set loops itself through the title card (Karel 2026-10-16:
+          // "any time a set completes you go to title card … then loop the set
+          // … same with ra set") — on-demand sets no longer hand back to Rise
+          // Above. A list chaining non-on-demand sets still moves to the next.
+          program?.setList && next?.setList === program.setList && !next.onDemand && !program.onDemand
             ? programIndex + 1
-            : Math.max(0, first),
+            : program?.setList
+              ? programIndex
+              : Math.max(0, first),
         );
         setPhase({ kind: "intro" });
       };

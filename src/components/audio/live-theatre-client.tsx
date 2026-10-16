@@ -25,9 +25,10 @@ import { startMidiInput } from "@/lib/audio/midi-input";
 import type { Journey } from "@/lib/journeys/types";
 import type { InstallationProgram, SequenceEntry } from "./installation-loop-client";
 import { createWorldRequester } from "@/lib/journeys/live-world-queue";
-import { pickLiveWorld, liveWorldPool, LIVE_SCENE_MS, LIVE_VEIL_MS, LIVE_DARK_HOLD_MS, LIVE_SOFT_VEIL, LIVE_SONG_TITLE_MS } from "@/lib/journeys/live-theatre";
+import { pickLiveWorld, liveWorldPool, LIVE_SCENE_MS, LIVE_VEIL_MS, LIVE_DARK_HOLD_MS, LIVE_SOFT_VEIL, LIVE_SONG_TITLE_MS, SET_TITLE_CARD_MS } from "@/lib/journeys/live-theatre";
 import { trackTitlesHidden } from "@/lib/journeys/track-titles";
 import { HorizonTitle } from "./horizon-title";
+import { ExperienceTextInner } from "./installation-intro";
 import {
   LIVE_SETS, planTrackWorlds, setWorldPool, SET_FADE_OUT_MS, SET_GAP_MS, SET_FADE_IN_MS, SET_MAX_SCENE_S,
   type PlannedScene, type SetTrackAnalysis,
@@ -63,6 +64,10 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
   // a set's song title, between songs (titles on — track-titles.ts)
   const [songTitle, setSongTitle] = useState<{ name: string; key: number } | null>(null);
   const songTitleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // the Resonance Theatre title card between a set's end and its next pass
+  const [titleCard, setTitleCard] = useState<"in" | "out" | null>(null);
+  const titleCardRef = useRef(false);
+  useEffect(() => { titleCardRef.current = titleCard !== null; }, [titleCard]);
   useEffect(() => () => { if (songTitleTimer.current) clearTimeout(songTitleTimer.current); }, []);
 
   // LIVE SET (?liveset=joseph[&at=N], Tramokyo 2026-10-15): a set's tracks
@@ -211,7 +216,21 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
       el.pause();
       st.state = "ended";
       statusChanged();
-      postEvent(`liveset-end ${set.name} (${reason}) — wandering on`);
+      // THE SET LOOPS through the title card (Karel 2026-10-16: "any time a set
+      // completes you go to title card for a good 10 seconds then loop the set
+      // with the resonance theatre title always there as a point between
+      // starting again"): dip to black, the Resonance Theatre card, then track 1
+      // (the next track's own world fades up from the black).
+      postEvent(`liveset-end ${set.name} (${reason}) — title card, then the set again`);
+      setVeil(1);
+      await new Promise((r) => setTimeout(r, LIVE_VEIL_MS));
+      if (token !== st.token) return setVeil(0);
+      setTitleCard("in");
+      await new Promise((r) => setTimeout(r, SET_TITLE_CARD_MS));
+      if (token !== st.token) { setTitleCard(null); return setVeil(0); }
+      setTitleCard("out");
+      setTimeout(() => setTitleCard((c) => (c === "out" ? null : c)), 1_500);
+      void playSetTrack(0, "set loop");
       return;
     }
     const i = Math.max(0, idx);
@@ -398,7 +417,8 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
   useEffect(() => {
     const id = setInterval(() => {
       publishSetStatus();
-      if (busyRef.current || !sceneStartRef.current) return;
+      // no world change behind the set-loop title card
+      if (busyRef.current || !sceneStartRef.current || titleCardRef.current) return;
       const s = useAudioStore.getState();
       const left = s.duration > 0 ? s.duration - s.currentTime : Infinity;
       if (setRef.current) {
@@ -483,13 +503,31 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
         className="pointer-events-none absolute inset-0 z-[200] bg-black"
         style={{ opacity: veil, transition: `opacity ${LIVE_VEIL_MS}ms ease-in-out` }}
       />
+      {titleCard && (
+        // the loop's own statement card (installation-loop-client "statement"
+        // phase) — the same component, untouched; this only fades it
+        <div
+          className="pointer-events-none absolute inset-0 z-[205] flex flex-col items-center justify-center bg-void px-8 text-center"
+          style={{ opacity: titleCard === "in" ? 1 : 0, transition: "opacity 1500ms ease-out" }}
+        >
+          <div style={{ animation: "liveTitleCardFade 1400ms ease-out forwards", opacity: 0 }}>
+            <ExperienceTextInner animate={false} />
+          </div>
+          <style jsx>{`
+            @keyframes liveTitleCardFade {
+              from { opacity: 0; }
+              to { opacity: 1; }
+            }
+          `}</style>
+        </div>
+      )}
       {songTitle && (
         <div
           key={songTitle.key}
           className="pointer-events-none absolute inset-0 z-[210] flex items-center justify-center"
           style={{ animation: `journeyIntroAnim ${LIVE_SONG_TITLE_MS}ms ease-in-out forwards` }}
         >
-          <HorizonTitle name={songTitle.name} byline={setRef.current?.name === "joseph" ? "Joseph" : null} fit />
+          <HorizonTitle name={songTitle.name} byline={setRef.current?.name === "joseph" ? "Music by Joseph" : null} fit />
         </div>
       )}
     </div>

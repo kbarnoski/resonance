@@ -49,3 +49,5 @@ export function pickLiveWorld(pool: SequenceEntry[], history: string[], rand: ()
   const from = fresh.length > 0 ? fresh : pool;
   return from[Math.min(from.length - 1, Math.floor(rand() * from.length))];
 }
+/** A live set's end → the Resonance Theatre title card this long → the set again (ms). */
+export const SET_TITLE_CARD_MS = 12_000;
