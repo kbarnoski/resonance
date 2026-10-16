@@ -34,6 +34,7 @@
  *
  * Probe: window.__resonanceParticleLead.
  */
+import { getSongEmblem, onSongEmblem } from "@/lib/particles/song-emblem";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { AnalyserLike } from "@/lib/audio/audio-engine";
 import { useAudioStore } from "@/lib/audio/audio-store";
@@ -542,6 +543,12 @@ export function prewarmEmblems(journeyId: string): void {
     }
   });
 }
+/** undefined = no song emblem in force (the world's own); null = this song has none. */
+function songEmblemUrl(): string | null | undefined {
+  const e = getSongEmblem();
+  return e ? e.url : undefined;
+}
+
 /** Journey → emblem image (offline pack; empty where the pack has none). */
 function loadEmblemMap(): Promise<Record<string, string | string[]>> {
   emblemMap ??= fetch("/tramokyo-pack/local-emblems.json").then((r) => (r.ok ? r.json() : {})).catch(() => ({}));
@@ -600,12 +607,15 @@ export function ParticleLeadLayer({
   // entries are images, or tokens: "@angel" (the flash angel), "@angel-outline"
   // (the angel traced as lines of light) — Ghost rotates through treatments
   const emblemRef = useRef<EmblemSource[] | null>(null);
+  // a live set's SONG emblem replaces the world's (song-emblem.ts)
+  const [songEmblemKey, setSongEmblemKey] = useState<string | null | undefined>(() => songEmblemUrl());
+  useEffect(() => onSongEmblem(() => setSongEmblemKey(songEmblemUrl())), []);
   useEffect(() => {
     emblemRef.current = null;
     let cancelled = false;
     const mountAt = performance.now();
     void loadEmblemMap().then((map) => {
-      const src = map[journeyId];
+      const src = songEmblemKey !== undefined ? songEmblemKey : map[journeyId];
       if (cancelled || !src) return;
       const list = Array.isArray(src) ? src : [src];
       const imgs: EmblemSource[] = list.filter((u) => u.startsWith("@")) as EmblemSource[];
@@ -632,7 +642,7 @@ export function ParticleLeadLayer({
       }
     });
     return () => { cancelled = true; };
-  }, [journeyId]);
+  }, [journeyId, songEmblemKey]);
   // IMAGE ECHO (Karel 2026-10-07: "particles image aware always and interplay
   // with the images"): each arriving still is decoded small and sampled in idle
   // time; the tick may have the field trace its bright structure over it
@@ -1519,7 +1529,10 @@ export function ParticleLeadLayer({
       // journey (Yellow Bird → a yellow bird, Snowflake → a snowflake …)
       // (image-follow.ts emblemEnvelope — same timings, unit-tested)
       // Ghost: no mid-way emblem — the angel flash already says it there
-      const emEnv = emblemRef.current ? emblemEnvelope(t, useAudioStore.getState().duration || 0, journeyId !== "ghost") : null;
+      // a live set's song emblem rides the SONG's clock (song-emblem.ts)
+      const songEm = getSongEmblem();
+      const [emT, emD] = songEm ? songEm.clock() : [t, useAudioStore.getState().duration || 0];
+      const emEnv = emblemRef.current ? emblemEnvelope(emT, emD, journeyId !== "ghost") : null;
       let emForm = emEnv?.form ?? 0, emShow = emEnv?.show ?? 0;
       const emOcc = emEnv?.occ ?? 0; // 0 = opening, 1 = mid, 2 = closing
       const emAge = emEnv?.age ?? ssf(4, 11, t); // the emblem eases smaller while held (big is brief)

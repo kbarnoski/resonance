@@ -34,6 +34,7 @@ import {
   type PlannedScene, type SetTrackAnalysis,
 } from "@/lib/journeys/live-set";
 import { setLiveSetDrive } from "@/lib/journeys/live-drive";
+import { setSongEmblem } from "@/lib/particles/song-emblem";
 import { josephTrackUrl, josephTrackGain, JOSEPH_ANALYSIS_URL, type JosephTrack } from "@/lib/journeys/joseph-set";
 
 function postEvent(event: string) {
@@ -104,6 +105,8 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
   const setLevelRef = useRef(1);
   /** the playing track's level-match trim (joseph-set.ts josephTrackGain) */
   const trimRef = useRef(1);
+  /** song id → its emblem (public/tramokyo-pack/joseph/joseph-emblems.json) */
+  const songEmblemsRef = useRef<Record<string, string>>({});
   /** a track that can't play moves the set on (once per attempt) — never a silent stall */
   const failRef = useRef<((token: number) => void) | null>(null);
   const setStateRef = useRef<{
@@ -242,6 +245,7 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
       el.pause();
       st.state = "ended";
       statusChanged();
+      setSongEmblem({ url: null, clock: () => [0, 0] }); // no song: no emblem (never the world's)
       // THE SET LOOPS through the title card (Karel 2026-10-16: "any time a set
       // completes you go to title card for a good 10 seconds then loop the set
       // with the resonance theatre title always there as a point between
@@ -295,6 +299,9 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
     st.state = "playing";
     statusChanged();
     void rampSetGain(setLevelRef.current * trimRef.current, SET_FADE_IN_MS);
+    // the SONG's emblem (not the world's) at its opening, middle and end — the
+    // journeys' own emblemEnvelope, on this song's clock (song-emblem.ts)
+    setSongEmblem({ url: songEmblemsRef.current[track.id] ?? null, clock: () => [el.currentTime || 0, Number.isFinite(el.duration) ? el.duration : track.duration] });
     // the song's title rises as its world does (titles on, from the phone)
     if (!trackTitlesHidden()) {
       if (songTitleTimer.current) clearTimeout(songTitleTimer.current);
@@ -383,7 +390,20 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
           });
           void playSetTrack(at - 1, "start");
         });
+      void fetch("/tramokyo-pack/joseph/joseph-emblems.json", { cache: "no-store" })
+        .then((r) => (r.ok ? r.json() : {}))
+        .catch(() => ({}))
+        .then((m: Record<string, string>) => {
+          songEmblemsRef.current = m ?? {};
+          // landed after a song began: give that song its emblem now
+          const st = setStateRef.current;
+          const t = tracks[st.idx];
+          if (t && st.state === "playing") setSongEmblem({ url: songEmblemsRef.current[t.id] ?? null, clock: () => [el.currentTime || 0, Number.isFinite(el.duration) ? el.duration : t.duration] });
+        });
+      // from the first frame of a set the worlds' own emblems never show
+      setSongEmblem({ url: null, clock: () => [0, 0] });
       return () => {
+        setSongEmblem(null);
         setLiveSetDrive(false);
         unsubVol();
         el.removeEventListener("ended", onEnded);
