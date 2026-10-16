@@ -16,9 +16,10 @@ describe("live mode inputs (Karel 2026-10-15: mic, laptop sound, or both)", () =
   it("mic = the built-in MacBook mic, never the virtual default or the iPhone", () => {
     expect(pickLiveInputs(devs, "mic")).toEqual({ mic: "mbp", laptop: null });
   });
-  it("a plugged-in mic / interface wins over the built-in one", () => {
+  it("the laptop mic stays the default with a mic plugged in; the plugged-in one only without it", () => {
     const ext = [...devs, { kind: "audioinput", deviceId: "usb", label: "Scarlett Solo USB" }];
-    expect(pickLiveInputs(ext, "mic")).toEqual({ mic: "usb", laptop: null });
+    expect(pickLiveInputs(ext, "mic")).toEqual({ mic: "mbp", laptop: null });
+    expect(pickLiveInputs(ext.filter((d) => d.deviceId !== "mbp"), "mic")).toEqual({ mic: "usb", laptop: null });
   });
   it("laptop = the BlackHole loopback", () => {
     expect(pickLiveInputs(devs, "laptop")).toEqual({ mic: null, laptop: "bh" });

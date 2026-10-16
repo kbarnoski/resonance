@@ -109,13 +109,12 @@ export type LiveSource = "mic" | "laptop" | "both";
  *  via a Multi-Output device); "both" = mixed. Exported for tests. */
 export function pickLiveInputs(devices: readonly { kind: string; deviceId: string; label: string }[], src: LiveSource): { mic: string | null; laptop: string | null } {
   const ins = devices.filter((d) => d.kind === "audioinput" && d.deviceId !== "default" && d.deviceId !== "communications");
-  // a PLUGGED-IN mic / interface wins (Karel 2026-10-16: "laptop mic and/or
-  // external mic") — a real input that is neither built-in nor virtual; else
-  // the built-in MacBook mic
+  // the LAPTOP'S OWN mic is the default (Karel 2026-10-16: "allow laptop mic
+  // and is the default for now"); a plugged-in mic / interface only when there
+  // is no built-in one
   const virtual = /ndi|blackhole|iphone|ipad|virtual|loopback|zoom|teams|parrot|microsoft|aggregate|multi-output/i;
   const builtIn = /macbook.*microphone|built-?in.*microphone/i;
-  const mic = ins.find((d) => d.label && !virtual.test(d.label) && !builtIn.test(d.label))
-    ?? ins.find((d) => builtIn.test(d.label))
+  const mic = ins.find((d) => builtIn.test(d.label))
     ?? ins.find((d) => !virtual.test(d.label));
   const laptop = ins.find((d) => /blackhole/i.test(d.label)) ?? ins.find((d) => /loopback/i.test(d.label));
   return { mic: src === "laptop" ? null : mic?.deviceId ?? null, laptop: src === "mic" ? null : laptop?.deviceId ?? null };
