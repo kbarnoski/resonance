@@ -30,6 +30,7 @@ import {
   LIVE_SETS, planTrackWorlds, setWorldPool, SET_FADE_OUT_MS, SET_GAP_MS, SET_FADE_IN_MS, SET_MAX_SCENE_S,
   type PlannedScene, type SetTrackAnalysis,
 } from "@/lib/journeys/live-set";
+import { setLiveSetDrive } from "@/lib/journeys/live-drive";
 import { josephTrackUrl, josephTrackGain, JOSEPH_ANALYSIS_URL, type JosephTrack } from "@/lib/journeys/joseph-set";
 
 function postEvent(event: string) {
@@ -267,6 +268,7 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
       el.preload = "auto";
       setElRef.current = el;
       const gain = attachSetDrive(el);
+      setLiveSetDrive(true); // every world answers the set's beats harder (live-drive.ts)
       const w = window as unknown as Record<string, unknown>;
       w.__liveAnalyser = getAnalyserNode();
       w.__liveSetAudio = el;
@@ -317,6 +319,7 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
           void playSetTrack(at - 1, "start");
         });
       return () => {
+        setLiveSetDrive(false);
         unsubVol();
         el.removeEventListener("ended", onEnded);
         el.removeEventListener("error", onError);
@@ -370,6 +373,7 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
     return () => {
       if (levelTimer) clearInterval(levelTimer);
       if (sampleTimer) clearInterval(sampleTimer);
+      setLiveSetDrive(false);
       setInstallationMode(false);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

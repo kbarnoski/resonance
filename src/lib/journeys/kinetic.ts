@@ -1,6 +1,7 @@
 import { SHADER_SUPPORT_GAIN, SHADER_LEAD_GAIN, EXPANSION_LEADS } from "@/lib/shaders/shader-gain.generated";
 import { isMasteredJourneyLike } from "./mastered";
 import { isExportMode } from "@/lib/export/export-mode";
+import { liveSetDriveActive, liveSetResponse } from "./live-drive";
 
 /**
  * KINETIC journeys (Karel 2026-09-29): a second species alongside the
@@ -263,6 +264,11 @@ const FAMILY_RESPONSE: ReadonlyArray<[RegExp, number]> = [
 export function journeyResponse(journey?: { id?: string | null; name?: string | null } | null): number {
   // Snowflake + Ghost keep their mastered response
   if (journey?.id === "first-snow" || journey?.id === "ghost") return 1;
+  // a live set (Joseph) drives every world one notch harder (live-drive.ts)
+  if (liveSetDriveActive()) return liveSetResponse(ownResponse(journey));
+  return ownResponse(journey);
+}
+function ownResponse(journey?: { id?: string | null; name?: string | null } | null): number {
   if (journey?.id && JOURNEY_RESPONSE[journey.id]) return JOURNEY_RESPONSE[journey.id];
   const name = (journey?.name ?? "").trim();
   for (const [re, k] of FAMILY_RESPONSE) if (re.test(name)) return k;

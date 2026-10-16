@@ -1,3 +1,4 @@
+import { liveSetDriveActive, LIVE_SET_RATE_SMOOTH_X } from "./live-drive";
 /**
  * Pure helpers for the shader stack's audio drive and crossfade
  * scheduling (glitch RCA 2026-10-06: "sometimes a shader kind of moves
@@ -241,5 +242,7 @@ export function calmToward(rest: number, value: number, gain: number): number {
  *  magma ×0.35 ≈ 1.1 s). */
 export const RATE_SMOOTH_K = 0.045;
 export function rateSmoothK(gain: number): number {
-  return RATE_SMOOTH_K * Math.max(0.2, Math.min(1, gain));
+  // a live set's beats land on the beat (live-drive.ts) — never above 1
+  const live = liveSetDriveActive() ? LIVE_SET_RATE_SMOOTH_X : 1;
+  return RATE_SMOOTH_K * Math.max(0.2, Math.min(1, gain)) * live;
 }
