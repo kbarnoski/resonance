@@ -418,6 +418,8 @@ export function AiImageLayer({
   const genCountRef = useRef(0);
   const promptChangeTimeRef = useRef(0);
   const firstImageFiredRef = useRef(false);
+  /** live handover: has THIS journey's first still actually landed (clips don't count) */
+  const firstStillLandedRef = useRef(false);
   const onFirstImageRef = useRef(onFirstImage);
   onFirstImageRef.current = onFirstImage;
   const onImageReadyRef = useRef(onImageReady);
@@ -462,6 +464,7 @@ export function AiImageLayer({
       lastGenTimeRef.current = 0;
       genCountRef.current = 0;
       firstImageFiredRef.current = false;
+      firstStillLandedRef.current = false;
       // 2026-09-19 audit: the pack-cadence refs must reset per journey.
       // Without this, journey B's first phase-mapped index (often 0)
       // equals journey A's last, the dedupe skips the push, and — since
@@ -581,6 +584,11 @@ export function AiImageLayer({
     // Only stills enter the LRU cache — videos are pack-local loops.
     if ("complete" in img) service.cacheImage(promptRef.current, img);
 
+    // live mode: a new world's first still is a HANDOVER (live-handover.ts) —
+    // exempt from the crowding guard and cap, like a cover: the outgoing world's
+    // fading stills must never turn it away (kiosk peakij: push-refused
+    // layering-crowded 8.7 s after a change)
+    const liveFirstPush = liveHandover() && !firstStillLandedRef.current && "complete" in img;
     // Signal parent that first AI image is ready (for intro gating)
     if (!firstImageFiredRef.current) {
       firstImageFiredRef.current = true;
@@ -604,7 +612,7 @@ export function AiImageLayer({
     // while another is still arriving or three are already visible.
     const layering = layeringNow();
     const scriptedPush = !isVideoPush && !!opts?.scripted;
-    const capExempt = isVideoPush || bypassesCap(layering, scriptedPush, isCoverPush);
+    const capExempt = isVideoPush || liveFirstPush || bypassesCap(layering, scriptedPush, isCoverPush);
     // Ghost opening lift (Karel 2026-10-15, layering-floor.ts): Ghost's first
     // third borrows the floor's slot/guard/drift knobs — nothing else.
     const liftSt = useAudioStore.getState();
@@ -725,6 +733,7 @@ export function AiImageLayer({
     // ENTERED the collage (it used to fire before the cap check —
     // clones of images the viewer never saw).
     if (!isVideo) onImageReadyRef.current?.((img as HTMLImageElement).src);
+    if (!isVideo) firstStillLandedRef.current = true;
     lastVisualPushRef.current = performance.now();
     glitchRecord(
       isVideo ? "layer-push-video" : "layer-push-still",
@@ -845,7 +854,7 @@ export function AiImageLayer({
       const layering = layeringNow();
       // live mode: a new world's FIRST still is a handover — it lands past the
       // soft gates (live-handover.ts; the old world's fading still is not "solo")
-      const liveFirst = liveHandover() && !firstImageFiredRef.current;
+      const liveFirst = liveHandover() && !firstStillLandedRef.current;
       const stillsBlocked = !morphCover && !liveFirst && (
         isVideoActive() ||
         getJourneyEngine().getMsSinceAnySwitch() < 2500 ||
@@ -981,7 +990,7 @@ export function AiImageLayer({
       // ...and unscripted stills keep their spacing (not dizzying); covers and
       // the pinned finale always land.
       const takeSlot = !!scriptedName && !!urls[idx]?.endsWith("/" + scriptedName);
-      const gapOk = morphCover || finaleDue || pushGapOk(performance.now(), lastVisualPushRef.current, layering, takeSlot);
+      const gapOk = morphCover || finaleDue || liveFirst || pushGapOk(performance.now(), lastVisualPushRef.current, layering, takeSlot);
       if (finaleDue) {
         const wanted = urls.indexOf(pendingFinaleStillRef.current!);
         pendingFinaleStillRef.current = null;
