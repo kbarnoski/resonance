@@ -6,11 +6,7 @@ import { ArrowLeft, ArrowRight, ChevronDown, Play } from "lucide-react";
 import { TRAMOKYO_MAIN } from "@/lib/journeys/installation-sequence";
 import { Button } from "@/components/ui/button";
 import { setRunTime } from "@/lib/audio/set-duration";
-import { josephSet } from "@/lib/journeys/joseph-set";
-
-/** Joseph's live set (live-theatre-client.tsx): liveset:joseph@N plays track N now. */
-const JOSEPH = josephSet().map((t, i) => ({ n: i + 1, id: t.id, title: t.title, dur: t.duration }));
-const JOSEPH_TIME = setRunTime(JOSEPH);
+import { TitlesRow } from "./titles-row";
 
 /**
  * PRESENTER — the phone's main screen (Karel 2026-10-13, Tramokyo; design
@@ -95,7 +91,21 @@ function position(ref: { journeyId: string; programId: string } | null, programs
   return `${setName(p.id, programs)} · ${i + 1} of ${p.journeys.length}${dur}`;
 }
 
-type View = "main" | "pick" | "sets" | "joseph";
+type View = "main" | "pick" | "sets";
+
+/** JOSEPH — just another set on the phone (Karel 2026-10-16: "i dont think of
+ *  josephs as special and just another set"). The kiosk plays it as a live set
+ *  (liveset:joseph@N); the phone shows it exactly like any other set. */
+export interface JosephTrackRow { n: number; id: string; title: string; duration: number }
+export interface JosephNow {
+  index: number;
+  count: number;
+  title: string | null;
+  state: string;
+  currentTime: number;
+  duration: number;
+  next: string | null;
+}
 
 /** After a screen change, taps are ignored this long (the double-tap carry-over). */
 const SCREEN_TAP_SHIELD_MS = 450;
@@ -109,6 +119,8 @@ export function PresenterView({
   stale,
   ageMs = null,
   titles = null,
+  josephTracks = [],
+  joseph = null,
   send,
   onControls,
 }: {
@@ -122,8 +134,13 @@ export function PresenterView({
   ageMs?: number | null;
   /** the kiosk's titles-between-tracks setting (null = not reported yet) */
   titles?: "on" | "off" | null;
+  /** Joseph's tracks (the Joseph row in Choose a set + its track list) */
+  josephTracks?: JosephTrackRow[];
+  /** Joseph's set playing now (null = not playing) */
+  joseph?: JosephNow | null;
   send: (cmd: string) => void;
-  onControls: () => void;
+  /** the old "Live" pill — omitted when a tab bar carries the other modes */
+  onControls?: () => void;
 }) {
   const [view, setViewRaw] = useState<View>("main");
   // TAP SHIELD (phone QA 2026-10-15): a double tap on a list row used to land
@@ -189,16 +206,10 @@ export function PresenterView({
     }));
     send(cmd);
   };
-  // titles between tracks — the tap shows at once; the kiosk's report wins
-  // once it agrees (or after 6 s, like the presenter's own optimism)
-  const [titlesTap, setTitlesTap] = useState<{ v: "on" | "off"; at: number } | null>(null);
-  useEffect(() => {
-    if (titlesTap && (titles === titlesTap.v || now - titlesTap.at > 6000)) setTitlesTap(null);
-  }, [titles, titlesTap, now]);
-  const titlesShown = (titlesTap?.v ?? titles ?? "on") === "on";
   const manual = playback === "manual";
   const trackName = current?.name ?? journeyName ?? "—";
 
+  const josephTime = setRunTime(josephTracks.map((t) => ({ dur: t.duration })));
   const shell = (children: React.ReactNode) => (
     <div
       className="min-h-screen bg-background text-ink px-4 py-6 max-w-md mx-auto select-none [-webkit-tap-highlight-color:transparent] [&_button]:touch-manipulation [&_button:active]:transition-none"
@@ -248,14 +259,20 @@ export function PresenterView({
         <p className="text-sm text-ink-mute mb-5">Auto-play and Next both move through the set you choose.</p>
         <div className="grid grid-cols-[minmax(0,1fr)] gap-2">
           {sets.map((s) => {
-            const on = s.id === setId;
+            const on = !joseph && s.id === setId;
             return (
               <button
                 type="button"
                 key={s.id}
                 className={`min-h-14 w-full rounded-xl border px-4 py-3 text-left transition-colors duration-instant ${on ? "border-primary bg-primary/10" : "border-border bg-card active:bg-white/[0.06]"}`}
                 onClick={() => {
-                  choose(`set:${s.id}`, { setId: s.id, cued: null }); // choosing a set clears the pick
+                  if (joseph) {
+                    // leaving Joseph: the kiosk returns to the loop at that set's first track
+                    const first = programs.find((p) => p.id === s.id)?.journeys[0];
+                    if (first) choose(`playnow:${first.id}@${s.id}`, { setId: s.id, playback: "auto", cued: null, action: "going" });
+                  } else {
+                    choose(`set:${s.id}`, { setId: s.id, cued: null }); // choosing a set clears the pick
+                  }
                   setView("main");
                 }}
               >
@@ -269,17 +286,20 @@ export function PresenterView({
               </button>
             );
           })}
-          {JOSEPH.length ? (
+          {josephTracks.length ? (
             <button
               type="button"
-              className="min-h-14 w-full rounded-xl border border-border bg-card px-4 py-3 text-left transition-colors duration-instant active:bg-white/[0.06]"
-              onClick={() => setView("joseph")}
+              className={`min-h-14 w-full rounded-xl border px-4 py-3 text-left transition-colors duration-instant ${joseph ? "border-primary bg-primary/10" : "border-border bg-card active:bg-white/[0.06]"}`}
+              onClick={() => {
+                if (!joseph) send("liveset:joseph@1");
+                setView("main");
+              }}
             >
               <div className="flex items-baseline justify-between gap-3">
                 <span className={`${title} min-w-0 truncate text-xl text-ink`}>Joseph</span>
-                {JOSEPH_TIME ? <span className="shrink-0 font-mono text-xs text-ink-faint">{JOSEPH_TIME}</span> : null}
+                {josephTime ? <span className="shrink-0 font-mono text-xs text-ink-faint">{josephTime}</span> : null}
               </div>
-              <div className="text-xs text-ink-faint mt-0.5">{JOSEPH.length} tracks · live set</div>
+              <div className="text-xs text-ink-faint mt-0.5">{josephTracks.length} tracks · set</div>
             </button>
           ) : null}
         </div>
@@ -287,37 +307,97 @@ export function PresenterView({
     );
   }
 
-  // ── JOSEPH — live set: a tap plays that track now ─────────────────
-  if (view === "joseph") {
+  // ── JOSEPH — the same screens as any set ───────────────────────────
+  if (joseph && view === "pick") {
     return shell(
       <>
-        <button type="button" className={linkBtn} onClick={() => setView("sets")}>
-          <ArrowLeft className="size-4" /> Back
-        </button>
+        <div className="flex items-center justify-between">
+          <button type="button" className={linkBtn} onClick={() => setView("main")}>
+            <ArrowLeft className="size-4" /> Back
+          </button>
+          <button type="button" className={`${linkBtn} text-primary`} onClick={() => setView("sets")}>
+            Change set
+          </button>
+        </div>
         <div className={`${label} mt-4 mb-1`}>Play a track</div>
         <h1 className={`${title} text-3xl text-ink mb-2`}>
           Joseph
-          {JOSEPH_TIME ? <span className="ml-2 align-middle font-mono text-sm font-normal text-ink-faint">{JOSEPH_TIME}</span> : null}
+          {josephTime ? <span className="ml-2 align-middle font-mono text-sm font-normal text-ink-faint">{josephTime}</span> : null}
         </h1>
-        <p className="text-sm text-ink-mute mb-5">
-          {JOSEPH.length} tracks, in set order. Tap one to play it now — the worlds follow Joseph&apos;s music.
-        </p>
+        <p className="text-sm text-ink-mute mb-5">{josephTracks.length} tracks, in set order. Tap one to play it now — the set plays on from there.</p>
         <div className="grid grid-cols-[minmax(0,1fr)] gap-1.5">
-          {JOSEPH.map((j) => (
-            <button
-              type="button"
-              key={j.id}
-              className="flex min-h-12 w-full items-center gap-3 rounded-lg border border-transparent px-3 py-2 text-left transition-colors duration-instant active:bg-white/[0.06]"
-              onClick={() => {
-                send(`liveset:joseph@${j.n}`);
-                setView("main");
-              }}
-            >
-              <span className="w-6 shrink-0 text-right font-mono text-[11px] text-ink-faint">{j.n}</span>
-              <span className={`${title} min-w-0 flex-1 truncate text-base text-ink`}>{j.title}</span>
-              <span className="shrink-0 font-mono text-[11px] text-ink-faint">{fmt(j.dur)}</span>
-            </button>
-          ))}
+          {josephTracks.map((j) => {
+            const isCurrent = joseph.index === j.n;
+            return (
+              <button
+                type="button"
+                key={j.id}
+                className="flex min-h-12 w-full items-center gap-3 rounded-lg border border-transparent px-3 py-2 text-left transition-colors duration-instant active:bg-white/[0.06]"
+                onClick={() => {
+                  send(`liveset:joseph@${j.n}`);
+                  setView("main");
+                }}
+              >
+                <span className="w-6 shrink-0 text-right font-mono text-[11px] text-ink-faint">{j.n}</span>
+                <span className={`${title} min-w-0 flex-1 truncate text-base text-ink`}>{j.title}</span>
+                {isCurrent ? (
+                  <span className="shrink-0 font-mono text-[11px] uppercase tracking-widest text-emerald-400">Playing</span>
+                ) : (
+                  <span className="shrink-0 font-mono text-[11px] text-ink-faint">{fmt(j.duration)}</span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+      </>,
+    );
+  }
+  if (joseph) {
+    const jp = joseph.duration > 0 ? Math.min(1, joseph.currentTime / joseph.duration) : 0;
+    const jLine = joseph.state === "playing"
+      ? `${stale ? "Last report" : "Now playing"} · ${fmt(joseph.currentTime)} / ${fmt(joseph.duration)}`
+      : joseph.state === "ended" ? "Set ended" : "Starting…";
+    return shell(
+      <>
+        <div className="min-w-0">
+          <div className={label}>Playing from</div>
+          <button type="button" className="flex min-h-11 max-w-full items-center gap-1.5 text-left" onClick={() => setView("sets")}>
+            <span className={`${title} truncate text-2xl text-ink`}>Joseph</span>
+            {josephTime ? <span className="shrink-0 font-mono text-xs text-ink-faint">{josephTime}</span> : null}
+            <ChevronDown className="size-5 shrink-0 text-ink-mute" />
+          </button>
+        </div>
+        <div className="mt-3 rounded-xl border border-border bg-card p-4 mb-3">
+          <div className={`font-mono text-[11px] uppercase tracking-widest ${stale ? "text-ink-faint" : "text-emerald-400"}`}>{jLine}</div>
+          <div className={`${title} mt-1 text-[34px] leading-[1.1] text-ink [overflow-wrap:anywhere]`}>{joseph.title ?? "—"}</div>
+          <div className="mt-1 text-sm text-ink-faint">Music by Joseph · {joseph.index} of {joseph.count}</div>
+          <div className="mt-3 h-1 overflow-hidden rounded-full bg-white/[0.08]">
+            <div className="h-full rounded-full bg-ink-mute" style={{ width: `${jp * 100}%` }} />
+          </div>
+        </div>
+        <div className="flex items-center justify-between gap-3 rounded-xl border border-border px-4 py-3 mb-4">
+          <div className="min-w-0">
+            <div className={label}>Up next</div>
+            <div className={`${title} truncate text-xl text-ink`}>{joseph.next ?? "—"}</div>
+          </div>
+          <button type="button" className={`${linkBtn} shrink-0 text-primary`} onClick={() => setView("pick")}>
+            Change
+          </button>
+        </div>
+        <Button className="h-[88px] w-full gap-3 rounded-lg active:bg-primary/75 text-xl text-primary-foreground" onClick={() => send("skip")}>
+          Next <ArrowRight className="size-6" />
+        </Button>
+        <p className="mt-2 mb-4 text-center text-xs text-ink-faint">Mid-song, Next fades this one out gracefully, then plays {joseph.next ?? "the next track"}.</p>
+        <div className="grid grid-cols-2 gap-2">
+          <Button variant="glass" className="h-auto min-h-12 text-sm text-ink active:bg-white/[0.14]" onClick={() => setView("pick")}>
+            Pick a track
+          </Button>
+          <Button variant="glass" className="h-auto min-h-12 text-sm text-ink active:bg-white/[0.14]" onClick={() => send("prev")}>
+            Previous track
+          </Button>
+        </div>
+        <div className="mt-6">
+          <TitlesRow titles={titles} send={send} />
         </div>
       </>,
     );
@@ -416,7 +496,7 @@ export function PresenterView({
             <ChevronDown className="size-5 shrink-0 text-ink-mute" />
           </button>
         </div>
-        <button
+        {onControls ? <button
           type="button"
           onClick={onControls}
           className="mt-1 inline-flex min-h-11 items-center gap-2 rounded-full border border-border bg-card px-3.5 text-xs text-ink-mute active:bg-white/[0.06]"
@@ -424,7 +504,7 @@ export function PresenterView({
         >
           <span className={`h-2 w-2 rounded-full ${stale ? "bg-destructive" : "bg-emerald-500"}`} />
           Live
-        </button>
+        </button> : null}
       </div>
 
       {/* Auto-play | Song by song */}
@@ -571,25 +651,9 @@ export function PresenterView({
         </div>
       </div>
 
-      {/* titles between tracks (Karel 2026-10-16) — hidden keeps the same
-          transition, just no name on screen */}
-      <div className="mt-3 flex items-center justify-between gap-3">
-        <span className="text-xs text-ink-faint">Titles between tracks</span>
-        <div className="grid grid-cols-2 overflow-hidden rounded-lg border border-border bg-card">
-          {(["on", "off"] as const).map((v) => (
-            <button
-              type="button"
-              key={v}
-              className={`min-h-11 rounded-none px-3 text-xs transition-colors duration-instant ${(titlesShown ? "on" : "off") === v ? "bg-primary/20 text-ink" : "text-ink-mute active:bg-white/[0.06]"}`}
-              onClick={() => {
-                setTitlesTap({ v, at: Date.now() });
-                send(`titles:${v}`);
-              }}
-            >
-              {v === "on" ? "Show" : "Hide"}
-            </button>
-          ))}
-        </div>
+      {/* titles between tracks (Karel 2026-10-16) — the shared row */}
+      <div className="mt-3">
+        <TitlesRow titles={titles} send={send} />
       </div>
     </>,
   );

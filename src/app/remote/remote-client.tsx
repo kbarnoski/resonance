@@ -3,10 +3,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { INSTALLATION_PROGRAMS, TRAMOKYO_MIX_ID } from "@/lib/journeys/installation-sequence";
 import { Button } from "@/components/ui/button";
-import { setRunTime } from "@/lib/audio/set-duration";
 import { josephSet } from "@/lib/journeys/joseph-set";
 import { createRepeatGuard } from "@/lib/audio/remote-send-guard";
 import { PresenterView, type PresenterStatus } from "./presenter-view";
+import { TitlesRow } from "./titles-row";
+import { ArrowRight, ListMusic, Mic, Settings2 } from "lucide-react";
 
 // "Start from" jump points — the beginning is program 0's intro; every
 // program also gets its own starting point. New programs (backlog:
@@ -58,6 +59,8 @@ interface KioskStatus {
   liveSrc?: LiveSrc | "set" | null;
   /** titles between tracks (track-titles.ts) — absent on an older kiosk build */
   titles?: "on" | "off";
+  /** Live Theatre input (audio-engine LiveInputStatus + the live level) */
+  liveinput?: { src: LiveSrc; ok: boolean; inputs: string[]; missing: string[]; note: string | null; level: number } | null;
 }
 
 interface LiveSetStatus {
@@ -77,12 +80,6 @@ interface LiveSetStatus {
 /** The Joseph live set as the phone lists it (the kiosk's own list once it reports one). */
 const JOSEPH_TRACKS_LOCAL = josephSet().map((t, i) => ({ n: i + 1, id: t.id, title: t.title, duration: t.duration }));
 
-function fmt(sec: number | undefined): string {
-  if (!sec || sec < 0) return "0:00";
-  const m = Math.floor(sec / 60);
-  const s = Math.floor(sec % 60);
-  return `${m}:${s.toString().padStart(2, "0")}`;
-}
 
 /** Phone status poll while the page is visible (GET is an in-memory read; the
  *  set + track lists only travel when they change — programsRev). */
@@ -102,15 +99,7 @@ function keyQuery(): string {
   return k ? `key=${encodeURIComponent(k)}` : "";
 }
 
-/** The main loop's sets ("tramokyo-mix…"); everything else is an album / program version. */
-const isMainSet = (id: string) => id === TRAMOKYO_MIX_ID || id.startsWith(`${TRAMOKYO_MIX_ID}-`);
-
 type LiveSrc = "mic" | "laptop" | "both";
-const LIVE_SRCS: { src: LiveSrc; label: string; long: string }[] = [
-  { src: "mic", label: "Mic", long: "the mic" },
-  { src: "laptop", label: "Laptop sound", long: "the laptop's sound" },
-  { src: "both", label: "Mic + laptop", long: "the mic and the laptop's sound" },
-];
 
 export function RemoteClient({
   initialStatus = null,
@@ -137,11 +126,8 @@ export function RemoteClient({
   const revRef = useRef<number>(0);
   const [sending, setSending] = useState<string | null>(null);
   const [sendError, setSendError] = useState<string | null>(null);
-  // the presenter is the main screen; every other control lives behind the Live pill
-  const [controlsOpen, setControlsOpen] = useState(false);
   // LIVE source (Karel 2026-10-15: "play any sound on the laptop and it feeds
   // resonance in live mode … either mic or the sound from laptop. i need both")
-  const [livePick, setLivePick] = useState(false);
   const [liveSrc, setLiveSrc] = useState<LiveSrc>("mic");
 
   useEffect(() => {
@@ -230,8 +216,6 @@ export function RemoteClient({
     const k = status?.liveSrc;
     if (k === "mic" || k === "laptop" || k === "both") setLiveSrc(k);
   }, [status?.liveSrc]);
-  const inLoop = status?.context === "loop";
-  const inLive = status?.context === "live";
   const effAgeMs = ageMs === null ? null : ageMs + Math.max(0, nowTick - heardAt);
   const stale = effAgeMs === null || effAgeMs > 10_000;
 
@@ -240,390 +224,307 @@ export function RemoteClient({
   const btn =
     "h-auto min-h-11 px-4 py-3.5 text-sm font-normal text-ink active:bg-white/[0.15]";
 
-  // PRESENTER main screen (auto-play / song by song) whenever the kiosk is
-  // in (or waiting to report) the loop; Live Theatre and DJ mode keep the
-  // full controls below
-  if (!controlsOpen && !inLive && (inLoop || stale)) {
-    return (
-      <>
-        {sendError ? (
-          <div className="mx-auto max-w-md px-4 pt-4">
-            <div className="rounded-xl px-4 py-3 text-sm text-destructive bg-destructive/10 border border-destructive/25">
-              {sendError}
-            </div>
-          </div>
-        ) : null}
-        <PresenterView
-          presenter={status?.presenter ?? null}
-          programs={status?.programs ?? []}
-          journeyName={status?.journey ?? null}
-          currentTime={status?.currentTime}
-          duration={status?.duration}
-          stale={stale}
-          ageMs={effAgeMs}
-          titles={status?.titles ?? null}
-          send={(c) => void send(c)}
-          onControls={() => setControlsOpen(true)}
-        />
-      </>
-    );
-  }
-
   return (
-    <div
-      className="min-h-screen bg-background text-ink px-5 py-8 max-w-md mx-auto"
-      style={{
-        paddingTop: "calc(2rem + env(safe-area-inset-top, 0px))",
-        paddingBottom: "calc(2rem + env(safe-area-inset-bottom, 0px))",
-        paddingLeft: "max(1.25rem, env(safe-area-inset-left, 0px))",
-        paddingRight: "max(1.25rem, env(safe-area-inset-right, 0px))",
-      }}
-    >
-      {inLoop && controlsOpen ? (
+    <RemoteTabs
+      status={status}
+      stale={stale}
+      ageMs={effAgeMs}
+      sending={sending}
+      sendError={sendError}
+      send={send}
+      liveSrc={liveSrc}
+      setLiveSrc={setLiveSrc}
+      btn={btn}
+      extras={extras}
+    />
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// TABS (Karel 2026-10-16: "for the phone remote need it to be super simple to
+// use … best ui design patterns"). Three modes, one bottom tab bar:
+//   Sets   — every set, Joseph's included ("just another set"), one presenter
+//   Live   — live visuals from the mic (the Nord, the room); laptop sound optional
+//   More   — titles, volume, glitch mark, title card, extras, recovery
+// A tab only BROWSES — commands go out from the buttons inside it. The tab of
+// the kiosk's current mode carries a dot, and the app opens on it.
+// ─────────────────────────────────────────────────────────────────────────
+
+type Tab = "sets" | "live" | "more";
+
+function modeOf(st: KioskStatus | null): Tab | null {
+  if (!st?.context) return null;
+  if (st.context === "loop") return "sets";
+  if (st.context === "live") return st.liveset ? "sets" : "live";
+  return "more";
+}
+
+const SRC_NAME: Record<LiveSrc, string> = { mic: "the mic", laptop: "laptop sound", both: "mic + laptop sound" };
+
+const label = "font-mono text-[11px] uppercase tracking-widest text-ink-faint";
+const title = "font-sans font-medium tracking-tight";
+
+function RemoteTabs({
+  status,
+  stale,
+  ageMs,
+  sending,
+  sendError,
+  send,
+  liveSrc,
+  setLiveSrc,
+  btn,
+  extras,
+}: {
+  status: KioskStatus | null;
+  stale: boolean;
+  ageMs: number | null;
+  sending: string | null;
+  sendError: string | null;
+  send: (command: string, guardKey?: string) => Promise<void>;
+  liveSrc: LiveSrc;
+  setLiveSrc: (s: LiveSrc) => void;
+  btn: string;
+  extras: { id: string; name: string }[];
+}) {
+  const mode = modeOf(status);
+  const [tab, setTab] = useState<Tab>(() => mode ?? "sets");
+  // the kiosk changed mode (here or from another phone): follow it
+  const lastMode = useRef<Tab | null>(mode);
+  useEffect(() => {
+    if (mode && mode !== lastMode.current) setTab(mode);
+    lastMode.current = mode;
+  }, [mode]);
+  const go = (t: Tab) => {
+    setTab(t);
+    if (typeof window !== "undefined") window.scrollTo(0, 0);
+  };
+  const fire = (c: string) => void send(c);
+
+  const inLoop = status?.context === "loop";
+  const inLive = status?.context === "live";
+  const ls = inLive && status?.liveset?.set === "joseph" ? status.liveset : null;
+  const playingSomething = !stale && ((inLoop && status?.isPlaying !== false) || inLive || status?.context === "room");
+
+  // ── now on screen (every tab) ──────────────────────────────────────
+  const nowLine = stale
+    ? "Waiting for kiosk…"
+    : ls
+      ? `Joseph · ${ls.index} of ${ls.count} · ${ls.title ?? ""}`
+      : inLive
+        ? `Live · listening to ${SRC_NAME[(status?.liveSrc as LiveSrc) in SRC_NAME ? (status?.liveSrc as LiveSrc) : "mic"]}`
+        : inLoop
+          ? `My sets · ${status?.journey ?? "—"}`
+          : `DJ mode · ${status?.journey ?? "—"}`;
+
+  const strip = (
+    <div className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur-sm" style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}>
+      <div className="mx-auto flex min-h-11 max-w-md items-center gap-2 px-4 py-2">
+        <span className={`h-2 w-2 shrink-0 rounded-full ${stale ? "animate-pulse bg-destructive" : "bg-emerald-500"}`} />
+        <span className="min-w-0 truncate text-sm text-ink-mute">{nowLine}</span>
+      </div>
+    </div>
+  );
+
+  const errorBox = sendError ? (
+    <div className="mb-4 rounded-xl border border-destructive/25 bg-destructive/10 px-4 py-3 text-sm text-destructive">{sendError}</div>
+  ) : null;
+
+  const page = (children: React.ReactNode) => (
+    <div className="mx-auto max-w-md px-4 pt-5" style={{ paddingLeft: "max(1rem, env(safe-area-inset-left, 0px))", paddingRight: "max(1rem, env(safe-area-inset-right, 0px))" }}>
+      {errorBox}
+      {children}
+    </div>
+  );
+
+  const confirmInterrupt = (what: string) => !playingSomething || window.confirm(what);
+
+  const jTracks = ls?.tracks?.length ? ls.tracks : JOSEPH_TRACKS_LOCAL;
+
+  // ── SETS ───────────────────────────────────────────────────────────
+  const setsTab = (
+    <>
+      {!stale && !inLoop && !ls ? (
+        page(
+          <div className="rounded-xl border border-primary bg-primary/10 p-4">
+            <div className={`${label} text-primary`}>Not playing your sets</div>
+            <p className="mt-1 mb-3 text-sm text-ink-mute">The screen is in {inLive ? "live mode" : "DJ mode"}. Bring back your sets where they left off.</p>
+            <Button
+              className="h-14 w-full rounded-lg text-lg text-primary-foreground active:bg-primary/75"
+              onClick={() => { if (window.confirm("Stop this and play your sets?")) fire("loop"); }}
+            >
+              Play my sets
+            </Button>
+          </div>,
+        )
+      ) : null}
+      {sendError && (stale || inLoop || ls) ? page(null) : null}
+      <PresenterView
+        presenter={status?.presenter ?? null}
+        programs={status?.programs ?? []}
+        journeyName={status?.journey ?? null}
+        currentTime={status?.currentTime}
+        duration={status?.duration}
+        stale={stale}
+        ageMs={ageMs}
+        titles={status?.titles ?? null}
+        josephTracks={jTracks}
+        joseph={ls ? { index: ls.index, count: ls.count, title: ls.title, state: ls.state, currentTime: ls.currentTime, duration: ls.duration, next: ls.next } : null}
+        send={fire}
+      />
+    </>
+  );
+
+  // ── LIVE — live visuals from the mic ─────────────────────────────
+  const plainLive = inLive && !ls;
+  const li = status?.liveinput ?? null;
+  const hearsLaptop = (plainLive ? status?.liveSrc ?? liveSrc : liveSrc) === "both";
+  const liveTab = page(
+    <>
+      <div className={`${label} mb-1`}>Live</div>
+      <h1 className={`${title} mb-1 text-3xl text-ink`}>{plainLive ? "You're live" : "Go live"}</h1>
+      <p className="mb-4 text-sm text-ink-mute">Visuals follow the sound in the room — your Nord, voices, a plugged-in mic.</p>
+      {plainLive ? (
+        <>
+          <div className="mb-4 rounded-xl border border-border bg-card p-4">
+            <div className={`font-mono text-[11px] uppercase tracking-widest ${li?.ok === false ? "text-destructive" : "text-emerald-400"}`}>
+              {li ? (li.ok ? "Listening" : "Not listening") : "Starting…"}
+            </div>
+            <div className="mt-1 text-sm text-ink">{li?.inputs?.length ? li.inputs.join(" + ") : SRC_NAME[liveSrc]}</div>
+            {li?.note ? <div className="mt-1 text-xs text-ink-faint">{li.note}</div> : null}
+            <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/[0.08]" aria-label="Input level">
+              <div className="h-full rounded-full bg-emerald-500 transition-[width] duration-fast" style={{ width: `${Math.min(100, Math.round((li?.level ?? 0) * 250))}%` }} />
+            </div>
+            {status?.midi ? <div className="mt-2 text-xs text-ink-faint">{status.midi}</div> : null}
+          </div>
+          <Button className="mb-2 h-[88px] w-full gap-3 rounded-lg text-xl text-primary-foreground active:bg-primary/75" onClick={() => fire("skip")}>
+            New world <ArrowRight className="size-6" />
+          </Button>
+          <Button variant="glass" className={`${btn} mb-6 w-full`} onClick={() => { if (window.confirm("Stop live and go back to your sets?")) fire("loop"); }}>
+            ■ Stop live — back to my sets
+          </Button>
+        </>
+      ) : (
+        <Button
+          className="mb-6 h-[88px] w-full gap-3 rounded-lg text-xl text-primary-foreground active:bg-primary/75"
+          onClick={() => {
+            const src = hearsLaptop ? "both" : "mic";
+            if (confirmInterrupt("Stop what's playing and go live?")) fire(`live:${src}`);
+          }}
+        >
+          ● Go live
+        </Button>
+      )}
+      <div className="flex items-center justify-between gap-3">
+        <div className="min-w-0">
+          <div className="text-sm text-ink-mute">Also hear laptop sound</div>
+          <div className="text-xs text-ink-faint">Needs BlackHole installed</div>
+        </div>
         <button
           type="button"
-          className="mb-3 inline-flex min-h-11 items-center text-sm text-ink-mute active:text-ink"
-          onClick={() => setControlsOpen(false)}
+          role="switch"
+          aria-checked={hearsLaptop}
+          className="relative flex min-h-11 min-w-14 shrink-0 items-center justify-center"
+          onClick={() => {
+            const next: LiveSrc = hearsLaptop ? "mic" : "both";
+            setLiveSrc(next);
+            if (plainLive) fire(`live:${next}`);
+          }}
         >
-          ← Presenter
+          <span className={`block h-7 w-12 rounded-full transition-colors duration-fast ${hearsLaptop ? "bg-primary" : "bg-white/[0.14]"}`} />
+          <span className={`absolute top-1/2 h-6 w-6 -translate-y-1/2 rounded-full bg-white transition-transform duration-fast ${hearsLaptop ? "translate-x-[10px]" : "-translate-x-[10px]"}`} />
         </button>
-      ) : null}
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="font-sans text-xl font-medium tracking-tight text-ink">
-          Resonance Remote
-        </h1>
-        <span
-          className={`h-2.5 w-2.5 rounded-full transition-colors duration-fast ${stale ? "bg-destructive" : "bg-emerald-500"}`}
-          title={stale ? "Kiosk not reporting" : "Kiosk live"}
-        />
       </div>
+    </>,
+  );
 
-      <div className="rounded-xl p-4 mb-6 bg-card border border-border">
-        <div className="font-mono text-[11px] uppercase tracking-widest text-ink-faint mb-1.5">
-          {stale ? `waiting for kiosk…${effAgeMs !== null ? ` last heard ${fmt(effAgeMs / 1000)} ago` : ""}` : inLive ? (status?.liveset ? "live theatre — Joseph set" : "live theatre — listening") : inLoop ? "attract loop" : "dj mode"}
-        </div>
-        <div className="font-sans text-2xl font-medium tracking-tight text-ink mb-0.5">
-          {status?.journey ?? "—"}
-        </div>
-        <div className="text-sm text-ink-mute">
-          {status?.track ?? "no track"}
-          {status?.duration ? (
-            <span className="text-ink-faint">
-              {" "}· {fmt(status.currentTime)} / {fmt(status.duration)}
-              {status.isPlaying === false ? " · paused" : ""}
-            </span>
-          ) : null}
-        </div>
-        {inLive && status?.liveset ? (
-          <div className="mt-1.5 text-xs text-ink-faint">
-            Joseph set · {status.liveset.index} of {status.liveset.count}
-            {status.liveset.state === "ended" ? " · ended — worlds wander on" : status.liveset.next ? ` · next: ${status.liveset.next}` : ""}
-          </div>
-        ) : null}
-        {inLive && status?.midi ? (
-          <div className="mt-1.5 text-xs text-ink-faint">{status.midi}</div>
-        ) : null}
-      </div>
+  // ── MORE ───────────────────────────────────────────────────────────
+  const holdOn = status?.presenter?.holdOn ?? "ending";
+  const moreTab = page(
+    <>
+      <div className={`${label} mb-1`}>Settings &amp; tools</div>
+      <h1 className={`${title} mb-5 text-3xl text-ink`}>More</h1>
 
-      {sendError ? (
-        <div className="rounded-xl px-4 py-3 mb-6 text-sm text-destructive bg-destructive/10 border border-destructive/25">
-          {sendError}
-        </div>
-      ) : null}
-
-      <div className="grid grid-cols-2 gap-3 mb-6">
-        {inLoop && (
-          <>
-            <Button variant="glass" className={btn} onClick={() => void send("prev")}>
-              ◀ Previous
-            </Button>
-            <Button variant="glass" className={btn} onClick={() => void send("skip")}>
-              Next ▶
-            </Button>
-            <Button variant="glass" className={btn} onClick={() => void send("set-prev")}>
-              ◀ Set
-            </Button>
-            <Button variant="glass" className={btn} onClick={() => void send("set-next")}>
-              Set ▶
-            </Button>
-          </>
-        )}
-        {inLoop && (
-          // Karel 2026-10-10: put the title card (piano + "Resonance") up and
-          // HOLD it for the introduction; Start begins Rise Above from it
-          (status?.journey ?? "").includes("HOLDING") ? (
-            <Button variant="glass" className={`${btn} col-span-2 bg-white/[0.14]`} onClick={() => void send("title-release")}>
-              ▶ Start Rise Above
-            </Button>
-          ) : (
-            <Button
-              variant="glass"
-              className={`${btn} col-span-2`}
-              onClick={() => {
-                // confirmed — a pocket tap would stop the show
-                if (window.confirm("Fade out and hold the title card until you press Start?")) void send("title-hold");
-              }}
+      <div className={`${label} mb-2`}>Screen</div>
+      <div className="mb-3"><TitlesRow titles={status?.titles ?? null} send={fire} /></div>
+      <div className="mb-6 flex items-center justify-between gap-3">
+        <span className="text-xs text-ink-faint">A held song shows</span>
+        <div className="grid grid-cols-2 overflow-hidden rounded-lg border border-border bg-card">
+          {(["ending", "title"] as const).map((h) => (
+            <button
+              type="button"
+              key={h}
+              className={`min-h-11 rounded-none px-3 text-xs transition-colors duration-instant ${holdOn === h ? "bg-primary/20 text-ink" : "text-ink-mute active:bg-white/[0.06]"}`}
+              onClick={() => fire(`holdon:${h}`)}
             >
-              Title card — hold
-            </Button>
-          )
-        )}
-        {inLive ? (
-          <>
-            {/* LIVE THEATRE (Karel 2026-10-11): the kiosk listens to the Nord and
-                wanders the catalogue; Next opens another world now */}
-            {/* (in a live set Next / Previous move through its tracks — below — and
-                this changes the world only: liveset:world) */}
-            <Button variant="glass" className={`${btn} col-span-2`} onClick={() => void send(status?.liveset ? "liveset:world" : "skip")}>
-              Next world ▶
-            </Button>
-            {/* what the kiosk listens to — switches at once (live:<src>). In a
-                live set the kiosk hears the SET (no mic): a source tap leaves
-                the set, so it says so and asks first. */}
-            <div className="col-span-2">
-              <div className="mb-1.5 font-mono text-[11px] uppercase tracking-widest text-ink-faint">
-                {status?.liveset ? "Listening to the Joseph set · or switch to" : "Listen to"}
-              </div>
-              <div className="grid grid-cols-3 overflow-hidden rounded-lg border border-border bg-card">
-                {LIVE_SRCS.map((o) => (
-                  <button
-                    type="button"
-                    key={o.src}
-                    className={`min-h-11 rounded-none px-2 text-sm transition-colors duration-instant ${!status?.liveset && liveSrc === o.src ? "bg-primary/20 text-ink" : "text-ink-mute active:bg-white/[0.06]"}`}
-                    onClick={() => {
-                      if (status?.liveset && !window.confirm(`Stop the Joseph set and listen to ${o.long}?`)) return;
-                      setLiveSrc(o.src);
-                      void send(`live:${o.src}`);
-                    }}
-                  >
-                    {o.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </>
-        ) : (
-          <>
-            <Button
-              variant="glass"
-              className={`${btn} col-span-2`}
-              onClick={() => void send("toggle-play", `toggle-play:${status?.isPlaying !== false}`)}
-            >
-              {status?.isPlaying === false ? "Play" : "Pause"}
-            </Button>
-            {livePick ? (
-              // choose what LIVE listens to, then confirm — a pocket tap would stop the show
-              <div className="col-span-2 rounded-xl border border-border bg-card p-3">
-                <div className="mb-2 font-mono text-[11px] uppercase tracking-widest text-ink-faint">Go live — listen to</div>
-                <div className="grid grid-cols-3 gap-2">
-                  {LIVE_SRCS.map((o) => (
-                    <Button
-                      variant="glass"
-                      key={o.src}
-                      className={`${btn} px-2 justify-center text-center`}
-                      onClick={() => {
-                        if (window.confirm(`Go LIVE listening to ${o.long}? The kiosk wanders every world until you press Back to loop.`)) {
-                          setLiveSrc(o.src);
-                          setLivePick(false);
-                          void send(`live:${o.src}`);
-                        }
-                      }}
-                    >
-                      {o.label}
-                    </Button>
-                  ))}
-                </div>
-                <button type="button" className="mt-2 min-h-11 w-full text-sm text-ink-mute" onClick={() => setLivePick(false)}>
-                  Cancel
-                </button>
-              </div>
-            ) : (
-              <Button variant="glass" className={`${btn} col-span-2`} onClick={() => setLivePick(true)}>
-                ● Live — I&apos;m playing
-              </Button>
-            )}
-          </>
-        )}
-
-        {/* MARK (Karel 2026-10-12): tap the moment something looks wrong —
-            the kiosk logs the journey + exact second for Claude to find */}
-        <Button variant="glass" className={`${btn} col-span-2`} onClick={() => void send(`mark:${Date.now()}`)}>
-          ⚑ Mark glitch
-        </Button>
-        {inLoop ? (
-          <Button variant="glass" className={`${btn} col-span-2`} onClick={() => void send("break")}>
-            Break in — DJ mode
-          </Button>
-        ) : (
-          <Button variant="glass" className={`${btn} col-span-2`} onClick={() => void send("loop")}>
-            {inLive ? "■ Back to loop" : "Resume attract loop"}
-          </Button>
-        )}
-      </div>
-
-      {/* JOSEPH — live set (Tramokyo 2026-10-15): a tap plays that track now
-          (liveset:joseph@N); in the set, Next / Previous move through it */}
-      {(() => {
-        const ls = inLive && status?.liveset?.set === "joseph" ? status.liveset : null;
-        const tracks = ls?.tracks?.length ? ls.tracks : JOSEPH_TRACKS_LOCAL;
-        if (!tracks.length) return null;
-        const total = setRunTime(tracks.map((t) => ({ dur: t.duration })));
-        return (
-          <div>
-            <div className="mb-2 flex items-baseline justify-between gap-3 font-mono text-[11px] uppercase tracking-widest text-ink-faint">
-              <span className="min-w-0 truncate">Joseph — live set</span>
-              {total ? <span className="shrink-0 normal-case tracking-normal">{total}</span> : null}
-            </div>
-            {ls ? (
-              <div className="grid grid-cols-2 gap-2 mb-2">
-                <Button variant="glass" className={btn} onClick={() => void send("prev")}>◀ Previous track</Button>
-                <Button variant="glass" className={btn} onClick={() => void send("skip")}>Next track ▶</Button>
-              </div>
-            ) : null}
-            <div className="grid grid-cols-[minmax(0,1fr)] gap-1.5 mb-6">
-              {tracks.map((t) => {
-                const cmd = `liveset:joseph@${t.n}`;
-                const on = ls?.index === t.n;
-                return (
-                  <Button
-                    variant="glass"
-                    key={t.id}
-                    aria-current={on ? "true" : undefined}
-                    className={`${btn} py-2.5 justify-start text-left ${on ? "border-primary/60 bg-primary/15" : sending === cmd ? "bg-white/[0.18]" : ""}`}
-                    onClick={() => void send(cmd)}
-                  >
-                    <span className="w-5 shrink-0 text-right font-mono text-[10px] text-ink-faint">{t.n}</span>
-                    <span className="min-w-0 flex-1 truncate">{t.title}</span>
-                    <span className={`shrink-0 font-mono text-[10px] ${on ? "uppercase tracking-widest text-primary" : "text-ink-faint"}`}>
-                      {on ? (ls?.state === "playing" ? "Playing" : ls?.state === "ended" ? "Ended" : "Starting") : fmt(t.duration)}
-                    </span>
-                  </Button>
-                );
-              })}
-            </div>
-          </div>
-        );
-      })()}
-
-      {/* Program sections — track lists straight from the kiosk's built
-          programs (Welcome Home, Snowflake EP, and any future program —
-          Surrounded by Light / March Light — appear automatically).
-          Names only, numbered; a tap jumps the loop to that journey. */}
-      {(status?.programs ?? []).map((prog, pi, all) => (
-        <div key={prog.id}>
-          {/* main-loop sets first, then the album / program versions — same
-              names otherwise read as duplicates (two "Vigil", two "Expansion") */}
-          {!isMainSet(prog.id) && (pi === 0 || isMainSet(all[pi - 1].id)) ? (
-            <div className="mb-3 mt-2 border-t border-border pt-4 text-xs text-ink-mute">
-              Album &amp; program versions — each plays through, then the loop returns to Rise Above
-            </div>
-          ) : null}
-          <div className="mb-2 flex items-baseline justify-between gap-3 font-mono text-[11px] uppercase tracking-widest text-ink-faint">
-            <span className="min-w-0 truncate">{prog.label}</span>
-            {setRunTime(prog.journeys) ? <span className="shrink-0 normal-case tracking-normal">{setRunTime(prog.journeys)}</span> : null}
-          </div>
-          <div className="grid grid-cols-2 gap-2 mb-6">
-            {prog.journeys.map((j, i) => (
-              <Button
-                variant="glass"
-                key={`${j.id}-${i}`}
-                aria-current={inLoop && status?.presenter?.current?.journeyId === j.id && status.presenter.current.programId === prog.id ? "true" : undefined}
-                className={`${btn} py-2.5 justify-start text-left ${sending === `jump:${j.id}@${prog.id}` || (inLoop && status?.presenter?.current?.journeyId === j.id && status.presenter.current.programId === prog.id) ? "bg-white/[0.18]" : ""}`}
-                onClick={() => void send(`jump:${j.id}@${prog.id}`)}
-              >
-                <span className="mr-2 shrink-0 font-mono text-[10px] text-ink-faint">
-                  {i + 1}
-                </span>
-                <span className="block truncate">{j.name}</span>
-              </Button>
-            ))}
-          </div>
+              {h === "ending" ? "Its ending" : "Title card"}
+            </button>
+          ))}
         </div>
-      ))}
-
-      <div className="mb-2 font-mono text-[11px] uppercase tracking-widest text-ink-faint">
-        Extras — DJ mode {inLoop ? "(plays one journey, then Resume the loop)" : ""}
-      </div>
-      <div className="grid grid-cols-2 gap-2 mb-8">
-        {/* Paired journeys only (2026-09-19 audit): deterministic mode
-            404s unpaired resolves, which used to strand a silent journey.
-            The break→journey pair is also sequenced — both commands in
-            one poll batch made the loop-context kiosk drop journey:. */}
-        {/* Karel 2026-09-20: journeys IN the show are tapped from their
-            program sections above (loop jump → continues in setlist
-            order). This DJ section offers only the extras, so choosing
-            a show track can never strand playback outside the loop. */}
-        {extras.filter((j) => {
-          const inShow = (status?.programs ?? []).some((p) =>
-            p.journeys.some((pj) => pj.id === j.id),
-          );
-          return !inShow;
-        }).map((j) => (
-          <Button
-            variant="glass"
-            key={j.id}
-            className={`${btn} py-2.5 justify-start text-left ${sending === `journey:${j.id}` ? "bg-white/[0.18]" : ""}`}
-            onClick={() => {
-              if (inLoop) {
-                void send("break");
-                // The kiosk drains the bus every ~2s and drops journey:
-                // while still in loop context — give the break a beat to
-                // land and navigate before the journey command arrives.
-                setTimeout(() => void send(`journey:${j.id}`), 3500);
-              } else {
-                void send(`journey:${j.id}`);
-              }
-            }}
-          >
-            <span className="block truncate">{j.name}</span>
-          </Button>
-        ))}
       </div>
 
-      <div className="mb-2 font-mono text-[11px] uppercase tracking-widest text-ink-faint">Volume</div>
-      <div className="grid grid-cols-5 gap-2 mb-8">
+      <div className={`${label} mb-2`}>Volume</div>
+      <div className="mb-6 grid grid-cols-5 gap-2">
         {[0.2, 0.4, 0.6, 0.8, 1.0].map((v) => (
           <Button
             variant="glass"
             key={v}
             className={`${btn} px-0 py-2.5 text-center ${status?.volume !== undefined && Math.abs(status.volume - v) < 0.1 ? "border-white/40" : ""}`}
-            onClick={() => void send(`volume:${v}`)}
+            onClick={() => fire(`volume:${v}`)}
           >
             {Math.round(v * 100)}
           </Button>
         ))}
       </div>
 
-      <div className="mb-2 font-mono text-[11px] uppercase tracking-widest text-ink-faint">Start from — main loop</div>
-      <div className="mb-8 grid gap-2">
-        {START_POINTS.filter((sp) => !sp.standalone).map((sp) => (
-          <Button
-            variant="glass"
-            key={sp.label}
-            className={`${btn} w-full ${sending === sp.cmd ? "bg-white/[0.18]" : ""}`}
-            onClick={() => {
-              // Confirmed — a pocket tap mid-journey would restart the show.
-              if (window.confirm(`Jump the loop to “${sp.label}”?`)) {
-                void send(sp.cmd);
-              }
-            }}
-          >
-            {sp.label}
-          </Button>
-        ))}
-      </div>
+      {inLoop ? (
+        <>
+          <div className={`${label} mb-2`}>Title card</div>
+          <div className="mb-6">
+            {(status?.journey ?? "").includes("HOLDING") ? (
+              <Button variant="glass" className={`${btn} w-full bg-white/[0.14]`} onClick={() => fire("title-release")}>
+                ▶ Start Rise Above
+              </Button>
+            ) : (
+              <Button
+                variant="glass"
+                className={`${btn} w-full`}
+                onClick={() => {
+                  // confirmed — a pocket tap would stop the show
+                  if (window.confirm("Fade out and hold the title card until you press Start?")) fire("title-hold");
+                }}
+              >
+                Title card — hold
+              </Button>
+            )}
+          </div>
+          <div className={`${label} mb-2`}>Skip</div>
+          <div className="mb-6 grid grid-cols-2 gap-2">
+            <Button variant="glass" className={btn} onClick={() => fire("prev")}>◀ Previous</Button>
+            <Button variant="glass" className={btn} onClick={() => fire("skip")}>Next ▶</Button>
+            <Button variant="glass" className={btn} onClick={() => fire("set-prev")}>◀ Set</Button>
+            <Button variant="glass" className={btn} onClick={() => fire("set-next")}>Set ▶</Button>
+          </div>
+        </>
+      ) : null}
 
-      <div className="mb-2 font-mono text-[11px] uppercase tracking-widest text-ink-faint">Start an album / program</div>
-      <div className="mb-8 grid gap-2">
-        {START_POINTS.filter((sp) => sp.standalone).map((sp) => (
+      <div className={`${label} mb-2`}>Something looks wrong?</div>
+      {/* MARK (Karel 2026-10-12): tap the moment something looks wrong —
+          the kiosk logs the journey + exact second for Claude to find */}
+      <Button variant="glass" className={`${btn} mb-6 w-full`} onClick={() => fire(`mark:${Date.now()}`)}>
+        ⚑ Mark glitch
+      </Button>
+
+      <div className={`${label} mb-2`}>Start from</div>
+      <div className="mb-6 grid gap-2">
+        {START_POINTS.map((sp) => (
           <Button
             variant="glass"
             key={sp.cmd}
             className={`${btn} w-full ${sending === sp.cmd ? "bg-white/[0.18]" : ""}`}
             onClick={() => {
-              if (window.confirm(`Jump the loop to “${sp.label}”?`)) {
-                void send(sp.cmd);
-              }
+              // Confirmed — a pocket tap mid-journey would restart the show.
+              if (window.confirm(`Jump to “${sp.label}”?`)) fire(sp.cmd);
             }}
           >
             {sp.label}
@@ -631,20 +532,91 @@ export function RemoteClient({
         ))}
       </div>
 
-      <div className="mb-2 font-mono text-[11px] uppercase tracking-widest text-ink-faint">Recovery</div>
+      <details className="mb-6 rounded-xl border border-border bg-card px-4 py-1">
+        <summary className="flex min-h-11 cursor-pointer items-center text-sm text-ink-mute">Extras — DJ mode</summary>
+        <p className="mb-3 text-xs text-ink-faint">Plays one journey outside your sets{inLoop ? ", then Resume brings the loop back" : ""}.</p>
+        <div className="mb-3 grid grid-cols-2 gap-2">
+          {extras.filter((j) => !(status?.programs ?? []).some((p) => p.journeys.some((pj) => pj.id === j.id))).map((j) => (
+            <Button
+              variant="glass"
+              key={j.id}
+              className={`${btn} py-2.5 justify-start text-left ${sending === `journey:${j.id}` ? "bg-white/[0.18]" : ""}`}
+              onClick={() => {
+                if (inLoop) {
+                  void send("break");
+                  // the loop drops journey: — give the break a beat to land first
+                  setTimeout(() => void send(`journey:${j.id}`), 3500);
+                } else {
+                  void send(`journey:${j.id}`);
+                }
+              }}
+            >
+              <span className="block truncate">{j.name}</span>
+            </Button>
+          ))}
+        </div>
+        {inLoop ? (
+          <Button variant="glass" className={`${btn} mb-3 w-full`} onClick={() => fire("break")}>Break in — DJ mode</Button>
+        ) : status?.context === "room" ? (
+          <Button variant="glass" className={`${btn} mb-3 w-full`} onClick={() => fire("loop")}>Resume my sets</Button>
+        ) : null}
+      </details>
+
+      <div className={`${label} mb-2`}>Recovery</div>
       <Button
         variant="glass"
-        className={`${btn} w-full ${sending === "reload" ? "bg-white/[0.18]" : ""}`}
+        className={`${btn} mb-6 w-full ${sending === "reload" ? "bg-white/[0.18]" : ""}`}
         onClick={() => {
           // The one recovery that fixes most wedges — confirmed so a
           // pocket tap can't restart the show mid-journey.
-          if (window.confirm("Reload the kiosk display? The attract loop restarts from its intro.")) {
-            void send("reload");
-          }
+          if (window.confirm("Reload the kiosk display? It restarts what it was showing.")) fire("reload");
         }}
       >
         Reload kiosk display
       </Button>
+    </>,
+  );
+
+  const TABS: { id: Tab; name: string; Icon: typeof ListMusic }[] = [
+    { id: "sets", name: "Sets", Icon: ListMusic },
+    { id: "live", name: "Live", Icon: Mic },
+    { id: "more", name: "More", Icon: Settings2 },
+  ];
+
+  return (
+    <div className="min-h-screen bg-background text-ink select-none [-webkit-tap-highlight-color:transparent] [&_button]:touch-manipulation">
+      {strip}
+      <div style={{ paddingBottom: "calc(88px + env(safe-area-inset-bottom, 0px))" }}>
+        {tab === "sets" ? setsTab : tab === "live" ? liveTab : moreTab}
+      </div>
+      <nav
+        className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-background/95 backdrop-blur-sm"
+        style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
+        aria-label="Modes"
+      >
+        <div className="mx-auto grid max-w-md grid-cols-3">
+          {TABS.map(({ id, name, Icon }) => {
+            const on = tab === id;
+            return (
+              <button
+                type="button"
+                key={id}
+                aria-current={on ? "page" : undefined}
+                className={`relative flex min-h-14 flex-col items-center justify-center gap-0.5 text-[11px] transition-colors duration-instant ${on ? "text-ink" : "text-ink-faint active:text-ink-mute"}`}
+                onClick={() => go(id)}
+              >
+                <span className="relative">
+                  <Icon className="size-6" strokeWidth={on ? 2 : 1.5} />
+                  {mode === id && !stale ? (
+                    <span className="absolute -right-1.5 -top-0.5 h-2 w-2 rounded-full bg-emerald-500 ring-2 ring-background" aria-label="on screen now" />
+                  ) : null}
+                </span>
+                {name}
+              </button>
+            );
+          })}
+        </div>
+      </nav>
     </div>
   );
 }
