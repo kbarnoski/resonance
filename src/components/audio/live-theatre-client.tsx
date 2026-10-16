@@ -418,6 +418,8 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
     let sampleTimer: ReturnType<typeof setInterval> | null = null;
     const srcQ = q.get("livesrc");
     const liveSrc: LiveSource = srcQ === "laptop" || srcQ === "both" ? srcQ : "mic";
+    // the live-set motion lift for the mic too (live-drive.ts): harder, on-beat motion, loop-level light
+    setLiveSetDrive(true);
     void attachMicDrive(Number.isFinite(pre) && pre > 0 ? pre : undefined, liveSrc).then((ok) => {
       const status = getLiveInputStatus();
       postEvent(ok

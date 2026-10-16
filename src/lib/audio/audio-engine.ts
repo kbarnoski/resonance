@@ -149,7 +149,11 @@ export function describeLiveInputs(src: LiveSource, picks: { mic: string | null;
   if (!ok) notes.push("visuals drift on their own");
   return { src, ok, inputs: heard, missing, note: notes.length ? notes.join("; ") : null };
 }
-export async function attachMicDrive(preampGain = 2, src: LiveSource = "mic"): Promise<boolean> {
+// MORE RESPONSIVE (Karel 2026-10-16, talking into the laptop: speech read 0.02-0.05
+// against the Joseph set's 0.2-0.3): preamp 2 → 6, then a compressor so a voice
+// across the room drives and a loud Nord never pins the analyser.
+export const LIVE_MIC_PREAMP = 6;
+export async function attachMicDrive(preampGain = LIVE_MIC_PREAMP, src: LiveSource = "mic"): Promise<boolean> {
   if (micSource) return true;
   const eng = getAudioEngine();
   const raw = { echoCancellation: false, noiseSuppression: false, autoGainControl: false };
@@ -198,7 +202,14 @@ export async function attachMicDrive(preampGain = 2, src: LiveSource = "mic"): P
   mute.connect(ctx.destination);
   const preamp = ctx.createGain();
   preamp.gain.value = preampGain;
-  preamp.connect(eng.analyserNode);
+  const comp = ctx.createDynamicsCompressor();
+  comp.threshold.value = -28;
+  comp.knee.value = 12;
+  comp.ratio.value = 4;
+  comp.attack.value = 0.004; // a transient still lands
+  comp.release.value = 0.25;
+  preamp.connect(comp);
+  comp.connect(eng.analyserNode);
   for (const st of liveStreams) {
     const node = ctx.createMediaStreamSource(st);
     node.connect(preamp);
