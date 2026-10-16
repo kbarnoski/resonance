@@ -23,15 +23,19 @@ export const LIVE_PULSE = {
   /** short / long level time constants (ms) */
   SHORT_MS: 1_500,
   LONG_MS: 20_000,
-  /** how fast the learned floor may rise toward the level (per second) — in a
-   *  quiet stretch; while there is sound it barely moves (FLOOR_RISE_SOUND), so
-   *  long continuous playing is never learned as "the room" */
-  FLOOR_RISE: 0.01,
-  FLOOR_RISE_SOUND: 0.0003,
+  /** the room's floor = the quietest 1-s average over this many seconds */
+  FLOOR_WINDOW_S: 90,
+  /** readings below this are "the mic isn't live yet", never the room */
+  LIVE_MIN: 0.005,
 } as const;
 
 export interface PulseState {
   floor: number;
+  /** 1-second level averages, newest last (the floor = their minimum over FLOOR_WINDOW_S) */
+  secs: number[];
+  /** the second being averaged */
+  accSum: number;
+  accMs: number;
   short: number;
   long: number;
   /** ms of sound heard in this world */
@@ -41,7 +45,7 @@ export interface PulseState {
 }
 
 export function newPulse(level = 0): PulseState {
-  return { floor: level, short: level, long: level, activeMs: 0, sceneMs: 0 };
+  return { floor: level, secs: [], accSum: 0, accMs: 0, short: level, long: level, activeMs: 0, sceneMs: 0 };
 }
 
 /** A new world began: its sound count starts over (the levels carry on). */
@@ -57,13 +61,26 @@ export function soundPresent(s: PulseState, level: number): boolean {
 export function stepPulse(s: PulseState, level: number, dtMs: number): { state: PulseState; change: "sound" | "surge" | null; sound: boolean } {
   const dt = Math.max(0, Math.min(5_000, dtMs));
   const a = (tau: number) => 1 - Math.exp(-dt / tau);
-  // the floor: drops at once to a quieter level, creeps up slowly (never learns the playing)
-  const rise = soundPresent(s, level) ? LIVE_PULSE.FLOOR_RISE_SOUND : LIVE_PULSE.FLOOR_RISE;
-  const floor = level < s.floor ? level : s.floor + (level - s.floor) * Math.min(1, rise * (dt / 1000));
+  // THE ROOM'S FLOOR = the quietest second of the last ~90 s: a steady hum is
+  // its own quietest second, while a voice or playing always leaves quieter
+  // gaps. Readings ≈0 (the mic not yet live) are ignored — a 0 floor once made
+  // the room's hum read as loud sound (kiosk 2026-10-16: 0.84 in a quiet room).
+  let { secs, accSum, accMs } = s;
+  let floor = s.floor;
+  if (level >= LIVE_PULSE.LIVE_MIN) {
+    accSum += level * dt;
+    accMs += dt;
+    if (accMs >= 1000) {
+      secs = [...secs, accSum / accMs].slice(-LIVE_PULSE.FLOOR_WINDOW_S);
+      accSum = 0;
+      accMs = 0;
+      floor = Math.min(...secs);
+    } else if (secs.length === 0) floor = Math.min(floor > 0 ? floor : level, level);
+  }
   const short = s.short + (level - s.short) * a(LIVE_PULSE.SHORT_MS);
   const long = s.long + (level - s.long) * a(LIVE_PULSE.LONG_MS);
   const sound = soundPresent({ ...s, floor }, level);
-  const next: PulseState = { floor, short, long, activeMs: s.activeMs + (sound ? dt : 0), sceneMs: s.sceneMs + dt };
+  const next: PulseState = { floor, secs, accSum, accMs, short, long, activeMs: s.activeMs + (sound ? dt : 0), sceneMs: s.sceneMs + dt };
   let change: "sound" | "surge" | null = null;
   if (next.activeMs >= LIVE_PULSE.ACTIVE_MS) change = "sound";
   else if (next.sceneMs >= LIVE_PULSE.MIN_SCENE_MS && short >= long * LIVE_PULSE.SURGE_X && soundPresent({ ...s, floor }, short)) change = "surge";

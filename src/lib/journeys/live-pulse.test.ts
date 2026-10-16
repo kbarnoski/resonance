@@ -33,16 +33,22 @@ describe("live pulse (Karel 2026-10-16: silence holds, sound engages)", () => {
     expect(quiet.change).toBeNull();
     expect(quiet.st.activeMs).toBeLessThan(LIVE_PULSE.ACTIVE_MS);
   });
-  it("ten minutes of continuous playing still counts as sound (the floor never learns the playing)", () => {
+  it("ten minutes of playing (with the gaps any playing has) keeps counting as sound", () => {
     let st = run(newPulse(0.085), 0.085, 30_000).st;
-    st = { ...st, short: 0.16, long: 0.16 };
     let changes = 0;
     for (let i = 0; i < 600; i++) {
-      const r = stepPulse(st, 0.16, 1000);
+      const lvl = i % 20 === 0 ? 0.095 : 0.16; // a breath every 20 s
+      const r = stepPulse(st, lvl, 1000);
       st = r.change ? { ...r.state, activeMs: 0, sceneMs: 0 } : r.state;
       if (r.change) changes++;
     }
-    expect(changes).toBeGreaterThanOrEqual(9);
+    expect(changes).toBeGreaterThanOrEqual(8);
+  });
+  it("a mic that reads 0 before it goes live never becomes the floor", () => {
+    let st = newPulse(0);
+    st = run(st, 0, 3000).st;
+    st = run(st, 0.1, 5000).st;
+    expect(st.floor).toBeGreaterThan(0.09);
   });
   it("a surge (quiet → loud) brings the next world at once — after the minimum scene", () => {
     const st = run(newPulse(0.085), 0.09, 40_000).st;
