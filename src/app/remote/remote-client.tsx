@@ -56,6 +56,8 @@ interface KioskStatus {
   liveset?: LiveSetStatus | null;
   /** Live Theatre: what the kiosk listens to (its ?livesrc=), "set" in a live set */
   liveSrc?: LiveSrc | "set" | null;
+  /** titles between tracks (track-titles.ts) — absent on an older kiosk build */
+  titles?: "on" | "off";
 }
 
 interface LiveSetStatus {
@@ -259,6 +261,7 @@ export function RemoteClient({
           duration={status?.duration}
           stale={stale}
           ageMs={effAgeMs}
+          titles={status?.titles ?? null}
           send={(c) => void send(c)}
           onControls={() => setControlsOpen(true)}
         />

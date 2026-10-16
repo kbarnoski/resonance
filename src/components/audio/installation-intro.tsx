@@ -7,6 +7,7 @@ import { ResonanceMark } from "@/components/branding/resonance-mark";
 import { Eyebrow, DisplayTitle, MonoLabel } from "@/components/ui/typography";
 import { useEffect, useState } from "react";
 import { StatementPiano } from "./statement-piano";
+import { trackTitlesHidden } from "@/lib/journeys/track-titles";
 import { cardLayer, LATEST_REVEAL_MS, PIANO_WAIT_MAX_MS } from "@/lib/particles/statement-piano-plan";
 
 /* Font readiness is gated upstream in installation-loop-client. By the
@@ -77,6 +78,8 @@ export function InstallationIntro({ stage = "cycle", journey, trackArtist, prese
   // Journey text mounted in journey + fading-journey, fades-in via own
   // animation, fades out via opacity transition in fading-journey.
   const journeyMounted = stage === "journey" || stage === "fading-journey";
+  // read when the intro mounts (it mounts after fonts load — never at SSR)
+  const [titlesHidden] = useState(() => typeof window !== "undefined" && trackTitlesHidden());
   const journeyOpacity = stage === "fading-journey" ? 0 : 1;
 
   // THE STATEMENT CARD (kiosk path, cardT0 set): the logo + text and the
@@ -153,7 +156,8 @@ export function InstallationIntro({ stage = "cycle", journey, trackArtist, prese
             transition: "opacity 1800ms ease-out",
           }}
         >
-          <JourneyTextInner journey={journey} trackArtist={trackArtist} />
+          {/* titles hidden from the phone: the beat stays, the name doesn't paint */}
+          {titlesHidden ? null : <JourneyTextInner journey={journey} trackArtist={trackArtist} />}
         </div>
       )}
 

@@ -20,6 +20,7 @@ import {
 import { useVjBridge } from "@/lib/vj-bridge/use-vj-bridge";
 import { parseLiveSetCommand } from "@/lib/journeys/live-set";
 import { liveSourceOf } from "./live-source";
+import { parseTitlesCommand, setTrackTitlesHidden, trackTitlesHidden } from "@/lib/journeys/track-titles";
 
 // Rolling frame-rate meter (2026-10-05: a steady slowdown never trips the
 // >50ms gap recorder — Karel saw journeys crawl while the log stayed clean).
@@ -103,6 +104,13 @@ function runPresenterCommand(cmd: string, context: KioskRemoteContext): boolean 
 function runCommand(cmd: string, context: KioskRemoteContext): void {
   const store = useAudioStore.getState();
   if (runPresenterCommand(cmd, context)) return;
+  const hideTitles = parseTitlesCommand(cmd);
+  if (hideTitles !== null) {
+    // titles between tracks: takes effect from the next track's card (any context)
+    setTrackTitlesHidden(hideTitles);
+    markKioskStatusDirty();
+    return;
+  }
   if (cmd.startsWith("mark:")) {
     // MARK (Karel 2026-10-12): he taps "Mark glitch" the moment he sees one;
     // the phone's send time puts it on the exact second of the track (the
@@ -389,6 +397,8 @@ export function useKioskRemote(context: KioskRemoteContext): void {
               // LIVE SET: { set, index (1-based), count, id, title, state, isPlaying,
               // currentTime, duration, next, world, tracks[{n,id,title,duration}] }
               liveset: ls ?? null,
+              // titles between tracks: "on" | "off" (track-titles.ts)
+              titles: trackTitlesHidden() ? "off" : "on",
               // LIVE THEATRE input: { src: mic|laptop|both, ok, inputs[labels], missing[], note, level }
               // (note e.g. "laptop sound unavailable — BlackHole not installed")
               liveinput:

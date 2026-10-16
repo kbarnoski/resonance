@@ -40,6 +40,7 @@ import { toast } from "sonner";
 import { Mic } from "lucide-react";
 import { isDesktopApp, enterKioskMode, exitKioskMode, nativeAudioSeek } from "@/lib/tauri";
 import { analyzeAndAdapt, refreshAdaptiveProfile } from "@/lib/journeys/adaptive-engine";
+import { trackTitlesHidden } from "@/lib/journeys/track-titles";
 import {
   getSpeechRecognition,
   type SpeechRecognitionEvent,
@@ -388,7 +389,8 @@ export function VisualizerClient({
       // is itself displaying the journey title (no second intro needed).
       const suppressIntro = useAudioStore.getState().suppressNextJourneyIntro;
       if (!suppressIntro) {
-        setJourneyIntroVisible(true);
+        // titles hidden from the phone (track-titles.ts): no card, same timing
+        setJourneyIntroVisible(!(installationMode && trackTitlesHidden()));
       } else {
         setJourneyIntroVisible(false);
         // Clear the flag so subsequent journeys (1, 2, ...) get their

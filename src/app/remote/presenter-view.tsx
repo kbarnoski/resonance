@@ -28,6 +28,7 @@ const JOSEPH_TIME = setRunTime(JOSEPH);
  *   playnow:<journey id>@<program id> play it NOW (any state), then auto-play on
  *   replay                            play the held / current track again
  *   fadeout                           fade the song out now, then hold
+ *   titles:on | titles:off            show / hide the track titles between tracks
  */
 
 export interface PresenterRefStatus {
@@ -107,6 +108,7 @@ export function PresenterView({
   duration,
   stale,
   ageMs = null,
+  titles = null,
   send,
   onControls,
 }: {
@@ -118,6 +120,8 @@ export function PresenterView({
   stale: boolean;
   /** ms since the kiosk last reported (null = never) — the stale banner */
   ageMs?: number | null;
+  /** the kiosk's titles-between-tracks setting (null = not reported yet) */
+  titles?: "on" | "off" | null;
   send: (cmd: string) => void;
   onControls: () => void;
 }) {
@@ -185,6 +189,13 @@ export function PresenterView({
     }));
     send(cmd);
   };
+  // titles between tracks — the tap shows at once; the kiosk's report wins
+  // once it agrees (or after 6 s, like the presenter's own optimism)
+  const [titlesTap, setTitlesTap] = useState<{ v: "on" | "off"; at: number } | null>(null);
+  useEffect(() => {
+    if (titlesTap && (titles === titlesTap.v || now - titlesTap.at > 6000)) setTitlesTap(null);
+  }, [titles, titlesTap, now]);
+  const titlesShown = (titlesTap?.v ?? titles ?? "on") === "on";
   const manual = playback === "manual";
   const trackName = current?.name ?? journeyName ?? "—";
 
@@ -555,6 +566,27 @@ export function PresenterView({
               onClick={() => choose(`holdon:${h}`, { holdOn: h })}
             >
               {h === "ending" ? "Its ending" : "Title card"}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* titles between tracks (Karel 2026-10-16) — hidden keeps the same
+          transition, just no name on screen */}
+      <div className="mt-3 flex items-center justify-between gap-3">
+        <span className="text-xs text-ink-faint">Titles between tracks</span>
+        <div className="grid grid-cols-2 overflow-hidden rounded-lg border border-border bg-card">
+          {(["on", "off"] as const).map((v) => (
+            <button
+              type="button"
+              key={v}
+              className={`min-h-11 rounded-none px-3 text-xs transition-colors duration-instant ${(titlesShown ? "on" : "off") === v ? "bg-primary/20 text-ink" : "text-ink-mute active:bg-white/[0.06]"}`}
+              onClick={() => {
+                setTitlesTap({ v, at: Date.now() });
+                send(`titles:${v}`);
+              }}
+            >
+              {v === "on" ? "Show" : "Hide"}
             </button>
           ))}
         </div>
