@@ -51,3 +51,16 @@ describe("live pulse (Karel 2026-10-16: silence holds, sound engages)", () => {
     expect(r.change ?? r2.change).toBe("surge");
   });
 });
+
+import { conductStep, conductTarget } from "./live-pulse";
+describe("live conductor (Karel: really strong responses)", () => {
+  it("room hum = 0, a strong voice = full; rises fast, settles slower", () => {
+    const room = newPulse(0.085);
+    expect(conductTarget(room)).toBe(0);
+    expect(conductTarget({ ...room, short: 0.3 })).toBe(1);
+    const up = conductStep(0, 1, 400);
+    const down = 1 - conductStep(1, 0, 400);
+    expect(up).toBeGreaterThan(0.6);
+    expect(down).toBeLessThan(0.2);
+  });
+});

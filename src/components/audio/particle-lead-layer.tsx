@@ -34,6 +34,7 @@
  *
  * Probe: window.__resonanceParticleLead.
  */
+import { getJourneyEngine } from "@/lib/journeys/journey-engine";
 import { getSongEmblem, onSongEmblem } from "@/lib/particles/song-emblem";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { AnalyserLike } from "@/lib/audio/audio-engine";
@@ -2114,7 +2115,11 @@ export function ParticleLeadLayer({
       // tracks full on) — the locked journeys keep their mastered response
       const react = (2.64 + 1.92 * veil) * (cast.mastered ? 1 : 0.8 + 0.2 * motionK);
       // phrase swells lean the motion in (never while an image is worn — emblems untouched)
-      engine.setReact(phraseSw && !imgLoaded ? react * phraseSw.react : react);
+      // live mode (the mic): the sound conducts the field too — calm in
+      // silence, wild when loud (journey-engine setLiveIntensity)
+      const liveI = getJourneyEngine().getLiveIntensity();
+      const liveK = liveI === null ? 1 : 0.45 + 1.15 * liveI;
+      engine.setReact((phraseSw && !imgLoaded ? react * phraseSw.react : react) * liveK);
       if (phraseSw) engine.setSizeScale(imgLoaded ? sizeBase : sizeBase * phraseSw.size);
 
       // colour: harmony per section + a drift on swells (hue/sat only — luma-safe)

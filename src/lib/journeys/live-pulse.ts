@@ -69,3 +69,16 @@ export function stepPulse(s: PulseState, level: number, dtMs: number): { state: 
   else if (next.sceneMs >= LIVE_PULSE.MIN_SCENE_MS && short >= long * LIVE_PULSE.SURGE_X && soundPresent({ ...s, floor }, short)) change = "surge";
   return { state: next, change, sound };
 }
+
+/** The live conductor's target (0-1): how far the SHORT level stands above the
+ *  room — 0 at the room's hum, 1 at a strong voice / full playing. */
+export const LIVE_CONDUCT_SPAN = 0.12;
+export function conductTarget(s: PulseState): number {
+  const over = s.short - (s.floor * LIVE_PULSE.FLOOR_X + LIVE_PULSE.MARGIN * 0.5);
+  return Math.max(0, Math.min(1, over / LIVE_CONDUCT_SPAN));
+}
+/** Smooth toward the target: rises fast (~0.4 s), settles slower (~2.5 s). */
+export function conductStep(cur: number, target: number, dtMs: number): number {
+  const tau = target > cur ? 400 : 2_500;
+  return cur + (target - cur) * (1 - Math.exp(-Math.max(0, dtMs) / tau));
+}

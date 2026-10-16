@@ -727,6 +727,8 @@ class JourneyEngine {
     const breath = JourneyEngine.BREATH_FLOOR
       + (1 - JourneyEngine.BREATH_FLOOR) * (0.5 + 0.5 * Math.sin(this.breathPhase + (elapsedSec * Math.PI * 2) / this.breathPeriodSecs));
     conducted *= breath;
+    // live mode: the sound conducts (setLiveIntensity) — floor in silence, full when loud
+    if (this.liveIntensity !== null) conducted = JourneyEngine.OPENING_FLOOR + (1 - JourneyEngine.OPENING_FLOOR) * this.liveIntensity;
     // Stillness windows: a held, sparse, crisp moment — one static
     // image, one shader. The rotation below also holds during these.
     let inStillnessWindow = false;
@@ -1659,6 +1661,20 @@ class JourneyEngine {
    *  this true on mount and false on unmount. */
   setMultiLayerMode(enabled: boolean): void {
     this.multiLayerMode = enabled;
+  }
+
+  /** LIVE CONDUCTOR (Karel 2026-10-16, live mode: "just need really strong
+   *  responses"): while set (0-1, the mic's loudness above the room), the
+   *  SOUND conducts the intensity — imagery cap, motion, dual/tertiary gates,
+   *  parallax camera — instead of the journey's authored arc, opening ramp and
+   *  breath wave. Silence = the sparse floor; full sound = full intensity.
+   *  null = the authored arc (the loop, live sets). */
+  private liveIntensity: number | null = null;
+  getLiveIntensity(): number | null {
+    return this.liveIntensity;
+  }
+  setLiveIntensity(v: number | null): void {
+    this.liveIntensity = v === null || !Number.isFinite(v) ? null : Math.max(0, Math.min(1, v));
   }
 
   /** Freeze/unfreeze shader switching. Used by installation-loop-client

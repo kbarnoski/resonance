@@ -27,7 +27,7 @@ import type { InstallationProgram, SequenceEntry } from "./installation-loop-cli
 import { createWorldRequester } from "@/lib/journeys/live-world-queue";
 import { pickLiveWorld, liveWorldPool, LIVE_SCENE_MS, LIVE_VEIL_MS, LIVE_DARK_HOLD_MS, LIVE_SONG_TITLE_MS, SET_TITLE_CARD_MS } from "@/lib/journeys/live-theatre";
 import { trackTitlesHidden } from "@/lib/journeys/track-titles";
-import { newPulse, resetScene, stepPulse, type PulseState } from "@/lib/journeys/live-pulse";
+import { newPulse, resetScene, stepPulse, conductStep, conductTarget, type PulseState } from "@/lib/journeys/live-pulse";
 import { HorizonTitle } from "./horizon-title";
 import { ExperienceTextInner } from "./installation-intro";
 import {
@@ -35,6 +35,7 @@ import {
   type PlannedScene, type SetTrackAnalysis,
 } from "@/lib/journeys/live-set";
 import { setLiveSetDrive } from "@/lib/journeys/live-drive";
+import { getJourneyEngine } from "@/lib/journeys/journey-engine";
 import { setSongEmblem } from "@/lib/particles/song-emblem";
 import { josephTrackUrl, josephTrackGain, JOSEPH_ANALYSIS_URL, type JosephTrack } from "@/lib/journeys/joseph-set";
 
@@ -472,6 +473,43 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // LIVE PULSE + CONDUCTOR (plain live, the mic — live-pulse.ts), 5× a second:
+  // silence holds the world and quiets it to the sparse floor; sound builds it
+  // (imagery, motion, layers) and, after ~60 s of real sound or at a surge,
+  // brings the next world
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get("liveset")) return;
+    let conduct = 0;
+    const engine = (() => { try { return getJourneyEngine(); } catch { return null; } })();
+    const id = setInterval(() => {
+      const an = getAnalyserNode();
+      if (!an || !sceneStartRef.current) return;
+      const d = pulseBufRef.current && pulseBufRef.current.length === an.frequencyBinCount ? pulseBufRef.current : (pulseBufRef.current = new Uint8Array(an.frequencyBinCount));
+      an.getByteFrequencyData(d);
+      let sum = 0;
+      for (let i = 0; i < d.length; i++) sum += d[i];
+      const level = sum / d.length / 255;
+      const now = Date.now();
+      // the room's floor starts from the first reading (never 0 — the hum would count as sound)
+      if (!pulseAtRef.current) pulseRef.current = newPulse(level);
+      const dt = pulseAtRef.current ? now - pulseAtRef.current : 0;
+      const r = stepPulse(pulseRef.current, level, dt);
+      pulseAtRef.current = now;
+      pulseRef.current = r.state;
+      conduct = conductStep(conduct, conductTarget(r.state), dt);
+      engine?.setLiveIntensity(conduct);
+      (window as unknown as Record<string, unknown>).__resonanceLiveConduct = Math.round(conduct * 100) / 100;
+      if (r.change && !busyRef.current) {
+        pulseRef.current = resetScene(pulseRef.current);
+        void nextWorld(r.change);
+      }
+    }, 200);
+    return () => {
+      clearInterval(id);
+      engine?.setLiveIntensity(null);
+    };
+  }, [nextWorld]);
+
   // Scene clock: a live set follows its songs; plain live follows the SOUND (live-pulse.ts); either changes before its clock track runs out.
   useEffect(() => {
     const id = setInterval(() => {
@@ -507,27 +545,7 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
         }
         return;
       }
-      // LIVE PULSE (live-pulse.ts): silence holds the world; only real sound
-      // runs its clock; a surge brings the next one at once
-      const an = getAnalyserNode();
-      let level = 0;
-      if (an) {
-        const d = pulseBufRef.current && pulseBufRef.current.length === an.frequencyBinCount ? pulseBufRef.current : (pulseBufRef.current = new Uint8Array(an.frequencyBinCount));
-        an.getByteFrequencyData(d);
-        let sum = 0;
-        for (let i = 0; i < d.length; i++) sum += d[i];
-        level = sum / d.length / 255;
-      }
-      const now = Date.now();
-      // the room's floor starts from the first reading (never 0 — the hum would count as sound)
-      if (!pulseAtRef.current) pulseRef.current = newPulse(level);
-      const r = stepPulse(pulseRef.current, level, pulseAtRef.current ? now - pulseAtRef.current : 0);
-      pulseAtRef.current = now;
-      pulseRef.current = r.state;
-      if (r.change) {
-        pulseRef.current = resetScene(pulseRef.current);
-        void nextWorld(r.change === "surge" ? "surge" : "sound");
-      } else if (left < (LIVE_VEIL_MS / 1000) + 4) void nextWorld("track-end");
+      if (left < (LIVE_VEIL_MS / 1000) + 4) void nextWorld("track-end");
     }, 1000);
     // phone: skip / prev = next / previous set track (plain live: next world);
     // liveset:joseph@N = that track now; liveset:world = next world, same track
