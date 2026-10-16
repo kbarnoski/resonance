@@ -1,5 +1,13 @@
 [
  {
+  "slug": "21280-mosaicfield",
+  "cycle": 21280,
+  "name": "Mosaic Field",
+  "status": "demoable",
+  "description": "Fly a sphere-gate through a volumetric 3-D cloud of your own piano recording's notes and re-sequence the performance in space — the order your motion sweeps the cells, not the orig",
+  "category": "local"
+ },
+ {
   "slug": "21120-datum",
   "cycle": 21120,
   "name": "Datum",
