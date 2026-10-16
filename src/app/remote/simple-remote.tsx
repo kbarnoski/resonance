@@ -320,7 +320,7 @@ export function SimpleRemote({
               >
                 <span>{hearsLaptop ? "On" : "Off"}</span>
                 <span className={`relative block h-7 w-12 rounded-full transition-colors duration-fast ${hearsLaptop ? "bg-primary" : "bg-white/[0.14]"}`}>
-                  <span className={`absolute top-0.5 h-6 w-6 rounded-full bg-white transition-transform duration-fast ${hearsLaptop ? "translate-x-[22px]" : "translate-x-0.5"}`} />
+                  <span className={`absolute left-0 top-0.5 h-6 w-6 rounded-full bg-white transition-transform duration-fast ${hearsLaptop ? "translate-x-[22px]" : "translate-x-0.5"}`} />
                 </span>
               </button>,
               "Needs BlackHole installed on the laptop.",

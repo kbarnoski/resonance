@@ -83,6 +83,17 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
   const setSuppressNextJourneyIntro = useAudioStore((s) => s.setSuppressNextJourneyIntro);
 
   const poolRef = useRef<SequenceEntry[]>(liveWorldPool(programs));
+  // the phone's song lists come from the kiosk — publish them in live mode too
+  // (the loop's format), or a phone that never saw the loop lists "0 songs"
+  useEffect(() => {
+    const w = window as unknown as Record<string, unknown>;
+    w.__resonanceKioskPrograms = programs.map((p) => ({
+      id: p.id,
+      label: p.presenting.replace(/^the /, ""),
+      journeys: p.sequence.map((e) => ({ id: e.journey.id, name: e.journey.name, dur: e.track?.duration ? Math.round(e.track.duration) : null })),
+    }));
+    return () => { delete w.__resonanceKioskPrograms; };
+  }, [programs]);
   const historyRef = useRef<string[]>([]);
   const busyRef = useRef(false);
   const sceneStartRef = useRef(0);
