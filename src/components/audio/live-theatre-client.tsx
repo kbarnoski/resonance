@@ -27,6 +27,7 @@ import type { InstallationProgram, SequenceEntry } from "./installation-loop-cli
 import { createWorldRequester } from "@/lib/journeys/live-world-queue";
 import { pickLiveWorld, liveWorldPool, LIVE_SCENE_MS, LIVE_VEIL_MS, LIVE_DARK_HOLD_MS, LIVE_SONG_TITLE_MS, SET_TITLE_CARD_MS } from "@/lib/journeys/live-theatre";
 import { trackTitlesHidden } from "@/lib/journeys/track-titles";
+import { newPulse, resetScene, stepPulse, type PulseState } from "@/lib/journeys/live-pulse";
 import { HorizonTitle } from "./horizon-title";
 import { ExperienceTextInner } from "./installation-intro";
 import {
@@ -84,6 +85,10 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
   const historyRef = useRef<string[]>([]);
   const busyRef = useRef(false);
   const sceneStartRef = useRef(0);
+  // plain live: the sound-driven scene clock (live-pulse.ts)
+  const pulseRef = useRef<PulseState>(newPulse());
+  const pulseAtRef = useRef(0);
+  const pulseBufRef = useRef<Uint8Array<ArrayBuffer> | null>(null);
   const [veil, setVeil] = useState(1); // starts black, fades up on the first world
   // a set's song title, between songs (titles on — track-titles.ts)
   const [songTitle, setSongTitle] = useState<{ name: string; key: number } | null>(null);
@@ -188,6 +193,7 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
       (window as unknown as Record<string, unknown>).__resonanceKioskPhaseLabel = `LIVE · ${entry.journey.name}`;
       postEvent(`live-world ${entry.journey.name} (${reason})`);
       sceneStartRef.current = Date.now();
+      pulseRef.current = resetScene(pulseRef.current);
       statusChanged();
       // the first world fades up from black; every later one hands over in
       // view — the hold only spaces changes so two never stack
@@ -466,7 +472,7 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Scene clock: a new world every LIVE_SCENE_MS, or before its clock track runs out.
+  // Scene clock: a live set follows its songs; plain live follows the SOUND (live-pulse.ts); either changes before its clock track runs out.
   useEffect(() => {
     const id = setInterval(() => {
       publishSetStatus();
@@ -501,8 +507,27 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
         }
         return;
       }
-      if (Date.now() - sceneStartRef.current > LIVE_SCENE_MS) void nextWorld("scene");
-      else if (left < (LIVE_VEIL_MS / 1000) + 4) void nextWorld("track-end");
+      // LIVE PULSE (live-pulse.ts): silence holds the world; only real sound
+      // runs its clock; a surge brings the next one at once
+      const an = getAnalyserNode();
+      let level = 0;
+      if (an) {
+        const d = pulseBufRef.current && pulseBufRef.current.length === an.frequencyBinCount ? pulseBufRef.current : (pulseBufRef.current = new Uint8Array(an.frequencyBinCount));
+        an.getByteFrequencyData(d);
+        let sum = 0;
+        for (let i = 0; i < d.length; i++) sum += d[i];
+        level = sum / d.length / 255;
+      }
+      const now = Date.now();
+      // the room's floor starts from the first reading (never 0 — the hum would count as sound)
+      if (!pulseAtRef.current) pulseRef.current = newPulse(level);
+      const r = stepPulse(pulseRef.current, level, pulseAtRef.current ? now - pulseAtRef.current : 0);
+      pulseAtRef.current = now;
+      pulseRef.current = r.state;
+      if (r.change) {
+        pulseRef.current = resetScene(pulseRef.current);
+        void nextWorld(r.change === "surge" ? "surge" : "sound");
+      } else if (left < (LIVE_VEIL_MS / 1000) + 4) void nextWorld("track-end");
     }, 1000);
     // phone: skip / prev = next / previous set track (plain live: next world);
     // liveset:joseph@N = that track now; liveset:world = next world, same track
