@@ -46,7 +46,7 @@ const Visualizer3D = dynamic(() => import("./visualizer-3d").then((m) => m.Visua
   ssr: false,
 });
 import { isMasteredJourneyLike } from "@/lib/journeys/mastered";
-import { isFullKineticJourney, isAudioReactiveJourney, driveOnlyRate, BAND_PROFILES, journeyLayerGain, isSteadyClockShader, journeyResponse, boostedProfile } from "@/lib/journeys/kinetic";
+import { isFullKineticJourney, isAudioReactiveJourney, driveOnlyRate, BAND_PROFILES, journeyLayerGain, isSteadyClockShader, journeyResponse, motionResponse, boostedProfile } from "@/lib/journeys/kinetic";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { SHADERS, MODE_META, MODE_CATEGORIES, MODES_3D, MODES_AI, prepassFor, UPSAMPLE_FRAG } from "@/lib/shaders";
 import { createPrepassChain, prepassSupported, type PrepassChain } from "@/lib/shaders/prepass-gl";
@@ -621,7 +621,9 @@ export function ShaderVisualizer({
       }
       let rateTarget = baseRate;
       if (lastBand && mix.band > 0.001 && !steadyClock) {
-        const prof0 = boostedProfile(BAND_PROFILES[lastBand], journeyResponse(useAudioStore.getState().activeJourney));
+        // the SPEED range rides motionResponse (a live set lifts it); the drive
+        // level that feeds u_amplitude stays on the loop's journeyResponse
+        const prof0 = boostedProfile(BAND_PROFILES[lastBand], motionResponse(useAudioStore.getState().activeJourney));
         const kinRate = prof0.rateLo + eqLv * (prof0.rateHi - prof0.rateLo);
         const bandRate = kinRate + (driveOnlyRate(prof0, eqLv) - kinRate) * mix.driveOnly;
         rateTarget = baseRate + (calmToward(1, bandRate, driveGain) - baseRate) * mix.band;

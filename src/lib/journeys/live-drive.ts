@@ -4,7 +4,10 @@
 // music, not its own track's vibe tier: the response is at least the groove
 // tier, one notch up (x1.25, capped at 3.0 — just past "big & intense"), and the
 // clock-rate slew is 1.5x quicker (~270 ms, was ~400 ms) so a surge lands ON the
-// beat. Motion only, never luminance; the per-shader calm gains, the uniform slew
+// beat. 2026-10-16 round 2 ("the repeated brightening strobe effect is not good.
+// the normal loop effect of brightness was good"): the lift now reaches ONLY the
+// speed range + particle react (kinetic.ts motionResponse) — the drive level that
+// shaders read as u_amplitude stays at the loop's. Motion only, never luminance; the per-shader calm gains, the uniform slew
 // limits and the release decay are all unchanged — it swells harder, never jitters.
 
 let active = false;

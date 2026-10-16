@@ -264,9 +264,19 @@ const FAMILY_RESPONSE: ReadonlyArray<[RegExp, number]> = [
 export function journeyResponse(journey?: { id?: string | null; name?: string | null } | null): number {
   // Snowflake + Ghost keep their mastered response
   if (journey?.id === "first-snow" || journey?.id === "ghost") return 1;
-  // a live set (Joseph) drives every world one notch harder (live-drive.ts)
-  if (liveSetDriveActive()) return liveSetResponse(ownResponse(journey));
   return ownResponse(journey);
+}
+/** The response for MOTION ONLY — the shader clock's speed range and the
+ *  particle field's react. A live set (Joseph) lifts it one notch
+ *  (live-drive.ts); everything that can read as light (the drive level → the
+ *  shaders' u_amplitude, the scale breath, the hands / score layers) stays on
+ *  journeyResponse — Karel 2026-10-16: "the movements are good but the repeated
+ *  brightening strobe effect is not good. the normal loop effect of brightness
+ *  was good". */
+export function motionResponse(journey?: { id?: string | null; name?: string | null } | null): number {
+  const own = journeyResponse(journey);
+  if (own === 1 && (journey?.id === "first-snow" || journey?.id === "ghost")) return 1;
+  return liveSetDriveActive() ? liveSetResponse(own) : own;
 }
 function ownResponse(journey?: { id?: string | null; name?: string | null } | null): number {
   if (journey?.id && JOURNEY_RESPONSE[journey.id]) return JOURNEY_RESPONSE[journey.id];

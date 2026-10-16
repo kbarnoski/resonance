@@ -72,7 +72,7 @@ import { freshVariant, rememberDesign, RECENT_DESIGNS } from "@/lib/particles/fo
 import { emblemEnvelope, imageSlotStep, underlayDue, EMBLEM_HANDOFF, IMAGE_CLEAR, type ImageSlot } from "@/lib/particles/image-follow";
 import { FLIGHT, birdFlightEnabled, closingFlightStart, flightHold, flightReleased, openingFlightStart, signatureFlightFor, type FlightFlag } from "@/lib/particles/signature-flight";
 import type { JourneyFrame } from "@/lib/journeys/types";
-import { journeyResponse } from "@/lib/journeys/kinetic";
+import { journeyResponse, motionResponse } from "@/lib/journeys/kinetic";
 import { PARTICLE_PROFILES } from "@/lib/journeys/particle-profiles.generated";
 import { OnsetDetector, LivingScore, livingScoreEnabled, scoreGain, scoreSessionStore, SCORE_LOCKED_JOURNEYS } from "@/lib/particles/living-score";
 import { FIGURE_LAWS, isFigureSoul } from "@/lib/particles/figure-motion";
@@ -1349,6 +1349,8 @@ export function ParticleLeadLayer({
     let imgLoaded: "angel" | "emblem" | "moment" | "motif" | "echo" | null = null;
     let angelUvWarm = false;
     const respK = journeyResponse({ id: journeyId, name: cast.name });
+    // motion only (a live set lifts it — kinetic.ts motionResponse); respK keeps the hands / score strength
+    const motionK = motionResponse({ id: journeyId, name: cast.name });
     let emblemFormAt = -1;
     let emblemSettledLogged = false;
     let emblemFrames = 0;
@@ -2097,7 +2099,7 @@ export function ParticleLeadLayer({
       // 2.64× always, up to the engine's 4× ceiling alone on black
       // …and the vibe ladder (Karel 2026-10-13: solo piano noticeable, the intense
       // tracks full on) — the locked journeys keep their mastered response
-      const react = (2.64 + 1.92 * veil) * (cast.mastered ? 1 : 0.8 + 0.2 * respK);
+      const react = (2.64 + 1.92 * veil) * (cast.mastered ? 1 : 0.8 + 0.2 * motionK);
       // phrase swells lean the motion in (never while an image is worn — emblems untouched)
       engine.setReact(phraseSw && !imgLoaded ? react * phraseSw.react : react);
       if (phraseSw) engine.setSizeScale(imgLoaded ? sizeBase : sizeBase * phraseSw.size);

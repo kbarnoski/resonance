@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from "vitest";
 import { liveSetResponse, setLiveSetDrive } from "./live-drive";
-import { journeyResponse } from "./kinetic";
+import { journeyResponse, motionResponse } from "./kinetic";
 import { rateSmoothK, RATE_SMOOTH_K } from "./shader-drive";
 
 afterEach(() => setLiveSetDrive(false));
@@ -13,10 +13,12 @@ describe("live set drive (Joseph)", () => {
   });
   it("only while a live set runs; mastered stay mastered", () => {
     const solo = { id: "x", name: "Welcome Home" };
-    expect(journeyResponse(solo)).toBeCloseTo(1.3);
+    expect(motionResponse(solo)).toBeCloseTo(1.3);
     setLiveSetDrive(true);
-    expect(journeyResponse(solo)).toBeCloseTo(2.5);
-    expect(journeyResponse({ id: "ghost", name: "Ghost" })).toBe(1);
+    expect(motionResponse(solo)).toBeCloseTo(2.5);
+    // light-reading paths keep the loop's level ("the normal loop brightness was good")
+    expect(journeyResponse(solo)).toBeCloseTo(1.3);
+    expect(motionResponse({ id: "ghost", name: "Ghost" })).toBe(1);
     expect(rateSmoothK(1)).toBeCloseTo(RATE_SMOOTH_K * 1.5);
     setLiveSetDrive(false);
     expect(rateSmoothK(1)).toBe(RATE_SMOOTH_K);
