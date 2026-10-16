@@ -1,5 +1,13 @@
 [
  {
+  "slug": "21120-datum",
+  "cycle": 21120,
+  "name": "Datum",
+  "status": "demoable",
+  "description": "What if you could pull Karel's piano recording apart into its raw spectral DATA — a stark Ikeda-style datamatics grid of magnitude AND phase — and reach your hand in to time-stretc",
+  "category": "local"
+ },
+ {
   "slug": "20960-faultline",
   "cycle": 20960,
   "name": "Faultline",
