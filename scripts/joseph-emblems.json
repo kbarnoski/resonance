@@ -1,23 +1,194 @@
 {
  "joseph-closer-to-an-end": {
-  "subject": "golden ember-glowing pocket watch",
-  "color": "warm amber gold with glowing ember-orange core",
-  "why": "A clockwork pocket watch with a glowing ember heart joins the pulse, the dawn-warm gold and the ticking sense of time hinted at by 'closer to an end than a beginning'.",
-  "prompt": "an ethereal golden ember-glowing pocket watch made purely of light, large and filling most of the frame — its whole form traced by countless tiny glowing motes and hair-fine feathery wisps, translucent like luminous dust and mist with no solid surfaces, delicate fern-like filaments fraying outward, a gentle swirl of light around a softly glowing core, layered veils of light, long-exposure photograph of drifting light dust, warm amber gold with glowing ember-orange core, floating alone in deep black night",
+  "subject": "Golden Fibonacci spiral lattice",
+  "color": "warm gold, glowing ember orange, deep amber, and soft dawn-rose highlights on a dark bronze ground",
+  "why": "A phyllotaxis spiral of golden points turns like clockwork and blooms outward from a glowing heart-pulse center, building in density and warmth like a dawn horizon.",
+  "abstract": true,
+  "prompt": "an ethereal abstract geometric Golden Fibonacci spiral lattice made purely of light, pure geometry with no recognisable object, large and filling most of the frame — its whole form traced by countless tiny glowing motes and hair-fine feathery wisps, translucent like luminous dust and mist with no solid surfaces, delicate fern-like filaments fraying outward, a gentle swirl of light around a softly glowing core, layered veils of light, long-exposure photograph of drifting light dust, warm gold, glowing ember orange, deep amber, and soft dawn-rose highlights on a dark bronze ground, floating alone in deep black night",
   "file": "/tramokyo-pack/emblems/joseph/joseph-closer-to-an-end.jpg"
  },
  "joseph-teaching-birds-to-fly": {
-  "subject": "soaring bird with outstretched wings",
-  "color": "warm golden amber fading to soft sky blue",
-  "why": "A single bird in full flight with spread feathered wings embodies the title's theme of flight, rising, and soaring, and its upward lift matches the building arc.",
-  "prompt": "an ethereal soaring bird with outstretched wings made purely of light, large and filling most of the frame — its whole form traced by countless tiny glowing motes and hair-fine feathery wisps, translucent like luminous dust and mist with no solid surfaces, delicate fern-like filaments fraying outward, a gentle swirl of light around a softly glowing core, layered veils of light, long-exposure photograph of drifting light dust, warm golden amber fading to soft sky blue, floating alone in deep black night",
+  "subject": "Ascending helical strand lattice, widening upward",
+  "color": "warm dawn gold, soft feather white, pale sky blue, and a touch of nest-straw amber",
+  "why": "Parallel helical strands rise and spread outward as they climb, with their twisting motion suggesting lift and widening flight to match the building arc, and with nothing in the form that reads as a creature or object.",
+  "abstract": true,
+  "prompt": "an ethereal abstract geometric Ascending helical strand lattice, widening upward made purely of light, pure geometry with no recognisable object, large and filling most of the frame — its whole form traced by countless tiny glowing motes and hair-fine feathery wisps, translucent like luminous dust and mist with no solid surfaces, delicate fern-like filaments fraying outward, a gentle swirl of light around a softly glowing core, layered veils of light, long-exposure photograph of drifting light dust, warm dawn gold, soft feather white, pale sky blue, and a touch of nest-straw amber, floating alone in deep black night",
   "file": "/tramokyo-pack/emblems/joseph/joseph-teaching-birds-to-fly.jpg"
  },
  "joseph-burning-bush": {
-  "subject": "burning bush aflame",
-  "color": "molten orange, glowing amber and golden yellow with deep ember red",
-  "why": "A shrub wreathed in flame but never consumed directly captures the title's sacred fire and the piece's intense, smouldering heat.",
-  "prompt": "an ethereal burning bush aflame made purely of light, large and filling most of the frame — its whole form traced by countless tiny glowing motes and hair-fine feathery wisps, translucent like luminous dust and mist with no solid surfaces, delicate fern-like filaments fraying outward, a gentle swirl of light around a softly glowing core, layered veils of light, long-exposure photograph of drifting light dust, molten orange, glowing amber and golden yellow with deep ember red, floating alone in deep black night",
+  "subject": "Radial star lattice of flaring spikes",
+  "color": "molten orange, ember red, white-hot gold core fading to smouldering deep crimson",
+  "why": "Sharp radiating spikes that pulse and flare outward from a white-hot centre capture the blaze and intense build of the arc, with no recognisable object or symbol.",
+  "abstract": true,
+  "prompt": "an ethereal abstract geometric Radial star lattice of flaring spikes made purely of light, pure geometry with no recognisable object, large and filling most of the frame — its whole form traced by countless tiny glowing motes and hair-fine feathery wisps, translucent like luminous dust and mist with no solid surfaces, delicate fern-like filaments fraying outward, a gentle swirl of light around a softly glowing core, layered veils of light, long-exposure photograph of drifting light dust, molten orange, ember red, white-hot gold core fading to smouldering deep crimson, floating alone in deep black night",
   "file": "/tramokyo-pack/emblems/joseph/joseph-burning-bush.jpg"
+ },
+ "joseph-just-for-a-moment": {
+  "subject": "Concentric ripple interference field",
+  "color": "soft dewy pearl, warm champagne gold and pale rose shimmer on deep twilight blue",
+  "why": "Two sets of fine circular ripples overlap into a gentle, steady interference pattern that glimmers, breathes and fades like a moment resting on still water.",
+  "abstract": true,
+  "prompt": "an ethereal abstract geometric Concentric ripple interference field made purely of light, pure geometry with no recognisable object, large and filling most of the frame — its whole form traced by countless tiny glowing motes and hair-fine feathery wisps, translucent like luminous dust and mist with no solid surfaces, delicate fern-like filaments fraying outward, a gentle swirl of light around a softly glowing core, layered veils of light, long-exposure photograph of drifting light dust, soft dewy pearl, warm champagne gold and pale rose shimmer on deep twilight blue, floating alone in deep black night",
+  "file": "/tramokyo-pack/emblems/joseph/joseph-just-for-a-moment.jpg"
+ },
+ "joseph-sky-and-storm": {
+  "subject": "Interlocking orbiting great-circle rings",
+  "color": "deep storm slate blue, thunderous indigo, sea-teal gradients with soft lightning-gold edge highlights and misty cloud-grey glow",
+  "why": "Slowly tilting interlocked rings echo the sky and storm circling one another, with the particles settling into a calm, balanced gyroscopic orbit like a tempest easing into stillness.",
+  "abstract": true,
+  "prompt": "an ethereal abstract geometric Interlocking orbiting great-circle rings made purely of light, pure geometry with no recognisable object, large and filling most of the frame — its whole form traced by countless tiny glowing motes and hair-fine feathery wisps, translucent like luminous dust and mist with no solid surfaces, delicate fern-like filaments fraying outward, a gentle swirl of light around a softly glowing core, layered veils of light, long-exposure photograph of drifting light dust, deep storm slate blue, thunderous indigo, sea-teal gradients with soft lightning-gold edge highlights and misty cloud-grey glow, floating alone in deep black night",
+  "file": "/tramokyo-pack/emblems/joseph/joseph-sky-and-storm.jpg"
+ },
+ "joseph-whispers-in-the-trees": {
+  "subject": "Nested rotating hyperbolic tiling disc",
+  "color": "deep redwood bark red-brown, mossy green, fern emerald, and soft sunlit leaf gold",
+  "why": "The tiling's branching polygons shrink toward the disc's rim like canopy layers, and as they assemble and turn they build outward in a way that echoes growth and the swelling arc of the piece.",
+  "abstract": true,
+  "prompt": "an ethereal abstract geometric Nested rotating hyperbolic tiling disc made purely of light, pure geometry with no recognisable object, large and filling most of the frame — its whole form traced by countless tiny glowing motes and hair-fine feathery wisps, translucent like luminous dust and mist with no solid surfaces, delicate fern-like filaments fraying outward, a gentle swirl of light around a softly glowing core, layered veils of light, long-exposure photograph of drifting light dust, deep redwood bark red-brown, mossy green, fern emerald, and soft sunlit leaf gold, floating alone in deep black night",
+  "file": "/tramokyo-pack/emblems/joseph/joseph-whispers-in-the-trees.jpg"
+ },
+ "joseph-in-motion": {
+  "subject": "Rotating toroidal vortex knot",
+  "color": "deep teal, river-blue and molten amber with bright turquoise highlights",
+  "why": "A torus knot of flowing particles streams endlessly along its own loop while swirling faster and tighter, embodying current, spiral and rush as the piece builds.",
+  "abstract": true,
+  "prompt": "an ethereal abstract geometric Rotating toroidal vortex knot made purely of light, pure geometry with no recognisable object, large and filling most of the frame — its whole form traced by countless tiny glowing motes and hair-fine feathery wisps, translucent like luminous dust and mist with no solid surfaces, delicate fern-like filaments fraying outward, a gentle swirl of light around a softly glowing core, layered veils of light, long-exposure photograph of drifting light dust, deep teal, river-blue and molten amber with bright turquoise highlights, floating alone in deep black night",
+  "file": "/tramokyo-pack/emblems/joseph/joseph-in-motion.jpg"
+ },
+ "joseph-time-pulls-slow": {
+  "subject": "Slowly rotating nested polygon hourglass lattice",
+  "color": "amber, honey gold, dusky rose, twilight violet, warm sand",
+  "why": "Nested polygons that settle gradually into a layered, hourglass-like form reflect time slowing, with each layer arriving and glowing warmer as the music builds.",
+  "abstract": true,
+  "prompt": "an ethereal abstract geometric Slowly rotating nested polygon hourglass lattice made purely of light, pure geometry with no recognisable object, large and filling most of the frame — its whole form traced by countless tiny glowing motes and hair-fine feathery wisps, translucent like luminous dust and mist with no solid surfaces, delicate fern-like filaments fraying outward, a gentle swirl of light around a softly glowing core, layered veils of light, long-exposure photograph of drifting light dust, amber, honey gold, dusky rose, twilight violet, warm sand, floating alone in deep black night",
+  "file": "/tramokyo-pack/emblems/joseph/joseph-time-pulls-slow.jpg"
+ },
+ "joseph-without-a-brightness": {
+  "subject": "Slowly rotating obsidian tesseract projection",
+  "color": "obsidian black, deep smoky charcoal, faint dim violet-grey edges, starless midnight blue shadows",
+  "why": "A tesseract's nested cube-within-cube projection turns steadily inward like a void with no center of light, its faint edges dimly glowing against the starless dark.",
+  "abstract": true,
+  "prompt": "an ethereal abstract geometric Slowly rotating obsidian tesseract projection made purely of light, pure geometry with no recognisable object, large and filling most of the frame — its whole form traced by countless tiny glowing motes and hair-fine feathery wisps, translucent like luminous dust and mist with no solid surfaces, delicate fern-like filaments fraying outward, a gentle swirl of light around a softly glowing core, layered veils of light, long-exposure photograph of drifting light dust, obsidian black, deep smoky charcoal, faint dim violet-grey edges, starless midnight blue shadows, floating alone in deep black night",
+  "file": "/tramokyo-pack/emblems/joseph/joseph-without-a-brightness.jpg"
+ },
+ "joseph-worth-the-war": {
+  "subject": "Fractured faceted iron polyhedron shards",
+  "color": "forged iron grey, molten steel blue-black, lightning white-gold edges, ember orange glow in the fractures",
+  "why": "Angular shards drift in from the storm and lock into one faceted iron polyhedron, with seams of lightning light pulsing slowly through the cracks, so the clash of forces settles into a calm, forged whole.",
+  "abstract": true,
+  "prompt": "an ethereal abstract geometric Fractured faceted iron polyhedron shards made purely of light, pure geometry with no recognisable object, large and filling most of the frame — its whole form traced by countless tiny glowing motes and hair-fine feathery wisps, translucent like luminous dust and mist with no solid surfaces, delicate fern-like filaments fraying outward, a gentle swirl of light around a softly glowing core, layered veils of light, long-exposure photograph of drifting light dust, forged iron grey, molten steel blue-black, lightning white-gold edges, ember orange glow in the fractures, floating alone in deep black night",
+  "file": "/tramokyo-pack/emblems/joseph/joseph-worth-the-war.jpg"
+ },
+ "joseph-closer-now": {
+  "subject": "Converging nested archway portal rings",
+  "color": "warm amber and lantern gold glowing against deep umber, with soft honey-orange light at the core",
+  "why": "Concentric arch-like rings drift inward and brighten as they assemble, so the form feels like a doorway coming nearer and its glow builds with the music.",
+  "abstract": true,
+  "prompt": "an ethereal abstract geometric Converging nested archway portal rings made purely of light, pure geometry with no recognisable object, large and filling most of the frame — its whole form traced by countless tiny glowing motes and hair-fine feathery wisps, translucent like luminous dust and mist with no solid surfaces, delicate fern-like filaments fraying outward, a gentle swirl of light around a softly glowing core, layered veils of light, long-exposure photograph of drifting light dust, warm amber and lantern gold glowing against deep umber, with soft honey-orange light at the core, floating alone in deep black night",
+  "file": "/tramokyo-pack/emblems/joseph/joseph-closer-now.jpg"
+ },
+ "joseph-the-way": {
+  "subject": "Converging parallel-line moiré corridor",
+  "color": "warm lantern amber and burnished gold threads over deep umber and dusk indigo, with ember-orange highlights",
+  "why": "Two sets of fine parallel lines drift across each other to form a moiré corridor that narrows toward a bright vanishing threshold, so the path seems to open ahead and the interference intensifies with the arc, rising to a blazing ascent.",
+  "abstract": true,
+  "prompt": "an ethereal abstract geometric Converging parallel-line moiré corridor made purely of light, pure geometry with no recognisable object, large and filling most of the frame — its whole form traced by countless tiny glowing motes and hair-fine feathery wisps, translucent like luminous dust and mist with no solid surfaces, delicate fern-like filaments fraying outward, a gentle swirl of light around a softly glowing core, layered veils of light, long-exposure photograph of drifting light dust, warm lantern amber and burnished gold threads over deep umber and dusk indigo, with ember-orange highlights, floating alone in deep black night",
+  "file": "/tramokyo-pack/emblems/joseph/joseph-the-way.jpg"
+ },
+ "joseph-ill-be-your-home": {
+  "subject": "Nested glowing Möbius band lattice",
+  "color": "warm amber, lantern gold and hearth-ember orange glowing against deep umber shadow",
+  "why": "A single continuous Möbius band curls back into itself like an endless welcoming loop, its slow turning embodying shelter and its ember-bright pulses building to an intense, radiant warmth.",
+  "abstract": true,
+  "prompt": "an ethereal abstract geometric Nested glowing Möbius band lattice made purely of light, pure geometry with no recognisable object, large and filling most of the frame — its whole form traced by countless tiny glowing motes and hair-fine feathery wisps, translucent like luminous dust and mist with no solid surfaces, delicate fern-like filaments fraying outward, a gentle swirl of light around a softly glowing core, layered veils of light, long-exposure photograph of drifting light dust, warm amber, lantern gold and hearth-ember orange glowing against deep umber shadow, floating alone in deep black night",
+  "file": "/tramokyo-pack/emblems/joseph/joseph-ill-be-your-home.jpg"
+ },
+ "joseph-i-am": {
+  "subject": "Concentric luminous sphere shell cluster",
+  "color": "molten gold core fading to radiant amber, warm white highlights, deep cosmic indigo background",
+  "why": "Particles gather into a dense central sun-sphere and build outward through nested shells of light, so the self is a glowing core radiating into the cosmos with steadily rising intensity.",
+  "abstract": true,
+  "prompt": "an ethereal abstract geometric Concentric luminous sphere shell cluster made purely of light, pure geometry with no recognisable object, large and filling most of the frame — its whole form traced by countless tiny glowing motes and hair-fine feathery wisps, translucent like luminous dust and mist with no solid surfaces, delicate fern-like filaments fraying outward, a gentle swirl of light around a softly glowing core, layered veils of light, long-exposure photograph of drifting light dust, molten gold core fading to radiant amber, warm white highlights, deep cosmic indigo background, floating alone in deep black night",
+  "file": "/tramokyo-pack/emblems/joseph/joseph-i-am.jpg"
+ },
+ "joseph-sixteen-thousand-days": {
+  "subject": "Epicycloid rosette of orbiting arcs",
+  "color": "molten amber dawn gold fading into dusk rose and deep violet, with warm horizon-orange glow",
+  "why": "Looped arcs trace repeating orbital cycles that accumulate layer by layer as the particles gather, so sunrise-to-sunset days build into a luminous rosette of years.",
+  "abstract": true,
+  "prompt": "an ethereal abstract geometric Epicycloid rosette of orbiting arcs made purely of light, pure geometry with no recognisable object, large and filling most of the frame — its whole form traced by countless tiny glowing motes and hair-fine feathery wisps, translucent like luminous dust and mist with no solid surfaces, delicate fern-like filaments fraying outward, a gentle swirl of light around a softly glowing core, layered veils of light, long-exposure photograph of drifting light dust, molten amber dawn gold fading into dusk rose and deep violet, with warm horizon-orange glow, floating alone in deep black night",
+  "file": "/tramokyo-pack/emblems/joseph/joseph-sixteen-thousand-days.jpg"
+ },
+ "joseph-i-was-here": {
+  "subject": "Stacked eroding monolith slab lattice",
+  "color": "weathered sandstone ochre, warm sand beige, dusty umber, faint amber glow",
+  "why": "Rectangular slabs of stone assemble layer by layer into a stepped, slowly turning pyramid lattice whose edges are worn and scattered like grains of sand, building upward as the music grows and leaving trace-like echoes of earlier layers behind it.",
+  "abstract": true,
+  "prompt": "an ethereal abstract geometric Stacked eroding monolith slab lattice made purely of light, pure geometry with no recognisable object, large and filling most of the frame — its whole form traced by countless tiny glowing motes and hair-fine feathery wisps, translucent like luminous dust and mist with no solid surfaces, delicate fern-like filaments fraying outward, a gentle swirl of light around a softly glowing core, layered veils of light, long-exposure photograph of drifting light dust, weathered sandstone ochre, warm sand beige, dusty umber, faint amber glow, floating alone in deep black night",
+  "file": "/tramokyo-pack/emblems/joseph/joseph-i-was-here.jpg"
+ },
+ "joseph-a-better-wish": {
+  "subject": "Lissajous orbit filament lattice",
+  "color": "warm candle amber, lantern gold, and firefly green-yellow glimmers against deep indigo night-sky blue",
+  "why": "Intertwined Lissajous filaments, each a looping glimmering path, start as a loose, quiet tangle and tighten into a bright, rapidly whirling lattice that mirrors the intense build of hope.",
+  "abstract": true,
+  "prompt": "an ethereal abstract geometric Lissajous orbit filament lattice made purely of light, pure geometry with no recognisable object, large and filling most of the frame — its whole form traced by countless tiny glowing motes and hair-fine feathery wisps, translucent like luminous dust and mist with no solid surfaces, delicate fern-like filaments fraying outward, a gentle swirl of light around a softly glowing core, layered veils of light, long-exposure photograph of drifting light dust, warm candle amber, lantern gold, and firefly green-yellow glimmers against deep indigo night-sky blue, floating alone in deep black night",
+  "file": "/tramokyo-pack/emblems/joseph/joseph-a-better-wish.jpg"
+ },
+ "joseph-time": {
+  "subject": "Twisting hyperboloid ruled-line lattice",
+  "color": "burnished brass gold, copper amber, deep tidal indigo",
+  "why": "Straight filaments wind around a waist-pinched surface and twist tighter as the piece builds, like a wheel's rotation and a pendulum's cycle.",
+  "abstract": true,
+  "prompt": "an ethereal abstract geometric Twisting hyperboloid ruled-line lattice made purely of light, pure geometry with no recognisable object, large and filling most of the frame — its whole form traced by countless tiny glowing motes and hair-fine feathery wisps, translucent like luminous dust and mist with no solid surfaces, delicate fern-like filaments fraying outward, a gentle swirl of light around a softly glowing core, layered veils of light, long-exposure photograph of drifting light dust, burnished brass gold, copper amber, deep tidal indigo, floating alone in deep black night",
+  "file": "/tramokyo-pack/emblems/joseph/joseph-time.jpg"
+ },
+ "joseph-from-the-cradle": {
+  "subject": "Rising Lorenz-style strange attractor ribbon",
+  "color": "warm dawn gold, soft apricot and pale sky blue, with luminous white-cream highlights",
+  "why": "A looping attractor ribbon drifts and spirals upward from a dense low cradle-like core, floating and widening into open weightless arcs as the piece builds.",
+  "abstract": true,
+  "prompt": "an ethereal abstract geometric Rising Lorenz-style strange attractor ribbon made purely of light, pure geometry with no recognisable object, large and filling most of the frame — its whole form traced by countless tiny glowing motes and hair-fine feathery wisps, translucent like luminous dust and mist with no solid surfaces, delicate fern-like filaments fraying outward, a gentle swirl of light around a softly glowing core, layered veils of light, long-exposure photograph of drifting light dust, warm dawn gold, soft apricot and pale sky blue, with luminous white-cream highlights, floating alone in deep black night",
+  "file": "/tramokyo-pack/emblems/joseph/joseph-from-the-cradle.jpg"
+ },
+ "joseph-road-less-traveled": {
+  "subject": "Bifurcating branching fractal tree lattice",
+  "color": "autumn amber, moss green, warm ochre, and soft meadow gold",
+  "why": "A purely geometric fractal of lines splitting once and then again echoes the fork in the path, and its slow, calm unfolding embodies the quiet choice of the less traveled way.",
+  "abstract": true,
+  "prompt": "an ethereal abstract geometric Bifurcating branching fractal tree lattice made purely of light, pure geometry with no recognisable object, large and filling most of the frame — its whole form traced by countless tiny glowing motes and hair-fine feathery wisps, translucent like luminous dust and mist with no solid surfaces, delicate fern-like filaments fraying outward, a gentle swirl of light around a softly glowing core, layered veils of light, long-exposure photograph of drifting light dust, autumn amber, moss green, warm ochre, and soft meadow gold, floating alone in deep black night",
+  "file": "/tramokyo-pack/emblems/joseph/joseph-road-less-traveled.jpg"
+ },
+ "joseph-closer-now-2": {
+  "subject": "Expanding concentric dodecagon sunburst lattice",
+  "color": "warm amber, lantern gold, dawn rose and soft apricot glow",
+  "why": "Layered dodecagonal rings swell outward from a bright core like a rising sun, building in radiance as the form approaches full brightness at the threshold.",
+  "abstract": true,
+  "prompt": "an ethereal abstract geometric Expanding concentric dodecagon sunburst lattice made purely of light, pure geometry with no recognisable object, large and filling most of the frame — its whole form traced by countless tiny glowing motes and hair-fine feathery wisps, translucent like luminous dust and mist with no solid surfaces, delicate fern-like filaments fraying outward, a gentle swirl of light around a softly glowing core, layered veils of light, long-exposure photograph of drifting light dust, warm amber, lantern gold, dawn rose and soft apricot glow, floating alone in deep black night",
+  "file": "/tramokyo-pack/emblems/joseph/joseph-closer-now-2.jpg"
+ },
+ "joseph-butterfly": {
+  "subject": "Unfolding paired lobed rose-curve lattice",
+  "color": "soft petal pink, meadow green, warm blossom peach and pale gold glow",
+  "why": "Symmetric paired lobes of a rose-curve lattice slowly open outward like wings emerging from a chrysalis, matching the calm, transformative arc without depicting any recognizable creature or plant.",
+  "abstract": true,
+  "prompt": "an ethereal abstract geometric Unfolding paired lobed rose-curve lattice made purely of light, pure geometry with no recognisable object, large and filling most of the frame — its whole form traced by countless tiny glowing motes and hair-fine feathery wisps, translucent like luminous dust and mist with no solid surfaces, delicate fern-like filaments fraying outward, a gentle swirl of light around a softly glowing core, layered veils of light, long-exposure photograph of drifting light dust, soft petal pink, meadow green, warm blossom peach and pale gold glow, floating alone in deep black night",
+  "file": "/tramokyo-pack/emblems/joseph/joseph-butterfly.jpg"
+ },
+ "joseph-faded-outlines": {
+  "subject": "Spiral galaxy arm particle disc",
+  "color": "deep indigo and violet nebula haze, magenta-rose dust lanes, radiant gold-white core, aurora teal-green edge glints",
+  "why": "A logarithmic multi-arm spiral disc of particles gathers and brightens from a faint spectral outline to a radiant core, its arms slowly turning and dissolving at the rim to echo the building, transcendent arc toward a vast peak.",
+  "abstract": true,
+  "prompt": "an ethereal abstract geometric Spiral galaxy arm particle disc made purely of light, pure geometry with no recognisable object, large and filling most of the frame — its whole form traced by countless tiny glowing motes and hair-fine feathery wisps, translucent like luminous dust and mist with no solid surfaces, delicate fern-like filaments fraying outward, a gentle swirl of light around a softly glowing core, layered veils of light, long-exposure photograph of drifting light dust, deep indigo and violet nebula haze, magenta-rose dust lanes, radiant gold-white core, aurora teal-green edge glints, floating alone in deep black night",
+  "file": "/tramokyo-pack/emblems/joseph/joseph-faded-outlines.jpg"
+ },
+ "joseph-maybe": {
+  "subject": "Drifting layered sine-wave veil lattice",
+  "color": "pale dawn grey, soft mist white, faint blush peach and hazy lavender glow",
+  "why": "Stacked translucent sine-wave curtains slowly drift and ripple out of phase, then gather and brighten layer by layer, echoing the soft, veiled haze of dawn and the building arc of uncertainty toward light.",
+  "abstract": true,
+  "prompt": "an ethereal abstract geometric Drifting layered sine-wave veil lattice made purely of light, pure geometry with no recognisable object, large and filling most of the frame — its whole form traced by countless tiny glowing motes and hair-fine feathery wisps, translucent like luminous dust and mist with no solid surfaces, delicate fern-like filaments fraying outward, a gentle swirl of light around a softly glowing core, layered veils of light, long-exposure photograph of drifting light dust, pale dawn grey, soft mist white, faint blush peach and hazy lavender glow, floating alone in deep black night",
+  "file": "/tramokyo-pack/emblems/joseph/joseph-maybe.jpg"
  }
 }
