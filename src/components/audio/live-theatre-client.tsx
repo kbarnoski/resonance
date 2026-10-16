@@ -35,6 +35,7 @@ import {
   type PlannedScene, type SetTrackAnalysis,
 } from "@/lib/journeys/live-set";
 import { setLiveSetDrive } from "@/lib/journeys/live-drive";
+import { setLiveHandover } from "@/lib/journeys/live-handover";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
 import { setSongEmblem } from "@/lib/particles/song-emblem";
 import { josephTrackUrl, josephTrackGain, JOSEPH_ANALYSIS_URL, type JosephTrack } from "@/lib/journeys/joseph-set";
@@ -83,6 +84,12 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
   const setSuppressNextJourneyIntro = useAudioStore((s) => s.setSuppressNextJourneyIntro);
 
   const poolRef = useRef<SequenceEntry[]>(liveWorldPool(programs));
+  // smooth world handovers — the new world's first still at once, the old ones
+  // drifting under it (live-handover.ts); live mode only
+  useEffect(() => {
+    setLiveHandover(true);
+    return () => setLiveHandover(false);
+  }, []);
   // the phone's song lists come from the kiosk — publish them in live mode too
   // (the loop's format), or a phone that never saw the loop lists "0 songs"
   useEffect(() => {

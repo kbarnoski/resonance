@@ -1,5 +1,6 @@
 "use client";
 
+import { liveHandover, LIVE_BOUNDARY_FADEOUT_MS } from "@/lib/journeys/live-handover";
 import { useEffect, useRef, useCallback, useState } from "react";
 import { getRealtimeImageService } from "@/lib/journeys/realtime-image-service";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
@@ -842,7 +843,10 @@ export function AiImageLayer({
       // never played). Clips below always get their scheduling pass.
       const morphCover = morphCoverPendingRef.current;
       const layering = layeringNow();
-      const stillsBlocked = !morphCover && (
+      // live mode: a new world's FIRST still is a handover — it lands past the
+      // soft gates (live-handover.ts; the old world's fading still is not "solo")
+      const liveFirst = liveHandover() && !firstImageFiredRef.current;
+      const stillsBlocked = !morphCover && !liveFirst && (
         isVideoActive() ||
         getJourneyEngine().getMsSinceAnySwitch() < 2500 ||
         getJourneyEngine().isInStillness() ||
@@ -1802,7 +1806,7 @@ export function AiImageLayer({
         } else if (layer.state === "fading-out") {
           // Slow fade-out keeps images visible longer during transitions
           // Purge layers use a fast 2s fade to clear old journey imagery quickly
-          const fadeDuration = layer.fadeDurationMs ?? (layer.purge ? PURGE_FADEOUT_DURATION : layer.boundaryFade ? BOUNDARY_FADEOUT_DURATION : !("complete" in layer.img) ? VIDEO_FADEOUT_DURATION : FADEOUT_DURATION);
+          const fadeDuration = layer.fadeDurationMs ?? (layer.purge ? PURGE_FADEOUT_DURATION : layer.boundaryFade ? (liveHandover() ? LIVE_BOUNDARY_FADEOUT_MS : BOUNDARY_FADEOUT_DURATION) : !("complete" in layer.img) ? VIDEO_FADEOUT_DURATION : FADEOUT_DURATION);
           const rawProgress = Math.min(1, elapsed / fadeDuration);
           const easedProgress = easeInOutCubic(rawProgress);
           layer.opacity = layer.fadeStartOpacity * (1 - easedProgress);
