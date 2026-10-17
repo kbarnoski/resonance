@@ -25,8 +25,8 @@
     "@ai-sdk/anthropic": "^1.2.12",
     "@ai-sdk/react": "^1.2.12",
     "@anthropic-ai/sdk": "^0.131.0",
-    "@capacitor/core": "^8.3.0",
-    "@capacitor/ios": "^8.3.0",
+    "@capacitor/core": "^8.5.3",
+    "@capacitor/ios": "^8.5.3",
     "@capacitor/keyboard": "^8.0.2",
     "@capacitor/splash-screen": "^8.0.1",
     "@capacitor/status-bar": "^8.0.2",
@@ -70,7 +70,7 @@
   },
   "devDependencies": {
     "@capacitor/assets": "^3.0.5",
-    "@capacitor/cli": "^8.3.0",
+    "@capacitor/cli": "^8.5.3",
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@tauri-apps/cli": "^2.10.1",
@@ -89,6 +89,8 @@
   },
   "overrides": {
     "jsondiffpatch": "^0.7.6",
-    "postcss": "^8.5.23"
+    "postcss": "^8.5.23",
+    "sharp": "^0.35.5",
+    "source-map-js": "^1.2.2"
   }
 }
