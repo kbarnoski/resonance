@@ -393,7 +393,7 @@ export function SimpleRemote({
       <>
         {backBar({ k: "music" }, setName(screen.id, programs))}
         <p className="-mt-3 mb-5 text-base text-ink-faint">
-          {songs.length} songs{time ? ` · ${time}` : ""}{isJoseph ? " · music by Joseph" : ""}
+          {songs.length} songs{time ? ` · ${time}` : ""}{isJoseph ? " · music by C Minus" : ""}
         </p>
         {songs.length ? (
           <>
@@ -514,7 +514,7 @@ export function SimpleRemote({
   } else if (joseph) {
     cardLabel = "Joseph";
     bigTitle = joseph.title ?? "—";
-    subline = `Music by Joseph · ${joseph.index} of ${joseph.count}`;
+    subline = `Music by C Minus · ${joseph.index} of ${joseph.count}`;
     progress = joseph.duration > 0 ? Math.min(1, joseph.currentTime / joseph.duration) : 0;
   } else if (titleHeld) {
     cardLabel = "Title card";

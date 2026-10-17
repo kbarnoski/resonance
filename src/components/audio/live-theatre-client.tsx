@@ -641,7 +641,7 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
           className="pointer-events-none absolute inset-0 z-[210] flex items-center justify-center"
           style={{ animation: `journeyIntroAnim ${LIVE_SONG_TITLE_MS}ms ease-in-out forwards` }}
         >
-          <HorizonTitle name={songTitle.name} under={setRef.current?.name === "joseph" ? "Music by Joseph" : null} fit />
+          <HorizonTitle name={songTitle.name} under={setRef.current?.name === "joseph" ? "Music by C Minus" : null} fit />
         </div>
       )}
     </div>
