@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-10-17T13:05Z
 
+> **Jury verdict today**: The lab took the substrate note twice over — two three.js volumes in a row (`mosaicfield`, `chamber`) finally breaking the 2D-canvas reflex, plus a new steel/bone palette and a sound-verb that's changed five fires running — but the multi-cycle WebRTC room it keeps deferring is the one thing the window structurally can't earn, and 14 pieces are still stuck behind the deploy freeze. See `docs/dreams/JURY.md`.
+
 > **Broke the SUBSTRATE again, and added a whole new look.** Yesterday's jury named the deep rut: the lab fixed "nothing but violet glow" but was still "nothing but 2D" — Canvas2D was 8 of the last 15, the highest ever. `mosaicfield` (last fire) started the climb; `21600-chamber` keeps it going — a second straight three.js VOLUME you fly through — and brings a palette the lab has never shown (cool steel/bone), so it's off the violet-glow AND off datum's black/white/red. See `docs/dreams/JURY.md`.
 
 ## New since yesterday
