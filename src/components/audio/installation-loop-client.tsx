@@ -1876,11 +1876,22 @@ export function InstallationLoopClient({ programs, fallbackTracks, debug, playOn
         const list = program?.setList ?? lastSetListRef.current;
         const next = programs[programIndex + 1];
         const first = programs.findIndex((p) => p.setList === list);
+        // ONLY RISE ABOVE LOOPS (Karel 2026-10-17: "ra set … its the one i play
+        // to loop"): an album / on-demand set ends on the title card and HOLDS
+        // there (the phone's Play then starts Rise Above from the card).
+        if (program?.onDemand) {
+          postEvent(`set-end ${program.id} — holding the title card`);
+          glitchRecord("title-hold", "set-end");
+          setTitleHold(true);
+          setProgramIndex(Math.max(0, programs.findIndex((p) => p.id === TRAMOKYO_MIX_ID)));
+          setPhase({ kind: "intro" });
+          return;
+        }
         setProgramIndex(
-          // EVERY set loops itself through the title card (Karel 2026-10-16:
+          // Rise Above loops itself through the title card (Karel 2026-10-16:
           // "any time a set completes you go to title card … then loop the set
-          // … same with ra set") — on-demand sets no longer hand back to Rise
-          // Above. A list chaining non-on-demand sets still moves to the next.
+          // … same with ra set"). A list chaining non-on-demand sets still
+          // moves to the next.
           program?.setList && next?.setList === program.setList && !next.onDemand && !program.onDemand
             ? programIndex + 1
             : program?.setList

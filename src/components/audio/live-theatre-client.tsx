@@ -25,7 +25,7 @@ import { startMidiInput } from "@/lib/audio/midi-input";
 import type { Journey } from "@/lib/journeys/types";
 import type { InstallationProgram, SequenceEntry } from "./installation-loop-client";
 import { createWorldRequester } from "@/lib/journeys/live-world-queue";
-import { pickLiveWorld, liveWorldPool, LIVE_SCENE_MS, LIVE_VEIL_MS, LIVE_DARK_HOLD_MS, LIVE_SONG_TITLE_MS, SET_TITLE_CARD_MS } from "@/lib/journeys/live-theatre";
+import { pickLiveWorld, liveWorldPool, LIVE_SCENE_MS, LIVE_VEIL_MS, LIVE_DARK_HOLD_MS, LIVE_SONG_TITLE_MS } from "@/lib/journeys/live-theatre";
 import { trackTitlesHidden } from "@/lib/journeys/track-titles";
 import { newPulse, resetScene, stepPulse, conductStep, conductTarget, type PulseState } from "@/lib/journeys/live-pulse";
 import { HorizonTitle } from "./horizon-title";
@@ -271,26 +271,15 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
       st.state = "ended";
       statusChanged();
       setSongEmblem({ url: null, clock: () => [0, 0] }); // no song: no emblem (never the world's)
-      // THE SET LOOPS through the title card (Karel 2026-10-16: "any time a set
-      // completes you go to title card for a good 10 seconds then loop the set
-      // with the resonance theatre title always there as a point between
-      // starting again"): dip to black, the Resonance Theatre card, then track 1
-      // (the next track's own world fades up from the black).
-      postEvent(`liveset-end ${set.name} (${reason}) — title card, then the set again`);
+      // THE SET ENDS ON THE TITLE CARD AND STAYS (Karel 2026-10-17: "when
+      // jospeh's set is played it should come to the title screen and stay";
+      // only Rise Above loops): to black, then the loop page's held statement
+      // card with its piano — the phone's Play starts Rise Above from it.
+      postEvent(`liveset-end ${set.name} (${reason}) — holding the title card`);
       setVeil(1);
       await new Promise((r) => setTimeout(r, LIVE_VEIL_MS));
       if (token !== st.token) return setVeil(0);
-      setTitleCard("in");
-      await new Promise((r) => setTimeout(r, SET_TITLE_CARD_MS - LIVE_DARK_HOLD_MS));
-      if (token !== st.token) { setTitleCard(null); return setVeil(0); }
-      // track 1 and its world start BEHIND the card; the card then lifts
-      // straight onto them (no black beat after it)
-      titleCardRef.current = false;
-      void playSetTrack(0, "set loop");
-      await new Promise((r) => setTimeout(r, LIVE_DARK_HOLD_MS));
-      setVeil(0);
-      setTitleCard("out");
-      setTimeout(() => setTitleCard((c) => (c === "out" ? null : c)), 1_500);
+      window.location.href = "/room/installation?loop=1&titlehold=1&kiosk=1";
       return;
     }
     const i = Math.max(0, idx);
