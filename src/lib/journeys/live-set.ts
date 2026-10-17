@@ -127,8 +127,8 @@ export interface PlannedScene<W> { at: number; energy: "low" | "mid" | "high"; w
  *  (−) imagery. A tilt, never a filter: the match to the track leads. */
 const ENERGY_BIAS = { high: 0.35, mid: 0, low: -0.15 } as const;
 
-/** The worlds for one track, decided at its start. It OPENS on its best
- *  match (unless that world is the one on screen right now); later passages
+/** The worlds for one track, decided at its start. It OPENS on one of its
+ *  best matches (unless that world is the one on screen right now); later passages
  *  take the best remaining match, tilted by the music's energy there. No
  *  world twice in a track; `recent` (the worlds just shown) are avoided after
  *  the opening. Lab 2026-10-15: a hard energy filter + long recency had The
@@ -138,6 +138,7 @@ export function planTrackWorlds<W extends SetWorld>(
   analysis: SetTrackAnalysis | null,
   pool: W[],
   recent: string[],
+  rand: () => number = Math.random,
 ): PlannedScene<W>[] {
   const times = worldChangeTimes(analysis ?? { duration: track.duration, sections: [] });
   const ranked = rankWorlds(track, analysis?.arc, pool);
@@ -157,8 +158,13 @@ export function planTrackWorlds<W extends SetWorld>(
     const ok = (r: RankedWorld<W>) => !used.has(id(r)) && !usedNames.has(nm(r)) && id(r) !== onScreen && !avoid.has(id(r)) && !avoidNames.has(nm(r));
     const value = (r: RankedWorld<W>) => (i === 0 ? r.score : r.score + ENERGY_BIAS[energy] * r.intensity);
     const best = (list: RankedWorld<W>[]) => list.reduce<RankedWorld<W> | null>((m, r) => (m && value(m) >= value(r) ? m : r), null);
+    // LIKE LIVE MODE, never the same plan twice (Karel 2026-10-17: "as dynamic
+    // as live mode"): one of the three best fresh matches, the best most often —
+    // the match still leads, but each pass of the set reads differently
+    const fresh = top.filter(ok).sort((a, b) => value(b) - value(a)).slice(0, 3);
+    const r = rand();
     const pick =
-      best(top.filter(ok)) ??
+      (fresh.length ? fresh[Math.min(fresh.length - 1, r < 0.5 ? 0 : r < 0.8 ? 1 : 2)] : null) ??
       best(ranked.filter(ok)) ??
       best(ranked.filter((r) => !used.has(id(r)))) ??
       top[0];

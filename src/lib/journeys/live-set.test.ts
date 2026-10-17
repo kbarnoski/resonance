@@ -113,9 +113,20 @@ describe("live set — scene timing", () => {
   it("a track opens on its best FRESH match — a world shown this pass never returns (Karel 2026-10-16: wide open, never the same thing)", () => {
     const bush = track("joseph-burning-bush");
     const a = { id: bush.id, duration: 374, arc: "intense" as const, sections: [{ start: 0, end: 60, energy: "low" as const }, { start: 60, end: 374, energy: "high" as const }] };
-    expect(planTrackWorlds(bush, a, POOL, [])[0].world.journey.id).toBe("forge");
+    expect(planTrackWorlds(bush, a, POOL, [], () => 0)[0].world.journey.id).toBe("forge");
     expect(planTrackWorlds(bush, a, POOL, ["forge", "mist"])[0].world.journey.id).not.toBe("forge");
     expect(planTrackWorlds(bush, a, POOL, ["mist", "forge"])[0].world.journey.id).not.toBe("forge");
+  });
+  it("like live mode, each pass differs: the opening varies among the best fresh matches", () => {
+    const bush = track("joseph-burning-bush");
+    const opens = new Set<string>();
+    for (const r of [0, 0.6, 0.9]) opens.add(planTrackWorlds(bush, { id: "x", duration: 374, sections: [] }, POOL, [], () => r)[0].world.journey.id);
+    expect(opens.size).toBeGreaterThan(1);
+    for (let k = 0; k < 20; k++) {
+      const ids = planTrackWorlds(bush, { id: "x", duration: 300, sections: [] }, POOL, ["forge"]).map((p) => p.world.journey.id);
+      expect(new Set(ids).size).toBe(ids.length);
+      expect(ids).not.toContain("forge");
+    }
   });
   it("one world never shows twice in a track, even as a builtin + DB copy", () => {
     const dup = [...POOL, world("forge-db", "Realized", "fire and flame, molten ember, a blaze")];
