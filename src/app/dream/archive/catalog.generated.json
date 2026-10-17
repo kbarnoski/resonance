@@ -1,5 +1,13 @@
 [
  {
+  "slug": "21920-pitchlattice",
+  "cycle": 21920,
+  "name": "Pitch / Time Lattice",
+  "status": "demoable",
+  "description": "What if you could transpose Karel's piano's *pitch* independently of its *time* — slow one of his recordings to a glacial drone without dropping the register, or stretch it with no",
+  "category": "local"
+ },
+ {
   "slug": "21600-chamber",
   "cycle": 21600,
   "name": "Chamber",
