@@ -93,6 +93,7 @@ export function SimpleRemote({
   duration,
   volume,
   titles,
+  micsens,
   joseph,
   josephTracks,
   liveInput,
@@ -113,6 +114,7 @@ export function SimpleRemote({
   duration?: number;
   volume?: number;
   titles: "on" | "off" | null;
+  micsens: "less" | "normal" | "more" | null;
   /** Joseph's set playing now (null = not) */
   joseph: JosephNow | null;
   josephTracks: JosephTrackRow[];
@@ -168,6 +170,12 @@ export function SimpleRemote({
     if (titlesTap && (titles === titlesTap.v || now - titlesTap.at > 6000)) setTitlesTap(null);
   }, [titles, titlesTap, now]);
   const titlesOn = (titlesTap?.v ?? titles ?? "on") === "on";
+  // mic sensitivity Less / Normal / More — optimistic like the titles
+  const [sensTap, setSensTap] = useState<{ v: "less" | "normal" | "more"; at: number } | null>(null);
+  useEffect(() => {
+    if (sensTap && (micsens === sensTap.v || now - sensTap.at > 6000)) setSensTap(null);
+  }, [micsens, sensTap, now]);
+  const sensNow = sensTap?.v ?? micsens ?? "normal";
 
   // ── where the screen is ──────────────────────────────────────────
   const inLoop = context === "loop";
@@ -216,7 +224,7 @@ export function SimpleRemote({
   // ═══ SETTINGS ═══════════════════════════════════════════════════
   if (screen.k === "settings") {
     const seg = <T extends string>(value: T, opts: { v: T; name: string }[], on: (v: T) => void) => (
-      <div className="grid grid-cols-2 overflow-hidden rounded-xl border border-border bg-card">
+      <div className={`grid ${opts.length === 3 ? "grid-cols-3" : "grid-cols-2"} overflow-hidden rounded-xl border border-border bg-card`}>
         {opts.map((o) => (
           <button
             type="button"
@@ -249,6 +257,14 @@ export function SimpleRemote({
             setTitlesTap({ v, at: Date.now() });
             send(`titles:${v}`);
           }),
+        )}
+        {item(
+          "Mic sensitivity",
+          seg(sensNow, [{ v: "less", name: "Less" }, { v: "normal", name: "Normal" }, { v: "more", name: "More" }], (v) => {
+            setSensTap({ v, at: Date.now() });
+            send(`micsens:${v}`);
+          }),
+          "For Live. More: a soft voice builds the picture. Less: only strong sound does.",
         )}
         {item(
           "After each song",

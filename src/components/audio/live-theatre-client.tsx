@@ -27,7 +27,8 @@ import type { InstallationProgram, SequenceEntry } from "./installation-loop-cli
 import { createWorldRequester } from "@/lib/journeys/live-world-queue";
 import { pickLiveWorld, liveWorldPool, LIVE_SCENE_MS, LIVE_VEIL_MS, LIVE_DARK_HOLD_MS, LIVE_SONG_TITLE_MS } from "@/lib/journeys/live-theatre";
 import { trackTitlesHidden } from "@/lib/journeys/track-titles";
-import { newPulse, resetScene, stepPulse, conductStep, conductTarget, type PulseState } from "@/lib/journeys/live-pulse";
+import { newPulse, resetScene, stepPulse, conductStep, conductTarget, LIVE_CONDUCT_SPAN, type PulseState } from "@/lib/journeys/live-pulse";
+import { micSensitivity, micSpanX } from "@/lib/journeys/mic-sensitivity";
 import { HorizonTitle } from "./horizon-title";
 import { ExperienceTextInner } from "./installation-intro";
 import {
@@ -503,7 +504,7 @@ export function LiveTheatreClient({ programs }: { programs: InstallationProgram[
       const r = stepPulse(pulseRef.current, level, dt);
       pulseAtRef.current = now;
       pulseRef.current = r.state;
-      conduct = conductStep(conduct, conductTarget(r.state), dt);
+      conduct = conductStep(conduct, conductTarget(r.state, LIVE_CONDUCT_SPAN * micSpanX(micSensitivity())), dt);
       engine?.setLiveIntensity(conduct);
       (window as unknown as Record<string, unknown>).__resonanceLiveConduct = Math.round(conduct * 100) / 100;
       if (r.change && !busyRef.current) {

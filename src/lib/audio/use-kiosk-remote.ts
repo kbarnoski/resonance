@@ -21,6 +21,7 @@ import { useVjBridge } from "@/lib/vj-bridge/use-vj-bridge";
 import { parseLiveSetCommand } from "@/lib/journeys/live-set";
 import { liveSourceOf } from "./live-source";
 import { parseTitlesCommand, setTrackTitlesHidden, trackTitlesHidden } from "@/lib/journeys/track-titles";
+import { micSensitivity, parseMicSensitivityCommand, setMicSensitivity } from "@/lib/journeys/mic-sensitivity";
 
 // Rolling frame-rate meter (2026-10-05: a steady slowdown never trips the
 // >50ms gap recorder — Karel saw journeys crawl while the log stayed clean).
@@ -108,6 +109,13 @@ function runCommand(cmd: string, context: KioskRemoteContext): void {
   if (hideTitles !== null) {
     // titles between tracks: takes effect from the next track's card (any context)
     setTrackTitlesHidden(hideTitles);
+    markKioskStatusDirty();
+    return;
+  }
+  const sens = parseMicSensitivityCommand(cmd);
+  if (sens !== null) {
+    // live mode's mic sensitivity: applies at once (the conductor reads it every tick)
+    setMicSensitivity(sens);
     markKioskStatusDirty();
     return;
   }
@@ -399,6 +407,8 @@ export function useKioskRemote(context: KioskRemoteContext): void {
               liveset: ls ?? null,
               // titles between tracks: "on" | "off" (track-titles.ts)
               titles: trackTitlesHidden() ? "off" : "on",
+              // live mode's mic sensitivity (mic-sensitivity.ts)
+              micsens: micSensitivity(),
               // LIVE THEATRE input: { src: mic|laptop|both, ok, inputs[labels], missing[], note, level }
               // (note e.g. "laptop sound unavailable — BlackHole not installed")
               liveinput:

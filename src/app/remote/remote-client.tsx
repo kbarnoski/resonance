@@ -30,6 +30,8 @@ interface KioskStatus {
   liveSrc?: LiveSrc | "set" | null;
   /** titles between tracks (track-titles.ts) — absent on an older kiosk build */
   titles?: "on" | "off";
+  /** live mode's mic sensitivity (mic-sensitivity.ts) — absent on an older kiosk build */
+  micsens?: "less" | "normal" | "more";
   /** Live Theatre input (audio-engine LiveInputStatus + the live level) */
   liveinput?: { src: LiveSrc; ok: boolean; inputs: string[]; missing: string[]; note: string | null; level: number } | null;
 }
@@ -192,6 +194,7 @@ export function RemoteClient({
       duration={status?.duration}
       volume={status?.volume}
       titles={status?.titles ?? null}
+      micsens={status?.micsens ?? null}
       joseph={ls ? { index: ls.index, count: ls.count, title: ls.title, state: ls.state, currentTime: ls.currentTime, duration: ls.duration, next: ls.next } : null}
       josephTracks={ls?.tracks?.length ? ls.tracks : JOSEPH_TRACKS_LOCAL}
       liveInput={li ? { ok: li.ok, inputs: li.inputs, note: li.note, level: li.level } : null}

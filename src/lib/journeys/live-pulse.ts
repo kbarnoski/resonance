@@ -90,9 +90,9 @@ export function stepPulse(s: PulseState, level: number, dtMs: number): { state: 
 /** The live conductor's target (0-1): how far the SHORT level stands above the
  *  room — 0 at the room's hum, 1 at a strong voice / full playing. */
 export const LIVE_CONDUCT_SPAN = 0.12;
-export function conductTarget(s: PulseState): number {
+export function conductTarget(s: PulseState, span: number = LIVE_CONDUCT_SPAN): number {
   const over = s.short - (s.floor * LIVE_PULSE.FLOOR_X + LIVE_PULSE.MARGIN * 0.5);
-  return Math.max(0, Math.min(1, over / LIVE_CONDUCT_SPAN));
+  return Math.max(0, Math.min(1, over / span));
 }
 /** Smooth toward the target: rises fast (~0.4 s), settles slower (~2.5 s). */
 export function conductStep(cur: number, target: number, dtMs: number): number {
