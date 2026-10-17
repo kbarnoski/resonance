@@ -1,5 +1,13 @@
 [
  {
+  "slug": "21600-chamber",
+  "cycle": 21600,
+  "name": "Chamber",
+  "status": "demoable",
+  "description": "Play Karel's piano through the resonant ghost of one of its own moments. Fly through a 3-D resonance chamber built from his recording, and wherever you move re-selects which instan",
+  "category": "local"
+ },
+ {
   "slug": "21280-mosaicfield",
   "cycle": 21280,
   "name": "Mosaic Field",
