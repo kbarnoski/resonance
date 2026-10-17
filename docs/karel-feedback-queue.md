@@ -208,3 +208,4 @@ Status: ✅ live · 🟡 committed, deploys after the tour · 🔧 in progress �
 - DONE (f9759502) Credit under Joseph's song titles reads "Music by C Minus" (screen + phone).
 - DONE (2bdc51f0) Joseph set "as dynamic as live mode": each track picks among its 3 best fresh worlds, so no two passes look alike.
 - DONE (412a9602) Only Rise Above loops. Joseph's set, Vigil and every album end on the title card and hold until Play (Play starts Rise Above). Verified on the kiosk: Joseph 24 → skip → held; Vigil First Light → skip → held; Play → Snowflake.
+- DONE (7fbd1cdc) Phone Settings → "Mic sensitivity: Less · Normal · More" (live mode; More = soft voice builds the picture). Verified on the kiosk + 390 px screenshot.
