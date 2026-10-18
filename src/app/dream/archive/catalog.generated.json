@@ -1,5 +1,13 @@
 [
  {
+  "slug": "22560-roundtable",
+  "cycle": 22560,
+  "name": "Roundtable",
+  "status": "skeleton",
+  "description": "One of Karel's real piano takes is laid around a ring — angle is position in the piece — and a playhead sweeps that ring in synced time, landing on the same instant for every liste",
+  "category": "local"
+ },
+ {
   "slug": "21920-pitchlattice",
   "cycle": 21920,
   "name": "Pitch / Time Lattice",
