@@ -2,7 +2,8 @@
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 22560-roundtable — the dream lab's first explicitly MULTI-CYCLE build.
-// This is CYCLE 1: the skeleton — a real, playable, honest foundation.
+// CYCLE 1: the skeleton — a real, playable, honest foundation.
+// CYCLE 2 (this fire): attention and overlap now MEAN something.
 //
 // The question: what if one of Karel's real piano takes could only be fully
 // HEARD when a room of present listeners COLLECTIVELY covered it? The take is
@@ -14,6 +15,19 @@
 // ducks, a low-pass closes) — the piece literally thins out where no one is
 // attending. A solo listener lights one slice; a full room, spreading out,
 // keeps the whole piece alive. Cooperative, not competitive.
+//
+// CYCLE 2 adds the two things that turn coverage into a social act:
+//   • Attention EARNS coverage. Your arc is no longer a fixed fifth — it is
+//     narrow when you are restless and WIDENS the longer you settle on one
+//     stretch. A room that darts around covers little; a room that each
+//     settles into a part keeps more of the piece alive. Earned width is
+//     broadcast, so everyone sees everyone's attention.
+//   • Overlap EARNS harmony. Where two or more windows stack on the same
+//     stretch, the take gains a voice: an octave-up halo of his OWN recording
+//     swells in exactly where the playhead crosses a doubly-covered region.
+//     Stacking attention doesn't just keep the piece alive — it enriches it.
+//   Both are computed identically on every peer (the shared arc set + the
+//   shared-clock playhead), so what you SEE lighting is what you HEAR.
 //
 // Transport: _shared/peerSync — BroadcastChannel so two tabs of the SAME
 // browser fill the room instantly (the primary demo path), a real WebRTC data
@@ -33,20 +47,33 @@ import { useImmersive, ImmersiveHud } from "../_shared/immersive";
 
 const ROOM = "roundtable";
 const TAU = Math.PI * 2;
-const ARC_WIDTH = TAU * (72 / 360); // each window's angular width (skeleton: fixed; a fifth of the ring — a room of five covers it)
+const ARC_WIDTH = TAU * (72 / 360); // default/remote seed width (a fifth of the ring) before earned width is known
 const SEND_HZ = 20; // arc broadcast rate
 const STALE_MS = 3000; // prune peers whose arc we have not heard from
 const COVER_SAMPLES = 360; // samples around the ring for the coverage readout
+
+// cycle 2 — attention earns coverage: a settled window widens, a restless one narrows.
+const MIN_WIDTH = TAU * (34 / 360); // a restless listener barely covers a slice
+const MAX_WIDTH = TAU * (122 / 360); // a settled listener tends a third of the ring
+const DWELL_FULL = 5.5; // seconds of settled attention to reach full width
+const DWELL_SEED = 2.3; // initial dwell → first screen opens near the old fixed 72°
+const STILL_SPEED = TAU * 0.09; // rad/s below which attention accumulates (~16°/s)
+const DWELL_DECAY = 2.2; // restlessness narrows the window faster than stillness widens it
 
 const LIT_GAIN = 1.0;
 const GAP_GAIN = 0.22; // the take thins to a veil (clearly dimmed, not near-muted) where no one is attending
 const LIT_CUTOFF = 14000;
 const GAP_CUTOFF = 720;
 
+// cycle 2 — overlap earns harmony: an octave-up halo of his OWN take swells where arcs stack.
+const HARMONY_GAIN = 0.34; // max added gain of the octave voice where the playhead crosses an overlap
+const HARMONY_CUTOFF = 5200; // soft — a halo, not a competing melody
+
 // Art palette — violet brand accent for the collective, cool tones per peer.
 const SELF_HEX = "#c4b5fd";
 const SELF_GLOW = "#a78bfa";
 const COVER_HEX = "#8b5cf6";
+const HARMONY_HEX = "#ede9fe"; // the brighter seam where windows overlap
 const PEER_HEXES = ["#67e8f9", "#5eead4", "#38bdf8", "#818cf8", "#a5b4fc", "#2dd4bf"];
 const BG_HEX = "#07060d";
 
@@ -92,8 +119,11 @@ export default function RoundtablePage() {
   const srcRef = useRef<AudioBufferSourceNode | null>(null);
   const coverGainRef = useRef<GainNode | null>(null);
   const coverFilterRef = useRef<BiquadFilterNode | null>(null);
+  const harmSrcRef = useRef<AudioBufferSourceNode | null>(null);
+  const harmGainRef = useRef<GainNode | null>(null);
   const freqRef = useRef<Uint8Array<ArrayBuffer> | null>(null);
   const lastLitRef = useRef<boolean>(true);
+  const lastHarmRef = useRef<boolean>(false);
 
   // transport
   const syncRef = useRef<PeerSync | null>(null);
@@ -108,6 +138,11 @@ export default function RoundtablePage() {
   const draggingRef = useRef(false);
   const currentTrackRef = useRef<string>(REAL_TRACKS[0].id);
   const noteAnglesRef = useRef<number[]>([]);
+
+  // cycle 2 — earned-width (attention) tracking
+  const dwellRef = useRef<number>(DWELL_SEED);
+  const lastAngleRef = useRef<number>(0);
+  const lastFrameTRef = useRef<number>(0);
 
   const actionsRef = useRef<{
     enter: () => void;
@@ -125,6 +160,8 @@ export default function RoundtablePage() {
   const [trackTitle, setTrackTitle] = useState<string>(REAL_TRACKS[0].title);
   const [trackId, setTrackId] = useState<string>(REAL_TRACKS[0].id);
   const [coveredPct, setCoveredPct] = useState(0);
+  const [harmonyPct, setHarmonyPct] = useState(0);
+  const [attention, setAttention] = useState(DWELL_SEED / DWELL_FULL);
   const [lit, setLit] = useState(false);
   const [present, setPresent] = useState(1);
   const [keyInfo, setKeyInfo] = useState<string>("");
@@ -226,8 +263,23 @@ export default function RoundtablePage() {
         }
         srcRef.current = null;
       }
+      const harm = harmSrcRef.current;
+      if (harm) {
+        try {
+          harm.stop();
+        } catch {
+          /* already stopped */
+        }
+        try {
+          harm.disconnect();
+        } catch {
+          /* detached */
+        }
+        harmSrcRef.current = null;
+      }
       coverGainRef.current = null;
       coverFilterRef.current = null;
+      harmGainRef.current = null;
     }
 
     function startSource(): void {
@@ -266,10 +318,33 @@ export default function RoundtablePage() {
         offset = ((offset % dur) + dur) % dur;
 
         src.start(when, offset);
+
+        // cycle 2 — the overlap harmony voice: the SAME take, one octave up,
+        // phase-aligned (octave = 2× rate, so it realigns with the main voice
+        // at each loop), soft-filtered, silent until the playhead crosses an
+        // overlap. Still his recording (resampled), never a synth tone.
+        const harm = ctx.createBufferSource();
+        harm.buffer = buf;
+        harm.loop = true;
+        harm.detune.value = 1200; // +1 octave
+        const harmFilter = ctx.createBiquadFilter();
+        harmFilter.type = "lowpass";
+        harmFilter.frequency.value = HARMONY_CUTOFF;
+        harmFilter.Q.value = 0.707;
+        const harmGain = ctx.createGain();
+        harmGain.gain.value = 0.0001; // overlap logic swells this in click-free
+        harm.connect(harmFilter);
+        harmFilter.connect(harmGain);
+        harmGain.connect(master.input);
+        harm.start(when, offset);
+
         srcRef.current = src;
         coverGainRef.current = gain;
         coverFilterRef.current = filter;
+        harmSrcRef.current = harm;
+        harmGainRef.current = harmGain;
         lastLitRef.current = false; // force first coverage apply
+        lastHarmRef.current = false;
         startedRef.current = true;
         setEntered(true);
       } finally {
@@ -321,8 +396,9 @@ export default function RoundtablePage() {
         if (!live.has(id) || now - arc.lastSeen > STALE_MS) remoteArcsRef.current.delete(id);
       }
       const arcs = collectArcs();
-      const pct = coverageFraction(arcs);
-      setCoveredPct(Math.round(pct * 100));
+      setCoveredPct(Math.round(coverageFraction(arcs) * 100));
+      setHarmonyPct(Math.round(overlapFraction(arcs) * 100));
+      setAttention(DWELL_FULL > 0 ? dwellRef.current / DWELL_FULL : 0);
       setPresent(1 + remoteArcsRef.current.size);
     }, 100);
 
@@ -340,10 +416,25 @@ export default function RoundtablePage() {
       return false;
     }
 
+    // cycle 2 — how MANY windows cover this angle (≥2 = an overlap → harmony).
+    function coverCountAt(angle: number, arcs: { angle: number; width: number }[]): number {
+      let n = 0;
+      for (const a of arcs) if (angDist(angle, a.angle) <= a.width / 2) n++;
+      return n;
+    }
+
     function coverageFraction(arcs: { angle: number; width: number }[]): number {
       let hit = 0;
       for (let i = 0; i < COVER_SAMPLES; i++) {
         if (coveredAt((i / COVER_SAMPLES) * TAU, arcs)) hit++;
+      }
+      return hit / COVER_SAMPLES;
+    }
+
+    function overlapFraction(arcs: { angle: number; width: number }[]): number {
+      let hit = 0;
+      for (let i = 0; i < COVER_SAMPLES; i++) {
+        if (coverCountAt((i / COVER_SAMPLES) * TAU, arcs) >= 2) hit++;
       }
       return hit / COVER_SAMPLES;
     }
@@ -523,9 +614,25 @@ export default function RoundtablePage() {
 
       const breathe = 0.5 + 0.5 * Math.sin(t * 0.0009);
       const level = audioLevel();
+
+      // cycle 2 — attention earns coverage: settling widens your window,
+      // restlessness narrows it. Updated BEFORE collecting arcs so the width
+      // we broadcast and draw this frame is current.
+      const dtF = lastFrameTRef.current ? Math.min(0.05, (t - lastFrameTRef.current) / 1000) : 0;
+      lastFrameTRef.current = t;
+      const selfAngleNow = selfArcRef.current.angle;
+      const aSpeed = dtF > 0 ? angDist(selfAngleNow, lastAngleRef.current) / dtF : 0;
+      lastAngleRef.current = selfAngleNow;
+      if (aSpeed < STILL_SPEED) dwellRef.current = Math.min(DWELL_FULL, dwellRef.current + dtF);
+      else dwellRef.current = Math.max(0, dwellRef.current - dtF * DWELL_DECAY);
+      const attn = DWELL_FULL > 0 ? dwellRef.current / DWELL_FULL : 0;
+      const attnSmooth = attn * attn * (3 - 2 * attn);
+      selfArcRef.current.width = MIN_WIDTH + (MAX_WIDTH - MIN_WIDTH) * attnSmooth;
+
       const arcs = collectArcs();
       const ph = playheadAngle();
       const phLit = coveredAt(ph, arcs);
+      const phHarm = coverCountAt(ph, arcs) >= 2; // playhead crossing an overlap
 
       // apply the collective → sound rule (click-free, only on state change)
       if (phLit !== lastLitRef.current) {
@@ -537,6 +644,14 @@ export default function RoundtablePage() {
           g.gain.setTargetAtTime(phLit ? LIT_GAIN : GAP_GAIN, ctx.currentTime, 0.1);
           f.frequency.setTargetAtTime(phLit ? LIT_CUTOFF : GAP_CUTOFF, ctx.currentTime, 0.12);
         }
+      }
+      // cycle 2 — overlap → harmony: swell the octave halo where the playhead
+      // crosses a stretch two or more windows cover (click-free, on change).
+      if (phHarm !== lastHarmRef.current) {
+        lastHarmRef.current = phHarm;
+        const hg = harmGainRef.current;
+        const ctx = ctxRef.current;
+        if (hg && ctx) hg.gain.setTargetAtTime(phHarm ? HARMONY_GAIN : 0.0001, ctx.currentTime, 0.18);
       }
       setLit((prev) => (prev === phLit ? prev : phLit));
 
@@ -591,6 +706,29 @@ export default function RoundtablePage() {
       }
       ctx2d.restore();
 
+      // 3b. overlap seam — where TWO or more windows stack, the take gains a
+      // voice: a brighter inner band drawn over the union (cycle 2).
+      ctx2d.save();
+      ctx2d.lineWidth = band * 0.5;
+      ctx2d.lineCap = "round";
+      ctx2d.shadowColor = HARMONY_HEX;
+      ctx2d.shadowBlur = 10 + 22 * level;
+      ctx2d.strokeStyle = `rgba(237, 233, 254, ${0.5 + 0.35 * level})`;
+      let k = 0;
+      while (k < SEG) {
+        if (coverCountAt((k / SEG) * TAU, arcs) >= 2) {
+          let j = k;
+          while (j < SEG && coverCountAt((j / SEG) * TAU, arcs) >= 2) j++;
+          ctx2d.beginPath();
+          ctx2d.arc(cx, cy, ring, toCanvas((k / SEG) * TAU), toCanvas((j / SEG) * TAU));
+          ctx2d.stroke();
+          k = j + 1;
+        } else {
+          k++;
+        }
+      }
+      ctx2d.restore();
+
       // 4. each present listener's window — self brighter + labelled
       const drawArc = (arc: { angle: number; width: number }, hex: string, self: boolean) => {
         const start = toCanvas(arc.angle - arc.width / 2);
@@ -602,7 +740,7 @@ export default function RoundtablePage() {
         ctx2d.globalAlpha = self ? 0.95 : 0.6;
         if (self) {
           ctx2d.shadowColor = SELF_GLOW;
-          ctx2d.shadowBlur = 16;
+          ctx2d.shadowBlur = 12 + 22 * attn; // the more settled you are, the brighter your stretch
         }
         ctx2d.beginPath();
         ctx2d.arc(cx, cy, ring, start, end);
@@ -625,10 +763,10 @@ export default function RoundtablePage() {
       const [ox, oy] = pointOn(ph, ring + band);
       ctx2d.save();
       ctx2d.lineCap = "round";
-      ctx2d.lineWidth = 3;
+      ctx2d.lineWidth = phHarm ? 4 : 3;
       ctx2d.strokeStyle = phLit ? "#ede9fe" : "#4b4470";
       ctx2d.shadowColor = phLit ? "#ddd6fe" : "transparent";
-      ctx2d.shadowBlur = phLit ? 18 + 20 * level : 0;
+      ctx2d.shadowBlur = phLit ? (phHarm ? 26 : 18) + 20 * level : 0;
       ctx2d.beginPath();
       ctx2d.moveTo(ix, iy);
       ctx2d.lineTo(ox, oy);
@@ -636,8 +774,16 @@ export default function RoundtablePage() {
       const [hx, hy] = pointOn(ph, ring);
       ctx2d.beginPath();
       ctx2d.fillStyle = phLit ? "#ffffff" : "#6b6494";
-      ctx2d.arc(hx, hy, phLit ? 5.5 : 4, 0, TAU);
+      ctx2d.arc(hx, hy, phLit ? (phHarm ? 7 : 5.5) : 4, 0, TAU);
       ctx2d.fill();
+      // a second ring when the playhead is in harmony — the voice has bloomed
+      if (phHarm) {
+        ctx2d.strokeStyle = `rgba(237, 233, 254, ${0.5 + 0.4 * level})`;
+        ctx2d.lineWidth = 1.5;
+        ctx2d.beginPath();
+        ctx2d.arc(hx, hy, 11 + 5 * level, 0, TAU);
+        ctx2d.stroke();
+      }
       ctx2d.restore();
 
       // faint center pulse so the stage breathes even at idle
@@ -736,11 +882,11 @@ export default function RoundtablePage() {
         immersive={immersive}
         onToggle={toggle}
         title="Roundtable"
-        description="One of Karel's real piano takes is laid around a ring; a playhead sweeps it in synced time. Each present listener tends an arc of the piece, and the music plays at full presence only where the room, together, is covering it — in the gaps it thins out. A full room keeps the whole piece alive."
+        description="One of Karel's real piano takes is laid around a ring; a playhead sweeps it in synced time. Each present listener tends an arc of the piece, and the music plays at full presence only where the room, together, is covering it — in the gaps it thins out. Settle on one stretch and your arc widens; where two listeners' arcs overlap, the take gains an octave-up voice. A full, settled room keeps the whole piece alive and enriches it."
         howTo={[
           "Open room from a second tab to fill the ring",
-          "Drag to move your arc around the piece",
-          "The music is bright where the room is covering it",
+          "Drag to move your arc, then settle — settling widens it",
+          "Bright where the room covers; a brighter seam where arcs overlap blooms a harmony",
         ]}
       />
 
@@ -756,7 +902,8 @@ export default function RoundtablePage() {
             </h1>
             <p className="mt-2 text-base leading-relaxed text-muted-foreground">
               Karel&apos;s take is wrapped around the ring. The music is only fully heard where the
-              room is attending — spread out to cover it together.
+              room is attending — spread out to cover it together. Settle on a stretch and your arc
+              widens; where two arcs overlap, the take gains a voice.
             </p>
 
             <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
@@ -781,6 +928,17 @@ export default function RoundtablePage() {
             <span aria-hidden>·</span>
             <span>
               covered: <span className="text-foreground">{coveredPct}%</span>
+            </span>
+            <span aria-hidden>·</span>
+            <span>
+              harmony:{" "}
+              <span className={harmonyPct > 0 ? "text-primary" : "text-foreground"}>
+                {harmonyPct}%
+              </span>
+            </span>
+            <span aria-hidden>·</span>
+            <span>
+              attention: <span className="text-foreground">{Math.round(attention * 100)}%</span>
             </span>
             <span aria-hidden>·</span>
             <span>
@@ -875,8 +1033,11 @@ export default function RoundtablePage() {
               <span className="text-foreground">second tab</span> — it joins the room instantly over
               BroadcastChannel and a second arc appears. Each tab presses{" "}
               <span className="text-foreground">Enter the ring</span> once (one tap per tab to start
-              audio). Solo works too: your single arc lights its slice while the rest of the piece
-              thins out.
+              audio). <span className="text-foreground">Settle</span> your arc on one stretch and it
+              widens (watch <span className="text-foreground">attention</span>); drag the two tabs&apos;
+              arcs so they <span className="text-foreground">overlap</span> and that stretch blooms an
+              octave-up voice (watch <span className="text-foreground">harmony</span>). Solo works
+              too: your single arc lights its slice while the rest of the piece thins out.
             </p>
 
             {showRemote && (
