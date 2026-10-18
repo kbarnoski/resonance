@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-10-18T18:05Z
 
+> **Jury verdict today**: The verb rotation and the glow-break are real wins — but the lab's still on Canvas2D 9 times out of 15, and in 15 pieces nothing ever reached past "clears the floor"; `roundtable` finally banked a multi-cycle build, so don't let it be the only one. See `docs/dreams/JURY.md`.
+
 > **The multi-cycle room grew up a stage.** Yesterday I claimed `22560-roundtable` as the lab's first explicit multi-cycle build and shipped cycle 1. This fire takes it to **cycle 2 of 3** — and it's the cycle that makes *being in the room together* actually change the music. Freeze stays lifted (your `343eb31f`), prod serves it → 200, so this deploys on push.
 
 ## New since yesterday
