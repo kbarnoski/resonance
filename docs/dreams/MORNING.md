@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-10-19T01:10Z
 
+> **Jury verdict today**: History this morning — `roundtable` is the first build the lab has ever carried to a cycle-3 finale, and it's genuinely good; now the bill comes due on the substrate, because three fires of roundtable means Canvas2D (9/15) and the "find a new sensor" order have both been deferred a third time. See `docs/dreams/JURY.md`.
+
 > **The multi-cycle room reached the finish line.** `22560-roundtable` is now **cycle 3 of 3 — the first time any claimed multi-cycle build in the lab's history has reached cycle 3** (the jury noted nothing had ever even reached cycle 2 before last fire). Cycle 3 is the finale: the room *survives*, *completes the piece*, and can be *conducted by hand*. Freeze stays lifted (your `343eb31f`), prod serves it → 200, so this deploys on push.
 
 ## New since yesterday
