@@ -1,9 +1,12 @@
 "use client";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 22560-roundtable — the dream lab's first explicitly MULTI-CYCLE build.
+// 22560-roundtable — the dream lab's first explicitly MULTI-CYCLE build, and
+// the first claimed multi-cycle build in the lab's history to reach CYCLE 3.
 // CYCLE 1: the skeleton — a real, playable, honest foundation.
-// CYCLE 2 (this fire): attention and overlap now MEAN something.
+// CYCLE 2: attention and overlap now MEAN something.
+// CYCLE 3 (this fire): the room survives, completes the piece, and can conduct
+// by hand.
 //
 // The question: what if one of Karel's real piano takes could only be fully
 // HEARD when a room of present listeners COLLECTIVELY covered it? The take is
@@ -29,6 +32,25 @@
 //   Both are computed identically on every peer (the shared arc set + the
 //   shared-clock playhead), so what you SEE lighting is what you HEAR.
 //
+// CYCLE 3 adds the three things that complete the shared-room arc:
+//   • The room SURVIVES. The transport anchor is held by the lowest-id peer;
+//     when that host leaves, peerSync re-elects the next peer and the keeper
+//     re-broadcasts the SAME anchor, so the take never restarts — the piece
+//     keeps playing through the departure. A silence backstop covers an abrupt
+//     close that never sends a goodbye. Whoever takes over sees "you're hosting
+//     now", so the hand-off is legible, not invisible.
+//   • The room COMPLETES the piece. When the union of all windows covers nearly
+//     the WHOLE ring, the breathing stops: the take is held at full presence
+//     everywhere, a celebratory bloom lights the ring, and the readout says so.
+//     It is the reward the whole cooperative thesis was building toward, and —
+//     like every other rule — it is computed identically on every peer from the
+//     shared arc set, so what you SEE is what you HEAR.
+//   • You can CONDUCT your window by HAND. An optional camera layer (MediaPipe
+//     one-hand tracking) reaches toward the part of the ring you tend — the
+//     catalog audio is unchanged, the hand only moves the same arc the pointer
+//     does (the sanctioned camera-as-control-layer pattern). Pointer stays the
+//     default and the fallback; tracking state is always labelled on screen.
+//
 // Transport: _shared/peerSync — BroadcastChannel so two tabs of the SAME
 // browser fill the room instantly (the primary demo path), a real WebRTC data
 // channel for remote peers, and an NTP-style shared clock over both so the
@@ -42,6 +64,12 @@ import { loadTrackAnalysis, type TrackAnalysis } from "../_shared/trackAnalysis"
 import { createSafeMaster, type SafeMaster } from "../_shared/visionary/safeMaster";
 import { createPeerSync, type PeerSync, type PeerStatus, type PeerClockInfo } from "../_shared/peerSync";
 import { useImmersive, ImmersiveHud } from "../_shared/immersive";
+import {
+  createHandTracker,
+  startCamera,
+  computeHandFeatures,
+  type HandLandmarkerInst,
+} from "../_shared/cameraTracking";
 
 // ── constants ────────────────────────────────────────────────────────────────
 
@@ -69,6 +97,24 @@ const GAP_CUTOFF = 720;
 const HARMONY_GAIN = 0.34; // max added gain of the octave voice where the playhead crosses an overlap
 const HARMONY_CUTOFF = 5200; // soft — a halo, not a competing melody
 
+// cycle 3 — the room completes the piece: when the union nearly covers the whole
+// ring, hold the take at full presence everywhere (hysteresis so it does not flap
+// at the boundary). Computed from the shared arc set, so identical on every peer.
+const COMPLETE_ON = 0.985; // union coverage at/above which the piece is "completed"
+const COMPLETE_OFF = 0.92; // drops back to breathing below this
+
+// cycle 3 — host migration backstop: if no transport anchor has been heard from
+// another peer for this long, the lowest LIVE peer re-broadcasts (covers an
+// abrupt tab close that never sent a goodbye; the clean path is peerSync's
+// re-election on `bye`, which is faster).
+const HOST_SILENCE_MS = 5000;
+
+// cycle 3 — hand conducting (optional camera layer). Smoothing time-constant keeps
+// gesture → arc immediate but not twitchy; a minimum reach gates out center jitter.
+const HAND_SMOOTH_TC = 0.12; // seconds
+const HAND_MIN_REACH = 0.12; // |(cx,cy)| below which we hold the last angle
+const HAND_LOST_MS = 500; // no hand for this long → fall back to pointer, labelled
+
 // Art palette — violet brand accent for the collective, cool tones per peer.
 const SELF_HEX = "#c4b5fd";
 const SELF_GLOW = "#a78bfa";
@@ -92,6 +138,15 @@ function norm(a: number): number {
 function angDist(a: number, b: number): number {
   const d = Math.abs(norm(a) - norm(b)) % TAU;
   return d > Math.PI ? TAU - d : d;
+}
+
+// Shortest signed angular step from → to, in (-π, π]. For smooth hand conducting
+// around the ring without wrap-around jumps.
+function shortestDelta(from: number, to: number): number {
+  let d = (to - from) % TAU;
+  if (d > Math.PI) d -= TAU;
+  if (d < -Math.PI) d += TAU;
+  return d;
 }
 
 function isRecord(v: unknown): v is Record<string, unknown> {
@@ -144,11 +199,31 @@ export default function RoundtablePage() {
   const lastAngleRef = useRef<number>(0);
   const lastFrameTRef = useRef<number>(0);
 
+  // cycle 3 — host migration (the room survives the host leaving)
+  const lastStartHeardRef = useRef<number>(0); // perf.now of last `start` from ANOTHER peer
+  const roomHadPeersRef = useRef<boolean>(false);
+  const wasEffHostRef = useRef<boolean>(true); // start true: the original host never shows a hand-off
+  const handoffAtRef = useRef<number | null>(null);
+
+  // cycle 3 — the room completes the piece (held full-presence climax)
+  const completedRef = useRef<boolean>(false);
+
+  // cycle 3 — hand conducting (optional camera layer over the catalog audio)
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const handTrackerRef = useRef<HandLandmarkerInst | null>(null);
+  const camStreamRef = useRef<MediaStream | null>(null);
+  const camOnRef = useRef<boolean>(false);
+  const handAngleRef = useRef<number>(0); // smoothed hand-driven arc target
+  const handPresentRef = useRef<boolean>(false);
+  const lastHandTRef = useRef<number>(0);
+
   const actionsRef = useRef<{
     enter: () => void;
     createOffer: () => void;
     acceptAnswer: (code: string) => void;
     acceptOffer: (code: string) => void;
+    startCam: () => void;
+    stopCam: () => void;
   } | null>(null);
 
   // UI state
@@ -166,6 +241,12 @@ export default function RoundtablePage() {
   const [present, setPresent] = useState(1);
   const [keyInfo, setKeyInfo] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+
+  // cycle 3 UI state
+  const [completed, setCompleted] = useState(false);
+  const [hosting, setHosting] = useState(true);
+  const [handoff, setHandoff] = useState(false);
+  const [camState, setCamState] = useState<"off" | "loading" | "live" | "lost" | "error">("off");
 
   // remote-connect panel
   const [showRemote, setShowRemote] = useState(false);
@@ -230,6 +311,9 @@ export default function RoundtablePage() {
         const S = payload.startAtSharedMs;
         const O = payload.offsetSec;
         if (typeof S === "number" && typeof O === "number") {
+          // We heard the transport anchor from another peer → the host is alive,
+          // so the migration backstop stays armed but idle (cycle 3).
+          lastStartHeardRef.current = performance.now();
           applyAnchor({ startAtSharedMs: S, offsetSec: O });
         }
       }
@@ -365,14 +449,37 @@ export default function RoundtablePage() {
       applyAnchor(a);
     }
 
-    // Host-authoritative transport keeper: open the take, and keep
-    // re-broadcasting the anchor so a late joiner can align mid-piece.
+    // cycle 3 — who holds the transport anchor. The CLEAN path is peerSync's
+    // own election: the lowest-id peer is host, and when the host leaves it
+    // sends `bye`, the survivors drop it, and the next-lowest id becomes host —
+    // so the keeper below just keeps re-broadcasting the existing anchor and the
+    // take never restarts. The BACKSTOP (for an abrupt close that sends no
+    // `bye`): if no `start` has been heard from another peer for HOST_SILENCE_MS,
+    // the lowest LIVE peer (by heard-recently arc) takes over. Both are pure
+    // functions of shared state, so every peer agrees on exactly one keeper.
+    function amEffectiveHost(): boolean {
+      const s = syncRef.current;
+      if (!s) return true;
+      if (s.isHost()) return true;
+      const now = performance.now();
+      if (now - lastStartHeardRef.current <= HOST_SILENCE_MS) return false;
+      // elected host has gone silent → am I the lowest id among live peers?
+      let lowest = s.selfId;
+      for (const [id, arc] of remoteArcsRef.current) {
+        if (now - arc.lastSeen <= STALE_MS && id < lowest) lowest = id;
+      }
+      return lowest === s.selfId;
+    }
+
+    // Transport keeper: open the take, and keep re-broadcasting the anchor so a
+    // late joiner can align mid-piece AND so the room survives a host departure.
     const keeper = setInterval(() => {
       const s = syncRef.current;
       if (!s || !enteredRef.current) return;
-      if (s.isHost()) {
-        if (!anchorRef.current) hostStart();
-        else {
+      if (amEffectiveHost()) {
+        if (!anchorRef.current) {
+          if (s.isHost()) hostStart(); // only the genuine original host starts from 0
+        } else {
           const a = anchorRef.current;
           s.send({ t: "start", startAtSharedMs: a.startAtSharedMs, offsetSec: a.offsetSec });
         }
@@ -400,6 +507,26 @@ export default function RoundtablePage() {
       setHarmonyPct(Math.round(overlapFraction(arcs) * 100));
       setAttention(DWELL_FULL > 0 ? dwellRef.current / DWELL_FULL : 0);
       setPresent(1 + remoteArcsRef.current.size);
+
+      // cycle 3 — host-migration surfacing. roomHadPeers latches once anyone
+      // else has been present, so a solo tab (always its own host) never shows a
+      // hand-off. A genuine takeover is a not-host → host transition after we
+      // have entered, have an anchor, and the room had peers.
+      if (remoteArcsRef.current.size > 0) roomHadPeersRef.current = true;
+      const eff = amEffectiveHost();
+      setHosting(eff);
+      if (
+        eff &&
+        !wasEffHostRef.current &&
+        enteredRef.current &&
+        anchorRef.current &&
+        roomHadPeersRef.current
+      ) {
+        handoffAtRef.current = now; // the room just kept the piece going through us
+      }
+      wasEffHostRef.current = eff;
+      const ha = handoffAtRef.current;
+      setHandoff(ha !== null && now - ha < 6000);
     }, 100);
 
     // ---- collective coverage (identical on every peer) --------------------
@@ -525,6 +652,54 @@ export default function RoundtablePage() {
           }
         })();
       },
+      // cycle 3 — optional hand conducting: the camera moves the SAME arc the
+      // pointer does. Catalog audio is untouched; the hand is a control layer.
+      startCam: () => {
+        if (camOnRef.current) return;
+        setCamState("loading");
+        void (async () => {
+          try {
+            const video = videoRef.current;
+            if (!video) throw new Error("no video element");
+            const tracker = await createHandTracker(1);
+            handTrackerRef.current = tracker;
+            const stream = await startCamera(video);
+            camStreamRef.current = stream;
+            camOnRef.current = true;
+            handPresentRef.current = false;
+            // seed the smoothed angle at the current arc so the first frame does
+            // not snap across the ring
+            handAngleRef.current = selfArcRef.current.angle;
+            setCamState("lost"); // "searching for a hand" until the first detection
+          } catch {
+            camOnRef.current = false;
+            try {
+              handTrackerRef.current?.close();
+            } catch {
+              /* already gone */
+            }
+            handTrackerRef.current = null;
+            setCamState("error");
+            setError("Camera or hand tracking is unavailable — pointer still conducts your arc.");
+          }
+        })();
+      },
+      stopCam: () => {
+        camOnRef.current = false;
+        handPresentRef.current = false;
+        const stream = camStreamRef.current;
+        if (stream) for (const tr of stream.getTracks()) tr.stop();
+        camStreamRef.current = null;
+        try {
+          handTrackerRef.current?.close();
+        } catch {
+          /* already gone */
+        }
+        handTrackerRef.current = null;
+        const video = videoRef.current;
+        if (video) video.srcObject = null;
+        setCamState("off");
+      },
     };
 
     // ---- pointer: drag around the ring to move your arc -------------------
@@ -620,6 +795,43 @@ export default function RoundtablePage() {
       // we broadcast and draw this frame is current.
       const dtF = lastFrameTRef.current ? Math.min(0.05, (t - lastFrameTRef.current) / 1000) : 0;
       lastFrameTRef.current = t;
+
+      // cycle 3 — hand conducting (optional). When the camera is on, a tracked
+      // hand reaches toward the part of the ring you tend; the smoothed angle
+      // drives the SAME arc the pointer does (catalog audio untouched). Pointer
+      // wins while actively dragging; a lost hand falls back to the pointer.
+      if (camOnRef.current) {
+        const tracker = handTrackerRef.current;
+        const video = videoRef.current;
+        if (tracker && video && video.readyState >= 2) {
+          try {
+            const res = tracker.detectForVideo(video, t);
+            const lm = res.landmarks?.[0];
+            if (lm && lm.length >= 21) {
+              const f = computeHandFeatures(lm);
+              if (Math.hypot(f.cx, f.cy) > HAND_MIN_REACH) {
+                const target = norm(Math.atan2(f.cx, f.cy));
+                const alpha = dtF > 0 ? 1 - Math.exp(-dtF / HAND_SMOOTH_TC) : 1;
+                handAngleRef.current = norm(
+                  handAngleRef.current + shortestDelta(handAngleRef.current, target) * alpha,
+                );
+              }
+              handPresentRef.current = true;
+              lastHandTRef.current = t;
+            } else if (t - lastHandTRef.current > HAND_LOST_MS) {
+              handPresentRef.current = false;
+            }
+          } catch {
+            /* a detection hiccup — hold the last angle */
+          }
+        }
+        if (handPresentRef.current && !draggingRef.current) {
+          selfArcRef.current.angle = handAngleRef.current;
+        }
+        const nextCam = handPresentRef.current ? "live" : "lost";
+        setCamState((prev) => (prev === "error" || prev === "off" || prev === "loading" ? prev : nextCam));
+      }
+
       const selfAngleNow = selfArcRef.current.angle;
       const aSpeed = dtF > 0 ? angDist(selfAngleNow, lastAngleRef.current) / dtF : 0;
       lastAngleRef.current = selfAngleNow;
@@ -631,7 +843,18 @@ export default function RoundtablePage() {
 
       const arcs = collectArcs();
       const ph = playheadAngle();
-      const phLit = coveredAt(ph, arcs);
+
+      // cycle 3 — the room completes the piece. When the union nearly covers the
+      // WHOLE ring, hold full presence everywhere (hysteresis so it does not flap
+      // at the boundary). Coverage comes from the shared arc set, so this engages
+      // and releases on the same frame for every peer → see == hear still holds.
+      const cov = coverageFraction(arcs);
+      if (!completedRef.current && cov >= COMPLETE_ON) completedRef.current = true;
+      else if (completedRef.current && cov < COMPLETE_OFF) completedRef.current = false;
+      const complete = completedRef.current;
+      setCompleted((prev) => (prev === complete ? prev : complete));
+
+      const phLit = complete || coveredAt(ph, arcs);
       const phHarm = coverCountAt(ph, arcs) >= 2; // playhead crossing an overlap
 
       // apply the collective → sound rule (click-free, only on state change)
@@ -794,6 +1017,33 @@ export default function RoundtablePage() {
       ctx2d.beginPath();
       ctx2d.arc(cx, cy, ring * 0.9, 0, TAU);
       ctx2d.fill();
+
+      // cycle 3 — "the room completed the piece": a held, celebratory bloom when
+      // the union covers nearly the whole ring. Slow luminance only (no flicker),
+      // identical on every peer because `complete` is a function of shared arcs.
+      if (complete) {
+        const glow = 0.5 + 0.5 * Math.sin(t * 0.0016); // slow, well under any strobe threshold
+        ctx2d.save();
+        // a bright complete ring over the base
+        ctx2d.lineWidth = band * 1.05;
+        ctx2d.lineCap = "round";
+        ctx2d.shadowColor = COVER_HEX;
+        ctx2d.shadowBlur = 24 + 30 * level;
+        ctx2d.strokeStyle = `rgba(221, 214, 254, ${0.5 + 0.3 * glow + 0.15 * level})`;
+        ctx2d.beginPath();
+        ctx2d.arc(cx, cy, ring, 0, TAU);
+        ctx2d.stroke();
+        // a soft radial flare filling the ring
+        const fg = ctx2d.createRadialGradient(cx, cy, ring * 0.1, cx, cy, ring * 1.08);
+        fg.addColorStop(0, `rgba(167, 139, 250, ${0.1 + 0.08 * glow})`);
+        fg.addColorStop(0.7, `rgba(139, 92, 246, ${0.05 + 0.05 * glow})`);
+        fg.addColorStop(1, "rgba(139, 92, 246, 0)");
+        ctx2d.fillStyle = fg;
+        ctx2d.beginPath();
+        ctx2d.arc(cx, cy, ring * 1.08, 0, TAU);
+        ctx2d.fill();
+        ctx2d.restore();
+      }
     }
     raf = requestAnimationFrame(frame);
 
@@ -827,6 +1077,17 @@ export default function RoundtablePage() {
       canvas.removeEventListener("pointerup", onUp);
       canvas.removeEventListener("pointercancel", onUp);
       stopSource();
+      // cycle 3 — release the camera + hand tracker
+      camOnRef.current = false;
+      const cam = camStreamRef.current;
+      if (cam) for (const tr of cam.getTracks()) tr.stop();
+      camStreamRef.current = null;
+      try {
+        handTrackerRef.current?.close();
+      } catch {
+        /* already gone */
+      }
+      handTrackerRef.current = null;
       try {
         sync.destroy();
       } catch {
@@ -877,16 +1138,44 @@ export default function RoundtablePage() {
   return (
     <div className="relative h-dvh w-screen overflow-hidden bg-background text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full touch-none" />
+      {/* hidden camera feed for optional hand conducting (cycle 3) */}
+      <video ref={videoRef} playsInline muted className="pointer-events-none absolute h-px w-px opacity-0" aria-hidden />
+
+      {/* cycle 3 — tracking status: always visible while the camera is on, and a
+          lost/error state is clearly distinct from live (works-when-shipped). */}
+      {camState !== "off" && (
+        <div className="pointer-events-none absolute inset-x-0 top-16 flex justify-center px-4 sm:top-20">
+          <span
+            className={`pointer-events-none rounded-md border px-3 py-1 font-mono text-xs uppercase tracking-[0.18em] backdrop-blur-sm ${
+              camState === "live"
+                ? "border-primary/40 bg-background/60 text-primary"
+                : camState === "loading"
+                  ? "border-border bg-background/60 text-muted-foreground"
+                  : "border-destructive/40 bg-background/70 text-destructive"
+            }`}
+          >
+            {camState === "live"
+              ? "hand · conducting"
+              : camState === "loading"
+                ? "camera · starting…"
+                : camState === "error"
+                  ? "camera off — pointer conducts"
+                  : "no hand — reach into frame · pointer still works"}
+          </span>
+        </div>
+      )}
 
       <ImmersiveHud
         immersive={immersive}
         onToggle={toggle}
         title="Roundtable"
-        description="One of Karel's real piano takes is laid around a ring; a playhead sweeps it in synced time. Each present listener tends an arc of the piece, and the music plays at full presence only where the room, together, is covering it — in the gaps it thins out. Settle on one stretch and your arc widens; where two listeners' arcs overlap, the take gains an octave-up voice. A full, settled room keeps the whole piece alive and enriches it."
+        description="One of Karel's real piano takes is laid around a ring; a playhead sweeps it in synced time. Each present listener tends an arc of the piece, and the music plays at full presence only where the room, together, is covering it — in the gaps it thins out. Settle on one stretch and your arc widens; where two listeners' arcs overlap, the take gains an octave-up voice. Cover nearly the whole ring together and the room completes the piece — it holds at full presence. The room survives a listener leaving: whoever is left keeps the piece going. You can also conduct your arc by hand with the camera."
         howTo={[
           "Open room from a second tab to fill the ring",
           "Drag to move your arc, then settle — settling widens it",
           "Bright where the room covers; a brighter seam where arcs overlap blooms a harmony",
+          "Cover the whole ring together → the room completes the piece and it holds",
+          "Optional: Conduct with hand — reach toward the part of the ring you tend",
         ]}
       />
 
@@ -945,10 +1234,27 @@ export default function RoundtablePage() {
               present: <span className="text-foreground">{present}</span>
             </span>
             <span aria-hidden>·</span>
-            <span className={lit ? "text-primary" : "text-muted-foreground"}>
-              {lit ? "lit" : "in a gap"}
+            <span className={present > 1 ? "text-foreground" : "text-muted-foreground"}>
+              {hosting ? "hosting" : "listening"}
             </span>
+            <span aria-hidden>·</span>
+            {completed ? (
+              <span className="text-primary">the room completed the piece</span>
+            ) : (
+              <span className={lit ? "text-primary" : "text-muted-foreground"}>
+                {lit ? "lit" : "in a gap"}
+              </span>
+            )}
           </div>
+        </div>
+      )}
+
+      {/* cycle 3 — host hand-off banner: the room kept the piece going */}
+      {handoff && (
+        <div className="pointer-events-none absolute inset-x-0 top-28 flex justify-center px-4 sm:top-32">
+          <span className="pointer-events-none rounded-md border border-primary/40 bg-background/70 px-3 py-1 text-sm text-primary backdrop-blur-sm">
+            The room kept the piece going — you&apos;re hosting now.
+          </span>
         </div>
       )}
 
@@ -1026,6 +1332,17 @@ export default function RoundtablePage() {
               >
                 Connect a remote listener
               </button>
+
+              <button
+                onClick={() =>
+                  camState === "off" || camState === "error"
+                    ? actionsRef.current?.startCam()
+                    : actionsRef.current?.stopCam()
+                }
+                className="min-h-[44px] rounded-md border border-border bg-background/60 px-4 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+              >
+                {camState === "off" || camState === "error" ? "Conduct with hand" : "Stop camera"}
+              </button>
             </div>
 
             <p className="text-sm leading-relaxed text-muted-foreground">
@@ -1036,8 +1353,14 @@ export default function RoundtablePage() {
               audio). <span className="text-foreground">Settle</span> your arc on one stretch and it
               widens (watch <span className="text-foreground">attention</span>); drag the two tabs&apos;
               arcs so they <span className="text-foreground">overlap</span> and that stretch blooms an
-              octave-up voice (watch <span className="text-foreground">harmony</span>). Solo works
-              too: your single arc lights its slice while the rest of the piece thins out.
+              octave-up voice (watch <span className="text-foreground">harmony</span>). Spread the
+              two arcs until <span className="text-foreground">covered</span> nears 100% and the room{" "}
+              <span className="text-foreground">completes the piece</span> — it holds at full
+              presence. Close one tab and the other{" "}
+              <span className="text-foreground">keeps playing</span>, taking over as host. Solo works
+              too: your single arc lights its slice while the rest of the piece thins out. Optional:{" "}
+              <span className="text-foreground">Conduct with hand</span> turns on the camera so you
+              reach toward the stretch you tend — the pointer always still works.
             </p>
 
             {showRemote && (
