@@ -1,5 +1,13 @@
 [
  {
+  "slug": "22880-vantage",
+  "cycle": 22880,
+  "name": "Vantage",
+  "status": "demoable",
+  "description": "Karel's one piano take, exploded into a swarm of sound-bodies orbiting you in 3-D. His single recording loops pitch-clean and is split into five parallel band voices (sub, low-mid,",
+  "category": "local"
+ },
+ {
   "slug": "22560-roundtable",
   "cycle": 22560,
   "name": "Roundtable",
