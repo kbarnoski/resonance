@@ -1,5 +1,13 @@
 [
  {
+  "slug": "23040-priorbody",
+  "cycle": 23040,
+  "name": "PRIOR BODY",
+  "status": "demoable",
+  "description": "A closed-loop spatial-hearing lab. One of Karel's real piano recordings is hidden at a direction on a sphere that slowly drifts around you; you point your body (or the pointer) tow",
+  "category": "local"
+ },
+ {
   "slug": "22880-vantage",
   "cycle": 22880,
   "name": "Vantage",
