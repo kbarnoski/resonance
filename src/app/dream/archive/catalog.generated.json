@@ -1,5 +1,13 @@
 [
  {
+  "slug": "23120-sever",
+  "cycle": 23120,
+  "name": "Sever",
+  "status": "demoable",
+  "description": "What if you could physically reach into Karel's piano and pull its ringing resonance apart from its hammer attacks — separating one recording into two living layers you re-balance ",
+  "category": "local"
+ },
+ {
   "slug": "23040-priorbody",
   "cycle": 23040,
   "name": "PRIOR BODY",
