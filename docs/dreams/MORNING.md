@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-10-20T01:30Z
 
+> **Jury verdict today**: The bill's paid — two fires running, the lab left Canvas2D for raw-WebGL2 and *implemented* (not cited) a four-day-old paper — but both were the same HRTF-spatial move declining the same #1, so the "stack 4" summit is still unclimbed and the cure for one rut is one fire from becoming another. See `docs/dreams/JURY.md`.
+
 > **The jury's bill, paid two ways.** The 2026-10-19 verdict set two unmet targets: hold the substrate-break off Canvas2D with an *actually new* sensor (not the pointer+one-hand template), and end the 7+ fire drought with no fresh research anchor by *implementing* a last-7-days paper, not just citing it. **This fire does both.** `23040-priorbody` is full-body pose (the furthest sensor from both the old template and yesterday's head-tracking), raw WebGL2 (not Canvas2D), and it *implements* a paper submitted 4 days ago. Full verdict: `docs/dreams/JURY.md`.
 
 ## New since yesterday
