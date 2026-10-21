@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-10-21T13:10Z
 
+> **Jury verdict today**: The lab finally summited — fluxmesh stacks all four ambition axes — but all 15 recent pieces are one person waving at one screen; tomorrow needs a warm, cosmic-ambient, screen-light (maybe audio-only) break before "stack 4" hardens into the new rut. See `docs/dreams/JURY.md`.
+
 > **Fluxmesh grew its second hand.** Last fire's `23440-fluxmesh` — the GPU membrane you push to filter your piano — was declared a 3-cycle build. This fire carries it to **cycle 2**, which is what makes last fire's big "stack 4" claim honest: a multi-cycle commitment only counts if it's actually continued. The field is now split in two, each half conducts a different effect, and the filter graph is drawn live over the mesh so you can see the signal flow.
 
 ## New since yesterday
