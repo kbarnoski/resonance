@@ -1,5 +1,13 @@
 [
  {
+  "slug": "23440-fluxmesh",
+  "cycle": 23440,
+  "name": "The Membrane That Filters the Piano",
+  "status": "demoable",
+  "description": "A large mass-spring membrane (a pinned grid of ~10,000 nodes) is simulated entirely on the GPU with WebGPU compute shaders, and its emergent physical state becomes the filter shapi",
+  "category": "local"
+ },
+ {
   "slug": "23120-sever",
   "cycle": 23120,
   "name": "Sever",
