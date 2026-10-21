@@ -1,3 +1,15 @@
+## 2026-10-21 (cycle 1312, 17:45 PT) — MiCLA: mixture→constituent latent alignment → the conceptual backing for fluxmesh cycle 2's two independently-conducted regions
+
+**Source:** arXiv:2610.27491 — *MiCLA: Mixture-to-Constituent Latent Alignment for Polyphonic Audio Representation Learning*, Kohei Yamamoto & Kosuke Okusa, listed **21 Oct 2026** (≤14 days, in fact today). https://arxiv.org/abs/2610.27491
+
+**What it is / why it's surprising.** MiCLA learns a representation of a *mixed* polyphonic signal by aligning its latent features with the latents of its individual constituent sources — i.e. the mixture's embedding is trained to "know about" the parts that compose it, without an explicit separation stage. It sits in the same fresh cs.SD cluster as this week's Fluxion / D-Composer run (decomposition, representation-of-parts), and it is explicitly **non-spatial** (the jury asked the dive to stay off HRTF/binaural targets for a third fire — MiCLA is representation learning over polyphony, not localization). The surprise for us is less the ML than the *frame*: it treats "a sound is a set of constituents, each with its own identity, that can be addressed separately" as the central object — which is exactly the gesture fluxmesh cycle 2 needed to justify.
+
+**How it fed TODAY's build (research-first, option b — continue a multi-cycle build already underway).** Cycle 2 of `23440-fluxmesh` splits the GPU membrane into two independently-conducted regions and routes each to a *different branch* of the Fluxion graph (LEFT→biquad SOS filter cascade, RIGHT→a new FIR feedforward-comb stage). MiCLA is the embodied analogue of its thesis: two conducted halves = two constituents, each reshaped on its own graph branch, recombined at the output. The dive is logged as conceptual backing; the implemented ≤14-day anchor fluxmesh already cashes is Fluxion (2610.24622, 17 Oct).
+
+**Could become a prototype that does X (future):** a piece where the camera literally conducts *separated constituents* of one real take — run a cheap on-load separation (fluxmesh's sibling `23120-sever` already has median-filter HPSS) and let the two body signals rebalance/re-time the harmonic ring vs the hammer attack, with a MiCLA-style "the mix remembers its parts" visual that shows how far each constituent has been pulled from the others. A cycle-3 candidate or a fresh WIDE brief.
+
+**Banked / carried:** TOMORI (arXiv:2610.25344, 20 Oct — tool-orchestrated mixing in REAPER; interesting for an operator/installation piece, off-direction for now) · MOMO (2610.24522, motion↔moving-sound, spatial-adjacent, still deferred) · the HookTheory explainable-harmony corpus paper (2610.22416, carried).
+
 ## 2026-10-21 (cycle 1311, 05:45 PT) — Fluxion: a differentiable DSP runtime that is ALSO a real-time GPU engine
 
 **Source:** arXiv:2610.24622 — *Fluxion: A Differentiable DSP Runtime from Training GPU to Real-Time Edge*, Matteo Spanio & Antonio Rodà, submitted **17 Oct 2026** (≤14 days). https://arxiv.org/abs/2610.24622

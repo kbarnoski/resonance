@@ -45,7 +45,20 @@ export function createCpuMesh(canvas: HTMLCanvasElement): MeshSim {
   const sy = 1 / (ROWS - 1);
   const sd = Math.hypot(sx, sy);
 
-  const scalars: Scalars = { energy: 0, centroidY: 0.5, balance: 0, stretch: 0 };
+  // Per-region node counts (rest-x < 0.5) — mirrors the GPU path.
+  let leftCols = 0;
+  for (let gx = 0; gx < COLS; gx++) if (gx / (COLS - 1) < 0.5) leftCols++;
+  const LEFT_COUNT = Math.max(1, leftCols * ROWS);
+  const RIGHT_COUNT = Math.max(1, COUNT - LEFT_COUNT);
+
+  const scalars: Scalars = {
+    energy: 0,
+    centroidY: 0.5,
+    balance: 0,
+    stretch: 0,
+    left: { energy: 0, centroidY: 0.5, stretch: 0 },
+    right: { energy: 0, centroidY: 0.5, stretch: 0 },
+  };
   let disposed = false;
 
   const configure = () => {
@@ -127,23 +140,37 @@ export function createCpuMesh(canvas: HTMLCanvasElement): MeshSim {
   };
 
   const reduce = () => {
-    let ke = 0;
-    let yke = 0;
+    // Per-region accumulators (membership keyed on rest-x, like the GPU path).
     let lke = 0;
+    let lyke = 0;
+    let lst = 0;
     let rke = 0;
-    let st = 0;
+    let ryke = 0;
+    let rst = 0;
     for (let i = 0; i < COUNT; i++) {
       const e = 0.5 * (vx[i] * vx[i] + vy[i] * vy[i]);
-      ke += e;
-      yke += e * py[i];
-      if (px[i] < 0.5) lke += e;
-      else rke += e;
-      st += Math.hypot(px[i] - rx[i], py[i] - ry[i]);
+      const stretch = Math.hypot(px[i] - rx[i], py[i] - ry[i]);
+      if (rx[i] < 0.5) {
+        lke += e;
+        lyke += e * py[i];
+        lst += stretch;
+      } else {
+        rke += e;
+        ryke += e * py[i];
+        rst += stretch;
+      }
     }
+    const ke = lke + rke;
     scalars.energy = ke;
-    scalars.centroidY = ke > 1e-6 ? yke / ke : 0.5;
+    scalars.centroidY = ke > 1e-6 ? (lyke + ryke) / ke : 0.5;
     scalars.balance = (rke - lke) / (rke + lke + 1e-6);
-    scalars.stretch = st / COUNT;
+    scalars.stretch = (lst + rst) / COUNT;
+    scalars.left.energy = lke;
+    scalars.left.centroidY = lke > 1e-6 ? lyke / lke : 0.5;
+    scalars.left.stretch = lst / LEFT_COUNT;
+    scalars.right.energy = rke;
+    scalars.right.centroidY = rke > 1e-6 ? ryke / rke : 0.5;
+    scalars.right.stretch = rst / RIGHT_COUNT;
   };
 
   const draw = () => {

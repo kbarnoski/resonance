@@ -41,6 +41,16 @@ export interface Push {
   fy: number;
 }
 
+/** Scalars for one conducted half of the membrane (cycle 2). */
+export interface RegionScalars {
+  /** Kinetic energy summed over this region (raw; the page normalises it). */
+  energy: number;
+  /** Energy-weighted vertical centroid within this region, 0 (top) … 1 (bottom). */
+  centroidY: number;
+  /** Mean per-node displacement from rest within this region. */
+  stretch: number;
+}
+
 /** The small set of scalars the GPU field is reduced to each frame. */
 export interface Scalars {
   /** Total kinetic energy of the field (raw sum; the page normalises it). */
@@ -51,6 +61,14 @@ export interface Scalars {
   balance: number;
   /** Mean per-node displacement from the rest shape (a proxy for spring stretch). */
   stretch: number;
+  /**
+   * Cycle 2 — the membrane is split at rest-x = 0.5 into two independently
+   * conducted regions. The LEFT region drives the biquad SOS filter cascade;
+   * the RIGHT region drives the feedforward-comb FIR stage. Two body signals,
+   * two parts of the Fluxion graph.
+   */
+  left: RegionScalars;
+  right: RegionScalars;
 }
 
 /** Common surface implemented by both the GPU and the CPU-fallback mesh. */
@@ -172,7 +190,13 @@ fn main(@builtin(global_invocation_id) gid : vec3<u32>) {
 }
 `;
 
-// ── WGSL: reduce the whole field to a few scalars (one workgroup) ────────────
+// ── WGSL: reduce the field to PER-REGION scalars (one workgroup) ─────────────
+// Cycle 2: the membrane is split at rest-x = 0.5 into a LEFT and a RIGHT half,
+// each reduced independently to { energy, energy·y, stretch }. Six accumulators
+// instead of five; region membership is keyed on the REST x (fixed) so a node
+// never flips regions as it moves. The page derives the global energy / centroid
+// / balance / stretch from the two halves, and feeds each half to its own part
+// of the DSP graph.
 const REDUCE_WGSL = /* wgsl */ `
 ${SIM_STRUCT}
 @group(0) @binding(0) var<uniform> S : Sim;
@@ -180,16 +204,18 @@ ${SIM_STRUCT}
 @group(0) @binding(2) var<storage, read> vel : array<vec2<f32>>;
 @group(0) @binding(3) var<storage, read_write> outv : array<f32>;
 
-var<workgroup> sKE  : array<f32, ${RWG}>;
-var<workgroup> sYKE : array<f32, ${RWG}>;
-var<workgroup> sLKE : array<f32, ${RWG}>;
-var<workgroup> sRKE : array<f32, ${RWG}>;
-var<workgroup> sST  : array<f32, ${RWG}>;
+var<workgroup> sLKE  : array<f32, ${RWG}>;
+var<workgroup> sLYKE : array<f32, ${RWG}>;
+var<workgroup> sLST  : array<f32, ${RWG}>;
+var<workgroup> sRKE  : array<f32, ${RWG}>;
+var<workgroup> sRYKE : array<f32, ${RWG}>;
+var<workgroup> sRST  : array<f32, ${RWG}>;
 
 @compute @workgroup_size(${RWG})
 fn main(@builtin(local_invocation_id) lid : vec3<u32>) {
   let tid = lid.x;
-  var ke = 0.0; var yke = 0.0; var lke = 0.0; var rke = 0.0; var st = 0.0;
+  var lke = 0.0; var lyke = 0.0; var lst = 0.0;
+  var rke = 0.0; var ryke = 0.0; var rst = 0.0;
 
   var i = tid;
   loop {
@@ -199,37 +225,42 @@ fn main(@builtin(local_invocation_id) lid : vec3<u32>) {
     let p = pos[i];
     let v = vel[i];
     let e = 0.5 * dot(v, v);
-    ke += e;
-    yke += e * p.y;
-    if (p.x < 0.5) { lke += e; } else { rke += e; }
     let rest = vec2<f32>(f32(gx) / f32(S.cols - 1u), f32(gy) / f32(S.rows - 1u));
-    st += length(p - rest);
+    let stretch = length(p - rest);
+    if (rest.x < 0.5) {
+      lke += e; lyke += e * p.y; lst += stretch;
+    } else {
+      rke += e; ryke += e * p.y; rst += stretch;
+    }
     i += ${RWG}u;
   }
 
-  sKE[tid] = ke; sYKE[tid] = yke; sLKE[tid] = lke; sRKE[tid] = rke; sST[tid] = st;
+  sLKE[tid] = lke; sLYKE[tid] = lyke; sLST[tid] = lst;
+  sRKE[tid] = rke; sRYKE[tid] = ryke; sRST[tid] = rst;
   workgroupBarrier();
 
   var stride = ${RWG}u >> 1u;
   loop {
     if (stride == 0u) { break; }
     if (tid < stride) {
-      sKE[tid]  += sKE[tid + stride];
-      sYKE[tid] += sYKE[tid + stride];
-      sLKE[tid] += sLKE[tid + stride];
-      sRKE[tid] += sRKE[tid + stride];
-      sST[tid]  += sST[tid + stride];
+      sLKE[tid]  += sLKE[tid + stride];
+      sLYKE[tid] += sLYKE[tid + stride];
+      sLST[tid]  += sLST[tid + stride];
+      sRKE[tid]  += sRKE[tid + stride];
+      sRYKE[tid] += sRYKE[tid + stride];
+      sRST[tid]  += sRST[tid + stride];
     }
     workgroupBarrier();
     stride = stride >> 1u;
   }
 
   if (tid == 0u) {
-    outv[0] = sKE[0];
-    outv[1] = sYKE[0];
-    outv[2] = sLKE[0];
+    outv[0] = sLKE[0];
+    outv[1] = sLYKE[0];
+    outv[2] = sLST[0];
     outv[3] = sRKE[0];
-    outv[4] = sST[0];
+    outv[4] = sRYKE[0];
+    outv[5] = sRST[0];
   }
 }
 `;
@@ -338,6 +369,12 @@ export async function createGpuMesh(canvas: HTMLCanvasElement): Promise<MeshSim>
     rest[i * 2 + 1] = gy / (ROWS - 1);
   }
   device.queue.writeBuffer(posA, 0, rest);
+
+  // Per-region node counts (rest-x < 0.5), for per-region stretch normalisation.
+  let leftCols = 0;
+  for (let gx = 0; gx < COLS; gx++) if (gx / (COLS - 1) < 0.5) leftCols++;
+  const LEFT_COUNT = Math.max(1, leftCols * ROWS);
+  const RIGHT_COUNT = Math.max(1, COUNT - LEFT_COUNT);
 
   const simBuf = device.createBuffer({
     size: SIM_BYTES,
@@ -523,7 +560,14 @@ export async function createGpuMesh(canvas: HTMLCanvasElement): Promise<MeshSim>
     device.queue.writeBuffer(simBuf, 0, simData);
   };
 
-  const scalars: Scalars = { energy: 0, centroidY: 0.5, balance: 0, stretch: 0 };
+  const scalars: Scalars = {
+    energy: 0,
+    centroidY: 0.5,
+    balance: 0,
+    stretch: 0,
+    left: { energy: 0, centroidY: 0.5, stretch: 0 },
+    right: { energy: 0, centroidY: 0.5, stretch: 0 },
+  };
   let mapInFlight = false;
   let currentIsA = true;
 
@@ -591,13 +635,24 @@ export async function createGpuMesh(canvas: HTMLCanvasElement): Promise<MeshSim>
           if (disposed) return;
           const a = new Float32Array(readBuf.getMappedRange().slice(0));
           readBuf.unmap();
-          const ke = a[0];
+          // a = [ lke, lyke, lst, rke, ryke, rst ] (per-region)
+          const lke = a[0];
+          const lyke = a[1];
+          const lst = a[2];
+          const rke = a[3];
+          const ryke = a[4];
+          const rst = a[5];
+          const ke = lke + rke;
           scalars.energy = ke;
-          scalars.centroidY = ke > 1e-6 ? a[1] / ke : 0.5;
-          const l = a[2];
-          const r = a[3];
-          scalars.balance = (r - l) / (r + l + 1e-6);
-          scalars.stretch = a[4] / COUNT;
+          scalars.centroidY = ke > 1e-6 ? (lyke + ryke) / ke : 0.5;
+          scalars.balance = (rke - lke) / (rke + lke + 1e-6);
+          scalars.stretch = (lst + rst) / COUNT;
+          scalars.left.energy = lke;
+          scalars.left.centroidY = lke > 1e-6 ? lyke / lke : 0.5;
+          scalars.left.stretch = lst / LEFT_COUNT;
+          scalars.right.energy = rke;
+          scalars.right.centroidY = rke > 1e-6 ? ryke / rke : 0.5;
+          scalars.right.stretch = rst / RIGHT_COUNT;
           mapInFlight = false;
         })
         .catch(() => {

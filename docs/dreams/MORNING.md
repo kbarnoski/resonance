@@ -1,19 +1,18 @@
-# Morning digest — last updated 2026-10-21T13:30Z
+# Morning digest — last updated 2026-10-21T13:10Z
 
-> **The "stack 4" summit — finally climbed.** For three mornings the jury has said no piece stacks the three *discriminating* ambition axes at once: a genuine lab-first technique (#1), a multi-cycle commitment (#4), and a fresh ≤14-day paper (#5). Today's build is the first that does all three. It's also the substrate change you'd want after three straight raw-WebGL2 fires: this one runs on **WebGPU** — a different engine entirely — and the research dive went non-spatial as the jury asked, landing on a differentiable-DSP paper posted four days ago.
+> **Fluxmesh grew its second hand.** Last fire's `23440-fluxmesh` — the GPU membrane you push to filter your piano — was declared a 3-cycle build. This fire carries it to **cycle 2**, which is what makes last fire's big "stack 4" claim honest: a multi-cycle commitment only counts if it's actually continued. The field is now split in two, each half conducts a different effect, and the filter graph is drawn live over the mesh so you can see the signal flow.
 
 ## New since yesterday
-- **`23440-fluxmesh` — a membrane, simulated on the GPU, that you push with your body and it becomes the filter on your piano.** ~10,000 mass-spring nodes run entirely on the GPU every frame; the GPU boils the whole field down to four numbers (how much it's moving, how stretched, where the energy sits, left/right) and those four numbers drive a real filter+delay graph on one of your takes.
-  - **Push the field and the piano opens up** where you pushed — the spot brightens *and* the sound brightens at the same instant. Energy opens the filter, stretch adds resonance, up/down tilts the delay, left/right pans it.
-  - It's the lab's **first time a GPU *simulation* drives the live sound** (not just the picture) — exactly the lab-first the jury kept naming. It implements *Fluxion* (arXiv:2610.24622, posted 17 Oct), a differentiable-DSP runtime that runs the same filter graph on the GPU.
-  - **Declared a 3-cycle build** (cycle 1 of 3): cycle 2 adds a second body-driven region + an FIR stage; cycle 3 adds Fluxion's "freeze the graph when it settles" moment and opens it to full-body / a second person.
-- **Why open it:** press play, then **drag the mouse** across the field — fully playable with no webcam. With a camera, stand back and reach: your wrists push the membrane.
+- **`23440-fluxmesh` → cycle 2: two hands, two effects.** The membrane is now split down the middle into two independently-conducted regions:
+  - **Left half → a resonant filter** (push it to open the piano up and make it ring).
+  - **Right half → a new comb filter** (push it to carve a flange/comb into the sound).
+  - So your left and right hands shape *different parts* of the sound at once — not one global knob but two.
+- **The filter graph is drawn over the field.** A thin schematic layer shows the two regions (L → FILTER, R → COMB) and a bottom strip — SRC → SOS → FIR → DLY → PAN — whose blocks fill live from exactly what your hands are doing. You can watch the signal flow react.
+- **Under the hood:** the GPU reduction now emits separate numbers for the left and right halves, and the audio graph gained a true FIR (feedforward comb) stage — so Fluxion's full algebra (filter cascade + FIR + delay) is now all present. Research dive went non-spatial again as the jury asked (MiCLA, a "the mixture remembers its parts" paper posted today — the backing for the two-region idea).
+- **Why open it:** press play, then **drag the left half vs the right half** of the field with the mouse — you'll hear each half do its own thing. Fully playable with no webcam.
 
 ## Needs your 30-second check
-- **The camera (full-body pose) path is untested up here** — I can't point a webcam at myself in the cloud. The mouse path is verified and complete; the body-tracking calibration (wrist→push, mirroring, seated framing) wants your quick look. It ships *demoable*, not as "working camera", on purpose.
-
-## Also explored (banked, not shipped)
-- **`fluxgraph`** — the sibling: a WebGPU compute shader that *literally computes the output audio samples* of a filter+delay graph, block by block. Gorgeous and faithful, but its camera used one hand (the sensor the jury asked me to rest this cycle) and its "first GPU-computed audio" claim collides with an old 2026 piece — so fluxmesh won. Banked in IDEAS to ship later. See IDEAS §1311.
+- **The two-hand camera path is untested up here** — I can't point a webcam at myself in the cloud. The mouse path is verified and complete (dragging left vs right conducts the two regions). The body-tracking calibration (left wrist → left region, right wrist → right region, mirroring, seated framing) wants your quick look. Ships *demoable*, not "working camera", on purpose.
 
 ## Open question for you
-- The summit's climbed once — want me to **continue fluxmesh to cycle 2** next fire (the natural move), or chase a *second* #1+#4+#5 stack on a different substrate so it doesn't become a template? Either is good; tell me which you'd rather see.
+- **Cycle 3 is the last leg** of fluxmesh: Fluxion's "freeze the graph when the field settles into a standing wave" moment, plus opening it to full-body / a second person. Want me to finish the arc next fire — or pause fluxmesh at 2-of-3 and chase a *second* stack-4 piece on a different engine so fluxmesh doesn't become the only template? Either's good; I'll default to finishing cycle 3 unless you say otherwise.

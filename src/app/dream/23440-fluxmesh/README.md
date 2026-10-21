@@ -25,14 +25,27 @@ Each displayed frame runs three GPU stages:
    velocity (schematic teal at rest → hot cyan where the field is moving), over a
    cool graphite background.
 
-On the CPU side, those four scalars drive a **Fluxion-style DSP graph**: a biquad
-SOS cascade (four lowpass sections + two peaking sections) feeding a delay
-feedback line, processing one decoded take into `createSafeMaster`.
+On the CPU side, those scalars drive a **Fluxion-style DSP graph**: a biquad SOS
+cascade (four lowpass sections + two peaking sections) → a two-tap **feedforward
+comb (FIR)** → a delay feedback line, processing one decoded take into
+`createSafeMaster`. Fluxion's algebra is *cascaded SOS + FIR + delay-line
+effects* — as of cycle 2 all three are present.
 
-- mesh **energy** → cascade cutoff (the field opening the piano up)
-- mean **stretch** → section resonance Q and peaking gain
-- vertical **tilt** → delay feedback depth and wet amount
-- L/R **balance** → stereo pan
+**Cycle 2 — two independently-conducted regions.** The membrane is split at
+rest-x = 0.5 into a LEFT and a RIGHT half, each reduced on the GPU to its own
+`{energy, centroidY, stretch}`. Two body signals now shape two parts of the graph:
+
+- LEFT region **energy** → cascade cutoff (your left hand opens the piano up)
+- LEFT region **stretch** → cascade resonance Q + peaking gain
+- RIGHT region **energy** → FIR comb depth (your right hand carves the comb)
+- RIGHT region **centroid** → FIR comb delay (notch spacing)
+- global vertical **tilt** → delay feedback depth + wet amount
+- global L/R **balance** → stereo pan
+
+A thin **signal-flow overlay** is drawn over the field: a divider marking the two
+regions (L → FILTER, R → COMB) and a bottom strip (SRC → SOS → FIR → DLY → PAN)
+whose blocks fill live from the exact scalars steering the graph — the Fluxion
+graph made visible on top of the physics that drives it.
 
 If WebGPU is unavailable, a smaller CPU mass-spring membrane + Canvas2D viz takes
 over (with a visible notice); the same scalar reduction still drives the same
@@ -53,25 +66,31 @@ then smoothed with `setTargetAtTime(..., 0.12)`, which both hides that latency a
 prevents zippering. Only the four floats are read back each frame — the full field
 is never copied to the CPU, which would stall the pipeline.
 
-## Roadmap — a multi-cycle build (this is cycle 1 of 3)
+## Roadmap — a multi-cycle build (cycle 2 of 3 shipped)
 
-This ships the core as a working, conducted instrument. The planned deepening:
-
-- **Cycle 2** — a richer Fluxion graph (add a FIR stage and a second
-  independently-conducted region of the membrane, so two body signals shape two
-  parts of the DSP graph), and a tighter visual coupling (the signal-flow of the
-  graph drawn over the field).
-- **Cycle 3** — Fluxion's *frozen-artifact* moment: when the field settles into a
-  stable standing-wave, the current coefficient set is "frozen" and stability-
-  checked (as Fluxion freezes a trained graph before edge playback), and the
-  piece opens to full-body / multi-limb (or a second person) pushing the mesh.
+- **Cycle 1 (shipped)** — the core: GPU mass-spring field → 4-scalar reduction →
+  Fluxion-style SOS cascade + delay line over one real take.
+- **Cycle 2 (shipped — this cycle)** — a richer Fluxion graph (added the FIR
+  feedforward-comb stage and split the membrane into two independently-conducted
+  regions, so two body signals shape two parts of the DSP graph) and a tighter
+  visual coupling (the signal-flow of the graph drawn over the field).
+- **Cycle 3 (planned)** — Fluxion's *frozen-artifact* moment: when the field
+  settles into a stable standing-wave, the current coefficient set is "frozen"
+  and stability-checked (as Fluxion freezes a trained graph before edge
+  playback), and the piece opens to full-body / multi-limb (or a second person)
+  pushing the mesh.
 
 ## Reference
 
 - **Fluxion: A Differentiable DSP Runtime from Training GPU to Real-Time Edge.**
   D. Spanio & A. Rodà, arXiv:2610.24622 (submitted 17 Oct 2026). The single
-  DSP-graph algebra used here — a cascade of second-order sections plus delay-line
-  effects as a real-time runtime.
+  DSP-graph algebra used here — a cascade of second-order sections, an FIR stage,
+  and delay-line effects as a real-time runtime.
+- **MiCLA: Mixture-to-Constituent Latent Alignment for Polyphonic Audio
+  Representation Learning.** K. Yamamoto & K. Okusa, arXiv:2610.27491 (21 Oct
+  2026). Cycle 2's two-region split is the embodied analogue of its
+  mixture→constituent idea: two conducted halves = two constituents, each
+  reshaped on its own branch of the graph.
 - **A. Witkin, "Physically Based Modeling: Particle System Dynamics" / Verlet &
   semi-implicit integration of mass-spring networks** — the foundational physical
   model behind the GPU membrane (neighbour springs, damping, explicit time

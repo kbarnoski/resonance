@@ -48,8 +48,19 @@ interface WristState {
   has: boolean;
 }
 
+// Live, normalised two-region params (also read by the signal-flow overlay).
+interface FlowState {
+  leftEnergy01: number;
+  leftStretch01: number;
+  rightEnergy01: number;
+  rightCentroidY: number;
+  tilt: number;
+  balance: number;
+}
+
 export default function FluxMeshPage() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const overlayRef = useRef<HTMLCanvasElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const simRef = useRef<MeshSim | null>(null);
@@ -69,7 +80,8 @@ export default function FluxMeshPage() {
   const monoRef = useRef(0);
   const lastVideoTimeRef = useRef(-1);
   const energyPeakRef = useRef(1e-3);
-  const energyEnvRef = useRef(0);
+  const leftEnvRef = useRef(0);
+  const rightEnvRef = useRef(0);
   const statusRef = useRef<TrackStatus>("pointer");
 
   const [phase, setPhase] = useState<Phase>("idle");
@@ -203,6 +215,112 @@ export default function FluxMeshPage() {
     return pushes;
   }, [cameraOn]);
 
+  // ── signal-flow overlay — the Fluxion graph drawn over the field ────────────
+  // A thin schematic layer above the mesh: a divider marking the two conducted
+  // regions (L → FILTER, R → COMB) and a bottom signal-flow strip whose blocks
+  // fill live from the same scalars that steer the DSP graph. Pure art strings
+  // (teal/cyan/graphite) — this is the piece's visualisation, kept in immersive.
+  const drawFlow = useCallback((f: FlowState) => {
+    const cv = overlayRef.current;
+    if (!cv) return;
+    const dpr = Math.min(2, typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1);
+    const wantW = Math.max(1, Math.floor(cv.clientWidth * dpr));
+    const wantH = Math.max(1, Math.floor(cv.clientHeight * dpr));
+    if (cv.width !== wantW || cv.height !== wantH) {
+      cv.width = wantW;
+      cv.height = wantH;
+    }
+    const g = cv.getContext("2d");
+    if (!g) return;
+    const W = cv.width;
+    const H = cv.height;
+    g.clearRect(0, 0, W, H);
+    g.save();
+    g.scale(dpr, dpr);
+    const w = W / dpr;
+    const h = H / dpr;
+
+    const dim = "rgba(150,180,190,0.42)";
+    const hot = (a: number) => `rgba(102,242,255,${a})`;
+    const teal = (a: number) => `rgba(40,150,175,${a})`;
+
+    // Region divider + labels.
+    g.strokeStyle = "rgba(120,160,175,0.18)";
+    g.lineWidth = 1;
+    g.setLineDash([4, 6]);
+    g.beginPath();
+    g.moveTo(w / 2, 10);
+    g.lineTo(w / 2, h - 70);
+    g.stroke();
+    g.setLineDash([]);
+
+    g.font = "600 11px ui-monospace, monospace";
+    g.textBaseline = "top";
+    g.textAlign = "center";
+    const lGlow = 0.4 + f.leftEnergy01 * 0.6;
+    const rGlow = 0.4 + f.rightEnergy01 * 0.6;
+    g.fillStyle = hot(lGlow);
+    g.fillText("L · FILTER", w * 0.25, 12);
+    g.fillStyle = hot(rGlow);
+    g.fillText("R · COMB", w * 0.75, 12);
+
+    // Bottom signal-flow strip.
+    const cells: { label: string; level: number; mark?: number }[] = [
+      { label: "SRC", level: 0.5 },
+      { label: "SOS", level: f.leftEnergy01 },
+      { label: "FIR", level: f.rightEnergy01 },
+      { label: "DLY", level: f.tilt },
+      { label: "PAN", level: 0, mark: (f.balance + 1) / 2 },
+    ];
+    const n = cells.length;
+    const pad = 16;
+    const gap = 10;
+    const cw = Math.min(110, (w - pad * 2 - gap * (n - 1)) / n);
+    const totalW = cw * n + gap * (n - 1);
+    const x0 = (w - totalW) / 2;
+    const cy = h - 48;
+    const ch = 30;
+
+    for (let i = 0; i < n; i++) {
+      const cx = x0 + i * (cw + gap);
+      // connector arrow
+      if (i > 0) {
+        g.strokeStyle = dim;
+        g.lineWidth = 1;
+        g.beginPath();
+        g.moveTo(cx - gap, cy + ch / 2);
+        g.lineTo(cx, cy + ch / 2);
+        g.stroke();
+      }
+      // cell frame
+      g.strokeStyle = "rgba(120,160,175,0.30)";
+      g.lineWidth = 1;
+      g.strokeRect(cx, cy, cw, ch);
+      // fill bar (level)
+      const c = cells[i];
+      if (c.mark === undefined) {
+        g.fillStyle = teal(0.22 + c.level * 0.5);
+        g.fillRect(cx + 1, cy + 1, (cw - 2) * Math.max(0, Math.min(1, c.level)), ch - 2);
+      } else {
+        // pan marker
+        const mx = cx + 2 + (cw - 4) * Math.max(0, Math.min(1, c.mark));
+        g.strokeStyle = hot(0.8);
+        g.lineWidth = 2;
+        g.beginPath();
+        g.moveTo(mx, cy + 3);
+        g.lineTo(mx, cy + ch - 3);
+        g.stroke();
+      }
+      // label
+      g.fillStyle = dim;
+      g.font = "600 10px ui-monospace, monospace";
+      g.textAlign = "center";
+      g.textBaseline = "middle";
+      g.fillText(c.label, cx + cw / 2, cy + ch / 2);
+    }
+    g.restore();
+  }, []);
+
   // ── main loop (runs while phase === "running") ──────────────────────────────
   useEffect(() => {
     if (phase !== "running") return;
@@ -224,13 +342,25 @@ export default function FluxMeshPage() {
       if (cameraOn) readPose();
       sim.frame(dt, gatherPushes(), timeSec);
 
-      // GPU-reduced scalars → DSP params.
+      // GPU-reduced per-region scalars → two parts of the DSP graph.
       const s = sim.scalars;
       energyPeakRef.current = Math.max(energyPeakRef.current * 0.992, s.energy, 1e-3);
-      const energy01 = Math.min(1, s.energy / energyPeakRef.current);
-      energyEnvRef.current += (energy01 - energyEnvRef.current) * 0.18;
-      const stretch01 = Math.min(1, s.stretch * 20);
-      graph.update(energyEnvRef.current, stretch01, s.centroidY, s.balance);
+      const peak = energyPeakRef.current;
+      const leftE = Math.min(1, s.left.energy / peak);
+      const rightE = Math.min(1, s.right.energy / peak);
+      leftEnvRef.current += (leftE - leftEnvRef.current) * 0.18;
+      rightEnvRef.current += (rightE - rightEnvRef.current) * 0.18;
+
+      const flow: FlowState = {
+        leftEnergy01: leftEnvRef.current,
+        leftStretch01: Math.min(1, s.left.stretch * 20),
+        rightEnergy01: rightEnvRef.current,
+        rightCentroidY: s.right.centroidY,
+        tilt: s.centroidY,
+        balance: s.balance,
+      };
+      graph.update(flow);
+      drawFlow(flow);
 
       raf = requestAnimationFrame(tick);
     };
@@ -242,7 +372,7 @@ export default function FluxMeshPage() {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", onResize);
     };
-  }, [phase, cameraOn, readPose, gatherPushes]);
+  }, [phase, cameraOn, readPose, gatherPushes, drawFlow]);
 
   // ── teardown on unmount ─────────────────────────────────────────────────────
   useEffect(() => {
@@ -341,9 +471,10 @@ export default function FluxMeshPage() {
 
   const howTo = [
     "Press Start — one of Karel's piano takes begins playing through the mesh.",
-    "Drag anywhere on the field with the mouse to push the membrane; where you push brightens and the piano opens at that instant.",
-    "Optional: turn on the camera and reach with your hands — keep your shoulders in frame; your wrists push the field.",
-    "Energy opens the filter, how far you stretch the mesh adds resonance, up/down tilts the delay, left/right pans the piano.",
+    "The field is split in two: the LEFT half drives a resonant filter, the RIGHT half drives a comb. Push a side to shape that part of the sound.",
+    "Drag with the mouse to push the membrane; where you push brightens and that part of the piano responds at that instant.",
+    "Optional: turn on the camera and reach with BOTH hands — keep your shoulders in frame; your left and right wrists conduct the two regions independently.",
+    "Watch the signal-flow strip at the bottom: SRC → SOS filter → FIR comb → delay → pan fills live from what your hands are doing.",
   ];
 
   return (
@@ -353,6 +484,13 @@ export default function FluxMeshPage() {
         ref={canvasRef}
         className="absolute inset-0 h-full w-full"
         style={{ touchAction: "none", cursor: phase === "running" ? "crosshair" : "default" }}
+      />
+      {/* signal-flow overlay — the Fluxion graph drawn over the field */}
+      <canvas
+        ref={overlayRef}
+        className={`pointer-events-none absolute inset-0 z-10 h-full w-full transition-opacity duration-500 ${
+          phase === "running" ? "opacity-100" : "opacity-0"
+        }`}
       />
       <video ref={videoRef} className="hidden" playsInline muted />
 
@@ -397,11 +535,12 @@ export default function FluxMeshPage() {
               Fluxmesh
             </h1>
             <p className="mt-3 text-base leading-relaxed text-muted-foreground">
-              A large mass-spring membrane runs on the GPU. Every frame its emergent
-              state — kinetic energy, where the energy sits, how far it is stretched —
-              is reduced on the GPU and read back to steer a cascaded biquad filter and
-              a delay line shaping one of Karel&apos;s real piano takes. Reach into the
-              field and the piano responds where you touch it.
+              A large mass-spring membrane runs on the GPU, split into two conducted
+              halves. Each half is reduced on the GPU and read back to steer a
+              different part of a Fluxion-style DSP graph over one of Karel&apos;s real
+              piano takes: your left hand works a resonant filter cascade, your right
+              hand carves a feedforward comb. Reach into the field and the piano
+              responds where you touch it.
             </p>
 
             <div className="mt-6 flex flex-col gap-3">
@@ -465,7 +604,7 @@ export default function FluxMeshPage() {
         immersive={immersive}
         onToggle={toggle}
         title="Fluxmesh"
-        description="A GPU mass-spring field whose emergent motion drives a biquad cascade and delay line over Karel's piano. Push the membrane and the piano brightens where you touch."
+        description="A GPU mass-spring field split into two conducted halves: the left drives a resonant filter cascade, the right a feedforward comb, both shaping Karel's piano. Push a side and that part of the sound responds where you touch."
         howTo={howTo}
       />
     </div>
