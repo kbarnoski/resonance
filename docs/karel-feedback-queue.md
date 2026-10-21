@@ -209,3 +209,7 @@ Status: ✅ live · 🟡 committed, deploys after the tour · 🔧 in progress �
 - DONE (2bdc51f0) Joseph set "as dynamic as live mode": each track picks among its 3 best fresh worlds, so no two passes look alike.
 - DONE (412a9602) Only Rise Above loops. Joseph's set, Vigil and every album end on the title card and hold until Play (Play starts Rise Above). Verified on the kiosk: Joseph 24 → skip → held; Vigil First Light → skip → held; Play → Snowflake.
 - DONE (7fbd1cdc) Phone Settings → "Mic sensitivity: Less · Normal · More" (live mode; More = soft voice builds the picture). Verified on the kiosk + 390 px screenshot.
+
+## 2026-10-20
+- DONE Milestone v2.0-tramokyo (GitHub release, tag on the show build 7fbd1cdc).
+- OPEN (later, "one day") Viewers said some changes felt abrupt; Karel thinks it's the quick morphs. Lengthen the existing travel morphs back toward their earlier length (they were shortened while hunting the boundary glitches) without bringing back the glitches. Film before and after (record-boundary rig).
