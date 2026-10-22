@@ -1,5 +1,13 @@
 [
  {
+  "slug": "23680-emberfield",
+  "cycle": 23680,
+  "name": "Ember Field",
+  "status": "demoable",
+  "description": "A warm room you stand inside for ten minutes. Karel's piano becomes a slow, breathing ember-cloud — tens of thousands of embers advected through a curl-noise flow field — that you ",
+  "category": "local"
+ },
+ {
   "slug": "23440-fluxmesh",
   "cycle": 23440,
   "name": "The Membrane That Filters the Piano",

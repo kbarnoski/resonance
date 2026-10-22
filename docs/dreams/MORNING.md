@@ -1,20 +1,19 @@
-# Morning digest — last updated 2026-10-21T13:10Z
+# Morning digest — last updated 2026-10-22T13:00Z
 
-> **Jury verdict today**: The lab finally summited — fluxmesh stacks all four ambition axes — but all 15 recent pieces are one person waving at one screen; tomorrow needs a warm, cosmic-ambient, screen-light (maybe audio-only) break before "stack 4" hardens into the new rut. See `docs/dreams/JURY.md`.
+> **I took the jury's note and made a hard turn.** Yesterday's verdict: the lab summited with fluxmesh, but all 15 recent pieces are "one person at a laptop waving at one screen" — cool, clinical, intense — and it asked for *a warm, cosmic-ambient, screen-light break before 'stack 4' hardens into a rut.* So this fire I did **not** continue fluxmesh to cycle 3 (it's shipped and working — extending it now is the exact "fancier local minimum" the jury warned against). Instead: a WIDE fan-out of **three warm, cosmic-ambient, non-clinical** directions, shipping the strongest.
 
-> **Fluxmesh grew its second hand.** Last fire's `23440-fluxmesh` — the GPU membrane you push to filter your piano — was declared a 3-cycle build. This fire carries it to **cycle 2**, which is what makes last fire's big "stack 4" claim honest: a multi-cycle commitment only counts if it's actually continued. The field is now split in two, each half conducts a different effect, and the filter graph is drawn live over the mesh so you can see the signal flow.
-
-## New since yesterday
-- **`23440-fluxmesh` → cycle 2: two hands, two effects.** The membrane is now split down the middle into two independently-conducted regions:
-  - **Left half → a resonant filter** (push it to open the piano up and make it ring).
-  - **Right half → a new comb filter** (push it to carve a flange/comb into the sound).
-  - So your left and right hands shape *different parts* of the sound at once — not one global knob but two.
-- **The filter graph is drawn over the field.** A thin schematic layer shows the two regions (L → FILTER, R → COMB) and a bottom strip — SRC → SOS → FIR → DLY → PAN — whose blocks fill live from exactly what your hands are doing. You can watch the signal flow react.
-- **Under the hood:** the GPU reduction now emits separate numbers for the left and right halves, and the audio graph gained a true FIR (feedforward comb) stage — so Fluxion's full algebra (filter cascade + FIR + delay) is now all present. Research dive went non-spatial again as the jury asked (MiCLA, a "the mixture remembers its parts" paper posted today — the backing for the two-region idea).
-- **Why open it:** press play, then **drag the left half vs the right half** of the field with the mouse — you'll hear each half do its own thing. Fully playable with no webcam.
+## New since yesterday — `23680-emberfield`
+- **Karel's piano as a warm ember-cloud you stir with your body.** ~44k glowing embers drift through a curl-noise flow field (fluid-like motion, no fluid solver — the Anadol / Ars Electronica particle-garden technique); the take is granular-stretched slow so it breathes toward a long bloom.
+- **Your hands are vortices** the embers swirl toward; reach warms the color toward gold, arm-span stirs up turbulence, and **growing still lets the field settle and the music slow toward near-silence.** It's a room you stand inside for ten minutes, not a thing you analyze for ten seconds — the deliberate opposite of the last four fires.
+- **Every sound is his:** granular grains of one real take + a reverb tail whose impulse response is cut from his own recording. Warm ember/amber/gold/rose, three.js GPU — zero of yesterday's clinical palette.
+- **Why open it:** press Play, then **drag anywhere** — your pointer is an attractor the cloud flows around, and dragging faster speeds the music. Fully playable with no webcam.
 
 ## Needs your 30-second check
-- **The two-hand camera path is untested up here** — I can't point a webcam at myself in the cloud. The mouse path is verified and complete (dragging left vs right conducts the two regions). The body-tracking calibration (left wrist → left region, right wrist → right region, mirroring, seated framing) wants your quick look. Ships *demoable*, not "working camera", on purpose.
+- **The two-hand body-stir is untested up here** — no webcam in the cloud. The mouse path is verified and complete (drag to stir + conduct). The pose calibration (hands→vortices, reach→warmth, span→turbulence, seated framing on shoulders+wrists) wants your quick look. Ships *demoable*.
+
+## Also explored (banked, ready to ship next — see IDEAS.md §1313)
+- **`cadenceoracle`** — the jury's "predict the next chord" idea, finally built: watch and *hear* his piano anticipate its own next chord, with a meter that flares where his real playing *surprises* the forecast. A genuinely different verb (prediction, not re-filtering). Near-ready.
+- **`stillpoint`** — the audio-only one you've asked for 4×: eyes closed, headphones, your body conducting a slow warm drone of his take on a near-dark screen. Built and ready for a deliberate "audio-only night."
 
 ## Open question for you
-- **Cycle 3 is the last leg** of fluxmesh: Fluxion's "freeze the graph when the field settles into a standing wave" moment, plus opening it to full-body / a second person. Want me to finish the arc next fire — or pause fluxmesh at 2-of-3 and chase a *second* stack-4 piece on a different engine so fluxmesh doesn't become the only template? Either's good; I'll default to finishing cycle 3 unless you say otherwise.
+- **Where next?** (a) finish **fluxmesh cycle 3** now that a warm break has intervened, (b) ship **`cadenceoracle`** (the prediction piece), or (c) a deliberate **audio-only night** with `stillpoint`. All three are ready; I'll default to shipping `cadenceoracle` next unless you say otherwise.
