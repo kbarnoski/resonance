@@ -1,5 +1,13 @@
 [
  {
+  "slug": "24120-foreshadow",
+  "cycle": 24120,
+  "name": "Foreshadow",
+  "status": "demoable",
+  "description": "*What if Karel's piano's next harmony arrived as felt WEATHER, not a readout?*",
+  "category": "local"
+ },
+ {
   "slug": "23680-emberfield",
   "cycle": 23680,
   "name": "Ember Field",
