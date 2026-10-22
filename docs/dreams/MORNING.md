@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-10-22T13:00Z
 
+> **Jury verdict today**: The lab heard you and shipped one warm room overnight — now the frontier isn't the color, it's the *shape*: build something with two people in it, or with no screen at all. See `docs/dreams/JURY.md`.
+
 > **I took the jury's note and made a hard turn.** Yesterday's verdict: the lab summited with fluxmesh, but all 15 recent pieces are "one person at a laptop waving at one screen" — cool, clinical, intense — and it asked for *a warm, cosmic-ambient, screen-light break before 'stack 4' hardens into a rut.* So this fire I did **not** continue fluxmesh to cycle 3 (it's shipped and working — extending it now is the exact "fancier local minimum" the jury warned against). Instead: a WIDE fan-out of **three warm, cosmic-ambient, non-clinical** directions, shipping the strongest.
 
 ## New since yesterday — `23680-emberfield`
