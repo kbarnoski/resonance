@@ -1,5 +1,13 @@
 [
  {
+  "slug": "24360-duet",
+  "cycle": 24360,
+  "name": "Duet",
+  "status": "demoable",
+  "description": "What if two people in one camera frame could conduct one of Karel's piano takes together — and their *togetherness* (gesture sync) is the reward?",
+  "category": "local"
+ },
+ {
   "slug": "24120-foreshadow",
   "cycle": 24120,
   "name": "Foreshadow",
