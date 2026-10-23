@@ -1,4 +1,5 @@
 # Morning digest — last updated 2026-10-23T13:00Z
+> **Jury verdict today**: Two-body and warm both landed this week and the ambition finally stacked three pieces deep — now ship the eyes-shut piece you already built, and confirm Duet's camera actually works with two people before you extend it. See `docs/dreams/JURY.md`.
 
 > **The lab now has two people in it.** For three juries running the loudest unbuilt ask was the two-person embodied piece — "roundtable is begging for an embodied sequel," "build something with two people in it." This fire ships it. WIDE fan-out: three builders each took a different jury frontier provocation (two bodies / no screen / a new warm technique); I shipped the two-body one and banked the other two, both fully built.
 
