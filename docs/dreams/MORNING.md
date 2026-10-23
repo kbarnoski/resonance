@@ -1,22 +1,24 @@
-# Morning digest — last updated 2026-10-23T13:00Z
-> **Jury verdict today**: Two-body and warm both landed this week and the ambition finally stacked three pieces deep — now ship the eyes-shut piece you already built, and confirm Duet's camera actually works with two people before you extend it. See `docs/dreams/JURY.md`.
+# Morning digest — last updated 2026-10-24T00:45Z
 
-> **The lab now has two people in it.** For three juries running the loudest unbuilt ask was the two-person embodied piece — "roundtable is begging for an embodied sequel," "build something with two people in it." This fire ships it. WIDE fan-out: three builders each took a different jury frontier provocation (two bodies / no screen / a new warm technique); I shipped the two-body one and banked the other two, both fully built.
+> **Tonight the lab closes its eyes — and it's exactly what you asked for.** Today's jury verdict (`JURY.md`, 2026-10-23) landed while I was building and its headline is *"ship the eyes-shut piece you already built."* This fire does precisely that: `stillpoint`, the no-screen / audio-only piece, banked twice and now shipped. DEEP cycle — one concept (*the eyes-closed instrument*) raced on two control surfaces; I shipped the one you can actually do with your eyes shut.
 
-## New since yesterday — `24360-duet`
-- **Two people, in one camera frame, conduct ONE of your takes together — and their *togetherness* is the reward.** The take splits into a warm low voice (left person) and a bright high voice (right person). When the two of you move **in sync** — raising and lowering your hands in time — the voices drift to centre, a warm reverb swell opens, and two lights (dusk-rose + amber-gold) merge into a single warm-gold core. Move apart and they split back out.
-- **The coupling *between* you is the instrument** — not two parameters side by side. The reward is a hand-height cross-correlation made audible and visible (named ref: Hove & Risen 2009 — moving in phase increases felt affiliation).
-- **Why open it:** press Play and **do nothing** — a labelled autonomous "ghost partner" duets with an auto-drifting line and the two periodically find each other hands-free. Then grab the mouse (or arrow keys) and match the ghost yourself. Best with a second person on camera.
+## New since yesterday — `24600-stillpoint`
+- **Headphones on, eyes closed: one of your takes becomes four voices on a dome around your head, and your body navigates it.** The recording is split into four registers — bass / low-mid / mid / air — and each is HRTF-panned to a fixed spot in the room around you.
+- **The field is world-locked.** Turn your body and the voices stay put — you face different ones, and the one you face comes forward, louder and brighter. **Lean toward it** and it comes *closer in distance* (real 6DoF translation of your listening position, not a volume knob — named ref: Chen & Boren, AES-159 2025, whose lean-adds-distance finding this embodies).
+- **Why open it:** put on headphones, press Begin, and **close your eyes**. On a phone, turn and tilt your body. On a laptop, drag or hold the arrow keys (← → turn, ↑ ↓ lean). Do nothing and the whole field slowly drifts each voice through the front. The screen stays almost dark on purpose — the sound is the piece.
 
-## Needs your 30-second check
-- **The live two-body path is untested up here** — no webcam in the cloud. The pointer + ghost-partner path is verified and plays/evolves on its own. What wants your look: bring a second person into frame (seated, waist-up, shoulders in view) and confirm the two of you register as two people, and that the reverb swell balance feels right on headphones. Ships *demoable*.
+## Needs your 30-second check (headphones)
+- **The binaural field can't be heard up here** — no audio device in the cloud. The input→sound wiring is fully traced and clean (tsc/eslint/QA all 0), and the keyboard/pointer path is verified. What wants *your* ears: put on headphones and confirm the four voices actually sit *around* your head and that leaning pulls the faced one closer. On a phone, the neutral-tilt point may want a small calibration tweak — tell me if it feels off. Ships *demoable*.
+- **Also still open from the jury: verify `24360-duet`'s two-body camera path.** The jury is explicit — don't build Duet cycle 2 until you've confirmed the live two-person webcam path works. Bring a second person into frame (seated, waist-up) for ~30 sec when you can.
 
-## Also built this fire (banked — see IDEAS.md §1315)
-- **`stillpoint`** — the **no-screen / eyes-closed** piece (jury prov-1): one take fanned into four HRTF voices that orbit your head; your body steers where you face; screen near-dark. The other top frontier ask — ready for a deliberate audio-only night (headphones essential).
-- **`throughlight`** — the **warm-lane** piece (jury prov-3): a near-death tunnel-to-light built as a raw-WebGL2 log-polar form-constant field (cool dusk-violet void → emergent warm gold), a *different* warm technique from emberfield's room and foreshadow's plum fronts. Fully built, pointer path cloud-verifiable.
+## Also built this fire (banked — see IDEAS.md §1316)
+- **`innerear`** — the **camera + long-form** sibling: reach your arms *wide* to fling the voices out around the room or draw your hands *in* to gather them close, over a genuine ~6-minute field that migrates, swells and rebalances on its own so minute 5 ≠ minute 1. Lost only because camera-pose can't be verified headless and fights the eyes-closed premise — but its long-form evolution engine is the richest in the window and reusable.
 
-## Where next? (all ready — I'll default to the first unless you redirect)
-1. **`stillpoint`** — ship the no-screen audio-only night (prov-1, still 0× shipped).
-2. **Duet cycle 2** — true two-camera / remote two-person (via `peerSync`), now that the solo-vs-ghost skeleton is live.
-3. **`throughlight`** — the warm-lane NDE tunnel night.
-4. **`cadenceoracle`** — the analytical prediction instrument (banked §1314), on an instrument night.
+## One thing I'd like your call on
+- **Camera directive vs. no-screen nights.** The standing rule says every winner should be camera-tracked; a true eyes-shut piece can't be (you'd have to face the webcam). Tonight I followed the jury's "no screen" ask and shipped the device-orientation version. If you'd rather the camera rule bind even here, say so and I'll ship `innerear` next.
+
+## Where next? (reordered to honor today's jury)
+1. **Verify Duet's two-body webcam** — the jury says confirm cycle 1 works before extending it. Your 30-sec check unblocks everything downstream.
+2. **`innerear`** — the camera-embodied / long-form reading of tonight's eyes-closed field.
+3. **A fourth warm technique** — the jury wants the warm lane protected with a *new* technique (a meditative void that empties, slow luminance drift, or `throughlight`'s tunnel-to-light, banked §1315).
+4. **Duet cycle 2** — true two-camera / remote two-person via `peerSync`, *after* cycle 1 is verified.

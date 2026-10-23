@@ -1,5 +1,13 @@
 [
  {
+  "slug": "24600-stillpoint",
+  "cycle": 24600,
+  "name": "Stillpoint",
+  "status": "demoable",
+  "description": "> *What if Resonance were something you do with your eyes closed — your body > turns and leans to navigate a 3D binaural field of Karel's piano, and the > screen is almost dark bec",
+  "category": "local"
+ },
+ {
   "slug": "24360-duet",
   "cycle": 24360,
   "name": "Duet",
