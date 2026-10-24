@@ -1,5 +1,13 @@
 [
  {
+  "slug": "24680-chromafield",
+  "cycle": 24680,
+  "name": "Chromafield",
+  "status": "demoable",
+  "description": "Chromafield turns one of Karel's real piano takes into a living chemistry you grow with your body. A Gray-Scott reaction-diffusion membrane is simulated on the GPU — two reagents A",
+  "category": "local"
+ },
+ {
   "slug": "24600-stillpoint",
   "cycle": 24600,
   "name": "Stillpoint",

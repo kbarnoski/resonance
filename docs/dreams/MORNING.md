@@ -1,24 +1,20 @@
-# Morning digest — last updated 2026-10-24T00:45Z
+# Morning digest — last updated 2026-10-24T13:00Z
 
-> **Tonight the lab closes its eyes — and it's exactly what you asked for.** Today's jury verdict (`JURY.md`, 2026-10-23) landed while I was building and its headline is *"ship the eyes-shut piece you already built."* This fire does precisely that: `stillpoint`, the no-screen / audio-only piece, banked twice and now shipped. DEEP cycle — one concept (*the eyes-closed instrument*) raced on two control surfaces; I shipped the one you can actually do with your eyes shut.
+> **Tonight the lab opens its eyes again — and grows something alive.** Last fire shipped the eyes-shut `stillpoint` (the jury's top ask). This fire swings back to the embodied-camera directive *and* deliberately away from four straight warm/meditative pieces into the **intense/visionary** pole, on the one fresh substrate the jury left open: **WebGPU compute**. WIDE cycle — three unrelated briefs built in parallel; I shipped the one that's genuinely alone on its substrate.
 
-## New since yesterday — `24600-stillpoint`
-- **Headphones on, eyes closed: one of your takes becomes four voices on a dome around your head, and your body navigates it.** The recording is split into four registers — bass / low-mid / mid / air — and each is HRTF-panned to a fixed spot in the room around you.
-- **The field is world-locked.** Turn your body and the voices stay put — you face different ones, and the one you face comes forward, louder and brighter. **Lean toward it** and it comes *closer in distance* (real 6DoF translation of your listening position, not a volume knob — named ref: Chen & Boren, AES-159 2025, whose lean-adds-distance finding this embodies).
-- **Why open it:** put on headphones, press Begin, and **close your eyes**. On a phone, turn and tilt your body. On a laptop, drag or hold the arrow keys (← → turn, ↑ ↓ lean). Do nothing and the whole field slowly drifts each voice through the front. The screen stays almost dark on purpose — the sound is the piece.
+## New since yesterday — `24680-chromafield`
+- **Grow a living chemistry with your body and let its pattern conduct your piano.** A GPU Gray-Scott reaction-diffusion membrane runs as a real WebGPU compute shader; your arm sweep (or a mouse drag) *deposits reagent* and seeds the reaction, and your **arm-span slides the pattern between spots → stripes → worms → chaos**.
+- **The pattern IS the filter.** Every frame the field is reduced on the GPU to four numbers — how filled-in it is, how turbulent its edges are, which side it pools to, how high it sits — and those conduct one of your real takes: a mature, ordered membrane opens the piano up and clear; a churning, chaotic one smears it into resonant light. Obsidian → indigo → electric-violet filaments.
+- **Why open it:** press Start, then **drag on the canvas** to grow the chemistry (or turn on the camera and sweep your arms). Nudge ←/→ to slide the regime. Leave it alone and an autonomous wanderer keeps the chemistry evolving — it's alive on sight. It extends `fluxmesh`'s "GPU simulation drives the DSP" idea onto a *chemical* sim (named refs: Turing 1952; Leitl's WebGPU reaction-diffusion).
 
-## Needs your 30-second check (headphones)
-- **The binaural field can't be heard up here** — no audio device in the cloud. The input→sound wiring is fully traced and clean (tsc/eslint/QA all 0), and the keyboard/pointer path is verified. What wants *your* ears: put on headphones and confirm the four voices actually sit *around* your head and that leaning pulls the faced one closer. On a phone, the neutral-tilt point may want a small calibration tweak — tell me if it feels off. Ships *demoable*.
-- **Also still open from the jury: verify `24360-duet`'s two-body camera path.** The jury is explicit — don't build Duet cycle 2 until you've confirmed the live two-person webcam path works. Bring a second person into frame (seated, waist-up) for ~30 sec when you can.
+## Needs your ~30-second check
+- **The WebGPU render + the full-body camera path want your eyes.** The pointer-only path and the CPU fallback are cloud-verified end-to-end (deposit → field → four scalars → audio), but I can't point a webcam at myself up here: the arm-sweep-deposits + arm-span→regime calibration (seated, shoulders in frame) wants your quick confirm. If your browser has no WebGPU it silently drops to a real CPU reaction-diffusion with a notice — so it never looks broken.
 
-## Also built this fire (banked — see IDEAS.md §1316)
-- **`innerear`** — the **camera + long-form** sibling: reach your arms *wide* to fling the voices out around the room or draw your hands *in* to gather them close, over a genuine ~6-minute field that migrates, swells and rebalances on its own so minute 5 ≠ minute 1. Lost only because camera-pose can't be verified headless and fights the eyes-closed premise — but its long-form evolution engine is the richest in the window and reusable.
+## Also explored tonight (banked, not shipped — IDEAS §1317)
+- **`cymatic`** — a Chladni sand-plate where *your take's own harmonics* shape the nodal figures and your two hands drive the modes. Sound made visible. Ready to ship on a three.js night.
+- **`foveal`** — attention as the instrument: where your gaze falls, your piano comes into focus; the periphery dissolves. A fresh verb (ATTEND, not re-filter). Face-primary, under-used input.
+- Both are three.js, and the jury flagged three.js at 4× — so I banked them to keep the substrate diverse and shipped the lone-WebGPU piece instead.
 
-## One thing I'd like your call on
-- **Camera directive vs. no-screen nights.** The standing rule says every winner should be camera-tracked; a true eyes-shut piece can't be (you'd have to face the webcam). Tonight I followed the jury's "no screen" ask and shipped the device-orientation version. If you'd rather the camera rule bind even here, say so and I'll ship `innerear` next.
-
-## Where next? (reordered to honor today's jury)
-1. **Verify Duet's two-body webcam** — the jury says confirm cycle 1 works before extending it. Your 30-sec check unblocks everything downstream.
-2. **`innerear`** — the camera-embodied / long-form reading of tonight's eyes-closed field.
-3. **A fourth warm technique** — the jury wants the warm lane protected with a *new* technique (a meditative void that empties, slow luminance drift, or `throughlight`'s tunnel-to-light, banked §1315).
-4. **Duet cycle 2** — true two-camera / remote two-person via `peerSync`, *after* cycle 1 is verified.
+## Open questions for you
+- `duet` (c1315) still ships with its live two-body camera path **unverified** — the jury said confirm it before extending. Want me to prioritize a verification-only pass, or keep building forward?
+- Standing ops ask: a scheduled deploy-health alert / dependabot auto-merge would catch a freeze in minutes (your lever — it's out of my fence).
