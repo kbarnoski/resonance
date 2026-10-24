@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { createClient } from "@/lib/supabase/client";
 import { AnalysisDisplay } from "@/components/analysis/analysis-display";
 import { ChatMessage } from "@/components/chat/chat-message";
-import { useChat } from "ai/react";
+import { useChat } from "@ai-sdk/react";
 import { Send } from "lucide-react";
 
 type FullAnalysis = {
